@@ -15,7 +15,8 @@ Code with which I facilitated my experiments
 
 #### How to 
 - Install typesafe activator and then 
-``activator run
+
+`activator run`
 
 
 ## Organizational Stuff
