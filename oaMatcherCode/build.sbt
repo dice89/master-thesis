@@ -9,6 +9,5 @@ scalaVersion := "2.11.1"
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.1.6" % "test"
 
 // Uncomment to use Akka
-libraryDependencies += "org.apache.commons" % "commons-csv" % "1.0"
 
-resolvers += "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository"
+libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.1.1"

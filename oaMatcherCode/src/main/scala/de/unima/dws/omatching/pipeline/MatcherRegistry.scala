@@ -1,19 +1,18 @@
-package de.unima.dws.omatching.pipeline
+ package de.unima.dws.omatching.pipeline
 
 import java.io.FileWriter
-import java.net.URI
-import java.util.Properties
-
-import scala.collection.immutable.{ Map => ImmutableMap }
-import scala.collection.mutable.HashMap
-import scala.collection.mutable.Map
-
-import org.apache.commons.csv.CSVFormat
-import org.apache.commons.csv.CSVPrinter
-import org.semanticweb.owl.align.AlignmentProcess
-
-import fr.inrialpes.exmo.align.impl.BasicParameters
-import fr.inrialpes.exmo.align.impl.method.StringDistAlignment
+ import java.net.URI
+ import java.util.Properties
+ import scala.collection.immutable.{ Map => ImmutableMap }
+ import scala.collection.mutable.HashMap
+ import scala.collection.mutable.Map
+ import org.apache.commons.csv.CSVFormat
+ import org.apache.commons.csv.CSVPrinter
+ import org.semanticweb.owl.align.AlignmentProcess
+ import fr.inrialpes.exmo.align.impl.BasicParameters
+ import fr.inrialpes.exmo.align.impl.method.StringDistAlignment
+ import com.github.tototoshi.csv.CSVWriter
+ import java.io.File
 
 object MatcherRegistry {
   private val matcher_by_name: Map[String, Matcher] = new HashMap[String, Matcher]();
@@ -69,19 +68,18 @@ object MatcherRegistry {
 
     val matcher_index_to_name = this.matcher_by_name.keySet.zipWithIndex.map(tuple => tuple._2 -> tuple._1 ) toMap
     
-    //Init CSV Printer 
-    //TODO change to Scala printer
-    val csvFilePrinter = new CSVPrinter(new FileWriter("test.csv"), CSVFormat.RFC4180.withRecordSeparator("\n"));
+    //Init CSV Writer
+    val writer = CSVWriter.open(new File("test2.csv"))
+    
     
     //print Headline
-    val header = matcher_name_to_index.values.toList.sorted.map(A =>  matcher_index_to_name.get(A))
+    val header:List[String] =  List[String]("Match") ::: matcher_name_to_index.values.toList.sorted.map(A =>  matcher_index_to_name.get(A).get)
    
-    //convert to java UTIL List
-    var conv_header = new java.util.ArrayList[String]();
-    conv_header.add("Match");
-    header.foreach(elm => conv_header.add(elm.get))
     
-    csvFilePrinter.printRecord(conv_header);
+  
+    //convert to java UTIL List
+    writer.writeRow(header)
+   
     for (line <- result) {
       //matcher name 
       var records = new Array[String](matcher_name_to_index.size+1)
@@ -92,13 +90,12 @@ object MatcherRegistry {
         //index shift because first element is match name
         records(matcher_name_to_index(elm._1)+1) = elm._2.get +""
       }
-      var converted_list = new java.util.ArrayList[String]();
-      records.foreach(elm => converted_list.add(elm))
-      csvFilePrinter.printRecord(converted_list);    
+
+      writer.writeRow(records)
     }
     
-    csvFilePrinter.flush();
-    csvFilePrinter.close()
+    writer.close
+
   }
 
 }

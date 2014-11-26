@@ -3,9 +3,13 @@
   <classpathentry kind="src" path="src/main/java" output="target/scala-2.11/classes"/>
   <classpathentry kind="src" path="src/test/scala" output="target/scala-2.11/test-classes"/>
   <classpathentry kind="src" path="src/test/java" output="target/scala-2.11/test-classes"/>
-  <classpathentry kind="lib" path="/Users/mueller/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.11.1.jar"/>
-  <classpathentry kind="lib" path="/Users/mueller/.ivy2/cache/org.apache.commons/commons-csv/jars/commons-csv-1.0.jar"/>
-  <classpathentry kind="lib" path="/Users/mueller/.m2/repository/org/semanticweb/owl/align/4.6/align-4.6.jar"/>
+  <classpathentry kind="lib" path="./lib/align.jar"/>
+  <classpathentry kind="lib" path="./lib/alignsvc.jar"/>
+  <classpathentry kind="lib" path="./lib/commons-csv-1.1.jar"/>
+  <classpathentry kind="lib" path="./lib/ontowrap.jar"/>
+  <classpathentry kind="lib" path="./lib/procalign.jar"/>
+  <classpathentry kind="lib" path="/Users/mueller/.ivy2/cache/com.github.tototoshi/scala-csv_2.11/jars/scala-csv_2.11-1.1.1.jar"/>
+  <classpathentry kind="lib" path="/Users/mueller/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.11.4.jar"/>
   <classpathentry kind="lib" path="/Users/mueller/.ivy2/cache/org.scalatest/scalatest_2.11/jars/scalatest_2.11-2.1.6.jar"/>
   <classpathentry kind="lib" path="/Users/mueller/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.11.0.jar"/>
   <classpathentry kind="lib" path="/Users/mueller/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.11/bundles/scala-parser-combinators_2.11-1.0.1.jar"/>
