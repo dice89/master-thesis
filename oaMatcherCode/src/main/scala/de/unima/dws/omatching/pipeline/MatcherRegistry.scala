@@ -15,7 +15,7 @@ import java.io.FileWriter
  import java.io.File
 
 object MatcherRegistry {
-  private val matcher_by_name: Map[String, Matcher] = new HashMap[String, Matcher]();
+  val matcher_by_name: Map[String, Matcher] = new HashMap[String, Matcher]();
 
   /**
    * Method inits Map with matcher
@@ -44,7 +44,7 @@ object MatcherRegistry {
     (name, new Matcher(name, alignment, properties));
   }
 
-  def matchAll(onto1: URI, onto2: URI) = {
+  def matchAll(onto1: URI, onto2: URI): ImmutableMap[String,Map[String,Option[Double]]] = {
     println("Start Matching with " + matcher_by_name.size + " Matcher")
 
     //call all matcher and transform them
@@ -57,45 +57,8 @@ object MatcherRegistry {
     val results_per_matching = unique_elements.map(elm => elm -> res_map.filter(_._2.contains(elm)).map(tuple => tuple._1 -> tuple._2.get(elm))) toMap
 
     println("Done with 8 Matcher and created matchings for " + results_per_matching.size)
-
-    writeCSV(results_per_matching)
-  }
-
-  def writeCSV(result: ImmutableMap[String, Map[String, Option[Double]]]) = {
-    // prepare 
-    var i: Int = 0;
-    val matcher_name_to_index = this.matcher_by_name.keySet.zipWithIndex toMap
-
-    val matcher_index_to_name = this.matcher_by_name.keySet.zipWithIndex.map(tuple => tuple._2 -> tuple._1 ) toMap
     
-    //Init CSV Writer
-    val writer = CSVWriter.open(new File("test2.csv"))
-    
-    
-    //print Headline
-    val header:List[String] =  List[String]("Match") ::: matcher_name_to_index.values.toList.sorted.map(A =>  matcher_index_to_name.get(A).get)
-   
-    
-  
-    //convert to java UTIL List
-    writer.writeRow(header)
-   
-    for (line <- result) {
-      //matcher name 
-      var records = new Array[String](matcher_name_to_index.size+1)
-      //matching name
-      records(0) = line._1 ;
-      //get rows
-      for (elm <- line._2) {
-        //index shift because first element is match name
-        records(matcher_name_to_index(elm._1)+1) = elm._2.get +""
-      }
-
-      writer.writeRow(records)
-    }
-    
-    writer.close
-
+    results_per_matching
   }
 
 }
