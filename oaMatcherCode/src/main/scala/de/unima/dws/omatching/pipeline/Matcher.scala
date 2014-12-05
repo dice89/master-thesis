@@ -20,6 +20,7 @@ class Matcher(val name:String, var underlying_aligment_process : AlignmentProces
 	  //Map List to Map[String,Double]
 	  res.map(cell =>  cell.getObject1().toString() +" " + cell.getRelation().getRelation() + " " + cell.getObject2().toString() -> cell.getStrength()) toMap;
 
+	  
 	}
 }
 

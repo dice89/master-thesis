@@ -1,11 +1,10 @@
 package de.unima.dws.omatching.pipeline.metaMatcher
 
 import java.util.Properties
-
 import org.semanticweb.owl.align.Alignment
 import org.semanticweb.owl.align.AlignmentProcess
-
 import fr.inrialpes.exmo.align.impl.URIAlignment
+import de.unima.dws.omatching.matcher.MatchRelationURI
 
 /**
  *
@@ -13,10 +12,14 @@ import fr.inrialpes.exmo.align.impl.URIAlignment
  * @author Alexander C. Mueller
  *
  */
-class SuperNaiveOutlierMatchingAlignment(val matchings: Map[(java.net.URI, java.net.URI, String), Double]) extends URIAlignment with AlignmentProcess {
+class SuperNaiveOutlierMatchingAlignment(val matchings: Map[MatchRelationURI, Double], val threshold:Double) extends URIAlignment with AlignmentProcess {
 
   def align(alignment: Alignment, params: Properties) = {
-    matchings.foreach(A =>
-      addAlignCell(A._1._1, A._1._2, A._1._3, A._2))
+    matchings.foreach(A =>{
+    	println(A._2)
+    	if(A._2 > threshold){
+    		addAlignCell(A._1.left ,A._1.right, A._1.relation , A._2)
+    	}
+    })
   }
 }

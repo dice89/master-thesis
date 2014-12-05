@@ -1,0 +1,39 @@
+SchemaMatcher Categorization
+
+Element Level Matcher
+  String Based
+     Hamming Distance
+     Jaro
+     Jaro-Winkler
+     gotoh distance
+     smoa (String metric for ontology aligment)
+     prefix
+     suffix
+     edit distances
+        levenstein distance (Second String)
+        Monge-Elkan distance (second String)
+        needlman-wunsch distance 
+     n-gram similarity (q-gram) (second String)
+     token-based
+        consine-similarity
+        Jaccard similarity
+        dice-coefficent
+        soft-tfidf
+        tfidf
+        euclidean distance
+  Language-Based Techniques
+    Intrinsic
+      Tokenization
+      Lemmatization
+      Stemming
+    Linguistic resources
+      Word Net Based
+        Lin
+  Constraint-Based Matcher
+    Data Type Matcher
+    Statistical Properties
+
+Structure Level Matcher
+  Graph-based
+    Similarity Flooding
+  Instance based

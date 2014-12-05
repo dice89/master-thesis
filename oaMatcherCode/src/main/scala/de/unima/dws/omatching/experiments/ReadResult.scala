@@ -1,18 +1,8 @@
 package de.unima.dws.omatching.experiments
 
-import java.io.BufferedReader
-import java.io.FileReader
-import com.github.tototoshi.csv.CSVReader
 import java.io.File
-import de.unima.dws.omatching.pipeline.metaMatcher.AlignmentFromFile
-import org.semanticweb.owl.align.AlignmentProcess
-import com.rapidminer.{Process => RProcess};
-import scala.collection.convert.Wrappers.JEnumerationWrapper
-import fr.inrialpes.exmo.align.parser.AlignmentParser
-import org.semanticweb.owl.align.Evaluator
-import org.semanticweb.owl.align.Alignment
-import fr.inrialpes.exmo.align.impl.eval.PRecEvaluator
-import java.util.Properties
+
+import com.rapidminer.{Process => RProcess}
 import com.rapidminer.RapidMiner
 import com.rapidminer.operator.io.CSVDataReader
 import com.rapidminer.operator.io.CSVExampleSetWriter
@@ -22,6 +12,7 @@ object ReadResult extends App {
 	/*var alignment: AlignmentProcess = new AlignmentFromFile("result.csv")
 
   alignment.align(null, null)
+
 
   alignment.cut(.2)
   val res = new JEnumerationWrapper(alignment.getElements());
