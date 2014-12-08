@@ -25,20 +25,22 @@ import de.unima.dws.omatching.matcher.MatchRelationURI
 import de.unima.dws.omatching.matcher.MatchRelationURI
 import de.unima.dws.omatching.matcher.MatchRelationURI
 import de.unima.dws.omatching.pipeline.util.RdfFileFilter
+import java.util.ArrayList
+import scala.collection.mutable.MutableList
+import scala.collection.mutable.HashMap
 
+case class EvaluationResult(precision: Double, recall: Double, fmeasure: Double)
 
-case class EvaluationResult(precision:Double, recall:Double, fmeasure:Double)
+case class OutlierAnalysisResult(left: String, relation: String, right: String, outlierFactor: Double)
 
-case class OutlierAnalysisResult(left:String,relation:String,right:String,outlierFactor:Double)
-
-case class MatcherResult(metaResult:EvaluationResult, singleResult:ImmutableMap[String,EvaluationResult])
+case class MatcherResult(metaResult: EvaluationResult, singleResult: ImmutableMap[String, EvaluationResult])
 
 object Pipeline {
   val usage = """
     Usage:  [--onto1 String] [--onto2 String]  [--ref String]
   """
   def main(args: Array[String]): Unit = {
-	/*
+    /*
 	 * TODO Argument matching
     if (args.length == 0) println(usage)
     val arglist = args.toList
@@ -76,46 +78,122 @@ object Pipeline {
     println(eval_rest)
     
     */
-    
+
     match_oaei_data_set("ontos/2014/conference")
   }
-  
-  
-  def match_oaei_data_set(path_to_folder:String):Unit = {
 
-	val folder:File = new File(path_to_folder+File.separator+"reference-alignment/")
-	
-  println(folder.getAbsolutePath() + "--"+	folder.isDirectory())
+  def match_oaei_data_set(path_to_folder: String): Unit = {
 
-	for( ref_align_file<- folder.listFiles(new RdfFileFilter)){
-	  val ontos:List[String] = ref_align_file.getName().split("-").toList
-	  val name_onto1:String = path_to_folder +File.separator+ontos(0).replaceAll("-", "")+".owl"
-	  val name_onto2:String = path_to_folder +File.separator+ontos(0).replaceAll("-", "")+".owl"
-	  
-	  val onto1: URI =new File(name_onto1).toURI()
-	  val onto2: URI =new File(name_onto2).toURI()
-      val res = match_and_evaluate(rapidminerTest(writeCSV)(readCSV))(combineMatchingsNaive)(validate(ref_align_file.getAbsolutePath()))(onto1, onto2,ref_align_file.getAbsolutePath())
+    val folder: File = new File(path_to_folder + File.separator + "reference-alignment/")
+    println(folder.getAbsolutePath() + "--" + folder.isDirectory())
+    var base_matcher_results: MutableList[ImmutableMap[String, EvaluationResult]] = new MutableList
+    var meta_matcher_results: MutableList[EvaluationResult] = new MutableList
+    for (ref_align_file <- folder.listFiles(new RdfFileFilter)) {
+      val ontos: List[String] = ref_align_file.getName().split("-").toList
+      val name_onto1: String = path_to_folder + File.separator + ontos(0).replaceAll("-", "") + ".owl"
+      val name_onto2: String = path_to_folder + File.separator + ontos(1).replaceAll("-", "").replaceAll(".rdf", "") + ".owl"
+
+      val onto1: URI = new File(name_onto1).toURI()
+      val onto2: URI = new File(name_onto2).toURI()
+      //match
+      val res = match_and_evaluate(rapidminerTest(writeCSV)(readCSV))(combineMatchingsNaive)(validate(ref_align_file.getAbsolutePath()))(onto1, onto2, ref_align_file.getAbsolutePath())
+
+      base_matcher_results.+=(res.singleResult)
+      meta_matcher_results.+=(res.metaResult)
+      // println(res)
+      //match
+    }
+
+    //aggregate base matcher
+    var aggregated_base_matcher: Map[String, EvaluationResult] = new HashMap
+    for (match_res <- base_matcher_results; single_match <- match_res) {
+      if (aggregated_base_matcher.contains(single_match._1)) {
+        //aggregate
+        var result: EvaluationResult = aggregated_base_matcher.get(single_match._1).get
+
+        val agg_precision: Double = (result.precision + single_match._2.precision)
+
+        val agg_recall: Double = (result.recall + single_match._2.recall)
+
+        val agg_fmeasure: Double = (result.fmeasure + single_match._2.fmeasure)
+        aggregated_base_matcher.put(single_match._1, EvaluationResult(agg_precision, agg_recall, agg_fmeasure))
+
+      } else {
+        aggregated_base_matcher.put(single_match._1, single_match._2)
+      }
+      //key 
+    }
+
+    aggregated_base_matcher = aggregated_base_matcher.map({
+      case (name, evalRes) => {
+        val size: Int = base_matcher_results.size
+        val eval_res_normalized = EvaluationResult(evalRes.precision / size, evalRes.recall / size, evalRes.fmeasure / size)
+        (name, eval_res_normalized)
+      }
+    })
+    //aggregated_base_matcher.max
+    println(aggregated_base_matcher)
+
+    println("Base Line 1: (best average Matcher)")
+    //get best on average f1 measure base matcher
+    val best_average_matcher = aggregated_base_matcher.reduceLeft((A, B) => {
+      if (A._2.fmeasure > B._2.fmeasure) {
+        A
+      } else {
+        B
+      }
+    })
+    println(best_average_matcher)
+    //aggregate single matcher results
+
+    //Base Line 2: Get result based on best matcher for every matching
+
+    val best_for_each_match = for (result_row <- base_matcher_results)
+      yield result_row.reduceLeft((A, B) => {
+      if (A._2.fmeasure < B._2.fmeasure) {
+        B
+      }else {
+        A
+      }
+ 
+    })
     
-      println(res)
-	  //match
-	}
+    println(best_for_each_match)
+
+   val best_summed:EvaluationResult = best_for_each_match.reduceLeft((A, B) => {
+      ("res", EvaluationResult( A._2.precision + B._2 .precision ,   A._2.recall + B._2 .recall , A._2.fmeasure + B._2 .fmeasure ))
+    })._2 
+
+    
+    val best_normalized = EvaluationResult(best_summed.precision / meta_matcher_results.size, best_summed.recall / meta_matcher_results.size, best_summed.fmeasure / meta_matcher_results.size)
+
+    println("Baseline 2:")
+    
+    println(best_normalized)
+    var summed_result: EvaluationResult = meta_matcher_results.foldLeft(EvaluationResult(0.0, 0.0, 0.0))((z, i) => {
+      EvaluationResult(z.precision + i.precision, z.recall + i.recall, z.fmeasure + i.fmeasure)
+    })
+    val combined_matcher_result = EvaluationResult(summed_result.precision / meta_matcher_results.size, summed_result.recall / meta_matcher_results.size, summed_result.fmeasure / meta_matcher_results.size)
+
+    println("Outlier Detection Meta Matcher Result")
+    println(combined_matcher_result)
+    //base_matcher_results
+
   }
 
-  def match_and_evaluate(outlierFunction: ImmutableMap[MatchRelation, ImmutableMap[String, Option[Double]]] => ImmutableMap[(MatchRelationURI), Double])(combinationFunction: (ImmutableMap[(MatchRelationURI), Double],Double) => AlignmentProcess)(evaluationFunction: AlignmentProcess => EvaluationResult)(onto1: URI, onto2: URI, ref_align:String): MatcherResult = {
+  def match_and_evaluate(outlierFunction: ImmutableMap[MatchRelation, ImmutableMap[String, Option[Double]]] => ImmutableMap[(MatchRelationURI), Double])(combinationFunction: (ImmutableMap[(MatchRelationURI), Double], Double) => AlignmentProcess)(evaluationFunction: AlignmentProcess => EvaluationResult)(onto1: URI, onto2: URI, ref_align: String): MatcherResult = {
     MatcherRegistry.init
-    
+
     var aparser: AlignmentParser = new AlignmentParser(0);
     var reference: Alignment = aparser.parse(new File(ref_align).toURI());
+    val matchings = MatcherRegistry.matchRound(onto1, onto2, reference)
+    val meta_result = evaluationFunction(combinationFunction(outlierFunction(matchings._1), 0.25))
 
-    val matchings =  MatcherRegistry.matchRound(onto1, onto2,reference)
-
-    val meta_result= evaluationFunction(combinationFunction(outlierFunction(matchings._1),0.25))
-    
-    MatcherResult(meta_result,matchings._2 )
+    MatcherResult(meta_result, matchings._2)
   }
 
-  def combineMatchingsNaive(matchings: ImmutableMap[MatchRelationURI, Double], threshold:Double): AlignmentProcess = {
-    var alignment: AlignmentProcess = new SuperNaiveOutlierMatchingAlignment(matchings,threshold)
+  def combineMatchingsNaive(matchings: ImmutableMap[MatchRelationURI, Double], threshold: Double): AlignmentProcess = {
+    var alignment: AlignmentProcess = new SuperNaiveOutlierMatchingAlignment(matchings, threshold)
     alignment.align(null, null)
     alignment
   }
@@ -125,8 +203,8 @@ object Pipeline {
     var reference: Alignment = aparser.parse(new File(reference_alignment).toURI());
     var evaluator: PRecEvaluator = new PRecEvaluator(reference, alignment);
     evaluator.eval(null)
-    
-    EvaluationResult(evaluator.getPrecision(),evaluator.getRecall(),evaluator.getFmeasure())
+
+    EvaluationResult(evaluator.getPrecision(), evaluator.getRecall(), evaluator.getFmeasure())
   }
 
   /**
@@ -145,13 +223,12 @@ object Pipeline {
     RapidMiner.init();
     var process: RProcess = new RProcess(new File("/Users/mueller/Documents/master-thesis/RapidminerRepo/oacode.rmp"));
 
-   val output_csv: File = new File("output.csv");
- 
+    val output_csv: File = new File("output.csv");
+
     process.getOperator("Input").setParameter(CSVDataReader.PARAMETER_CSV_FILE, input_csv.getAbsolutePath())
     process.getOperator("Output").setParameter(CSVExampleSetWriter.PARAMETER_CSV_FILE, output_csv.getAbsolutePath())
     process.run();
-    
-    
+
     readFunction(output_csv)
   }
 
@@ -172,7 +249,7 @@ object Pipeline {
     val writer = CSVWriter.open(csv_file)
 
     //print Headline
-    val header: List[String] = List[String]("left","relation","right") ::: matcher_name_to_index.values.toList.sorted.map(A => matcher_index_to_name.get(A).get)
+    val header: List[String] = List[String]("left", "relation", "right") ::: matcher_name_to_index.values.toList.sorted.map(A => matcher_index_to_name.get(A).get)
 
     //convert to java UTIL List
     writer.writeRow(header)
@@ -181,9 +258,9 @@ object Pipeline {
       //matcher name 
       var records = new Array[String](matcher_name_to_index.size + 3)
       //matching name
-      records(0) = line._1.left ;
-      records(1) = line._1.relation ;
-      records(2) = line._1.right ;
+      records(0) = line._1.left;
+      records(1) = line._1.relation;
+      records(2) = line._1.right;
       //get rows
       for (elm <- line._2) {
         //index shift because first element is match name
@@ -208,15 +285,15 @@ object Pipeline {
     val reader = CSVReader.open(file);
     val mapped_values = reader.allWithHeaders.map(tuple =>
       {
-    	/*  println(tuple)
-        println( tuple.get("left").get)
-        println( tuple.get("right").get)
-        println(tuple.get("relation").get)*/
-        
+        println(tuple)
+        println(tuple.get("left").get)
+        println(tuple.get("right").get)
+        println(tuple.get("relation").get)
+
         (MatchRelationURI(new URI(tuple.get("left").get), new URI(tuple.get("right").get), tuple.get("relation").get)) -> tuple.get("outlier").get.toDouble
       }) toMap
-      
-      //normalize Values
+
+    //normalize Values
     val finalmap = mapped_values.map(A => A._1 -> A._2 / mapped_values.values.max)
     finalmap
   }

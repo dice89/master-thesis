@@ -39,7 +39,6 @@ class URIFragmentStringMatcher(val name: String, sim_fct: (String,String)=> Doub
     //Due to the fact that we want to have both an unpruned vector in the Matrix and threshold pruned results for the base evaluation, we need to implement the pruning on our own as post-pruning
     postPrune(threshold)
     
-    println(return_val.size)
     return_val
   }
 

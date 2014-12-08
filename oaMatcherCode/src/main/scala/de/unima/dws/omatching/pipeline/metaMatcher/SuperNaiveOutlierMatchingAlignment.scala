@@ -16,7 +16,7 @@ class SuperNaiveOutlierMatchingAlignment(val matchings: Map[MatchRelationURI, Do
 
   def align(alignment: Alignment, params: Properties) = {
     matchings.foreach(A =>{
-    	println(A._2)
+    	//println(A._2)
     	if(A._2 > threshold){
     		addAlignCell(A._1.left ,A._1.right, A._1.relation , A._2)
     	}
