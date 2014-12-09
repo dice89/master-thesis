@@ -1,9 +1,8 @@
-package de.unima.dws.oamatching.measures.wrapper
+package de.unima.dws.oamatching.measures
 
 import java.net.URI
 import org.semanticweb.owlapi.model.OWLEntity
 import org.semanticweb.owlapi.model.OWLOntology
-import uk.ac.manchester.cs.owl.owlapi.OWLDataFactoryImpl
 import org.semanticweb.owlapi.model.IRI
 import uk.ac.manchester.cs.owl.owlapi.OWLAnnotationPropertyImpl
 import org.semanticweb.owlapi.model.OWLAnnotation

@@ -3,6 +3,7 @@ package de.unima.dws.oamatching.measures.wrapper
 import fr.inrialpes.exmo.align.impl.MatrixMeasure
 import org.semanticweb.owlapi.model.OWLEntity
 import org.semanticweb.owlapi.model.OWLOntology
+import de.unima.dws.oamatching.measures.MeasureHelper
 
 class StringDistanceMeasure(distance_measure: (String,String) => Double) extends MatrixMeasure with MeasureHelper {
 

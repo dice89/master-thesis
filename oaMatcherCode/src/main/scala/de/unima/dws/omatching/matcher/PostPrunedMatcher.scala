@@ -14,6 +14,8 @@ import fr.inrialpes.exmo.align.impl.MatrixMeasure
 import com.wcohen.ss.tokens.SimpleTokenizer
 import de.unima.dws.oamatching.measures.wrapper.StringDistanceMeasure
 import fr.inrialpes.exmo.ontosim.string.StringDistances
+import de.unima.dws.oamatching.measures.StandardMeasure
+import de.unima.dws.oamatching.measures.base.StringFunctionMatcher
 
 class PostPrunedMatcher(val name: String, val similarityObject: MatrixMeasure) extends BaseMatcher {
 
@@ -80,10 +82,14 @@ object PostPrunedMatcher {
     val tokens_to_string = StringMeasureHelper.token_list_to_String _
 
     // def test3 = StringMeasureHelper.getLabel.andThen test2 
+    
+    val measure = new StandardMeasure(false, new StringFunctionMatcher(StringMeasureHelper.getLabel _, StringDistances.hammingDistance))
+    
+    
     val test = new PostPrunedMatcher("test", new StringDistanceMeasure(StringMeasureHelper.distance_lower_cased(StringDistances.hammingDistance)))
 
     test.prepare(onto1, onto2)
-    println(test.align(0.5).size)
+    println(test.align(0.1).size)
 
     
     //println(StringDistances.hammingDistance("test", "test123"))
@@ -93,7 +99,7 @@ object PostPrunedMatcher {
     
     println(test.align(0.5).size)
     
-    println(JEnumerationWrapper(test.getElements()).toList.size)*/
+    println(JEnumerationWrapper(test.getElements()).toList.size))*/
 
   }
 }

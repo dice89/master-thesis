@@ -11,6 +11,7 @@ import com.wcohen.ss.BasicStringWrapperIterator
 import com.wcohen.ss.api.StringWrapper
 import scala.collection.JavaConversions._
 import de.unima.dws.oamatching.measures.StringMeasureHelper
+import de.unima.dws.oamatching.measures.MeasureHelper
 
 class TokenBasedMeasure(preprocess: ((OWLEntity, OWLOntology)) => String, var second_string_SimObject: AbstractStatisticalTokenDistance) extends MatrixMeasure with MeasureHelper {
 
@@ -25,7 +26,9 @@ class TokenBasedMeasure(preprocess: ((OWLEntity, OWLOntology)) => String, var se
     /*create vocabulary*/
     
     val ontology1: OWLOntology = o1.getOntology().asInstanceOf[OWLOntology]
-    val ontology2: OWLOntology = o1.getOntology().asInstanceOf[OWLOntology]
+    val ontology2: OWLOntology = o2.getOntology().asInstanceOf[OWLOntology]
+    
+    val test = new JSetWrapper(classlist1.keySet()).map(owlclass => owlclass.asInstanceOf[OWLEntity]) toList
     val class_labels1: List[StringWrapper] = new JSetWrapper(classlist1.keySet()).map(owlclass => second_string_SimObject.prepare(preprocess(owlclass.asInstanceOf[OWLEntity], ontology1))).toList
     val class_labels2: List[StringWrapper] = new JSetWrapper(classlist2.keySet()).map(owlclass => second_string_SimObject.prepare(preprocess(owlclass.asInstanceOf[OWLEntity], ontology2))).toList
     
