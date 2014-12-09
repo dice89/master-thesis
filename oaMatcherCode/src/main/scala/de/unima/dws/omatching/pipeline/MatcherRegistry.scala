@@ -25,6 +25,8 @@ import de.unima.dws.oamatching.measures.MeasureHelper
 import de.unima.dws.oamatching.measures.StandardMeasure
 import de.unima.dws.oamatching.measures.base.SecondStringTokenMatcher
 import de.unima.dws.oamatching.measures.TrainedMeasure
+import de.unima.dws.oamatching.util.wordnet.LinWordMatching
+
 
 object MatcherRegistry {
   val matcher_by_name: MutableMap[String, BaseMatcher] = new HashMap[String, BaseMatcher]();
@@ -36,16 +38,16 @@ object MatcherRegistry {
   def init = {
     //init simple string metrics
 
-    matcher_by_name += init_uri_fragment_string_matcher("hammingDistance");
-    matcher_by_name += init_uri_fragment_string_matcher("jaroWinklerMeasure");
-    matcher_by_name += init_uri_fragment_string_matcher("jaroMeasure");
-    matcher_by_name += init_uri_fragment_string_matcher("levenshteinDistance");
-    matcher_by_name += init_uri_fragment_string_matcher("needlemanWunsch2Distance");
-    matcher_by_name += init_uri_fragment_string_matcher("ngramDistance");
-    matcher_by_name += init_uri_fragment_string_matcher("smoaDistance");
-    matcher_by_name += init_uri_fragment_string_matcher("subStringDistance");
-    matcher_by_name += init_uri_fragment_string_matcher("equalDistance");
-
+    matcher_by_name += init_uri_fragment_string_distance_matcher("hammingDistance");
+    matcher_by_name += init_uri_fragment_string_distance_matcher("jaroWinklerMeasure");
+    matcher_by_name += init_uri_fragment_string_distance_matcher("jaroMeasure");
+    matcher_by_name += init_uri_fragment_string_distance_matcher("levenshteinDistance");
+    matcher_by_name += init_uri_fragment_string_distance_matcher("needlemanWunsch2Distance");
+    matcher_by_name += init_uri_fragment_string_distance_matcher("ngramDistance");
+    matcher_by_name += init_uri_fragment_string_distance_matcher("smoaDistance");
+    matcher_by_name += init_uri_fragment_string_distance_matcher("subStringDistance");
+    matcher_by_name += init_uri_fragment_string_distance_matcher("equalDistance");
+    matcher_by_name += init_uri_fragment_string_similarity_matcher("lin");
     //init token based matchers
     
     //compose preprocessing function
@@ -57,14 +59,14 @@ object MatcherRegistry {
     //build measures
     val tfidf_matcher = new TrainedMeasure(true, new SecondStringTokenMatcher(  simple_preprocessing,new TFIDF(new SimpleTokenizer(true, false))))
     val soft_tfidf_matcher = new TrainedMeasure(true, new SecondStringTokenMatcher( simple_preprocessing,new SoftTFIDF(new SimpleTokenizer(true, false), new JaroWinkler(), 0.9)))
-   
-    
+ 
     matcher_by_name += ("simple_tfidf" -> new PostPrunedMatcher("simple_tfidf",tfidf_matcher))
     matcher_by_name += ("soft_tfidf_jaro" -> new PostPrunedMatcher("simple_soft_tfidf_jaro", soft_tfidf_matcher))
-
+    
+    
   }
 
-  def init_uri_fragment_string_matcher(measure: String): (String, BaseMatcher) = {
+  def init_uri_fragment_string_distance_matcher(measure: String): (String, BaseMatcher) = {
     val name: String = measure + "_matcher";
 
     def measure_fct = get_string_matching_function(measure)
@@ -73,6 +75,15 @@ object MatcherRegistry {
     (name, new PostPrunedMatcher(measure, stringfunction));
   }
 
+   def init_uri_fragment_string_similarity_matcher(measure: String): (String, BaseMatcher) = {
+    val name: String = measure + "_matcher";
+
+    def measure_fct = get_string_matching_function(measure)
+
+    val stringfunction = new StandardMeasure(true, new StringFunctionMatcher(StringMeasureHelper.getLabel _, measure_fct))
+    (name, new PostPrunedMatcher(measure, stringfunction));
+  }
+    
   def get_string_matching_function(measure: String) = {
     measure match {
       case "hammingDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.hammingDistance)
@@ -84,6 +95,7 @@ object MatcherRegistry {
       case "smoaDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.smoaDistance)
       case "subStringDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.subStringDistance)
       case "equalDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.equalDistance)
+      case "lin" => StringMeasureHelper.distance_lower_cased(LinWordMatching.getSimScore)
       case "_" => StringMeasureHelper.distance_lower_cased(StringDistances.equalDistance) //default is equal distance
     }
   }
@@ -105,7 +117,7 @@ object MatcherRegistry {
 
         p_rec_eval.eval(null)
         val res = EvaluationResult(p_rec_eval.getPrecision(), p_rec_eval.getRecall(), p_rec_eval.getFmeasure())
-        println(res)
+        println((name ,res))
         (name, res)
       }
     }) toMap

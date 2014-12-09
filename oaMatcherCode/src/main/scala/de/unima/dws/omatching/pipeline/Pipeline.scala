@@ -107,7 +107,7 @@ object Pipeline {
 
       base_matcher_results.+=(res.singleResult)
       meta_matcher_results.+=(res.metaResult)
-      // println(res)
+      println(res.singleResult )
       //match
     }
 

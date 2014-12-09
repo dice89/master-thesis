@@ -163,7 +163,7 @@ public class LabelTokenizer
 			System.out.println(item);
 		}
 		*/
-		/*
+		
 		String[] labels	=	{"Phd.Student", "co-author","in_collections","unpublished_paper","contribution_1th-author", "hasName",
 							"ProgramCommiteeMember","Member_PC", "Contribution_co-author", "invites_co-reviewers",
 							"assignedByReviewer", "Name_of_conference", "has_a_track-workshop-tutorial_topic",
@@ -171,9 +171,9 @@ public class LabelTokenizer
 							"PersonList","Roger2009Dictionary","wordnet2.0","U.S.A Student","hasU.S.A---Passprot","becomeEUCitizen","ASIAPeople","10e-2Peson",
 							"has_an_email","subject123Area"};
 		
-		*/
 		
-		String[] labels	=	{"1st-author"};
+		
+		//String[] labels	=	{"1st-author"};
 		for(String label : labels)
 		{
 			System.out.println(label);
