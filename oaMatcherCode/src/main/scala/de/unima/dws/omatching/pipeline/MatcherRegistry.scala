@@ -1,20 +1,23 @@
 package de.unima.dws.omatching.pipeline
 
 import java.net.URI
-import java.util.Properties
 import scala.collection.immutable.Map
 import scala.collection.mutable.HashMap
-import scala.collection.mutable.{ Map => MutableMap }
-import org.semanticweb.owl.align.AlignmentProcess
-import fr.inrialpes.exmo.align.impl.BasicParameters
-import fr.inrialpes.exmo.align.impl.method.StringDistAlignment
-import de.unima.dws.omatching.matcher.BaseMatcher
-import de.unima.dws.oamatching.measures.StringMeasureHelper
-import fr.inrialpes.exmo.ontosim.string.StringDistances
-import de.unima.dws.omatching.matcher.URIFragmentStringMatcher
+import scala.collection.mutable.{Map => MutableMap}
 import org.semanticweb.owl.align.Alignment
-import fr.inrialpes.exmo.align.impl.eval.PRecEvaluator
+import de.unima.dws.oamatching.measures.StringMeasureHelper
+import de.unima.dws.oamatching.measures.wrapper.StringDistanceMeasure
+import de.unima.dws.omatching.matcher.BaseMatcher
 import de.unima.dws.omatching.matcher.MatchRelation
+import de.unima.dws.omatching.matcher.PostPrunedMatcher
+import fr.inrialpes.exmo.align.impl.eval.PRecEvaluator
+import fr.inrialpes.exmo.ontosim.string.StringDistances
+import com.wcohen.ss.TFIDF
+import com.wcohen.ss.tokens.SimpleTokenizer
+import de.unima.dws.oamatching.measures.wrapper.TokenBasedMeasure
+import com.wcohen.ss.SoftTFIDF
+import com.wcohen.ss.JaroWinkler
+import com.wcohen.ss.Jaccard
 
 object MatcherRegistry {
   val matcher_by_name: MutableMap[String, BaseMatcher] = new HashMap[String, BaseMatcher]();
@@ -24,7 +27,7 @@ object MatcherRegistry {
    * @return
    */
   def init = {
-    //Matcher Based on Alignment API String Matcher
+    //init simple string metrics
 
     matcher_by_name += init_uri_fragment_string_matcher("hammingDistance");
     matcher_by_name += init_uri_fragment_string_matcher("jaroWinklerMeasure");
@@ -35,18 +38,29 @@ object MatcherRegistry {
     matcher_by_name += init_uri_fragment_string_matcher("smoaDistance");
     matcher_by_name += init_uri_fragment_string_matcher("subStringDistance");
     matcher_by_name += init_uri_fragment_string_matcher("equalDistance");
+    
+    //init token based matchers
+   
+    //maybe switch to Helper class
+    val tokenizer = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
+    val tokens_to_string = StringMeasureHelper.token_list_to_String _
+    val simple_preprocessing = tokens_to_string compose tokenizer compose (StringMeasureHelper.getLabel _ ).tupled 
+    
+
+    matcher_by_name += ("simple_tfidf" -> new PostPrunedMatcher("simple_tfidf",new TokenBasedMeasure(simple_preprocessing, new TFIDF(new SimpleTokenizer(true, false)))))    
+    matcher_by_name += ("soft_tfidf_jaro" -> new PostPrunedMatcher("soft_tfidf_jaro",new TokenBasedMeasure(simple_preprocessing, new SoftTFIDF(new SimpleTokenizer(true, false), new JaroWinkler(), 0.9))))
+
+    
   }
 
   def init_uri_fragment_string_matcher(measure: String): (String, BaseMatcher) = {
-    val name: String = measure + "uri_fragment_matcher";
-    //TODO based on the measure name change 
-
-     def measure_fct = get_matching_function(measure)
-    (name, new URIFragmentStringMatcher(measure, measure_fct));
+    val name: String = measure + "_matcher";
+     def measure_fct = get_string_matching_function(measure)
+    (name, new PostPrunedMatcher(measure, new StringDistanceMeasure(false,measure_fct)));
   }
   
   
-  def get_matching_function(measure:String) = {
+  def get_string_matching_function(measure:String) = {
     measure match  {
       case "hammingDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.hammingDistance)
       case "jaroWinklerMeasure" => StringMeasureHelper.distance_lower_cased(StringDistances.jaroWinklerMeasure)
@@ -88,7 +102,8 @@ object MatcherRegistry {
 
     //get all unique matches 
     val unique_elements = res_map.map(tuple => tuple._2.keySet).flatten;
-
+    
+    println(eval_map.keySet)
     //get per unique matches a Map of matching results
     val results_per_matching = unique_elements.map(elm => elm -> res_map.filter(_._2.contains(elm)).map(tuple => tuple._1 -> tuple._2.get(elm))) toMap
 

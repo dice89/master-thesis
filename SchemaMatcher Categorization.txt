@@ -5,10 +5,13 @@ Element Level Matcher
      Hamming Distance
      Jaro
      Jaro-Winkler
-     gotoh distance
-     smoa (String metric for ontology aligment)
+     smith waterman gotoh distance
+     smoa (String metric for ontology alignment)
+     stoilos
      prefix
      suffix
+     Longest Common Substring
+     Exact match
      edit distances
         levenstein distance (Second String)
         Monge-Elkan distance (second String)
@@ -17,9 +20,10 @@ Element Level Matcher
      token-based
         consine-similarity
         Jaccard similarity
+	soft jaccard (with Levenshtein)
         dice-coefficent
-        soft-tfidf
-        tfidf
+        soft-tfidf (with Jaro Winkler)
+        tfidf (exact match)
         euclidean distance
   Language-Based Techniques
     Intrinsic

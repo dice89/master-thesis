@@ -78,14 +78,21 @@ object Pipeline {
     println(eval_rest)
     
     */
-
-    match_oaei_data_set("ontos/2014/conference")
+    //delete raw matching files
+	val matchings_folder:File = new File("matchings");
+	
+	for(file_name <- matchings_folder.list()){
+	  new File("matchings/"+file_name).delete()
+	}
+	
+	
+	match_oaei_data_set("ontos/2014/conference")
   }
 
   def match_oaei_data_set(path_to_folder: String): Unit = {
 
     val folder: File = new File(path_to_folder + File.separator + "reference-alignment/")
-    println(folder.getAbsolutePath() + "--" + folder.isDirectory())
+   // println(folder.getAbsolutePath() + "--" + folder.isDirectory())
     var base_matcher_results: MutableList[ImmutableMap[String, EvaluationResult]] = new MutableList
     var meta_matcher_results: MutableList[EvaluationResult] = new MutableList
     for (ref_align_file <- folder.listFiles(new RdfFileFilter)) {
@@ -155,7 +162,6 @@ object Pipeline {
       }else {
         A
       }
- 
     })
     
     println(best_for_each_match)
@@ -224,9 +230,8 @@ object Pipeline {
     var process: RProcess = new RProcess(new File("/Users/mueller/Documents/master-thesis/RapidminerRepo/oacode.rmp"));
 
     val output_csv: File = new File("output.csv");
-
-    process.getOperator("Input").setParameter(CSVDataReader.PARAMETER_CSV_FILE, input_csv.getAbsolutePath())
-    process.getOperator("Output").setParameter(CSVExampleSetWriter.PARAMETER_CSV_FILE, output_csv.getAbsolutePath())
+    process.getOperator("Input").setParameter("csv_file", input_csv.getAbsolutePath())
+    process.getOperator("Output").setParameter("csv_file", output_csv.getAbsolutePath())
     process.run();
 
     readFunction(output_csv)
@@ -244,8 +249,8 @@ object Pipeline {
 
     val matcher_index_to_name = MatcherRegistry.matcher_by_name.keySet.zipWithIndex.map(tuple => tuple._2 -> tuple._1) toMap
     //Init CSV Writer
-
-    val csv_file = new File("raw_matchings.csv")
+   
+    val csv_file = new File( "matchings/"+System.currentTimeMillis()+"raw_matchings.csv")
     val writer = CSVWriter.open(csv_file)
 
     //print Headline
@@ -285,10 +290,10 @@ object Pipeline {
     val reader = CSVReader.open(file);
     val mapped_values = reader.allWithHeaders.map(tuple =>
       {
-        println(tuple)
+        /*println(tuple)
         println(tuple.get("left").get)
         println(tuple.get("right").get)
-        println(tuple.get("relation").get)
+        println(tuple.get("relation").get)*/
 
         (MatchRelationURI(new URI(tuple.get("left").get), new URI(tuple.get("right").get), tuple.get("relation").get)) -> tuple.get("outlier").get.toDouble
       }) toMap
