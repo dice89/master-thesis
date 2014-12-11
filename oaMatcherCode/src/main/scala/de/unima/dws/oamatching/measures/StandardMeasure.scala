@@ -15,7 +15,7 @@ class StandardMeasure(val baseMatcher: BaseComponentMatcher) extends MatrixMeasu
   def measure(cl1: OWLEntity, cl2: OWLEntity): Double = {
 
     val ontology1 = onto1.getOntology().asInstanceOf[OWLOntology]
-    val ontology2 = onto1.getOntology().asInstanceOf[OWLOntology]
+    val ontology2 = onto2.getOntology().asInstanceOf[OWLOntology]
 
     val measure = baseMatcher.score((cl1, ontology1), (cl2, ontology2))
 

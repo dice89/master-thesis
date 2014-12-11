@@ -4,28 +4,39 @@ import java.net.URI
 import org.semanticweb.owl.align.Alignment
 import org.semanticweb.owl.align.AlignmentProcess
 import fr.inrialpes.exmo.align.impl.DistanceAlignment
+import org.semanticweb.owl.align.Cell
+import java.util.ArrayList
+import scala.collection.JavaConversions._
 
-case class MatchRelation(left:String,relation:String,right:String)
-case class MatchRelationURI(left:URI,right:URI,relation:String)
+case class MatchRelation(left: String, relation: String, right: String)
+case class MatchRelationURI(left: URI, right: URI, relation: String)
 
-abstract class BaseMatcher extends DistanceAlignment with AlignmentProcess  {
-	protected def align_match(threshold:Double):List[org.semanticweb.owl.align.Cell]
+abstract class BaseMatcher extends DistanceAlignment with AlignmentProcess {
+  protected def align_match(threshold: Double): java.util.List[Cell]
+
+  private def alignmentToMap(cells: scala.collection.mutable.Buffer[Cell]): Map[MatchRelation, Double] = {
 	
-	private def alignmentToMap(cells:List[org.semanticweb.owl.align.Cell]):Map[MatchRelation,Double] = {
-		
-		cells.map(cell => {
-			
-		  (MatchRelation(cell.getObject1AsURI(this).toString(),cell.getRelation().getRelation(),cell.getObject2AsURI(this).toString()), cell.getStrength())
-		 
-		} ) toMap
-	}
-	
-	protected def postPrune(threshold:Double)
-	
-	def align(threshold:Double):Map[MatchRelation,Double] = {
-		alignmentToMap(align_match(threshold))
-	}
-	
-	def prepare(onto1:URI,onto2:URI):Unit
+    cells.map(cell => {
+      (MatchRelation(cell.getObject1AsURI(this).toString(), cell.getRelation().getRelation(), cell.getObject2AsURI(this).toString()), cell.getStrength())
+
+    }) toMap
+  }
+
+   def postPrune(threshold: Double) = {
+    val enumerator = getElements()
+    while (enumerator.hasMoreElements()) {
+      val cell: Cell = enumerator.nextElement()
+      if (cell.getStrength() <= threshold) {
+        //this.removeAlignCell(cell)
+      }
+    }
+  }
+
+  def align(threshold: Double): Map[MatchRelation, Double] = {
+    val scala_list:scala.collection.mutable.Buffer[Cell] = align_match(threshold) 
+     alignmentToMap(scala_list)
+  }
+
+  def prepare(onto1: URI, onto2: URI): Unit
 
 }

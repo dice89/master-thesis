@@ -26,7 +26,7 @@ import fr.inrialpes.exmo.ontosim.string.StringDistances;
 public class LinWordMatching 
 {	
 	
-	public static double getSimScore(String word1,String word2) throws Exception{
+	public  double getSimScoreTokenized(String word1,String word2) throws Exception{
 		//Init yam stop word filter and tokenizer
 		StopWords sw = StopWords.getMediumSet();
 		LabelTokenizer	tokenizer	=	new LabelTokenizer();
@@ -40,29 +40,29 @@ public class LinWordMatching
 		
 		//match non stop word tokens
 		for (String token1 : tokens1) {	
-			if(sw.contains(token1)) continue;
-			
+			if(sw.contains(token1)) continue;			
 			for (String token2 : tokens2) {
 				if(sw.contains(token2)) continue;
 				match_counter++;	
-				double score = getSimScoreInternal(token1, token2);
-				System.out.println(token1 + " " + token2 + " " + score);
+				double score = getSimScore(token1, token2);
+				//System.out.println(token1 + " " + token2 + " " + score);
 				total_score = score + total_score;
 			}
 			
 		}
+		
+		
 		if(match_counter == 0) return 0.0;
-		System.out.println(word1 +" --" + word2 +" ="+ (total_score/((double) match_counter)));
-		return  total_score/((double) match_counter);
+		
+		double final_score =(total_score/((double) match_counter)) ;
+		//if(final_score> 0.4) System.out.println(word1 +" --" + word2 +" ="+(total_score/((double) match_counter)) );
+		
+		return  final_score;
 	}
 	
 	
-	private static double  getSimScoreInternal(String word1, String word2) throws Exception 
+	protected double  getSimScore(String word1, String word2) throws Exception 
 	{		
-		
-		
-	
-		
 		word1	=	word1.toLowerCase();
 		word2	=	word2.toLowerCase();
 				
@@ -134,10 +134,9 @@ public class LinWordMatching
 			// TODO: handle exception
 		}	
 		
-		//fallback TODO check if correct
+		
+		//Hybrid solution
 		if(score == 0){
-			System.out.println("fallback" + StringDistances.smoaDistance(word1, word2));
-			
 			//score	=	(1.0 + (1-StringDistances.smoaDistance(word1, word2)) )/2;
 			score	=	(1-StringDistances.smoaDistance(word1, word2));
 		}
@@ -149,7 +148,8 @@ public class LinWordMatching
 	
 	public static void testLin()
 	{
-
+		
+		LinWordMatching matcher = new LinWordMatching();
 		String[]	word1s	=	{"maxpapers","finger","finger","toe","toe","fat"};
 		
 		
@@ -177,7 +177,7 @@ public class LinWordMatching
     		    		
     		double score1 = 0.0;
 			try {
-				score1 = getSimScore(word1, word2);
+				score1 = matcher.getSimScoreTokenized(word1, word2);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -193,6 +193,7 @@ public class LinWordMatching
 		System.out.println("START...");
 		
 		testLin();
+		
 		
 		long	endTime	=	System.currentTimeMillis();
 		System.out.println("Running time = " + (endTime - startTime));

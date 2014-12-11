@@ -2,28 +2,26 @@ SchemaMatcher Categorization
 
 Element Level Matcher
   String Based
-     Hamming Distance
-     Jaro
-     Jaro-Winkler
+     Hamming Distance (Onto Sim) *done
+     Jaro (Onto Sim) *done
+     Jaro-Winkler (Onto Sim) *done
      smith waterman gotoh distance
-     smoa (String metric for ontology alignment)
-     stoilos
+     smoa / stoilois /ISUB (Onto Sim) *done
      prefix
      suffix
-     Longest Common Substring
-     Exact match
+     Longest Common Substring (= subStringDistance) (Onto Sim) *done
+     Exact match (Onto Sim) *done
      edit distances
-        levenstein distance (Second String)
-        Monge-Elkan distance (second String)
-        needlman-wunsch distance 
-     n-gram similarity (q-gram) (second String)
+        levenstein distance (Onto Sim) *done
+        Monge-Elkan distance (Second String) *done
+        needlman-wunsch distance (Onto Sim) *done
+     n-gram similarity (q-gram) (second String) *done
      token-based
-        consine-similarity
-        Jaccard similarity
-	soft jaccard (with Levenshtein)
+        cosine-similarity(tfidf) (Second String) *done
+        Jaccard similarity (Second String) *done
+	soft jaccard (with Levenshtein) (Second String)
         dice-coefficent
-        soft-tfidf (with Jaro Winkler)
-        tfidf (exact match)
+        soft-tfidf (with Jaro Winkler) (Second String) *done
         euclidean distance
   Language-Based Techniques
     Intrinsic
@@ -32,7 +30,7 @@ Element Level Matcher
       Stemming
     Linguistic resources
       Word Net Based
-        Lin
+        Lin *done
   Constraint-Based Matcher
     Data Type Matcher
     Statistical Properties

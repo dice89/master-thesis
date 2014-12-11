@@ -1,19 +1,19 @@
 package de.unima.dws.oamatching.measures
 
-/**
- *
- * Object that contains all implemented basic string metrics
- * @author Alexander Mueller
- *
- */
-
-import de.unima.dws.oamatching.measures.wrapper._
-import fr.inrialpes.exmo.ontosim.string.StringDistances
+import org.semanticweb.owlapi.model.IRI
 import org.semanticweb.owlapi.model.OWLAnnotation
 import org.semanticweb.owlapi.model.OWLEntity
 import org.semanticweb.owlapi.model.OWLOntology
-import org.semanticweb.owlapi.model.IRI
 import uk.ac.manchester.cs.owl.owlapi.OWLAnnotationPropertyImpl
+import de.unima.dws.oamatching.util.wordnet.WordNetHelper
+import org.apache.lucene.analysis.en.PorterStemFilter
+import org.tartarus.snowball.ext.PorterStemmer
+import scala.collection.convert.Wrappers.JSetWrapper
+import org.semanticweb.owlapi.model.AxiomType
+import org.semanticweb.owlapi.model.OWLProperty
+import uk.ac.manchester.cs.owl.owlapi.OWLPropertyAxiomImpl
+import uk.ac.manchester.cs.owl.owlapi.OWLLiteralImpl
+import org.semanticweb.owlapi.model.OWLLiteral
 /**
  *  Util classes for string matching
  *
@@ -37,9 +37,10 @@ object StringMeasureHelper {
   def to_lower_case(a: String, b: String): (String, String) = {
     (a.toLowerCase(), b.toLowerCase())
   }
-  
+
   def distance_lower_cased = distance_normalized(to_lower_case) _
 
+  def preprocess_porter_stemmed = stem_term(porter_stem)_
 
   def tokenize_camel_case(a: String): List[String] = {
     a.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")toList
@@ -52,13 +53,48 @@ object StringMeasureHelper {
   def combine_two_tokenizer(tokenizer_a: String => List[String], tokenizer_b: String => List[String])(a: String): List[String] = {
     tokenizer_a(a).map(token => tokenizer_b(token)).flatten
   }
-  
-  def token_list_to_String(tokens:List[String]):String= {
-       val tokens_string:String = tokens.reduceLeft((A,B) => A +" "+ B)
+
+  def token_list_to_String(tokens: List[String]): String = {
+    val tokens_string: String = tokens.reduceLeft((A, B) => " " + A + " " + B + " ")
 
     tokens_string.trim()
   }
 
+  /**
+   * Apply stemming stemming functions
+   *
+   * @param stem
+   * @param a
+   * @param b
+   * @return
+   */
+  def stem_term(stem: (String) => String)(a: String, b: String): (String, String) = {
+
+    (stem(a), stem(b))
+  }
+
+  /**
+   * Porter stemmer call
+   * @param a
+   * @return
+   */
+  def porter_stem(a: String): String = {
+    val stemmer: PorterStemmer = new PorterStemmer()
+    stemmer.setCurrent(a)
+    if (stemmer.stem()) {
+      stemmer.getCurrent()
+    }
+    a
+  }
+
+  /**
+   * Stem with basic basic on word net stemmer
+   * @param a
+   * @return
+   */
+  def wordnet_tem(a: String): String = {
+    WordNetHelper.getInstance().wnstemmer.StemWordWithWordNet(a)
+  }
 
   def getLabel(entity: OWLEntity, ontology: OWLOntology): String = {
     var label: String = entity.getIRI().toURI().getFragment()
@@ -93,6 +129,61 @@ object StringMeasureHelper {
     }
 
     label
+  }
+
+  def getLabelAndProperties(entity: OWLEntity, ontology: OWLOntology): String = {
+
+    val combined_label: String = getLabel(entity, ontology) +" " +getPropertyLabels(entity, ontology)
+
+    combined_label
+    
+  
+  }
+
+  def getPropertyLabels(entity: OWLEntity, ontology: OWLOntology): String = {
+    // get Comment
+
+  
+    if (entity.isOWLClass()) {
+
+      val axioms = new JSetWrapper(entity.asOWLClass().getReferencingAxioms(ontology))
+      //get axioms
+      val labels = for {
+        axiom <- axioms;
+        signature_elem <- new JSetWrapper(axiom.getSignature());
+        if (axiom.getAxiomType().equals(AxiomType.OBJECT_PROPERTY_RANGE) ||
+          axiom.getAxiomType().equals(AxiomType.OBJECT_PROPERTY_DOMAIN) ||
+          axiom.getAxiomType().equals(AxiomType.DATA_PROPERTY_DOMAIN) ||
+          axiom.getAxiomType().equals(AxiomType.DATA_PROPERTY_RANGE))
+      } yield {
+        if (!signature_elem.equals(entity)) {
+          getLabel(signature_elem, ontology)
+        } else {
+          " "
+        }
+      }
+
+      (labels.toList mkString " " trim) +" " +  getRDFSComment(entity,ontology)
+    } else {
+      ""
+    }
+  }
+
+  def getRDFSComment(entity: OWLEntity, ontology: OWLOntology): String = {
+
+    val annotations = new JSetWrapper(entity.getAnnotations(ontology))
+    
+    val comments = for (
+      annotation <- annotations;
+      if (annotation.getProperty().toString().equals("rdfs:comment"))
+    ) yield {
+    	//println(annotation.getValue().asInstanceOf[OWLLiteral].getLiteral())
+    	annotation.getValue().asInstanceOf[OWLLiteral].getLiteral().trim()
+
+    }
+    //println(comments)
+    comments.toList mkString " " trim
+
   }
 
 }

@@ -7,8 +7,9 @@ import com.wcohen.ss.AbstractStatisticalTokenDistance
 import com.wcohen.ss.api.StringWrapper
 import scala.collection.JavaConversions._
 import com.wcohen.ss.BasicStringWrapperIterator
+import com.wcohen.ss.AbstractTokenizedStringDistance
 
-class SecondStringTokenMatcher(override val preprocess: (OWLEntity, OWLOntology) => String, val distance:AbstractStatisticalTokenDistance) extends TrainedComponentMatcher(preprocess) {
+class SecondStringTokenMatcher(override val preprocess: (OWLEntity, OWLOntology) => String, val distance:AbstractTokenizedStringDistance) extends TrainedComponentMatcher(preprocess) {
 
   override def init(ontology1: OWLOntology, ontology2: OWLOntology, classes1: List[OWLEntity], classes2: List[OWLEntity], props1: List[OWLEntity], props2: List[OWLEntity]) = {
 	
@@ -26,6 +27,7 @@ class SecondStringTokenMatcher(override val preprocess: (OWLEntity, OWLOntology)
   
    override def score(a: String, b: String): Double = {
 	  //call score on preprocessed data
+     //println(distance.explainScore(distance.prepare(a), distance.prepare(b)))
      distance.score(a, b)
 
   }

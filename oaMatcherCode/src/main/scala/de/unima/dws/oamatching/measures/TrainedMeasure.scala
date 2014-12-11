@@ -8,6 +8,7 @@ import fr.inrialpes.exmo.ontowrap.LoadedOntology
 import com.wcohen.ss.api.StringWrapper
 import scala.collection.convert.Wrappers.JSetWrapper
 
+
 class TrainedMeasure(val baseMatcher: TrainedComponentMatcher) extends MatrixMeasure {
 
   def this(similarity: Boolean, baseMatcher: TrainedComponentMatcher) {

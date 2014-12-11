@@ -3,19 +3,19 @@ package de.unima.dws.omatching.matcher
 import java.io.File
 import java.net.URI
 import java.util.Properties
+import scala.collection.JavaConversions.seqAsJavaList
 import scala.collection.convert.Wrappers.JEnumerationWrapper
 import org.semanticweb.owl.align.Alignment
-import org.semanticweb.owl.align.Cell
-import com.wcohen.ss.TFIDF
+import de.unima.dws.oamatching.measures.SimpleMeasures
+import de.unima.dws.oamatching.measures.StandardMeasure
 import de.unima.dws.oamatching.measures.StringMeasureHelper
-import de.unima.dws.oamatching.measures.wrapper.TokenBasedMeasure
+import de.unima.dws.oamatching.measures.base.StringFunctionMatcher
 import fr.inrialpes.exmo.align.impl.BasicParameters
 import fr.inrialpes.exmo.align.impl.MatrixMeasure
-import com.wcohen.ss.tokens.SimpleTokenizer
-import de.unima.dws.oamatching.measures.wrapper.StringDistanceMeasure
-import fr.inrialpes.exmo.ontosim.string.StringDistances
-import de.unima.dws.oamatching.measures.StandardMeasure
-import de.unima.dws.oamatching.measures.base.StringFunctionMatcher
+import fr.inrialpes.exmo.ontowrap.owlapi30.OWLAPI3OntologyFactory
+import scala.collection.mutable.Buffer
+import org.semanticweb.owl.align.Cell
+import scala.collection.mutable.ListBuffer
 
 class PostPrunedMatcher(val name: String, val similarityObject: MatrixMeasure) extends BaseMatcher {
 
@@ -25,7 +25,12 @@ class PostPrunedMatcher(val name: String, val similarityObject: MatrixMeasure) e
     setType("?*")
 
     setSimilarity(similarityObject)
-    init(onto1, onto2)
+    
+    val  ontofactory:OWLAPI3OntologyFactory = new OWLAPI3OntologyFactory()
+    
+    val loaded_ontology1 = ontofactory.loadOntology(onto1, false)
+    val loaded_ontology2 = ontofactory.loadOntology(onto2, false)
+    init(loaded_ontology1, loaded_ontology2)
 
   }
 
@@ -40,25 +45,17 @@ class PostPrunedMatcher(val name: String, val similarityObject: MatrixMeasure) e
 
     var properties: Properties = new BasicParameters()
     align(null, properties)
-
-    val return_val = new JEnumerationWrapper(getElements()).toList;
+    val test = new ListBuffer [Cell]
+     new JEnumerationWrapper(getElements()).toSeq.copyToBuffer(test);
     //Due to the fact that we want to have both an unpruned vector in the Matrix and threshold pruned results for the base evaluation, we need to implement the pruning on our own as post-pruning
-    postPrune(threshold)
-
-    return_val
+    postPrune(0.5)
+    
+    test
   }
 
   /*Do it this weird way because the removeAlignCell is implemented by object similarity
  */
-  protected override def postPrune(threshold: Double) = {
-    val enumerator = getElements()
-    while (enumerator.hasMoreElements()) {
-      val cell: Cell = enumerator.nextElement()
-      if (cell.getStrength() <= threshold) {
-        this.removeAlignCell(cell)
-      }
-    }
-  }
+ 
 }
 
 object PostPrunedMatcher {
@@ -67,7 +64,7 @@ object PostPrunedMatcher {
 
     val file_onto1: File = new File("ontos/2014/conference/MICRO.owl");
 
-    val file_onto2: File = new File("ontos/2014/conference/Conference.owl");
+    val file_onto2: File = new File("ontos/2014/conference/CMT.owl");
 
     val file_onto3: File = new File("ontos/2014/conference/confOf.owl");
 
@@ -80,13 +77,15 @@ object PostPrunedMatcher {
     //tokenization functions, maybe add stemming
     val tokenizer = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
     val tokens_to_string = StringMeasureHelper.token_list_to_String _
+       val simple_preprocessing = Function.untupled(tokens_to_string compose tokenizer compose StringMeasureHelper.porter_stem _ compose(StringMeasureHelper.getLabelAndProperties _).tupled)
+
 
     // def test3 = StringMeasureHelper.getLabel.andThen test2 
+
+    val measure = new StandardMeasure(false, new StringFunctionMatcher(simple_preprocessing, SimpleMeasures.computeJaccard))
     
-    val measure = new StandardMeasure(false, new StringFunctionMatcher(StringMeasureHelper.getLabel _, StringDistances.hammingDistance))
     
-    
-    val test = new PostPrunedMatcher("test", new StringDistanceMeasure(StringMeasureHelper.distance_lower_cased(StringDistances.hammingDistance)))
+    val test = new PostPrunedMatcher("test", measure)
 
     test.prepare(onto1, onto2)
     println(test.align(0.1).size)
