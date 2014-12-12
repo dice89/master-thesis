@@ -145,7 +145,6 @@ object StringMeasureHelper {
 
   
     if (entity.isOWLClass()) {
-
       val axioms = new JSetWrapper(entity.asOWLClass().getReferencingAxioms(ontology))
       //get axioms
       val labels = for {

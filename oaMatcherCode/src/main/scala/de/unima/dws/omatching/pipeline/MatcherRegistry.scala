@@ -1,16 +1,24 @@
 package de.unima.dws.omatching.pipeline
 
 import java.net.URI
+
 import scala.collection.immutable.Map
 import scala.collection.mutable.HashMap
-import scala.collection.mutable.{ Map => MutableMap }
+import scala.collection.mutable.{Map => MutableMap}
+
 import org.semanticweb.owl.align.Alignment
 import org.semanticweb.owlapi.model.OWLEntity
 import org.semanticweb.owlapi.model.OWLOntology
+
 import com.wcohen.ss.JaroWinkler
+import com.wcohen.ss.JaroWinklerTFIDF
+import com.wcohen.ss.Level2Jaro
+import com.wcohen.ss.Level2JaroWinkler
+import com.wcohen.ss.Level2MongeElkan
 import com.wcohen.ss.SoftTFIDF
 import com.wcohen.ss.TFIDF
 import com.wcohen.ss.tokens.SimpleTokenizer
+
 import de.unima.dws.oamatching.matcher.NameAndPropertyAlignment
 import de.unima.dws.oamatching.matcher.StrucSubsDistAlignment
 import de.unima.dws.oamatching.measures.SimpleMeasures
@@ -19,18 +27,13 @@ import de.unima.dws.oamatching.measures.StringMeasureHelper
 import de.unima.dws.oamatching.measures.TrainedMeasure
 import de.unima.dws.oamatching.measures.base.SecondStringTokenMatcher
 import de.unima.dws.oamatching.measures.base.StringFunctionMatcher
+import de.unima.dws.oamatching.util.wordnet.JiangConrath
 import de.unima.dws.oamatching.util.wordnet.LinWordMatching
 import de.unima.dws.omatching.matcher.BaseMatcher
 import de.unima.dws.omatching.matcher.MatchRelation
 import de.unima.dws.omatching.matcher.PostPrunedMatcher
 import fr.inrialpes.exmo.align.impl.eval.PRecEvaluator
 import fr.inrialpes.exmo.ontosim.string.StringDistances
-import com.wcohen.ss.JaroWinklerTFIDF
-import com.wcohen.ss.Level2Jaro
-import com.wcohen.ss.Level2JaroWinkler
-import com.wcohen.ss.Level2Levenstein
-import com.wcohen.ss.Level2MongeElkan
-import de.unima.dws.oamatching.util.wordnet.JiangConrath
 
 object MatcherRegistry {
   val matcher_by_name: MutableMap[String, BaseMatcher] = new HashMap[String, BaseMatcher]();
@@ -79,16 +82,14 @@ object MatcherRegistry {
     matcher_by_name += ("level2_jaro" -> new PostPrunedMatcher("level2_jaro", level2_jaro))
 
     val level2_jaro_winkler = new TrainedMeasure(true, new SecondStringTokenMatcher(simple_preprocessing, new Level2JaroWinkler()))
-    matcher_by_name += ("level2_jaro_winkler" -> new PostPrunedMatcher("level2_jaro_winkler", level2_jaro_winkler))
-    
+    matcher_by_name += ("level2_jaro_winkler" -> new PostPrunedMatcher("level2_jaro_winkler", level2_jaro_winkler))  
 
      val level2_monge_elkan = new TrainedMeasure(true, new SecondStringTokenMatcher(simple_preprocessing, new Level2MongeElkan()))
-    matcher_by_name += ("level2_monge_elkan" -> new PostPrunedMatcher("level2_monge_elkan", level2_monge_elkan))
-    
+    matcher_by_name += ("level2_monge_elkan" -> new PostPrunedMatcher("level2_monge_elkan", level2_monge_elkan))  
 
-    val level2_leven = new TrainedMeasure(true, new SecondStringTokenMatcher(simple_preprocessing,new Level2Levenstein()))
+   /* val level2_leven = new TrainedMeasure(true, new SecondStringTokenMatcher(simple_preprocessing,new Level2Levenstein()))
     matcher_by_name += ("level2_leven" -> new PostPrunedMatcher("level2_leven", level2_leven))
-
+	*/
     
     //with extended preprocessing
      val advanced_tfidf_matcher = new TrainedMeasure(true, new SecondStringTokenMatcher(advanced_preprocessing, new TFIDF(new SimpleTokenizer(true, false))))  
@@ -152,6 +153,7 @@ object MatcherRegistry {
   }
   
 
+  
   def matchRound(onto1: URI, onto2: URI, reference: Alignment): (Map[MatchRelation, Map[String, Option[Double]]], Map[String, EvaluationResult]) = {
     println("Start Matching with " + matcher_by_name.size + " Matcher" + onto1 + onto2)
 
@@ -177,7 +179,7 @@ object MatcherRegistry {
     //get all unique matches 
     val unique_elements = res_map.map(tuple => tuple._2.keySet).flatten;
 
-    println(eval_map.keySet)
+
     //get per unique matches a Map of matching results
     val results_per_matching = unique_elements.map(elm => elm -> res_map.filter(_._2.contains(elm)).map(tuple => tuple._1 -> tuple._2.get(elm))) toMap
 

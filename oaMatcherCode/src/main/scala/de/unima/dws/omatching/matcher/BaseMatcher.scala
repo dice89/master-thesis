@@ -23,6 +23,7 @@ abstract class BaseMatcher extends DistanceAlignment with AlignmentProcess {
   }
 
    def postPrune(threshold: Double) = {
+     
     val enumerator = getElements()
     while (enumerator.hasMoreElements()) {
       val cell: Cell = enumerator.nextElement()

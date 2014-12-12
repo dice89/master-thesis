@@ -8,13 +8,16 @@ import de.unima.dws.omatching.matcher.MatchRelationURI
 
 /**
  *
- * Simple Transforms and outlier matrix to a matching where the outlier score is the matching score will probably never work this way just for demonstrations purposes
+ * Simple Transforms an outlier matrix to a matching where the outlier score is the matching score will probably never work this way just for demonstrations purposes
  * @author Alexander C. Mueller
  *
  */
 class SuperNaiveOutlierMatchingAlignment(val matchings: Map[MatchRelationURI, Double], val threshold:Double) extends URIAlignment with AlignmentProcess {
 
   def align(alignment: Alignment, params: Properties) = {
+    
+    
+    
     matchings.foreach(A =>{
     	//println(A._2)
     	if(A._2 > threshold){

@@ -116,10 +116,7 @@ public class JiangConrath extends LinWordMatching {
 			score_d =1.0;
 		}
 		
-		if(score_d > 0.4){
-			
-			System.out.println(word1 + "--"+ word2 + ":" +score_d);
-		}
+		
 		return score_d;
 	}
 

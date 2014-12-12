@@ -28,6 +28,9 @@ import de.unima.dws.omatching.pipeline.util.RdfFileFilter
 import java.util.ArrayList
 import scala.collection.mutable.MutableList
 import scala.collection.mutable.HashMap
+import de.unima.dws.omatching.pipeline.metaMatcher.OutlierMatchingCombinationAlignment
+import de.unima.dws.omatching.pipeline.metaMatcher.BestSelectOutlierMatchingAlignment
+import de.unima.dws.omatching.pipeline.metaMatcher.BestSelectOutlierMatchingAlignment
 
 case class EvaluationResult(precision: Double, recall: Double, fmeasure: Double)
 
@@ -103,11 +106,15 @@ object Pipeline {
       val onto1: URI = new File(name_onto1).toURI()
       val onto2: URI = new File(name_onto2).toURI()
       //match
-      val res = match_and_evaluate(rapidminerTest(writeCSV)(readCSV))(combineMatchingsNaive)(validate(ref_align_file.getAbsolutePath()))(onto1, onto2, ref_align_file.getAbsolutePath())
+      val csv_prefix:String = ref_align_file.getName().dropRight(4)
+
+      
+      
+      val res = match_and_evaluate(rapidminerTest(writeCSV(csv_prefix))(readCSV))(combineMatchingsBetter)(validate(ref_align_file.getAbsolutePath()))(onto1, onto2, ref_align_file.getAbsolutePath())
 
       base_matcher_results.+=(res.singleResult)
       meta_matcher_results.+=(res.metaResult)
-      println(res.singleResult )
+      //println(res.singleResult )
       //match
     }
 
@@ -193,13 +200,21 @@ object Pipeline {
     var aparser: AlignmentParser = new AlignmentParser(0);
     var reference: Alignment = aparser.parse(new File(ref_align).toURI());
     val matchings = MatcherRegistry.matchRound(onto1, onto2, reference)
-    val meta_result = evaluationFunction(combinationFunction(outlierFunction(matchings._1), 0.25))
-
+    val meta_result = evaluationFunction(combinationFunction(outlierFunction(matchings._1), 0.5))
+    println("Result for Meta Matcher" + meta_result)
+    
     MatcherResult(meta_result, matchings._2)
   }
 
   def combineMatchingsNaive(matchings: ImmutableMap[MatchRelationURI, Double], threshold: Double): AlignmentProcess = {
     var alignment: AlignmentProcess = new SuperNaiveOutlierMatchingAlignment(matchings, threshold)
+   
+    alignment.align(null, null)
+    alignment
+  }
+  
+   def combineMatchingsBetter(matchings: ImmutableMap[MatchRelationURI, Double], threshold: Double): AlignmentProcess = {
+    var alignment: AlignmentProcess = new BestSelectOutlierMatchingAlignment(matchings, threshold)
     alignment.align(null, null)
     alignment
   }
@@ -242,15 +257,17 @@ object Pipeline {
    * @param result
    * @return
    */
-  def writeCSV(result: ImmutableMap[MatchRelation, ImmutableMap[String, Option[Double]]]): File = {
+  def writeCSV(prefix:String)(result: ImmutableMap[MatchRelation, ImmutableMap[String, Option[Double]]]): File = {
+    
+    
     // prepare 
     var i: Int = 0;
     val matcher_name_to_index = MatcherRegistry.matcher_by_name.keySet.zipWithIndex toMap
 
     val matcher_index_to_name = MatcherRegistry.matcher_by_name.keySet.zipWithIndex.map(tuple => tuple._2 -> tuple._1) toMap
     //Init CSV Writer
-   
-    val csv_file = new File( "matchings/"+System.currentTimeMillis()+"raw_matchings.csv")
+    
+    val csv_file = new File( "matchings/"+prefix+"_raw_matchings.csv")
     val writer = CSVWriter.open(csv_file)
 
     //print Headline

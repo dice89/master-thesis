@@ -150,18 +150,22 @@ public class NameAndPropertyAlignment extends BaseMatcher {
 		try {
 			// Create property lists and matrix
 			for (Object prop : honto1.getObjectProperties()) {
+				
 				nbprop1++;
 				proplist1.add(prop);
 			}
 			for (Object prop : honto1.getDataProperties()) {
+			
 				nbprop1++;
 				proplist1.add(prop);
 			}
 			for (Object prop : honto2.getObjectProperties()) {
+		
 				nbprop2++;
 				proplist2.add(prop);
 			}
 			for (Object prop : honto2.getDataProperties()) {
+	
 				nbprop2++;
 				proplist2.add(prop);
 			}
@@ -169,10 +173,12 @@ public class NameAndPropertyAlignment extends BaseMatcher {
 
 			// Create class lists
 			for (Object cl : honto1.getClasses()) {
+			
 				nbclass1++;
 				classlist1.add(cl);
 			}
 			for (Object cl : honto2.getClasses()) {
+			
 				nbclass2++;
 				classlist2.add(cl);
 			}
