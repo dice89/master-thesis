@@ -17,7 +17,7 @@ object Config {
 	val NOT_IS_A:Int		=	Int.MaxValue 
 	
 	//how many synsets should be taken
-	val SENSE_DEPTH:Int		=	5;
+	val SENSE_DEPTH:Int		=	10;
 	
 	//Splitter 
 	

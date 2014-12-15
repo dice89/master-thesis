@@ -36,4 +36,41 @@ object SimpleMeasures {
     //perform score
     mongeElkan.score(a, b)
   }
+
+  def computeLin(a: String, b: String): Double = {
+
+    var res = WordNetMeasureHelper.lin.calcRelatednessOfWords(a, b)
+    //println(res)
+
+    //if they are the same he score is Double.MaxValue => normalize to 1
+    if (res > 1.0) {
+      res = 1.0
+    }
+
+    if (res == -0.0) {
+      res = 0.0
+    }
+
+    res
+  }
+
+  def computeJiangConrath(a: String, b: String): Double = {
+
+    var res = WordNetMeasureHelper.jianConrath.calcRelatednessOfWords(a, b)
+    //if they are the same he score is Double.MaxValue => normalize to 1
+    if (res > 1.0) {
+      res = 1.0
+    }
+    res
+  }
+
+  def computeWuPalmer(a: String, b: String): Double = {
+    var res = WordNetMeasureHelper.wuPalmer.calcRelatednessOfWords(a, b)
+    //if they are the same he score is Double.MaxValue => normalize to 1
+    if (res > 1.0) {
+      res = 1.0
+    }
+    res
+  }
+
 }

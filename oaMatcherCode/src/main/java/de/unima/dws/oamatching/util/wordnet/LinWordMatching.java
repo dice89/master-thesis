@@ -150,7 +150,7 @@ public class LinWordMatching
 	{
 		
 		LinWordMatching matcher = new LinWordMatching();
-		String[]	word1s	=	{"maxpapers","finger","finger","toe","toe","fat"};
+		String[]	word1s	=	{"activity","finger","finger","toe","toe","fat"};
 		
 		
 		/*String[]	word1s	=	{"teaching","thoracic","location","broken","lost","teaching","anus","sulcus","paper","size","person","teacher","booklet","production","adult_male",
@@ -160,7 +160,7 @@ public class LinWordMatching
 								"id","coursework","performance","topic","trip","title"};
     	*/
 		
-		String[]	word2s	=	{"parts","hand","digit","foot","digit","adipose"};
+		String[]	word2s	=	{"event","hand","digit","foot","digit","adipose"};
 		
 	
 		/*String[]	word2s	=	{"teaches","mammary","address","break","lose","teach","anal","fissure","article","dimension","someone","man","product","folder","instructor",

@@ -31,6 +31,7 @@ import scala.collection.mutable.HashMap
 import de.unima.dws.omatching.pipeline.metaMatcher.OutlierMatchingCombinationAlignment
 import de.unima.dws.omatching.pipeline.metaMatcher.BestSelectOutlierMatchingAlignment
 import de.unima.dws.omatching.pipeline.metaMatcher.BestSelectOutlierMatchingAlignment
+import de.unima.dws.omatching.pipeline.metaMatcher.MatrixSelectionMatchingAlignment
 
 case class EvaluationResult(precision: Double, recall: Double, fmeasure: Double)
 
@@ -82,20 +83,30 @@ object Pipeline {
     
     */
     //delete raw matching files
-	val matchings_folder:File = new File("matchings");
-	
-	for(file_name <- matchings_folder.list()){
-	  new File("matchings/"+file_name).delete()
-	}
-	
-	
-	match_oaei_data_set("ontos/2014/conference")
+    val matchings_folder: File = new File("matchings");
+
+    for (file_name <- matchings_folder.list()) {
+      new File("matchings/" + file_name).delete()
+    }
+
+   /* val file_onto1: File = new File("ontos/2014/conference/ekaw.owl");
+
+    val file_onto2: File = new File("ontos/2014/conference/iasted.owl");
+
+    val gs_align: String = "ontos/2014/conference/reference-alignment/ekaw-iasted.rdf"
+
+    val onto1: URI = file_onto1.toURI()
+    val onto2: URI = file_onto2.toURI()
+
+    val res = match_and_evaluate(rapidminerTest(writeCSV("test"))(readCSV))(combineMatchingsBetter)(validate(gs_align))(onto1, onto2, gs_align)
+*/
+    match_oaei_data_set("ontos/2014/conference")
   }
 
   def match_oaei_data_set(path_to_folder: String): Unit = {
 
     val folder: File = new File(path_to_folder + File.separator + "reference-alignment/")
-   // println(folder.getAbsolutePath() + "--" + folder.isDirectory())
+    // println(folder.getAbsolutePath() + "--" + folder.isDirectory())
     var base_matcher_results: MutableList[ImmutableMap[String, EvaluationResult]] = new MutableList
     var meta_matcher_results: MutableList[EvaluationResult] = new MutableList
     for (ref_align_file <- folder.listFiles(new RdfFileFilter)) {
@@ -106,10 +117,8 @@ object Pipeline {
       val onto1: URI = new File(name_onto1).toURI()
       val onto2: URI = new File(name_onto2).toURI()
       //match
-      val csv_prefix:String = ref_align_file.getName().dropRight(4)
+      val csv_prefix: String = ref_align_file.getName().dropRight(4)
 
-      
-      
       val res = match_and_evaluate(rapidminerTest(writeCSV(csv_prefix))(readCSV))(combineMatchingsBetter)(validate(ref_align_file.getAbsolutePath()))(onto1, onto2, ref_align_file.getAbsolutePath())
 
       base_matcher_results.+=(res.singleResult)
@@ -166,22 +175,21 @@ object Pipeline {
       yield result_row.reduceLeft((A, B) => {
       if (A._2.fmeasure < B._2.fmeasure) {
         B
-      }else {
+      } else {
         A
       }
     })
-    
+
     println(best_for_each_match)
 
-   val best_summed:EvaluationResult = best_for_each_match.reduceLeft((A, B) => {
-      ("res", EvaluationResult( A._2.precision + B._2 .precision ,   A._2.recall + B._2 .recall , A._2.fmeasure + B._2 .fmeasure ))
-    })._2 
+    val best_summed: EvaluationResult = best_for_each_match.reduceLeft((A, B) => {
+      ("res", EvaluationResult(A._2.precision + B._2.precision, A._2.recall + B._2.recall, A._2.fmeasure + B._2.fmeasure))
+    })._2
 
-    
     val best_normalized = EvaluationResult(best_summed.precision / meta_matcher_results.size, best_summed.recall / meta_matcher_results.size, best_summed.fmeasure / meta_matcher_results.size)
 
     println("Baseline 2:")
-    
+
     println(best_normalized)
     var summed_result: EvaluationResult = meta_matcher_results.foldLeft(EvaluationResult(0.0, 0.0, 0.0))((z, i) => {
       EvaluationResult(z.precision + i.precision, z.recall + i.recall, z.fmeasure + i.fmeasure)
@@ -200,21 +208,27 @@ object Pipeline {
     var aparser: AlignmentParser = new AlignmentParser(0);
     var reference: Alignment = aparser.parse(new File(ref_align).toURI());
     val matchings = MatcherRegistry.matchRound(onto1, onto2, reference)
-    val meta_result = evaluationFunction(combinationFunction(outlierFunction(matchings._1), 0.5))
+    val meta_result = evaluationFunction(combinationFunction(outlierFunction(matchings._1), 0.65))
     println("Result for Meta Matcher" + meta_result)
-    
+
     MatcherResult(meta_result, matchings._2)
   }
 
   def combineMatchingsNaive(matchings: ImmutableMap[MatchRelationURI, Double], threshold: Double): AlignmentProcess = {
     var alignment: AlignmentProcess = new SuperNaiveOutlierMatchingAlignment(matchings, threshold)
-   
+
     alignment.align(null, null)
     alignment
   }
-  
-   def combineMatchingsBetter(matchings: ImmutableMap[MatchRelationURI, Double], threshold: Double): AlignmentProcess = {
+
+  def combineMatchingsBetter(matchings: ImmutableMap[MatchRelationURI, Double], threshold: Double): AlignmentProcess = {
     var alignment: AlignmentProcess = new BestSelectOutlierMatchingAlignment(matchings, threshold)
+    alignment.align(null, null)
+    alignment
+  }
+
+  def combineMatchingsMatrix(matchings: ImmutableMap[MatchRelationURI, Double], threshold: Double): AlignmentProcess = {
+    var alignment: AlignmentProcess = new MatrixSelectionMatchingAlignment(matchings, threshold)
     alignment.align(null, null)
     alignment
   }
@@ -242,7 +256,7 @@ object Pipeline {
     //Rapidminer Handling
     RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
     RapidMiner.init();
-    var process: RProcess = new RProcess(new File("/Users/mueller/Documents/master-thesis/RapidminerRepo/oacode.rmp"));
+    var process: RProcess = new RProcess(new File("/Users/mueller/Documents/master-thesis/RapidminerRepo/oacode_only_cluster.rmp"));
 
     val output_csv: File = new File("output.csv");
     process.getOperator("Input").setParameter("csv_file", input_csv.getAbsolutePath())
@@ -257,17 +271,16 @@ object Pipeline {
    * @param result
    * @return
    */
-  def writeCSV(prefix:String)(result: ImmutableMap[MatchRelation, ImmutableMap[String, Option[Double]]]): File = {
-    
-    
+  def writeCSV(prefix: String)(result: ImmutableMap[MatchRelation, ImmutableMap[String, Option[Double]]]): File = {
+
     // prepare 
     var i: Int = 0;
     val matcher_name_to_index = MatcherRegistry.matcher_by_name.keySet.zipWithIndex toMap
 
     val matcher_index_to_name = MatcherRegistry.matcher_by_name.keySet.zipWithIndex.map(tuple => tuple._2 -> tuple._1) toMap
     //Init CSV Writer
-    
-    val csv_file = new File( "matchings/"+prefix+"_raw_matchings.csv")
+
+    val csv_file = new File("matchings/" + prefix + "_raw_matchings.csv")
     val writer = CSVWriter.open(csv_file)
 
     //print Headline

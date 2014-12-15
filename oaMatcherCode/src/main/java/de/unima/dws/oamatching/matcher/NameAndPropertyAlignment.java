@@ -264,7 +264,7 @@ public class NameAndPropertyAlignment extends BaseMatcher {
 					int nba1 = properties1.size();
 					if (nba1 > 0) { // if not, keep old values...
 						// Set correspondences = new HashSet();
-						System.out.println("test" + nbclass2);
+						
 						for (j = 0; j < nbclass2; j++) {
 							Set<? extends Object> properties2 = honto2
 									.getProperties(classlist2.get(j),

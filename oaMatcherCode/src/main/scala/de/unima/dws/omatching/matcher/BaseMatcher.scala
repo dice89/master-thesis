@@ -7,6 +7,7 @@ import fr.inrialpes.exmo.align.impl.DistanceAlignment
 import org.semanticweb.owl.align.Cell
 import java.util.ArrayList
 import scala.collection.JavaConversions._
+import scala.collection.convert.Wrappers.JEnumerationWrapper
 
 case class MatchRelation(left: String, relation: String, right: String)
 case class MatchRelationURI(left: URI, right: URI, relation: String)
@@ -23,14 +24,14 @@ abstract class BaseMatcher extends DistanceAlignment with AlignmentProcess {
   }
 
    def postPrune(threshold: Double) = {
+     val alignments = new JEnumerationWrapper(getElements()).toList;
      
-    val enumerator = getElements()
-    while (enumerator.hasMoreElements()) {
-      val cell: Cell = enumerator.nextElement()
-      if (cell.getStrength() <= threshold) {
-        //this.removeAlignCell(cell)
-      }
+    for(cell<-alignments){
+    	if(cell.getStrength()< threshold) {
+    	  this.removeAlignCell(cell);
+    	}
     }
+    
   }
 
   def align(threshold: Double): Map[MatchRelation, Double] = {

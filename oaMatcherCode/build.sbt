@@ -10,6 +10,8 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "2.1.6" % "test"
 
 // Uncomment to use Akka
 
+libraryDependencies += "edu.cmu.lti" % "ws4j" % "1.0.1"  
+
 libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.1.1"
 
 libraryDependencies += "de.unima" % "alignmentapi.mavenized" % "4.6"
