@@ -14,6 +14,8 @@ libraryDependencies += "edu.cmu.lti" % "ws4j" % "1.0.1"
 
 libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.1.1"
 
+libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.7.8"
+
 libraryDependencies += "de.unima" % "alignmentapi.mavenized" % "4.6"
 
 libraryDependencies += "secondstring" % "secondstring" % "20120620"
