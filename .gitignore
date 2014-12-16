@@ -3,3 +3,17 @@ RapidminerRepo
 oaMatcherCode/.cache
 
 oaMatcherCode/.classpath
+
+*.log
+
+oaMatcherCode/runtime.log
+
+*.log
+
+*.csv
+
+oaMatcherCode/result.csv
+
+oaMatcherCode/output.csv
+
+oaMatcherCode/matching_matcher_result.csv

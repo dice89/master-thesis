@@ -1,0 +1,219 @@
+% do not change these two lines (this is a hard requirement
+% there is one exception: you might replace oneside by twoside in case you deliver 
+% the printed version in the accordant format
+\documentclass[11pt,titlepage,oneside,openany]{report}
+\usepackage{times}
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{graphicx}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{wrapfig}
+\usepackage{ntheorem}
+
+% \usepackage{paralist}
+\usepackage{tabularx}
+\usepackage{graphicx}% http://ctan.org/pkg/graphicx
+\usepackage{booktabs}% http://ctan.org/pkg/booktabs
+\usepackage{xparse}% http://ctan.org/pkg/xparse
+\usepackage{multirow}
+
+% this packaes are useful for nice algorithms
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% well, when your work is concerned with definitions, proposition and so on, we suggest this
+% feel free to add Corrolary, Theorem or whatever you need
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+
+
+% its always useful to have some shortcuts (some are specific for algorithms
+% if you do not like your formating you can change it here (instead of scanning through the whole text)
+\renewcommand{\algorithmiccomment}[1]{\ensuremath{\rhd} \textit{#1}}
+\def\MYCALL#1#2{{\small\textsc{#1}}(\textup{#2})}
+\def\MYSET#1{\scshape{#1}}
+\def\MYAND{\textbf{ and }}
+\def\MYOR{\textbf{ or }}
+\def\MYNOT{\textbf{ not }}
+\def\MYTHROW{\textbf{ throw }}
+\def\MYBREAK{\textbf{break }}
+\def\MYEXCEPT#1{\scshape{#1}}
+\def\MYTO{\textbf{ to }}
+\def\MYNIL{\textsc{Nil}}
+\def\MYUNKNOWN{ unknown }
+% simple stuff (not all of this is used in this examples thesis
+\def\INT{{\mathcal I}} % interpretation
+\def\ONT{{\mathcal O}} % ontology
+\def\SEM{{\mathcal S}} % alignment semantic
+\def\ALI{{\mathcal A}} % alignment
+\def\USE{{\mathcal U}} % set of unsatisfiable entities
+\def\CON{{\mathcal C}} % conflict set
+\def\DIA{\Delta} % diagnosis
+% mups and mips
+\def\MUP{{\mathcal M}} % ontology
+\def\MIP{{\mathcal M}} % ontology
+% distributed and local entities
+\newcommand{\cc}[2]{\mathit{#1}\hspace{-1pt} \# \hspace{-1pt} \mathit{#2}}
+\newcommand{\cx}[1]{\mathit{#1}}
+% complex stuff
+\def\MER#1#2#3#4{#1 \cup_{#3}^{#2} #4} % merged ontology
+\def\MUPALL#1#2#3#4#5{\textit{MUPS}_{#1}\left(#2, #3, #4, #5\right)} % the set of all mups for some concept
+\def\MIPALL#1#2{\textit{MIPS}_{#1}\left(#2\right)} % the set of all mips
+
+
+\newcommand*\rot{\rotatebox{90}}
+
+
+\begin{document}
+
+\pagenumbering{roman}
+% lets go for the title page, something like this should be okay
+\begin{titlepage}
+	\vspace*{2cm}
+  \begin{center}
+   {\Large Ontology Matching \\}
+   {\Large - using  -\\}
+   {\Large Outlier Detection  \\}
+   \vspace{2cm} 
+   {Master Thesis\\}
+   \vspace{2cm}
+   {presented by\\
+ 	 Alexander Müller \\
+    Matriculation Number 1376818\\
+   }
+   \vspace{1cm} 
+   {submitted to the\\
+  	Chair of Information Systems V\\
+  	 Prof. .Dr.\ Heiko\ Paulheim \\
+    University Mannheim\\} \vspace{2cm}
+   {Mai 2015}
+  \end{center}
+\end{titlepage} 
+% no lets make some add some table of contents
+\tableofcontents
+\newpage
+
+\listoffigures
+
+\listoftables
+
+\newpage
+\pagenumbering{arabic}
+\chapter{Introduction}
+	\section{Overcoming the Disparate Data Space}
+	\section{Motivation}
+	\section{Contributions}
+	
+\chapter{The Ontology Matching Problem}
+	\section{Definition}
+	Formal Definition of ontology matching
+	\section{State-of-the Art}
+	What is the current state in research, e.g. current advances at OAEI
+	\section{Challenges}
+	Basicalle the Euzenant Paper
+
+
+%%%%% Bascially Literature review
+
+\chapter{Ontology Matching Approaches (Related Work)}
+This chapter presents the results of a conducted literature survey in the area of ontology matching.
+\section{Classification of Approaches}
+Tailored classification of approaches
+\section{Base Matcher}
+
+\subsection{Label Based}
+ \subsubsection{TODO}
+\subsection{Instance Based}
+ \subsubsection{TODO}
+\subsection{Structure Based}
+ \subsubsection{TODO}
+\section{Hybrid Matching Approaches}
+
+\section{Analysis of Hybrid Matching Approaches}
+Show weaknesses of current approaches, supervised, often weighted average based, so not flexible (transferable to other domains)
+
+
+%%%%%%%%%%%%%%%% Main Contribution
+
+\chapter{Hybrid Ontology Matching using Outlier Analysis}
+\section{Definition Outlier Analysis}
+\section{Motivation for using Outlier Analysis for Ontology Matching}
+Flexibility towards changing data domains
+No need to train weights upfront
+\section{Ontology Matching as an Outlier Detection Problem}
+\subsection{Creating the Feature Vector}
+\subsection{Significance of Outliers for Ontology Matching}
+\subsection{Transforming the Outlier Analysis Result to a Matching}
+
+
+%%%% Presentation of the Presented Approach
+\chapter{A Matching Pipeline using Outlier Detection}
+
+\section{Overview}
+Presents the implemented Pipeline
+\section{Base Matcher used}
+What base matcher survived the selection process
+\section{Methods used to combine Matcher}
+
+\section{Feature Selection}
+
+\section{Outlier Analysis}
+
+
+%%% Evaluation
+
+\chapter{Evaluation}
+\section{Datasets}
+\section{Experimental Setup}
+\section{Used Baselines}
+\section{Results}
+
+
+%%% Final Stuff
+
+\chapter{Discussion}
+\section{Flexibility towards changing Data Domains}
+\section{Runtime Considerations}
+\section{Comparison with current OAEI Participants}
+
+
+\chapter{Conclusion}
+
+
+% evntuelly you might add something like this
+% \listtheorems{definition}
+% \listtheorems{proposition}
+\clearpage
+\newpage
+
+
+% okay, start new numbering ... here is where it really starts
+
+
+\bibliographystyle{plain}
+\bibliography{thesis-ref}
+
+\newpage
+
+\pagestyle{empty}
+
+
+\section*{Ehrenw\"ortliche Erkl\"arung}
+Ich versichere, dass ich die beiliegende Bachelorarbeit ohne Hilfe Dritter
+und ohne Benutzung anderer als der angegebenen Quellen und Hilfsmittel
+angefertigt und die den benutzten Quellen w\"ortlich oder inhaltlich
+entnommenen Stellen als solche kenntlich gemacht habe. Diese Arbeit
+hat in gleicher oder \"ahnlicher Form noch keiner Pr\"ufungsbeh\"orde
+vorgelegen. Ich bin mir bewusst, dass eine falsche Er- kl\"arung rechtliche Folgen haben
+wird.
+\\
+\\
+
+\noindent
+Mannheim, den 31.5.2015 \hspace{4cm} Unterschrift
+
+\end{document}
