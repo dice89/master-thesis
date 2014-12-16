@@ -92,6 +92,9 @@ object MatcherRegistry {
 
     val lin_new = new StandardMeasure(true, new TokenizedStringMatcher(StringMeasureHelper.getLabel, tokenizer, SimpleMeasures.computeLin))
     matcher_by_name += ("new_lin" -> new GridOptmizeMatcher("new_lin", lin_new, 20))
+    
+    val path = new StandardMeasure(true, new TokenizedStringMatcher(StringMeasureHelper.getLabel, tokenizer, SimpleMeasures.computePath))
+    matcher_by_name += ("path" -> new GridOptmizeMatcher("path", path, 20))
 
     val jiang_conrath_new = new StandardMeasure(true, new TokenizedStringMatcher(StringMeasureHelper.getLabel, tokenizer, SimpleMeasures.computeJiangConrath))
     matcher_by_name += ("jiang_conrath_new" -> new GridOptmizeMatcher("jiang_conrath_new", jiang_conrath_new, 20))
@@ -178,7 +181,7 @@ object MatcherRegistry {
     }
   }
 
-  def matchRound(onto1: URI, onto2: URI, reference: Alignment): (Map[MatchRelation, Map[String, Option[Double]]], Map[String, EvaluationResult]) = {
+  def matchRound(onto1: URI, onto2: URI, reference: Alignment,prefix:String): (Map[MatchRelation, Map[String, Option[Double]]], Map[String, EvaluationResult]) = {
     println("Start Matching with " + matcher_by_name.size + " Matcher" + onto1 + onto2)
 
     //call all matcher and transform them
@@ -199,7 +202,7 @@ object MatcherRegistry {
         val res = EvaluationResult(p_rec_eval.getPrecision(), p_rec_eval.getRecall(), p_rec_eval.getFmeasure())
 
         //log result
-        ResultLogger.log_matcher_result(onto1.getPath().toString() + onto2.getPath().toString(), name, res)
+        ResultLogger.log_matcher_result(prefix, name, res)
 
         (name, res)
       }

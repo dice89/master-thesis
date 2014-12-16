@@ -90,7 +90,7 @@ object Pipeline {
       new File("matchings/" + file_name).delete()
     }
 
-   /* val file_onto1: File = new File("ontos/2014/conference/ekaw.owl");
+    /* val file_onto1: File = new File("ontos/2014/conference/ekaw.owl");
 
     val file_onto2: File = new File("ontos/2014/conference/iasted.owl");
 
@@ -120,13 +120,12 @@ object Pipeline {
       //match
       val csv_prefix: String = ref_align_file.getName().dropRight(4)
 
-      
-      val res = match_and_evaluate(rapidminerTest(writeCSV(csv_prefix))(readCSV))(combineMatchingsMatrix)(validate(ref_align_file.getAbsolutePath()))(onto1, onto2, ref_align_file.getAbsolutePath(),0.6)
+      val res = match_and_evaluate_threshold_optimized(rapidminerTest(writeCSV(csv_prefix))(readCSV))(combineMatchingsMatrix)(validate(ref_align_file.getAbsolutePath()))(onto1, onto2, ref_align_file.getAbsolutePath(), csv_prefix, 20)
 
       base_matcher_results.+=(res.singleResult)
       meta_matcher_results.+=(res.metaResult)
-      
-      ResultLogger.log_matcher_result(csv_prefix, "metaMatcher", res.metaResult )
+
+      ResultLogger.log_matcher_result(csv_prefix, "metaMatcher", res.metaResult)
     }
 
     //aggregate base matcher
@@ -169,7 +168,7 @@ object Pipeline {
       }
     })
     //log baseline 1
-    ResultLogger.log_result(path_to_folder, "BaseLine 1: " + best_average_matcher._1  , best_average_matcher._2 )
+    ResultLogger.log_result(path_to_folder, "BaseLine 1: " + best_average_matcher._1, best_average_matcher._2)
     //aggregate single matcher results
 
     //Base Line 2: Get result based on best matcher for every matching
@@ -183,8 +182,6 @@ object Pipeline {
       }
     })
 
-
-
     val best_summed: EvaluationResult = best_for_each_match.reduceLeft((A, B) => {
       ("res", EvaluationResult(A._2.precision + B._2.precision, A._2.recall + B._2.recall, A._2.fmeasure + B._2.fmeasure))
     })._2
@@ -193,8 +190,7 @@ object Pipeline {
 
     //log baseline
     ResultLogger.log_result(path_to_folder, "BaseLine2", best_normalized)
-    
-    
+
     var summed_result: EvaluationResult = meta_matcher_results.foldLeft(EvaluationResult(0.0, 0.0, 0.0))((z, i) => {
       EvaluationResult(z.precision + i.precision, z.recall + i.recall, z.fmeasure + i.fmeasure)
     })
@@ -202,27 +198,57 @@ object Pipeline {
 
     println("Outlier Detection Meta Matcher Result")
     println(combined_matcher_result)
-    
+
     ResultLogger.log_result(path_to_folder, "Average Meta Matcher", combined_matcher_result)
-    
-    println ("Bet Baseline 1? " + (best_average_matcher._2.fmeasure < combined_matcher_result.fmeasure) )
-    println ("Bet Baseline 2? " + (best_normalized.fmeasure  < combined_matcher_result.fmeasure) )
+
+    println("Bet Baseline 1? " + (best_average_matcher._2.fmeasure < combined_matcher_result.fmeasure))
+    println("Bet Baseline 2? " + (best_normalized.fmeasure < combined_matcher_result.fmeasure))
     //base_matcher_results
 
   }
 
-  def match_and_evaluate(outlierFunction: ImmutableMap[MatchRelation, ImmutableMap[String, Option[Double]]] => ImmutableMap[(MatchRelationURI), Double])(combinationFunction: (ImmutableMap[(MatchRelationURI), Double], Double) => AlignmentProcess)(evaluationFunction: AlignmentProcess => EvaluationResult)(onto1: URI, onto2: URI, ref_align: String,threshold:Double): MatcherResult = {
+  def match_and_evaluate(outlierFunction: ImmutableMap[MatchRelation, ImmutableMap[String, Option[Double]]] => ImmutableMap[(MatchRelationURI), Double])(combinationFunction: (ImmutableMap[(MatchRelationURI), Double], Double) => AlignmentProcess)(evaluationFunction: AlignmentProcess => EvaluationResult)(onto1: URI, onto2: URI, ref_align: String, threshold: Double, prefix: String): MatcherResult = {
     MatcherRegistry.init
 
     var aparser: AlignmentParser = new AlignmentParser(0);
     var reference: Alignment = aparser.parse(new File(ref_align).toURI());
-    val matchings = MatcherRegistry.matchRound(onto1, onto2, reference)
+    val matchings = MatcherRegistry.matchRound(onto1, onto2, reference, prefix)
+
     val meta_result = evaluationFunction(combinationFunction(outlierFunction(matchings._1), threshold))
     println("Result for Meta Matcher" + meta_result)
 
     MatcherResult(meta_result, matchings._2)
   }
 
+  def match_and_evaluate_threshold_optimized(outlierFunction: ImmutableMap[MatchRelation, ImmutableMap[String, Option[Double]]] => ImmutableMap[(MatchRelationURI), Double])(combinationFunction: (ImmutableMap[(MatchRelationURI), Double], Double) => AlignmentProcess)(evaluationFunction: AlignmentProcess => EvaluationResult)(onto1: URI, onto2: URI, ref_align: String, prefix: String, steps: Int): MatcherResult = {
+    MatcherRegistry.init
+
+    var aparser: AlignmentParser = new AlignmentParser(0);
+    var reference: Alignment = aparser.parse(new File(ref_align).toURI());
+    val matchings = MatcherRegistry.matchRound(onto1, onto2, reference, prefix)
+    //do parameter optimization
+    val scored_matchings = outlierFunction(matchings._1)
+
+    val stepsize: Double = 1.0 / steps.asInstanceOf[Double]
+
+    val results = for (index <- 0 until steps) yield {
+      val threshold: Double = 1.0 - (stepsize * index)
+      val result = evaluationFunction(combinationFunction(scored_matchings, threshold))
+      (threshold, result)
+    }
+
+    val meta_result: (Double, EvaluationResult) = results.toList.reduceLeft((A, B) => {
+      if (A._2.fmeasure > B._2.fmeasure) {
+        A
+      } else {
+        B
+      }
+    })
+
+    // println("Result at threshold " + meta_result._1 + " for Meta Matcher" + meta_result._2)
+    ResultLogger.log("Best Result for " + prefix + " :" + meta_result._1)
+    MatcherResult(meta_result _2, matchings._2)
+  }
   def combineMatchingsNaive(matchings: ImmutableMap[MatchRelationURI, Double], threshold: Double): AlignmentProcess = {
     var alignment: AlignmentProcess = new SuperNaiveOutlierMatchingAlignment(matchings, threshold)
 

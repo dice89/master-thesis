@@ -161,5 +161,14 @@ object SimpleMeasures {
     }
     res
   }
+  
+  def computePath(a:String,b:String):Double = {
+    var res = WordNetMeasureHelper.path calcRelatednessOfWords(a, b)
+    //if they are the same he score is Double.MaxValue => normalize to 1
+    if (res > 1.0) {
+      res = 1.0
+    }
+    res
+  }
 
 }

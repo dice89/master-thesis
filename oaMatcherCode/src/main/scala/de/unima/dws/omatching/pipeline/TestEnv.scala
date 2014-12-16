@@ -1,6 +1,8 @@
 package de.unima.dws.omatching.pipeline
 
 import de.unima.dws.oamatching.measures.SimpleMeasures
+import de.unima.dws.oamatching.util.wordnet.WordNetHelper
+import de.uniman.dws.oamatching.logging.ResultLogger
 
 /**
  * 
@@ -11,9 +13,12 @@ import de.unima.dws.oamatching.measures.SimpleMeasures
 object TestEnv {
 
   def main(args: Array[String]): Unit = {
+    ResultLogger log("test")
+    println(SimpleMeasures.computeLin("write", "paper"))
     
-    
-    SimpleMeasures.computePrefixBiDirectional("Alexander_Mueler","Alexander");
+    println(WordNetHelper.getInstance().getWnstemmer().Stem("writes"))
+    println(WordNetHelper.getInstance().getWnstemmer().Stem("paper"))
+    //SimpleMeasures.computePrefixBiDirectional("Alexander_Mueler","Alexander");
   }
 
 }

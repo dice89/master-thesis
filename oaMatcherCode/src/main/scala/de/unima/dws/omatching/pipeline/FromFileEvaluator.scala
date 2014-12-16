@@ -14,14 +14,14 @@ object FromFileEvaluator {
 
     val file: File = new File("result.csv")
     
-  	val alignment = Pipeline.combineMatchingsMatrix( Pipeline.readCSV(file),0.4)  
+  	val alignment = Pipeline.combineMatchingsMatrix( Pipeline.readCSV(file),0.45)  
   	
   	val wrapper = new JEnumerationWrapper(alignment.getElements()).toList
   	
   	for(cell<-wrapper){
   	  println( cell.getObject1().toString() + " " + cell.getRelation().getRelation() +" " + cell.getObject2().toString())
   	}
-    val res = Pipeline.validate("ontos/2014/conference/reference-alignment/conference-edas.rdf")(alignment)
+    val res = Pipeline.validate("ontos/2014/conference/reference-alignment/confOf-edas.rdf")(alignment)
     
     println(res)
   }
