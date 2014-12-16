@@ -120,7 +120,8 @@ object Pipeline {
       //match
       val csv_prefix: String = ref_align_file.getName().dropRight(4)
 
-      val res = match_and_evaluate(rapidminerTest(writeCSV(csv_prefix))(readCSV))(combineMatchingsMatrix)(validate(ref_align_file.getAbsolutePath()))(onto1, onto2, ref_align_file.getAbsolutePath(),0.5)
+      
+      val res = match_and_evaluate(rapidminerTest(writeCSV(csv_prefix))(readCSV))(combineMatchingsMatrix)(validate(ref_align_file.getAbsolutePath()))(onto1, onto2, ref_align_file.getAbsolutePath(),0.6)
 
       base_matcher_results.+=(res.singleResult)
       meta_matcher_results.+=(res.metaResult)

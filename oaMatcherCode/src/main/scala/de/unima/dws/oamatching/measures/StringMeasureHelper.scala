@@ -37,6 +37,10 @@ object StringMeasureHelper {
   def to_lower_case(a: String, b: String): (String, String) = {
     (a.toLowerCase(), b.toLowerCase())
   }
+  
+  def to_lower_case_single(a:String):String = {
+    a.toLowerCase()
+  }
 
   def distance_lower_cased = distance_normalized(to_lower_case) _
 
@@ -55,7 +59,7 @@ object StringMeasureHelper {
   }
 
   def token_list_to_String(tokens: List[String]): String = {
-    val tokens_string: String = tokens.reduceLeft((A, B) => " " + A + " " + B + " ")
+    val tokens_string: String = tokens.reduceLeft((A, B) => " " + A + " " + B + "")
 
     tokens_string.trim()
   }

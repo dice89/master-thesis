@@ -39,7 +39,7 @@ object SimpleMeasures {
    */
   private def computeAnyfixUniDirectional(anyfixfunction: (String) => Boolean)(substring: String, superstring: String): Double = {
     //first check if subsequence of min length 2 are a is Anyfix of b  
-    val res_values = for { seq_size <- 1 until substring.length() + 1; subseq <- substring.sliding(seq_size, 1).toSeq } yield {
+    val res_values = for { seq_size <- 1 until substring.length() + 1; subseq <- substring.toLowerCase().sliding(seq_size, 1).toSeq } yield {
       if (anyfixfunction(subseq)) {
         Some(seq_size.asInstanceOf[Double] / substring.length().asInstanceOf[Double])
       } else {
@@ -88,7 +88,7 @@ object SimpleMeasures {
   def computeJaccard(a: String, b: String): Double = {
     val jaccard: Jaccard = new Jaccard(new SimpleTokenizer(true, false))
 
-    val res = jaccard.score(jaccard.prepare(a), jaccard.prepare(b))
+    val res = jaccard.score(jaccard.prepare(a.toLowerCase()), jaccard.prepare(b.toLowerCase()))
 
     res
   }
@@ -105,7 +105,7 @@ object SimpleMeasures {
     //scale result from 0-1
     mongeElkan.setScaling(true)
     //perform score
-    mongeElkan.score(a, b)
+    mongeElkan.score(a.toLowerCase(), b.toLowerCase())
   }
 
   /**

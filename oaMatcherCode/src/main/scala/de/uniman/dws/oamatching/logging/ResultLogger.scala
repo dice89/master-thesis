@@ -15,13 +15,13 @@ object ResultLogger {
 	
 	
 	def log_matcher_result(dataset:String,matcher:String,result:EvaluationResult)={
-	  val entry = List[String](dataset, matcher, result.precision.toString ,result.precision.toString ,result.fmeasure .toString)
+	  val entry = List[String](dataset, matcher, result.precision.toString ,result.recall.toString ,result.fmeasure .toString)
 	  matcher_writer.writeRow(entry);
 	  matcher_writer.flush
 	}
 		
 	def log_result(dataset:String,matcher:String,result:EvaluationResult)={
-	  val entry = List[String](dataset, matcher, result.precision.toString ,result.precision.toString ,result.fmeasure .toString)
+	  val entry = List[String](dataset, matcher, result.precision.toString ,result.recall.toString ,result.fmeasure .toString)
 	  result_writer.writeRow(entry);
 	  result_writer.flush
 	}
