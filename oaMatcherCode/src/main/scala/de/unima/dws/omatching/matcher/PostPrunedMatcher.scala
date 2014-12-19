@@ -18,20 +18,27 @@ import org.semanticweb.owl.align.Cell
 import scala.collection.mutable.ListBuffer
 import de.unima.dws.omatching.pipeline.EvaluationResult
 import fr.inrialpes.exmo.align.impl.eval.PRecEvaluator
+import fr.inrialpes.exmo.align.impl.Extensions
+import java.util.Hashtable
+import java.util.Set
+import de.unima.dws.omatching.pipeline.MatchingProblem
 
 class PostPrunedMatcher(val name: String, val similarityObject: MatrixMeasure, var reference: Alignment) extends BaseMatcher {
 
-  def this(name: String,similarityObject: MatrixMeasure)={
-    this(name,similarityObject, null)
+  def this(name: String, similarityObject: MatrixMeasure) = {
+    this(name, similarityObject, null)
+  }
+
+  def prepare(problem:MatchingProblem):Unit ={
+    prepare(problem.ontology1 , problem.ontology2 ,problem.reference )
   }
   
-  def prepare(onto1: URI, onto2: URI, reference:Alignment):Unit = {
+  def prepare(onto1: URI, onto2: URI, reference: Alignment): Unit = {
     this.reference = reference
-    prepare(onto1,onto2);
+    prepare(onto1, onto2);
   }
-  
-  
-  override def prepare(onto1: URI, onto2: URI):Unit = {
+
+  override def prepare(onto1: URI, onto2: URI): Unit = {
     cleanUp()
 
     setType("**")
@@ -39,20 +46,24 @@ class PostPrunedMatcher(val name: String, val similarityObject: MatrixMeasure, v
     setSimilarity(similarityObject)
 
     val ontofactory: OWLAPI3OntologyFactory = new OWLAPI3OntologyFactory()
-
     val loaded_ontology1 = ontofactory.loadOntology(onto1, false)
     val loaded_ontology2 = ontofactory.loadOntology(onto2, false)
-    
-    this.reference  = reference
+
+    hash1 = new Hashtable[Object, Set[Cell]]();
+    hash2 = new Hashtable[Object, Set[Cell]]();
+    extensions = new Extensions();
+    namespaces = new Properties();
     init(loaded_ontology1, loaded_ontology2)
 
   }
 
   protected override def align(alignment: Alignment, params: Properties) = {
+
     getSimilarity().initialize(getOntologyObject1(), getOntologyObject2(), alignment);
+
     getSimilarity().compute(params)
 
-    extract("**", params);
+    extract(getType(), params);
   }
 
   protected override def align_match(threshold: Double) = {
@@ -68,11 +79,28 @@ class PostPrunedMatcher(val name: String, val similarityObject: MatrixMeasure, v
     asList
   }
 
-  protected def evaluate(): EvaluationResult = {
+  def align_optimize_only(threshold: Double): Unit = {
+    var properties: Properties = new BasicParameters()
+    properties.setProperty("threshold", threshold + "")
+    setType(getType())
+
+    val start = System.currentTimeMillis()
+    align(null, properties)
+    val total = System.currentTimeMillis() - start
+
+    println(total)
+  }
+
+  def evaluate(): EvaluationResult = {
 
     val p_rec_eval = new PRecEvaluator(reference, this);
+    val alignments = new JEnumerationWrapper(reference.getElements()).toList;
+    //println("REFERENCE ALIGNMENT SIZE" + alignments.size)
+
     p_rec_eval.eval(null)
-    val res = EvaluationResult(p_rec_eval.getPrecision(), p_rec_eval.getRecall(), p_rec_eval.getFmeasure())
+
+   
+    val res = EvaluationResult(p_rec_eval.getPrecision(), p_rec_eval.getRecall(), p_rec_eval.getFmeasure(), p_rec_eval.getCorrect(), p_rec_eval.getFound(),p_rec_eval.getExpected())
 
     res
   }
@@ -104,7 +132,7 @@ object PostPrunedMatcher {
 
     val measure = new StandardMeasure(false, new StringFunctionMatcher(simple_preprocessing, SimpleMeasures.computeJaccard))
 
-    val test = new PostPrunedMatcher("test", measure,null)
+    val test = new PostPrunedMatcher("test", measure, null)
 
     test.prepare(onto1, onto2)
     println(test.align(0.1).size)

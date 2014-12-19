@@ -27,7 +27,7 @@ abstract class BaseMatcher extends DistanceAlignment with AlignmentProcess {
      val alignments = new JEnumerationWrapper(getElements()).toList;
      
     for(cell<-alignments){
-    	if(cell.getStrength()< threshold) {
+    	if(cell.getStrength()<= threshold) {
     	  this.removeAlignCell(cell);
     	}
     }

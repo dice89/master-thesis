@@ -1,8 +1,6 @@
 package de.unima.dws.omatching.pipeline
 
-import de.unima.dws.oamatching.measures.SimpleMeasures
-import de.unima.dws.oamatching.util.wordnet.WordNetHelper
-import de.uniman.dws.oamatching.logging.ResultLogger
+import com.redis.RedisClient
 
 /**
  * 
@@ -13,12 +11,17 @@ import de.uniman.dws.oamatching.logging.ResultLogger
 object TestEnv {
 
   def main(args: Array[String]): Unit = {
-    ResultLogger log("test")
-    println(SimpleMeasures.computeLin("write", "paper"))
     
-    println(WordNetHelper.getInstance().getWnstemmer().Stem("writes"))
-    println(WordNetHelper.getInstance().getWnstemmer().Stem("paper"))
+    /*
+		 val r:RedisClient = new RedisClient("localhost",6379)
+		  r.set("TEST", 0.3)
+		  println(r.get("TEST").get)*/
+		  
+		  
+		  ThresholdOptimizationPlatform.setThreshold("A", "B", 0.3)
+		  
+		  println(ThresholdOptimizationPlatform.getThreshold("A", "B").getOrElse(0.0))
     //SimpleMeasures.computePrefixBiDirectional("Alexander_Mueler","Alexander");
-  }
+ }
 
 }

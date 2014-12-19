@@ -23,4 +23,9 @@ object Config {
 	
 	val MIN_LEN:Int = 3
 	
+	
+	val REDIS_HOST:String = "localhost"
+	  
+	val REDIS_PORT:Int =6379
+	
 }

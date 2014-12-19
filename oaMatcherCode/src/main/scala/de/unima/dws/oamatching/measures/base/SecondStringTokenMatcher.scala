@@ -20,7 +20,7 @@ class SecondStringTokenMatcher(override val preprocess: (OWLEntity, OWLOntology)
 
     // transform to java 
     val j_iter: java.util.Iterator[StringWrapper] = labels.iterator
-
+ 
     distance.train(new BasicStringWrapperIterator(j_iter))
   }
 

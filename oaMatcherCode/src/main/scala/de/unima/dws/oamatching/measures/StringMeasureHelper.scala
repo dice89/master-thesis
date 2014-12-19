@@ -35,7 +35,7 @@ object StringMeasureHelper {
   }
 
   def to_lower_case(a: String, b: String): (String, String) = {
-    (a.toLowerCase(), b.toLowerCase())
+    (a.toLowerCase().replace("-", ""), b.toLowerCase().replace("-",""))
   }
   
   def to_lower_case_single(a:String):String = {

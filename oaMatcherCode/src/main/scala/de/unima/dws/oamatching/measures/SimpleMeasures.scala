@@ -57,7 +57,7 @@ object SimpleMeasures {
 
     a_b_score.getOrElse(0.0)
   }
-  
+
   @Deprecated
   private def computePrefixUniDirectional(substring: String, superstring: String): Double = {
     //first check if subsequence of min length 2 are a is Anyfix of b  
@@ -100,7 +100,7 @@ object SimpleMeasures {
    * @return
    */
   def computeMongeElkan(a: String, b: String): Double = {
- 
+
     val mongeElkan: MongeElkan = new MongeElkan();
     //scale result from 0-1
     mongeElkan.setScaling(true)
@@ -141,6 +141,7 @@ object SimpleMeasures {
 
     var res = WordNetMeasureHelper.jianConrath.calcRelatednessOfWords(a, b)
     //if they are the same he score is Double.MaxValue => normalize to 1
+
     if (res > 1.0) {
       res = 1.0
     }
@@ -161,9 +162,9 @@ object SimpleMeasures {
     }
     res
   }
-  
-  def computePath(a:String,b:String):Double = {
-    var res = WordNetMeasureHelper.path calcRelatednessOfWords(a, b)
+
+  def computePath(a: String, b: String): Double = {
+    var res = WordNetMeasureHelper.path calcRelatednessOfWords (a, b)
     //if they are the same he score is Double.MaxValue => normalize to 1
     if (res > 1.0) {
       res = 1.0
