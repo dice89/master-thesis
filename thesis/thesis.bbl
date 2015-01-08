@@ -1,191 +1,34 @@
-\begin{thebibliography}{10}
+\begin{thebibliography}{1}
 
-\bibitem{commoncrawl}
-http://commoncrawl.org/.
+\bibitem{ehrig2006ontology}
+M.~Ehrig.
+\newblock {\em Ontology Alignment: Bridging the Semantic Gap}.
+\newblock Semantic Web and Beyond. Springer US, 2006.
 
-\bibitem{webdatacommons}
-http://webdatacommons.org/.
+\bibitem{euzenat2003towards}
+J{\'e}r{\^o}me Euzenat.
+\newblock Towards composing and benchmarking ontology alignments.
+\newblock In {\em Proc. ISWC-2003 workshop on semantic information
+  integration}, pages 165--166, 2003.
 
-\bibitem{webdatacommonsTable}
-http://webdatacommons.org/webtables/index.html.
-
-\bibitem{Banerjee:2002}
-Satanjeev Banerjee and Ted Pedersen.
-\newblock An adapted lesk algorithm for word sense disambiguation using
-  wordnet.
-\newblock In Alexander Gelbukh, editor, {\em Computational Linguistics and
-  Intelligent Text Processing}, volume 2276 of {\em Lecture Notes in Computer
-  Science}, pages 136--145. Springer Berlin Heidelberg, 2002.
-
-\bibitem{Batini:1986}
-C.~Batini, M.~Lenzerini, and S.~B. Navathe.
-\newblock A comparative analysis of methodologies for database schema
-  integration.
-\newblock {\em ACM Comput. Surv.}, 18(4):323--364, December 1986.
-
-\bibitem{bernstein2001}
-Philip~A. Bernstein, Jayant Madhavan, and Erhard Rahm.
-\newblock Generic schema matching with cupid.
-\newblock Technical Report MSR-TR-2001-58, Microsoft Research, August 2001.
-
-\bibitem{bilke2005schema}
-Alexander Bilke and Felix Naumann.
-\newblock Schema matching using duplicates.
-\newblock In {\em Data Engineering, 2005. ICDE 2005. Proceedings. 21st
-  International Conference on}, pages 69--80. IEEE, 2005.
-
-\bibitem{budanitsky2006evaluating}
-Alexander Budanitsky and Graeme Hirst.
-\newblock Evaluating wordnet-based measures of lexical semantic relatedness.
-\newblock {\em Computational Linguistics}, 32(1):13--47, 2006.
-
-\bibitem{Cafarella:2009}
-Michael~J. Cafarella, Alon Halevy, and Nodira Khoussainova.
-\newblock Data integration for the relational web.
-\newblock {\em Proc. VLDB Endow.}, 2(1):1090--1101, August 2009.
-
-\bibitem{Cafarella:2008}
-Michael~J. Cafarella, Alon Halevy, Daisy~Zhe Wang, Eugene Wu, and Yang Zhang.
-\newblock Webtables: Exploring the power of tables on the web.
-\newblock {\em Proc. VLDB Endow.}, 1(1):538--549, August 2008.
-
-\bibitem{cohen2003comparison}
-William Cohen, Pradeep Ravikumar, and Stephen Fienberg.
-\newblock A comparison of string metrics for matching names and records.
-\newblock In {\em KDD Workshop on Data Cleaning and Object Consolidation},
-  volume~3, pages 73--78, 2003.
-
-\bibitem{cohen1998integration}
-William~W Cohen.
-\newblock Integration of heterogeneous databases without common domains using
-  queries based on textual similarity.
-\newblock In {\em ACM SIGMOD Record}, volume~27, pages 201--212. ACM, 1998.
-
-\bibitem{DasSarma2012}
-Anish Das~Sarma, Lujun Fang, Nitin Gupta, Alon Halevy, Hongrae Lee, Fei Wu,
-  Reynold Xin, and Cong Yu.
-\newblock Finding related tables.
-\newblock In {\em Proceedings of the 2012 ACM SIGMOD International Conference
-  on Management of Data}, SIGMOD '12, pages 817--828, New York, NY, USA, 2012.
-  ACM.
-
-\bibitem{do2002coma}
-Hong-Hai Do and Erhard Rahm.
-\newblock Coma: a system for flexible combination of schema matching
-  approaches.
-\newblock In {\em Proceedings of the 28th international conference on Very
-  Large Data Bases}, pages 610--621. VLDB Endowment, 2002.
-
-\bibitem{duan2012instance}
-Songyun Duan, Achille Fokoue, Oktie Hassanzadeh, Anastasios Kementsietsidis,
-  Kavitha Srinivas, and Michael~J Ward.
-\newblock Instance-based matching of large ontologies using locality-sensitive
-  hashing.
-\newblock In {\em The Semantic Web--ISWC 2012}, pages 49--64. Springer, 2012.
+\bibitem{euzenat2004api}
+J{\'e}r{\^o}me Euzenat.
+\newblock An api for ontology alignment.
+\newblock In {\em The Semantic Web--ISWC 2004}, pages 698--712. Springer, 2004.
 
 \bibitem{euzenat2013d}
 J\'er\^ome Euzenat and Pavel Shvaiko.
 \newblock {\em Ontology matching}.
 \newblock Springer-Verlag, Heidelberg (DE), 2nd edition, 2013.
 
-\bibitem{fellbaum1998}
-C.~Fellbaum.
-\newblock {\em WordNet: An Electronic Lexical Database}.
-\newblock Language, speech, and communication. MIT Press, 1998.
+\bibitem{paulheim2011ontology}
+H.~Paulheim.
+\newblock {\em Ontology-based Application Integration}.
+\newblock SpringerLink : B{\"u}cher. Springer, 2011.
 
-\bibitem{francis79}
-W.~N. Francis and H.~Kucera.
-\newblock Brown corpus manual.
-\newblock Technical report, Department of Linguistics, Brown University,
-  Providence, Rhode Island, US, 1979.
-
-\bibitem{grau2013oaei}
-Bernardo~Cuenca Grau, Zlatan Dragisic, Kai Eckert, J{\'e}r{\^o}me Euzenat,
-  Alfio Ferrara, Roger Granada, Valentina Ivanova, Ernesto Jim{\'e}nez-Ruiz,
-  Andreas~Oskar Kempf, Patrick Lambrix, et~al.
-\newblock Results of the ontology alignment evaluation initiative 2013.
-\newblock In {\em Proc. 8th ISWC workshop on ontology matching (OM)}, pages
-  61--100, 2013.
-
-\bibitem{gruetze2012}
-Toni Gruetze, Christoph B{\"o}hm, and Felix Naumann.
-\newblock Holistic and scalable ontology alignment for linked open data.
-\newblock In {\em LDOW}, 2012.
-
-\bibitem{jain2010ontology}
-Prateek Jain, Pascal Hitzler, Amit~P Sheth, Kunal Verma, and Peter~Z Yeh.
-\newblock Ontology alignment for linked open data.
-\newblock In {\em The Semantic Web--ISWC 2010}, pages 402--417. Springer, 2010.
-
-\bibitem{jiang1997semantic}
-Jay~J Jiang and David~W Conrath.
-\newblock Semantic similarity based on corpus statistics and lexical taxonomy.
-\newblock {\em arXiv preprint cmp-lg/9709008}, 1997.
-
-\bibitem{Lesk:1986}
-Michael Lesk.
-\newblock Automatic sense disambiguation using machine readable dictionaries:
-  How to tell a pine cone from an ice cream cone.
-\newblock In {\em Proceedings of the 5th Annual International Conference on
-  Systems Documentation}, SIGDOC '86, pages 24--26, New York, NY, USA, 1986.
-  ACM.
-
-\bibitem{levenshtein1966bcc}
-VI~Levenshtein.
-\newblock {Binary Codes Capable of Correcting Deletions, Insertions and
-  Reversals}.
-\newblock {\em Soviet Physics Doklady}, 10:707, 1966.
-
-\bibitem{li1994}
-Wen-Syan Li and Chris Clifton.
-\newblock Semantic integration in heterogeneous databases using neural
-  networks.
-\newblock In {\em VLDB}, volume~94, pages 12--15, 1994.
-
-\bibitem{manning2008}
-Christopher~D Manning, Prabhakar Raghavan, and Hinrich Sch{\"u}tze.
-\newblock {\em Introduction to information retrieval}, volume~1.
-\newblock Cambridge university press Cambridge, 2008.
-
-\bibitem{Massmann11}
-Sabine Ma{\ss}mann, Salvatore Raunich, David Aum{\"u}ller, Patrick Arnold, and
-  Erhard Rahm.
-\newblock Evolution of the coma match system.
-\newblock In {\em OM}, 2011.
-
-\bibitem{Rahm:2011aa}
-Erhard Rahm.
-\newblock Towards large-scale schema and ontology matching.
-\newblock In Zohra Bellahsene, Angela Bonifati, and Erhard Rahm, editors, {\em
-  Schema Matching and Mapping}, Data-Centric Systems and Applications, pages
-  3--27. Springer Berlin Heidelberg, 2011.
-
-\bibitem{rahm2001survey}
-Erhard Rahm and Philip~A Bernstein.
+\bibitem{Rahm:2001}
+Erhard Rahm and Philip~A. Bernstein.
 \newblock A survey of approaches to automatic schema matching.
-\newblock {\em the VLDB Journal}, 10(4):334--350, 2001.
-
-\bibitem{Resnik:1995}
-Philip Resnik.
-\newblock Using information content to evaluate semantic similarity in a
-  taxonomy.
-\newblock In {\em Proceedings of the 14th International Joint Conference on
-  Artificial Intelligence - Volume 1}, IJCAI'95, pages 448--453, San Francisco,
-  CA, USA, 1995. Morgan Kaufmann Publishers Inc.
-
-\bibitem{Salton:1975}
-G.~Salton, A.~Wong, and C.~S. Yang.
-\newblock A vector space model for automatic indexing.
-\newblock {\em Commun. ACM}, 18(11):613--620, November 1975.
-
-\bibitem{Suchanek:2011}
-Fabian~M. Suchanek, Serge Abiteboul, and Pierre Senellart.
-\newblock Paris: Probabilistic alignment of relations, instances, and schema.
-\newblock {\em Proc. VLDB Endow.}, 5(3):157--168, November 2011.
-
-\bibitem{yatskevich2004element}
-Mikalai Yatskevich and Fausto Giunchiglia.
-\newblock Element level semantic matching using wordnet.
-\newblock In {\em Meaning Coordination and Negotiation Workshop, ISWC}, 2004.
+\newblock {\em The VLDB Journal}, 10(4):334--350, December 2001.
 
 \end{thebibliography}

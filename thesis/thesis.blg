@@ -2,59 +2,45 @@ This is BibTeX, Version 0.99d (TeX Live 2014)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: thesis.aux
 The style file: plain.bst
-Database file #1: thesis-ref.bib
-Warning--entry type for "commoncrawl" isn't style-file defined
---line 149 of file thesis-ref.bib
-Warning--entry type for "webdatacommonsTable" isn't style-file defined
---line 340 of file thesis-ref.bib
-Warning--entry type for "webdatacommons" isn't style-file defined
---line 347 of file thesis-ref.bib
-A bad cross reference---entry "Massmann11"
-refers to entry "DBLP:conf/semweb/2011om", which doesn't exist
-Warning--I didn't find a database entry for "DBLP:conf/semweb/2011om"
-Warning--to sort, need author or key in webdatacommonsTable
-Warning--to sort, need author or key in commoncrawl
-Warning--to sort, need author or key in webdatacommons
-Warning--can't use both volume and number fields in cohen1998integration
-You've used 33 entries,
+Database file #1: bibliography.bib
+You've used 6 entries,
             2118 wiz_defined-function locations,
-            705 strings with 9678 characters,
-and the built_in function-call counts, 12158 in all, are:
-= -- 1205
-> -- 552
-< -- 19
-+ -- 222
-- -- 184
-* -- 823
-:= -- 1912
-add.period$ -- 104
-call.type$ -- 33
-change.case$ -- 187
+            537 strings with 4747 characters,
+and the built_in function-call counts, 1921 in all, are:
+= -- 199
+> -- 54
+< -- 2
++ -- 24
+- -- 16
+* -- 104
+:= -- 306
+add.period$ -- 21
+call.type$ -- 6
+change.case$ -- 24
 chr.to.int$ -- 0
-cite$ -- 37
-duplicate$ -- 502
-empty$ -- 986
-format.name$ -- 184
-if$ -- 2643
+cite$ -- 6
+duplicate$ -- 94
+empty$ -- 176
+format.name$ -- 16
+if$ -- 428
 int.to.chr$ -- 0
-int.to.str$ -- 33
-missing$ -- 31
-newline$ -- 162
-num.names$ -- 64
-pop$ -- 227
+int.to.str$ -- 6
+missing$ -- 9
+newline$ -- 33
+num.names$ -- 12
+pop$ -- 36
 preamble$ -- 1
-purify$ -- 155
+purify$ -- 20
 quote$ -- 0
-skip$ -- 376
+skip$ -- 65
 stack$ -- 0
-substring$ -- 704
-swap$ -- 149
-text.length$ -- 19
+substring$ -- 121
+swap$ -- 25
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 126
-warning$ -- 4
-while$ -- 114
-width$ -- 35
-write$ -- 365
-(There was 1 error message)
+type$ -- 18
+warning$ -- 0
+while$ -- 20
+width$ -- 7
+write$ -- 70

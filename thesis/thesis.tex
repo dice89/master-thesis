@@ -1,11 +1,9 @@
 % do not change these two lines (this is a hard requirement
-% there is one exception: you might replace oneside by twoside in case you deliver 
+% there is one exception: you might replace oneside by twoside in case you deliver
 % the printed version in the accordant format
-\documentclass[11pt,titlepage,oneside,openany]{report}
+\documentclass[11pt,titlepage,oneside,openany,a4paper]{report}
 \usepackage{times}
 \usepackage[utf8]{inputenc}
-
-
 \usepackage{graphicx}
 \usepackage{latexsym}
 \usepackage{amsmath}
@@ -27,7 +25,7 @@
 
 % well, when your work is concerned with definitions, proposition and so on, we suggest this
 % feel free to add Corrolary, Theorem or whatever you need
-\newtheorem{definition}{Definition}
+\newtheorem{definition}{Definition}[chapter]
 \newtheorem{proposition}{Proposition}
 
 
@@ -78,21 +76,21 @@
    {\Large Ontology Matching \\}
    {\Large - using  -\\}
    {\Large Outlier Detection  \\}
-   \vspace{2cm} 
+   \vspace{2cm}
    {Master Thesis\\}
    \vspace{2cm}
    {presented by\\
  	 Alexander Müller \\
     Matriculation Number 1376818\\
    }
-   \vspace{1cm} 
+   \vspace{1cm}
    {submitted to the\\
   	Chair of Information Systems V\\
   	 Prof. .Dr.\ Heiko\ Paulheim \\
     University Mannheim\\} \vspace{2cm}
    {Mai 2015}
   \end{center}
-\end{titlepage} 
+\end{titlepage}
 % no lets make some add some table of contents
 \tableofcontents
 \newpage
@@ -105,15 +103,139 @@
 \pagenumbering{arabic}
 \chapter{Introduction}
 	\section{Overcoming the Disparate Data Space}
-	\section{Motivation}
-	\section{Contributions}
+	Maybe use Linked Open Data The Story so far as a motivating example, or the smart data initiative of the federal government of Germany
 	
+	Defining an ontology is not a deterministic task, so different authors will produce different ontologies that capture the same real life task
+	\section{Contributions}
+
 \chapter{The Ontology Matching Problem}
-	\section{Definition}
-	Formal Definition of ontology matching
-	\section{State-of-the Art}
+\label{chap:om_problem}
+	\begin{itemize}
+	\item First define basic terms, like ontology, ontology matching process, ontology alignment
+	\item Give a simple motivating example
+	\item Shortly review the state of the art in ontology matching, mostly ensembles of multiple matchers
+	\item Express challenges, and focus on matcher selection and matcher cominbation
+	\end{itemize}
+	\section{Defintions}
+	\label{sec:defintions}
+
+	\subsection{Ontologies}
+	\label{sec:ontologies_def}
+In philosophy the term ontology describes the study of being and existence, trying to define categories of things and to discover relationships among them. Computer Science adopted this term for their own needs and consequently for artificial intelligence  and web researchers an ontology is a formal model of a domain.(\cite{ehrig2006ontology}, \cite{paulheim2011ontology}). 
+In literature there exist various definitions for ontologies on different levels, some of which are discussed in \cite{Guarino:1997}. Nevertheless one of the most cited definitions is the one by \cite{Gruber:1995}: "An ontology is an explicit specification  of a conceptualization".  But probably as often as its often extended by other definitions to like:" An ontology is an explicit formal specification of a shared conceptualization of a domain of interest" define that the definitions needs to be formal and represents  a partial understanding of a domain of 
+	\begin{enumerate}
+	\item An Ontology is an explicite specification of a conceptualization (Gruber, 1995)
+	\end{enumerate}
+	\subsection{Ontology Matching}
+	\label{sec:ontologymatching_def}
+	First of all it  needs to be said that in literature there exists various terms and definitions for ontology matching. Terms like ontology alignment, ontology mapping, integration of ontologies (TODO cite) are referring to the same concepts and techniques. To have a common understanding in the work, the term ontology matching is used when to the process of matching ontologies is referred. Complementary ontology alignment or simply alignment is used when to the resulting output of a matching process is referred. Therefore in the following sections these two questions will be answered:
+	
+\begin{enumerate}
+\item What is a matching process?
+\item What is an alignment?
+\end{enumerate}
+
+Based on all these definitions(TODO Cite) a general definitions closely related to \cite{euzenat2013d} is given in the latter as a common ground of under standing for the remainder of this thesis.
+\subsubsection{Ontology Matching Process}
+\label{sec:om_process}
+The foundation for each ontology matching system is a process that matches two or more ontologies in order to produce an alignment between those ontologies. That is called in general a ontology matching process. In the definition of a process is given by considering two input ontologies that should be aligned.
+
+In the database oriented research on ontology matching this process is often called match operator (\cite{Rahm:2001}), which refers in its core to the same abstraction as made in \cite{euzenat2013d} and  \cite{ehrig2006ontology}.
+
+Nevermind the fact that matters is that these definitions have in common that the process has as an input two ontologies that needs to be matched , and some parameters to control the internal behavior of the underlying algorithm, usually threshold parameters. In some definitions (\cite{euzenat2004api}) furthermore other resources are also included into the input domain, those can include initial alignments that will bootstrap the alignment process or background knowledge items. The output is consequently an alignment, which consists out of correspondences between entities of the given ontologies. In \cite{euzenat2013d} and  \cite{ehrig2006ontology} the functional character of the matching process is stressed leading to the definition of the matching process.
+
+\begin{definition} [Matching Process]
+An ontology matching process is a function, based on two ontologies to match $O_1$ and $O_2$, a set of parameters $p$ and  a set of resources $r$
+\begin{equation*}
+A = f (O_1, O_2, p,r)
+\end{equation*}
+\end{definition}
+
+\begin{LARGE}
+TODO Think about adding figure
+\end{LARGE}
+
+Considering this function, the expected alignment is a real subset of $ A \subseteq O_1 \times O_2 \times \Theta$ with $\Theta$ being the set of possible relation types (see Section \ref{sec:oa_def}). This shows that the possible search space can become very big. Assuming that each Ontology contains $1000$ entities meaning classes, object properties and data type properties and possibly 4 type of relations in $\Theta$, the  search space is $1000 \times 1000 \times 4 = 4,000,000$. These sizes are rather small especially in the medicine domain exists ontologies much larger than this.  Nevermind this shows that the process to find an alignment for ontologies is not trivial. \cite{ehrig2006ontology}
+Which properties an alignment has is illustrated in the following section.
+
+\subsubsection{Ontology Alignment}
+\label{sec:oa_def}
+The definition of alignments in literature have the following criteria, to express the correspondence between entities, that belong two different ontologies:
+\begin{enumerate}
+\item How to correspond to entities of the underlying ontology
+\item Which types of relationships between entities are distinguished
+\item How to address the allowed or wished multiplicity of alignments
+\end{enumerate}
+
+To tackle the first feature in \cite{euzenat2013d} an entity language is introduced, that defines a separate ontology-format-independent language to address entities and perform operations with them. The basic advantage of this language is that it is a abstraction over the underlying ontology description language and by this allows matching entities of ontology across multiple formats. Since this is not in scope for this work, entities are assumed to have a unique identifier, which they are referenced with, without the use of an entity language.
+
+Another important aspect of a correspondence between two entities is the type of relationship they stand to each other. Those types are often inferred from data modeling techniques(\cite{Rahm:2001}) or have set-theoretic background (\cite{euzenat2013d}) and can define for example when two entities are equal to each other ($=$) or one entities more general than another one ($>$). The set of possible relations is called $\Theta$. The predominant relationship in this work is the equality between two entities.
+
+Furthermore  in contrast to  \cite{euzenat2013d} - but in agreement with \cite{ehrig2006ontology} and \cite{Rahm:2001}- it is considered that each correspondence has a degree of confidence , expresses the likelihood that the correspondence holds. This confidence is real valued number in the interval $[0,1]$, where $1$ expresses the highest confidence and $0$ the lowest. The reason why \cite{euzenat2013d} is not considering a degree of confidence as part of the correspondence definition is that they define a separate meta-data element for each correspondence, which can contain arbitrary information, including the confidence. This work does not follow this definition, because of the high importance of the confidence value for the presented approach to ontology matching.
+
+From all this, the definition of a correspondence and an alignment can be expressed as follows:
+\begin{definition} [Correspondence] Given two ontologies $O_1,O_2$ and a set of relations $\Theta$ a correspondence is a 4-Tuple:
+	\begin{equation*}
+	(e_1,e_2,r,c)
+	\end{equation*}
+with
+	\begin{eqnarray*}
+	e_1 & \in O_1 \wedge  e_2 \in O_2 \\
+	r & \in \Theta \\
+	c & \in [0,1]
+	\end{eqnarray*}
+\end{definition}
+\begin{definition} [Alignment] Given two ontologies $O_1, O_2$ an alignment between them is defined as a set of correspondences of entities $e_1$ and $e_2$, where $e_1 \in O_1 \wedge e_2 \in O_2$.
+\end{definition}
+
+\subsubsection{Ontology Alignment Multiplicity}
+\label{sec:oa_multiplicity}
+The previous defined alignment does not consider the allowed multiplicities. But for a lot of problems an alignments with a specific cardinality are necessary. For instance that for each entity of a ontology $O_1$ needs to be exactly one entity of ontology $O_2$ mapped, or more likely at most one entity of $0_2$.
+
+In \cite{Rahm:2001} and \cite{ehrig2006ontology} those cardinalities are considered in a way that is known from data modeling languages like the Entity Relationship Diagrams or the Unified Modeling Language in the form of 1:1, 1:N, N:1 and N:M cardinalities between entities of two sets. In \cite{euzenat2013d} however the multiplicities are defined more formally and in a more granular way. Thus we will follow this definition, since this definitions are used in the remainder of this thesis.
+
+In order to define the multiplicity between entities of an alignment, the alignment between two ontologies is treated as a function $f$ where ontology $0_1$ is the domain $X$ of $f$ and $O_2$ is the co-domain $Y$. Thus we can use the mathematical terms surjective, injective and bijective to define the multiplicity of a function.
+
+A function is surjective when every element $y \in Y$ of $f$ has a corresponding value $x \in X$. This means that the function may map more than one $x$-value to a $y$ value.
+
+In contrast to that a function is injective when it preserves the uniqueness of a value $x \in X$ when it's mapped to a value $y \in Y$. Therefore intuitively speaking a function is injective if for each value $y \in Y$ it maps at most one value $x \in X$.
+Combining those two properties a function is bijective if it is surjective and bijective, so for each value of $Y$ has exactly one value in $X$. In practice this type of function is often called one-to-one mapping.
+
+In \cite{euzenat2013d} however they define one more property of an alignment which is called total. It is an inversion of the surjective properties so that a function is total if for each value $x \in X$ at least one value $y \in Y$ is mapped.
+Analog to \cite{euzenat2013d} the properties total and injective of an alignment can be defined:
+\begin{definition} [Total and Injective Alignment]
+Given two ontologies $O_1$ and $O_2$, an alignment $A$ is called total iff:
+\begin{equation*}
+\forall e_1 \in O_1, \exists e_2 \in O_2 : (e_1,e_2,=) \in A
+\end{equation*}
+And an alignment $A$, with the domain $O_1$ and the codomain $0_2$ is called injective from $0_1$ to $0_2$ iff:
+\begin{equation*}
+\forall e_2 \in O_2 , \exists e_{2'},e_1 \in O_2 : (e_1,e_2,=) \in A \wedge (e_{2'},e_2,=) \in A \Rightarrow e_1 = e_{2'}
+\end{equation*}
+\end{definition}
+
+In \cite{euzenat2003towards} a expressive notation for the definition of multiplicities of alignments in ontology matching is introduced. There the an total and injective alignment is represented by 1, ? represents an injective alignment, + for total and * for an alignment that does not hold the definitions above. These properties are sensitive to the direction they are seen, for instance and A alignment of $O_1$ and $O_2$ can be injective from $0_1$ to $O_2$ and total from $O_2$ to $O_1$. Thus this results in the following different combinations: ?:?, ?:1, 1:?, 1:1, ?:+, +:?, 1:+, +:1, +:+, ?:*, *:?, 1:*, *:1, +:*, *:+, *:* .
+
+An example for this can be seen in Section \ref{sec:motivating_example}.
+\subsection{Matching Representation}
+\begin{LARGE}
+Think about if necessary
+\end{LARGE}
+
+RDF Format \cite{euzenat2004api}
+
+\section{Motivating Example}
+\label{sec:motivating_example}
+
+\section{State-of-the Art}
+\label{sec:state_of_the_art}
 	What is the current state in research, e.g. current advances at OAEI
-	\section{Challenges}
+	Data sets:
+	\begin{itemize}
+	\item Conference, Benchmark, Library, Anatomy
+	\end{itemize}
+\section{Challenges}
+\label{sec:challeng_ontology_matching}
 	Basicalle the Euzenant Paper
 
 
@@ -132,15 +254,16 @@ Tailored classification of approaches
 \subsection{Structure Based}
  \subsubsection{TODO}
 \section{Hybrid Matching Approaches}
-
 \section{Analysis of Hybrid Matching Approaches}
 Show weaknesses of current approaches, supervised, often weighted average based, so not flexible (transferable to other domains)
 
+\chapter{Selected Approaches to Outlier Analysis}
+\section{Definition Outlier Analysis}
+\section{Approaches}
 
 %%%%%%%%%%%%%%%% Main Contribution
 
 \chapter{Hybrid Ontology Matching using Outlier Analysis}
-\section{Definition Outlier Analysis}
 \section{Motivation for using Outlier Analysis for Ontology Matching}
 Flexibility towards changing data domains
 No need to train weights upfront
@@ -195,7 +318,7 @@ What base matcher survived the selection process
 
 
 \bibliographystyle{plain}
-\bibliography{thesis-ref}
+\bibliography{bibliography}
 
 \newpage
 

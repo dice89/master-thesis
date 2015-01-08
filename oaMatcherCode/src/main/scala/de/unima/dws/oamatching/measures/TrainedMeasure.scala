@@ -50,7 +50,8 @@ class TrainedMeasure(val baseMatcher: TrainedComponentMatcher) extends MatrixMea
     measure(cl1.asInstanceOf[OWLEntity], cl2.asInstanceOf[OWLEntity])
   }
   def individualMeasure(cl1: Object, cl2: Object): Double = {
-    measure(cl1.asInstanceOf[OWLEntity], cl2.asInstanceOf[OWLEntity])
+    0.0
+    //measure(cl1.asInstanceOf[OWLEntity], cl2.asInstanceOf[OWLEntity])
   }
 
 }

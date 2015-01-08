@@ -14,12 +14,17 @@ class StandardMeasure(val baseMatcher: BaseComponentMatcher) extends MatrixMeasu
 
   def measure(cl1: OWLEntity, cl2: OWLEntity): Double = {
 
-    val ontology1 = onto1.getOntology().asInstanceOf[OWLOntology]
-    val ontology2 = onto2.getOntology().asInstanceOf[OWLOntology]
+	if (cl1.getIRI().toString().contains("Mexico")){
+	  println("test")
+	}
 
-    val measure = baseMatcher.score((cl1, ontology1), (cl2, ontology2))
+      val ontology1 = onto1.getOntology().asInstanceOf[OWLOntology]
+      val ontology2 = onto2.getOntology().asInstanceOf[OWLOntology]
 
-    measure
+      val measure = baseMatcher.score((cl1, ontology1), (cl2, ontology2))
+
+      measure
+  
   }
 
   def classMeasure(cl1: Object, cl2: Object): Double = {
@@ -29,6 +34,7 @@ class StandardMeasure(val baseMatcher: BaseComponentMatcher) extends MatrixMeasu
     measure(cl1.asInstanceOf[OWLEntity], cl2.asInstanceOf[OWLEntity])
   }
   def individualMeasure(cl1: Object, cl2: Object): Double = {
-    measure(cl1.asInstanceOf[OWLEntity], cl2.asInstanceOf[OWLEntity])
+    0.0
+    // measure(cl1.asInstanceOf[OWLEntity], cl2.asInstanceOf[OWLEntity])
   }
 }

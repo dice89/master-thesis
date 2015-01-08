@@ -6,7 +6,7 @@ import java.net.URI
 import scala.collection.convert.Wrappers.JEnumerationWrapper
 import scala.collection.immutable.Map
 import scala.collection.mutable.HashMap
-import scala.collection.mutable.{Map => MutableMap}
+import scala.collection.mutable.{ Map => MutableMap }
 import scala.collection.mutable.MutableList
 
 import org.semanticweb.owl.align.Alignment
@@ -100,7 +100,9 @@ object Pipeline {
 
     //optimizeThresholdBaseMachterGlobal(parse_conference_2014("ontos/2014/conference"), 10, "conference")
 
-    matchAndEvaluateProblems(parse_conference_2014)("ontos/2014/conference", "conference", 0.5)
+    
+    optimizeMetaMatchingThreshold(parse_conference_2014)("ontos/2014/conference","conference",10)
+    //matchAndEvaluateProblems(parse_conference_2014)("ontos/2014/conference", "conference", 0.5)
   }
 
   def optimizeThresholdBaseMatcherLocal(matcher_name: String, steps: Int, problem: MatchingProblem, dataset_name: String): Double = {
@@ -186,6 +188,45 @@ object Pipeline {
     problems
   }
 
+  def optimizeMetaMatchingThreshold(parsefunction: String => Seq[MatchingProblem])(path_to_folder: String, dataset_name: String, steps: Int): Double = {
+    val stepsize: Double = 1.0 / steps.asInstanceOf[Double]
+
+    val results = for (
+      index <- 0 until steps;
+      threshold <- Option[Double](1.0 - (stepsize * index));
+      if (threshold > 0.1)
+    ) yield {
+      println("Start Matcher ")
+
+      val res = (threshold, matchAndEvaluateProblems(parsefunction)(path_to_folder, dataset_name, threshold))
+
+      println("Matcher " + res)
+      Option(res)
+    }
+
+    val best_result = results.reduceLeft((B, A) => {
+      if (B.isDefined && A.isDefined) {
+        if (B.get._2.fmeasure > A.get._2.fmeasure) {
+          B
+        } else {
+          A
+        }
+      } else {
+        if (B.isDefined && A.isEmpty) {
+          B
+        } else {
+          A
+        }
+      }
+
+    })
+
+    ResultLogger.log("Best Threshold metamatcher for for dataset " + dataset_name + " is " + best_result.get._1)
+
+    best_result.get._1
+
+  }
+
   def matchAndEvaluateProblems(parsefunction: String => Seq[MatchingProblem])(path_to_folder: String, dataset_name: String, threshold: Double): EvaluationResult = {
     val problems = parsefunction(path_to_folder)
 
@@ -263,20 +304,20 @@ object Pipeline {
     ResultLogger.log_result(path_to_folder, "BaseLine2", best_normalized)
 
     var summed_result: EvaluationResult = meta_matcher_results.foldLeft(EvaluationResult(0.0, 0.0, 0.0, 0, 0, 0))((z, i) => {
-      EvaluationResult(z.precision + i.precision, z.recall + i.recall, z.fmeasure + i.fmeasure, z.tp +i.tp , z.fptp +i.fptp , z.fnfp +i.fnfp )
+      EvaluationResult(z.precision + i.precision, z.recall + i.recall, z.fmeasure + i.fmeasure, z.tp + i.tp, z.fptp + i.fptp, z.fnfp + i.fnfp)
     })
     val combined_matcher_result = EvaluationResult(summed_result.precision / meta_matcher_results.size, summed_result.recall / meta_matcher_results.size, summed_result.fmeasure / meta_matcher_results.size, 0, 0, 0)
 
     println("Outlier Detection Meta Matcher Result")
     println("Micro Average")
-   
-    val recall:Double =  summed_result.tp.toDouble/ summed_result.fnfp.toDouble 
-    val precision:Double = summed_result.tp.toDouble / summed_result.fptp.toDouble
-    val fmeasure:Double = 2 * precision * recall / (precision + recall);
-    
-    val micro_combined_result = EvaluationResult(recall,precision,fmeasure,summed_result.tp,summed_result.fptp,summed_result.fnfp )
-    
-    ResultLogger.log_result(path_to_folder, "Average Meta Matcher Micro ",  micro_combined_result)
+
+    val recall: Double = summed_result.tp.toDouble / summed_result.fnfp.toDouble
+    val precision: Double = summed_result.tp.toDouble / summed_result.fptp.toDouble
+    val fmeasure: Double = 2 * precision * recall / (precision + recall);
+
+    val micro_combined_result = EvaluationResult(recall, precision, fmeasure, summed_result.tp, summed_result.fptp, summed_result.fnfp)
+
+    ResultLogger.log_result(path_to_folder, "Average Meta Matcher Micro ", micro_combined_result)
     println(micro_combined_result)
     println("Macro Average")
 
@@ -357,8 +398,8 @@ object Pipeline {
   def validate(reference: Alignment)(alignment: AlignmentProcess): EvaluationResult = {
     val evaluator: PRecEvaluator = new PRecEvaluator(reference, alignment);
     evaluator.eval(null)
-  
-    EvaluationResult(evaluator.getPrecision(), evaluator.getRecall(), evaluator.getFmeasure(), evaluator.getCorrect(),  evaluator.getFound(), evaluator.getExpected())
+
+    EvaluationResult(evaluator.getPrecision(), evaluator.getRecall(), evaluator.getFmeasure(), evaluator.getCorrect(), evaluator.getFound(), evaluator.getExpected())
   }
 
   /*
