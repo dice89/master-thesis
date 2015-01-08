@@ -1,4 +1,10 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{dragisicresults}
+Zlatan Dragisic, Kai Eckert, J{\'e}r{\^o}me Euzenat, Daniel Faria12, Alfio
+  Ferrara, Roger Granada, Valentina Ivanova, Ernesto Jim{\'e}nez-Ruiz,
+  Andreas~Oskar Kempf, Patrick Lambrix, et~al.
+\newblock Results of the ontology alignment evaluation initiative 2014.
 
 \bibitem{ehrig2006ontology}
 M.~Ehrig.
@@ -21,6 +27,24 @@ J\'er\^ome Euzenat and Pavel Shvaiko.
 \newblock {\em Ontology matching}.
 \newblock Springer-Verlag, Heidelberg (DE), 2nd edition, 2013.
 
+\bibitem{Gruber:1995}
+Thomas~R. Gruber.
+\newblock Toward principles for the design of ontologies used for knowledge
+  sharing.
+\newblock {\em Int. J. Hum.-Comput. Stud.}, 43(5-6):907--928, December 1995.
+
+\bibitem{Guarino:1997}
+Nicola Guarino.
+\newblock Understanding, building and using ontologies.
+\newblock {\em Int. J. Hum.-Comput. Stud.}, 46(2-3):293--310, March 1997.
+
+\bibitem{Guarino95}
+Nicola Guarino and Pierdaniele Giaretta.
+\newblock Ontologies and knowledge bases: Towards a terminological
+  clarification.
+\newblock In {\em Towards very Large Knowledge bases: Knowledge Building and
+  Knowledge sharing}, pages 25--32. IOS Press, 1995.
+
 \bibitem{paulheim2011ontology}
 H.~Paulheim.
 \newblock {\em Ontology-based Application Integration}.
@@ -30,5 +54,10 @@ H.~Paulheim.
 Erhard Rahm and Philip~A. Bernstein.
 \newblock A survey of approaches to automatic schema matching.
 \newblock {\em The VLDB Journal}, 10(4):334--350, December 2001.
+
+\bibitem{Studer:1998}
+Rudi Studer, V.~Richard Benjamins, and Dieter Fensel.
+\newblock Knowledge engineering: Principles and methods.
+\newblock {\em Data Knowl. Eng.}, 25(1-2):161--197, March 1998.
 
 \end{thebibliography}

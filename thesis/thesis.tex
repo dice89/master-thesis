@@ -121,21 +121,45 @@
 
 	\subsection{Ontologies}
 	\label{sec:ontologies_def}
+	\subsubsection{What is an Ontology}
 In philosophy the term ontology describes the study of being and existence, trying to define categories of things and to discover relationships among them. Computer Science adopted this term for their own needs and consequently for artificial intelligence  and web researchers an ontology is a formal model of a domain.(\cite{ehrig2006ontology}, \cite{paulheim2011ontology}). 
-In literature there exist various definitions for ontologies on different levels, some of which are discussed in \cite{Guarino:1997}. Nevertheless one of the most cited definitions is the one by \cite{Gruber:1995}: "An ontology is an explicit specification  of a conceptualization".  But probably as often as its often extended by other definitions to like:" An ontology is an explicit formal specification of a shared conceptualization of a domain of interest" define that the definitions needs to be formal and represents  a partial understanding of a domain of 
-	\begin{enumerate}
-	\item An Ontology is an explicite specification of a conceptualization (Gruber, 1995)
-	\end{enumerate}
-	\subsection{Ontology Matching}
-	\label{sec:ontologymatching_def}
-	First of all it  needs to be said that in literature there exists various terms and definitions for ontology matching. Terms like ontology alignment, ontology mapping, integration of ontologies (TODO cite) are referring to the same concepts and techniques. To have a common understanding in the work, the term ontology matching is used when to the process of matching ontologies is referred. Complementary ontology alignment or simply alignment is used when to the resulting output of a matching process is referred. Therefore in the following sections these two questions will be answered:
+
+In literature there exist various definitions for ontologies on different levels, some of which are discussed in \cite{Guarino:1997}. Nevertheless one of the most cited definitions is the one by \cite{Gruber:1995}: "An ontology is an explicit specification  of a conceptualization".  But probably as often as its cited its often extended by other definitions like: "An ontology is an explicit formal specification of a shared conceptualization of a domain of interest"\cite{Studer:1998} and "a logical theory which gives and explicit, partial account of a conceptualization" \cite{Guarino95}. These two definitions extends the understanding of an ontology in three points. First of all an ontology needs to be formal, so for instance a textual description is not sufficient.\cite{Studer:1998} Moreover it needs to cover a specific domain, so that there exist more than one ontology (a key difference to philosophy). And finally a ontology can only partial conceptualize the facts of world, so it's a simplified abstraction of the reality.\cite{ehrig2006ontology}
+
+This rather textual definition will be in the following precised by the introduction of the Web Ontology Language (OWL) which is  heavily used in the semantic web (TODO cite linked open data the story to far) and most of the datasets provided by the OAEI are in OWL format. \cite{dragisicresults}
+\subsubsection{OWL a Ontology Language}
+\begin{itemize}
+\item Show main elements of owl and relate them to the main elements of a an ontology based on \cite{euzenat2013d}
+\item stress uniqueness of URI
+\item Then define it formally
+\end{itemize}
+
+
+Definition based on \cite{euzenat2013d}
+
+\begin{definition} [Ontology] An ontology is a tuple $ o = ( C,I,R,T,V,\leq,\perp,\in,=)$ such that:\\ \\
+$C$ is the set of classes,\\
+$I$ is the set of individuals,\\
+$R$ is the set of relations,\\
+$V$ is the set of datatypes,\\
+with $C,I,R,V$ being pairwise disjoint, \\
+$\leq$ is a relation on  $ (C \times C)  \cup (R \times R) \cup (T \times T)$  called specialization,\\
+$\perp$ is a relation on  $ (C \times C)  \cup (R \times R) \cup (T \times T)$ called exclusion,\\
+$\in$ is a relation over $(I \times C) \cup (V \times T)$ called instantiation,\\
+$=$ is a relation over $ I \times R \times (I \cup U)$
+\end{definition}
+\subsection{Ontology Matching}
+\label{sec:ontologymatching_def}
+In general ontology matching aims to reduce heterogeneity between different ontologies, to overcome disparate data spaces. As mentioned in the introduction designing an ontology in not a deterministic process (TODO Cite), as heterogeneity may occur due to different Reasons: For instance because of a different usage terms  to described the same real world concept (e.g.: car vs. automobile)  or different perspectives on the modeling domain (TODO cite). 
+
+	Despite that common ground it needs to be said that in literature there exist various terms and definitions for ontology matching. Terms like ontology alignment, ontology mapping, integration of ontologies (TODO cite) are referring to the same concepts and techniques. To have a common understanding in the work, the term ontology matching is used when to the process of matching ontologies is referred. Complementary ontology alignment or simply alignment is used when to the resulting output of a matching process is referred. Therefore in the following sections these two questions will be answered:
 	
 \begin{enumerate}
 \item What is a matching process?
 \item What is an alignment?
 \end{enumerate}
 
-Based on all these definitions(TODO Cite) a general definitions closely related to \cite{euzenat2013d} is given in the latter as a common ground of under standing for the remainder of this thesis.
+%Based on all these definitions(TODO Cite) a general definitions closely related to \cite{euzenat2013d} is given in the latter as a common ground of under standing for the remainder of this thesis.
 \subsubsection{Ontology Matching Process}
 \label{sec:om_process}
 The foundation for each ontology matching system is a process that matches two or more ontologies in order to produce an alignment between those ontologies. That is called in general a ontology matching process. In the definition of a process is given by considering two input ontologies that should be aligned.
@@ -145,9 +169,9 @@ In the database oriented research on ontology matching this process is often cal
 Nevermind the fact that matters is that these definitions have in common that the process has as an input two ontologies that needs to be matched , and some parameters to control the internal behavior of the underlying algorithm, usually threshold parameters. In some definitions (\cite{euzenat2004api}) furthermore other resources are also included into the input domain, those can include initial alignments that will bootstrap the alignment process or background knowledge items. The output is consequently an alignment, which consists out of correspondences between entities of the given ontologies. In \cite{euzenat2013d} and  \cite{ehrig2006ontology} the functional character of the matching process is stressed leading to the definition of the matching process.
 
 \begin{definition} [Matching Process]
-An ontology matching process is a function, based on two ontologies to match $O_1$ and $O_2$, a set of parameters $p$ and  a set of resources $r$
+An ontology matching process is a function, based on two ontologies to match $O_1$ and $o_2$, a set of parameters $p$ and  a set of resources $r$
 \begin{equation*}
-A = f (O_1, O_2, p,r)
+A = f (o_1, o_2, p,r)
 \end{equation*}
 \end{definition}
 
@@ -155,7 +179,7 @@ A = f (O_1, O_2, p,r)
 TODO Think about adding figure
 \end{LARGE}
 
-Considering this function, the expected alignment is a real subset of $ A \subseteq O_1 \times O_2 \times \Theta$ with $\Theta$ being the set of possible relation types (see Section \ref{sec:oa_def}). This shows that the possible search space can become very big. Assuming that each Ontology contains $1000$ entities meaning classes, object properties and data type properties and possibly 4 type of relations in $\Theta$, the  search space is $1000 \times 1000 \times 4 = 4,000,000$. These sizes are rather small especially in the medicine domain exists ontologies much larger than this.  Nevermind this shows that the process to find an alignment for ontologies is not trivial. \cite{ehrig2006ontology}
+Considering this function, the expected alignment is a real subset of $ A \subseteq o_1 \times o_2 \times \Theta$ with $\Theta$ being the set of possible relation types (see Section \ref{sec:oa_def}). This shows that the possible search space can become very big. Assuming that each Ontology contains $1000$ entities meaning classes, object properties and data type properties and possibly 4 type of relations in $\Theta$, the  search space is $1000 \times 1000 \times 4 = 4,000,000$. These sizes are rather small especially in the medicine domain exists ontologies much larger than this.  Nevermind this shows that the process to find an alignment for ontologies is not trivial. \cite{ehrig2006ontology}
 Which properties an alignment has is illustrated in the following section.
 
 \subsubsection{Ontology Alignment}
@@ -174,27 +198,27 @@ Another important aspect of a correspondence between two entities is the type of
 Furthermore  in contrast to  \cite{euzenat2013d} - but in agreement with \cite{ehrig2006ontology} and \cite{Rahm:2001}- it is considered that each correspondence has a degree of confidence , expresses the likelihood that the correspondence holds. This confidence is real valued number in the interval $[0,1]$, where $1$ expresses the highest confidence and $0$ the lowest. The reason why \cite{euzenat2013d} is not considering a degree of confidence as part of the correspondence definition is that they define a separate meta-data element for each correspondence, which can contain arbitrary information, including the confidence. This work does not follow this definition, because of the high importance of the confidence value for the presented approach to ontology matching.
 
 From all this, the definition of a correspondence and an alignment can be expressed as follows:
-\begin{definition} [Correspondence] Given two ontologies $O_1,O_2$ and a set of relations $\Theta$ a correspondence is a 4-Tuple:
+\begin{definition} [Correspondence] Given two ontologies $o_1,o_2$ and a set of relations $\Theta$ a correspondence is a 4-Tuple:
 	\begin{equation*}
 	(e_1,e_2,r,c)
 	\end{equation*}
 with
 	\begin{eqnarray*}
-	e_1 & \in O_1 \wedge  e_2 \in O_2 \\
+	e_1 & \in o_1 \wedge  e_2 \in o_2 \\
 	r & \in \Theta \\
 	c & \in [0,1]
 	\end{eqnarray*}
 \end{definition}
-\begin{definition} [Alignment] Given two ontologies $O_1, O_2$ an alignment between them is defined as a set of correspondences of entities $e_1$ and $e_2$, where $e_1 \in O_1 \wedge e_2 \in O_2$.
+\begin{definition} [Alignment] Given two ontologies $o_1, o_2$ an alignment between them is defined as a set of correspondences of entities $e_1$ and $e_2$, where $e_1 \in o_1 \wedge e_2 \in o_2$.
 \end{definition}
 
 \subsubsection{Ontology Alignment Multiplicity}
 \label{sec:oa_multiplicity}
-The previous defined alignment does not consider the allowed multiplicities. But for a lot of problems an alignments with a specific cardinality are necessary. For instance that for each entity of a ontology $O_1$ needs to be exactly one entity of ontology $O_2$ mapped, or more likely at most one entity of $0_2$.
+The previous defined alignment does not consider the allowed multiplicities. But for a lot of problems an alignments with a specific cardinality are necessary. For instance that for each entity of a ontology $o_1$ needs to be exactly one entity of ontology $o_2$ mapped, or more likely at most one entity of $0_2$.
 
 In \cite{Rahm:2001} and \cite{ehrig2006ontology} those cardinalities are considered in a way that is known from data modeling languages like the Entity Relationship Diagrams or the Unified Modeling Language in the form of 1:1, 1:N, N:1 and N:M cardinalities between entities of two sets. In \cite{euzenat2013d} however the multiplicities are defined more formally and in a more granular way. Thus we will follow this definition, since this definitions are used in the remainder of this thesis.
 
-In order to define the multiplicity between entities of an alignment, the alignment between two ontologies is treated as a function $f$ where ontology $0_1$ is the domain $X$ of $f$ and $O_2$ is the co-domain $Y$. Thus we can use the mathematical terms surjective, injective and bijective to define the multiplicity of a function.
+In order to define the multiplicity between entities of an alignment, the alignment between two ontologies is treated as a function $f$ where ontology $0_1$ is the domain $X$ of $f$ and $o_2$ is the co-domain $Y$. Thus we can use the mathematical terms surjective, injective and bijective to define the multiplicity of a function.
 
 A function is surjective when every element $y \in Y$ of $f$ has a corresponding value $x \in X$. This means that the function may map more than one $x$-value to a $y$ value.
 
@@ -204,17 +228,17 @@ Combining those two properties a function is bijective if it is surjective and b
 In \cite{euzenat2013d} however they define one more property of an alignment which is called total. It is an inversion of the surjective properties so that a function is total if for each value $x \in X$ at least one value $y \in Y$ is mapped.
 Analog to \cite{euzenat2013d} the properties total and injective of an alignment can be defined:
 \begin{definition} [Total and Injective Alignment]
-Given two ontologies $O_1$ and $O_2$, an alignment $A$ is called total iff:
+Given two ontologies $o_1$ and $o_2$, an alignment $A$ is called total iff:
 \begin{equation*}
-\forall e_1 \in O_1, \exists e_2 \in O_2 : (e_1,e_2,=) \in A
+\forall e_1 \in o_1, \exists e_2 \in o_2 : (e_1,e_2,=) \in A
 \end{equation*}
-And an alignment $A$, with the domain $O_1$ and the codomain $0_2$ is called injective from $0_1$ to $0_2$ iff:
+And an alignment $A$, with the domain $o_1$ and the codomain $0_2$ is called injective from $0_1$ to $0_2$ iff:
 \begin{equation*}
-\forall e_2 \in O_2 , \exists e_{2'},e_1 \in O_2 : (e_1,e_2,=) \in A \wedge (e_{2'},e_2,=) \in A \Rightarrow e_1 = e_{2'}
+\forall e_2 \in o_2 , \exists e_{2'},e_1 \in o_2 : (e_1,e_2,=) \in A \wedge (e_{2'},e_2,=) \in A \Rightarrow e_1 = e_{2'}
 \end{equation*}
 \end{definition}
 
-In \cite{euzenat2003towards} a expressive notation for the definition of multiplicities of alignments in ontology matching is introduced. There the an total and injective alignment is represented by 1, ? represents an injective alignment, + for total and * for an alignment that does not hold the definitions above. These properties are sensitive to the direction they are seen, for instance and A alignment of $O_1$ and $O_2$ can be injective from $0_1$ to $O_2$ and total from $O_2$ to $O_1$. Thus this results in the following different combinations: ?:?, ?:1, 1:?, 1:1, ?:+, +:?, 1:+, +:1, +:+, ?:*, *:?, 1:*, *:1, +:*, *:+, *:* .
+In \cite{euzenat2003towards} a expressive notation for the definition of multiplicities of alignments in ontology matching is introduced. There the an total and injective alignment is represented by 1, ? represents an injective alignment, + for total and * for an alignment that does not hold the definitions above. These properties are sensitive to the direction they are seen, for instance and A alignment of $o_1$ and $o_2$ can be injective from $0_1$ to $o_2$ and total from $o_2$ to $o_1$. Thus this results in the following different combinations: ?:?, ?:1, 1:?, 1:1, ?:+, +:?, 1:+, +:1, +:+, ?:*, *:?, 1:*, *:1, +:*, *:+, *:* .
 
 An example for this can be seen in Section \ref{sec:motivating_example}.
 \subsection{Matching Representation}
@@ -270,6 +294,7 @@ No need to train weights upfront
 \section{Ontology Matching as an Outlier Detection Problem}
 \subsection{Creating the Feature Vector}
 \subsection{Significance of Outliers for Ontology Matching}
+Correlation between Outlier score and label
 \subsection{Transforming the Outlier Analysis Result to a Matching}
 
 
@@ -278,9 +303,9 @@ No need to train weights upfront
 
 \section{Overview}
 Presents the implemented Pipeline
-\section{Base Matcher used}
-What base matcher survived the selection process
-\section{Methods used to combine Matcher}
+\section{Base Matchers used}
+What base matchers survived the selection process
+\section{Methods Used to combine Matchers}
 
 \section{Feature Selection}
 
@@ -291,6 +316,10 @@ What base matcher survived the selection process
 
 \chapter{Evaluation}
 \section{Datasets}
+\subsection{Conference}
+\subsection{Benchmark}
+\subsection{Anatomy}
+\subsection{Library}
 \section{Experimental Setup}
 \section{Used Baselines}
 \section{Results}
