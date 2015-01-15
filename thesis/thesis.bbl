@@ -1,15 +1,47 @@
 \begin{thebibliography}{10}
 
+\bibitem{Antoniou:2012}
+Grigoris Antoniou, Paul Groth, Frank vanHarmelen, and Rinke Hoekstra.
+\newblock {\em A Semantic Web Primer}.
+\newblock MIT Press, Cambridge, MA, USA, 2012.
+
+\bibitem{bodenreider2004unified}
+Olivier Bodenreider.
+\newblock The unified medical language system (umls): integrating biomedical
+  terminology.
+\newblock {\em Nucleic acids research}, 32(suppl 1):D267--D270, 2004.
+
 \bibitem{dragisicresults}
 Zlatan Dragisic, Kai Eckert, J{\'e}r{\^o}me Euzenat, Daniel Faria12, Alfio
   Ferrara, Roger Granada, Valentina Ivanova, Ernesto Jim{\'e}nez-Ruiz,
   Andreas~Oskar Kempf, Patrick Lambrix, et~al.
 \newblock Results of the ontology alignment evaluation initiative 2014.
 
+\bibitem{Eckert:2009:IOM:1561533.1561553}
+Kai Eckert, Christian Meilicke, and Heiner Stuckenschmidt.
+\newblock Improving ontology matching using meta-level learning.
+\newblock In {\em Proceedings of the 6th European Semantic Web Conference on
+  The Semantic Web: Research and Applications}, ESWC 2009 Heraklion, pages
+  158--172, Berlin, Heidelberg, 2009. Springer-Verlag.
+
 \bibitem{ehrig2006ontology}
 M.~Ehrig.
 \newblock {\em Ontology Alignment: Bridging the Semantic Gap}.
 \newblock Semantic Web and Beyond. Springer US, 2006.
+
+\bibitem{euzenat2014}
+J.~Euzenat.
+\newblock Results of the results of the ontology alignment evaluation
+  initiative 2014.
+\newblock In {\em Ontology Matching}, 2014.
+
+\bibitem{Euzenat:2011aa}
+J{\~A}{\copyright}r{\~A}{\v Z}me Euzenat, Christian Meilicke, Heiner
+  Stuckenschmidt, Pavel Shvaiko, and C{\~A}{!'}ssia Trojahn.
+\newblock Ontology alignment evaluation initiative: Six years of experience.
+\newblock In Stefano Spaccapietra, editor, {\em Journal on Data Semantics XV},
+  volume 6720 of {\em Lecture Notes in Computer Science}, pages 158--192.
+  Springer Berlin Heidelberg, 2011.
 
 \bibitem{euzenat2003towards}
 J{\'e}r{\^o}me Euzenat.
@@ -26,6 +58,11 @@ J{\'e}r{\^o}me Euzenat.
 J\'er\^ome Euzenat and Pavel Shvaiko.
 \newblock {\em Ontology matching}.
 \newblock Springer-Verlag, Heidelberg (DE), 2nd edition, 2013.
+
+\bibitem{fellbaum1998wordnet}
+Christiane Fellbaum.
+\newblock {\em WordNet}.
+\newblock Wiley Online Library, 1998.
 
 \bibitem{Gruber:1995}
 Thomas~R. Gruber.
@@ -50,14 +87,32 @@ H.~Paulheim.
 \newblock {\em Ontology-based Application Integration}.
 \newblock SpringerLink : B{\"u}cher. Springer, 2011.
 
+\bibitem{Rahm:2011aa}
+Erhard Rahm.
+\newblock Towards large-scale schema and ontology matching.
+\newblock In Zohra Bellahsene, Angela Bonifati, and Erhard Rahm, editors, {\em
+  Schema Matching and Mapping}, Data-Centric Systems and Applications, pages
+  3--27. Springer Berlin Heidelberg, 2011.
+
 \bibitem{Rahm:2001}
 Erhard Rahm and Philip~A. Bernstein.
 \newblock A survey of approaches to automatic schema matching.
 \newblock {\em The VLDB Journal}, 10(4):334--350, December 2001.
 
+\bibitem{6104044}
+P.~Shvaiko and J.~Euzenat.
+\newblock Ontology matching: State of the art and future challenges.
+\newblock {\em Knowledge and Data Engineering, IEEE Transactions on},
+  25(1):158--176, Jan 2013.
+
 \bibitem{Studer:1998}
 Rudi Studer, V.~Richard Benjamins, and Dieter Fensel.
 \newblock Knowledge engineering: Principles and methods.
 \newblock {\em Data Knowl. Eng.}, 25(1-2):161--197, March 1998.
+
+\bibitem{OWL2a}
+World Wide Web~Consortium (W3C).
+\newblock Owl 2 web ontology language. structural specification and
+  functional-style syntax, 2009.
 
 \end{thebibliography}

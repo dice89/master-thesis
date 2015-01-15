@@ -116,7 +116,7 @@
 	\item Shortly review the state of the art in ontology matching, mostly ensembles of multiple matchers
 	\item Express challenges, and focus on matcher selection and matcher cominbation
 	\end{itemize}
-	\section{Defintions}
+	\section{Definitions}
 	\label{sec:defintions}
 
 	\subsection{Ontologies}
@@ -124,24 +124,35 @@
 	\subsubsection{What is an Ontology}
 In philosophy the term ontology describes the study of being and existence, trying to define categories of things and to discover relationships among them. Computer Science adopted this term for their own needs and consequently for artificial intelligence  and web researchers an ontology is a formal model of a domain.(\cite{ehrig2006ontology}, \cite{paulheim2011ontology}). 
 
-In literature there exist various definitions for ontologies on different levels, some of which are discussed in \cite{Guarino:1997}. Nevertheless one of the most cited definitions is the one by \cite{Gruber:1995}: "An ontology is an explicit specification  of a conceptualization".  But probably as often as its cited its often extended by other definitions like: "An ontology is an explicit formal specification of a shared conceptualization of a domain of interest"\cite{Studer:1998} and "a logical theory which gives and explicit, partial account of a conceptualization" \cite{Guarino95}. These two definitions extends the understanding of an ontology in three points. First of all an ontology needs to be formal, so for instance a textual description is not sufficient.\cite{Studer:1998} Moreover it needs to cover a specific domain, so that there exist more than one ontology (a key difference to philosophy). And finally a ontology can only partial conceptualize the facts of world, so it's a simplified abstraction of the reality.\cite{ehrig2006ontology}
+In literature there exist various definitions for ontologies on different levels, some of which are discussed in \cite{Guarino:1997}. Nevertheless one of the most cited definitions is the one by \cite{Gruber:1995}: "An ontology is an explicit specification of a conceptualization".  But probably as often as its cited its extended by other definitions like: "An ontology is an explicit formal specification of a shared conceptualization of a domain of interest"\cite{Studer:1998} and "a logical theory which gives and explicit, partial account of a conceptualization" \cite{Guarino95}. These two definitions extends the understanding of an ontology in three points. First of all an ontology needs to be formal, so for instance a textual description is not sufficient.\cite{Studer:1998} Moreover it needs to cover a specific domain, so that there exist more than one ontology (a key difference to philosophy). And finally a ontology can only partial conceptualize facts of the real world, so it's a simplified abstraction of the reality.\cite{ehrig2006ontology}
 
 This rather textual definition will be in the following precised by the introduction of the Web Ontology Language (OWL) which is  heavily used in the semantic web (TODO cite linked open data the story to far) and most of the datasets provided by the OAEI are in OWL format. \cite{dragisicresults}
 \subsubsection{OWL a Ontology Language}
-\begin{itemize}
-\item Show main elements of owl and relate them to the main elements of a an ontology based on \cite{euzenat2013d}
-\item stress uniqueness of URI
-\item Then define it formally
-\end{itemize}
+There exist a variety of ontology languages, but in this work the Web Ontology Language (OWL) will be used. OWL is based upon the eXtensinble Markup Language, a succressor of the ontology languages DAMl and OIL, extending RDF and RDFS. In this thesis the OWL 2 Standard is used, which is the second iteration of OWL and became an W3C recommendation 2009 \cite{OWL2a}. \footnote{In the following the term OWL is used instead of OWL 2, when to some specialties of OWL 2 is referred, it will be explicitly mentioned}
 
+OWL is an essential part of the linked open data stack, used as a format to express knowledge about the world. OWL exists in two flavors: OWL DL and OWL Full. The main difference lies in the decidability with reasoning with those ontologies. Since reasoning is not in scope of this thesis, the only thing worth mentioning for completeness it that OWL DL is decidable, because it is based on description logic, where OWL Full not decidable. Despite this fact, the main focus at this point lies in the concepts of OWL to conceptualize facts from the real world, by modeling an ontology. Thus is in the following an introduction of basic OWL elements is given, which is based on \cite{Antoniou:2012}.
 
-Definition based on \cite{euzenat2013d}
+\begin{Huge}
+TODO Ontology Listing
+\end{Huge}
 
+The key element of OWL is the definition of classes. They represent an abstraction of concepts from the real world, modeled in the ontology. For instance in Listing XXX  an example ontology with 4 classes can be seen. Those classes do have properties and are related to each other. The class Person for example defines the set of person, so each instanziation of the class person is a member of a set containing all persons, these members are usually called individuals or instances.
+
+In order to model complex ontologies classes can also have a subclass relationship. So here we can see that in Listing XXX the class Celebrity is a subclass of Person, so it specializes the Person class. In OWL every class existing is  a subclass of owl:Thing the most general class, so each member or instance of a class is also member of the set of instances of owl:Thing. For classes further build-in properties can be used, so for instance classes can be said to be equivalent(owl:equivalentClass) or disjoint(owl:disjointClass). More complex constructs are also possible but are not in scope of this short introduction.
+
+Class may need to have properties to capture real world properties correctly. In OWL there exists two different types of properties: Object properties, which relate individuals with each other, so e.g. the properties lives\_in of the Person class, and datatype properties that relate individuals to literal values of a certain datatype, e.g name of the Person class. For those properties a specific domain and range can be defined. So for the property lives\_in the domain is that a person can only live in a city, but not in another Person, which kind of makes sense. 
+
+In addition to those key properties there exits annotation property, which contain more information about a class. A typical annotation property is rdfs:label, which often gives textual description of the given class. Those properties are ignored in OWL DL and thus are part of OWL Full. Properties itself can have some settings. For instance one can define whether there exists other properties with the same meaning or if they are functional, or symmetric and much more. Those properties will not further be mentioned because they are not relevant to the problem solved in this thesis.
+
+The last component in OWL are individuals, as already mentioned they are instances of a specific class and there for belong to the set of all members of a class. An ontology contains individuals when some base facts needs to be modeled which can be a starting point for inferring new knowledge with reasoners, applied to the ontology. Since reasoning is out of scope in this thesis, individuals are simply treating as  parts of an ontology.
+
+Out of this summary of the definition above, now a more formal definition based on \cite{euzenat2013d} of an ontology can be inferred, which will be the basis of the following chapters.
 \begin{definition} [Ontology] An ontology is a tuple $ o = ( C,I,R,T,V,\leq,\perp,\in,=)$ such that:\\ \\
 $C$ is the set of classes,\\
 $I$ is the set of individuals,\\
 $R$ is the set of relations,\\
-$V$ is the set of datatypes,\\
+$T$ is the set of datatypes, \\
+$V$ is the set of values,\\
 with $C,I,R,V$ being pairwise disjoint, \\
 $\leq$ is a relation on  $ (C \times C)  \cup (R \times R) \cup (T \times T)$  called specialization,\\
 $\perp$ is a relation on  $ (C \times C)  \cup (R \times R) \cup (T \times T)$ called exclusion,\\
@@ -150,9 +161,9 @@ $=$ is a relation over $ I \times R \times (I \cup U)$
 \end{definition}
 \subsection{Ontology Matching}
 \label{sec:ontologymatching_def}
-In general ontology matching aims to reduce heterogeneity between different ontologies, to overcome disparate data spaces. As mentioned in the introduction designing an ontology in not a deterministic process (TODO Cite), as heterogeneity may occur due to different Reasons: For instance because of a different usage terms  to described the same real world concept (e.g.: car vs. automobile)  or different perspectives on the modeling domain (TODO cite). 
+In general ontology matching aims to reduce heterogeneity between different ontologies, to overcome disparate data spaces. As mentioned in the introduction designing an ontology in not a deterministic process (TODO Cite), as heterogeneity may occur due to different Reasons: For instance because of a different usage pf terms to describe the same real world concept (e.g.: car vs. automobile)  or different perspectives on the modeling domain (TODO cite). 
 
-	Despite that common ground it needs to be said that in literature there exist various terms and definitions for ontology matching. Terms like ontology alignment, ontology mapping, integration of ontologies (TODO cite) are referring to the same concepts and techniques. To have a common understanding in the work, the term ontology matching is used when to the process of matching ontologies is referred. Complementary ontology alignment or simply alignment is used when to the resulting output of a matching process is referred. Therefore in the following sections these two questions will be answered:
+	Despite that common ground it needs to be said that in literature there exist various terms and definitions for ontology matching. Terms like ontology alignment, ontology mapping, integration of ontologies (TODO cite) are referring to the same concepts and techniques. To have a common understanding in this thesis, the term ontology matching is used when to the process of matching ontologies is referred. Complementary ontology alignment or simply alignment is used when to the resulting output of a matching process is referred. Therefore in the following sections these two questions will be answered:
 	
 \begin{enumerate}
 \item What is a matching process?
@@ -166,7 +177,7 @@ The foundation for each ontology matching system is a process that matches two o
 
 In the database oriented research on ontology matching this process is often called match operator (\cite{Rahm:2001}), which refers in its core to the same abstraction as made in \cite{euzenat2013d} and  \cite{ehrig2006ontology}.
 
-Nevermind the fact that matters is that these definitions have in common that the process has as an input two ontologies that needs to be matched , and some parameters to control the internal behavior of the underlying algorithm, usually threshold parameters. In some definitions (\cite{euzenat2004api}) furthermore other resources are also included into the input domain, those can include initial alignments that will bootstrap the alignment process or background knowledge items. The output is consequently an alignment, which consists out of correspondences between entities of the given ontologies. In \cite{euzenat2013d} and  \cite{ehrig2006ontology} the functional character of the matching process is stressed leading to the definition of the matching process.
+Nevermind the fact that matters is that these definitions have in common that the process has as an input of two ontologies that needs to be matched and some parameters to control the internal behavior of the underlying algorithm, usually threshold parameters. In some definitions (\cite{euzenat2004api}) furthermore other resources are also included into the input domain, those can include initial alignments that will bootstrap the alignment process or background knowledge items. The output is consequently an alignment, which consists out of correspondences between entities of the given ontologies. In \cite{euzenat2013d} and  \cite{ehrig2006ontology} the functional character of the matching process is stressed leading to the definition of the matching process.
 
 \begin{definition} [Matching Process]
 An ontology matching process is a function, based on two ontologies to match $O_1$ and $o_2$, a set of parameters $p$ and  a set of resources $r$
@@ -253,15 +264,82 @@ RDF Format \cite{euzenat2004api}
 
 \section{State-of-the Art}
 \label{sec:state_of_the_art}
-	What is the current state in research, e.g. current advances at OAEI
-	Data sets:
-	\begin{itemize}
-	\item Conference, Benchmark, Library, Anatomy
-	\end{itemize}
+There exits several state-of-the-art of the ontology matching systems, developed all over the world. To evaluate the performance of different systems and approaches the Ontology Alignment Evaluation Initiative was started, to asses weaknesses and strength of ontology matching algorithms and by this give developers and researches and developers in this are a platform for knowledge transfer. \cite{Euzenat:2011aa} 
+There the OAEI publishes each year a report on an assesment of current ontology matching systems. In order to validate the state-of-the-art, analyzing the techniques used by participants of OAEI is a good starting point. In this section this finding are shortly summarized, based on those reports. \cite{euzenat2014} 
+\begin{Huge}
+Add other reports
+\end{Huge}
+Mostly all systems that attended the challenge have in common that  they rely on multiple ontology matching functions. In order to overcome weakness of different types of functions, state-of-the art ontology matching systems use different measures. They exploit the structural properties, the name of elements and sometimes individuals of ontologies in order to match entities. The main drawback of this multiple strategy or hybrid matching is that there is a need of a combination function of the results of the so called base matchers. This can be a weighted average sum (TODO cite YAM) or a majority vote of the base matchers (\cite{Eckert:2009:IOM:1561533.1561553}). \cite{6104044}
+Another similarity is modern matchers try to be as efficient as possible and therefore align ontologies faster and in addition be able to align big ontologies.\cite{Rahm:2011aa}
+Furthermore most matching approaches use base matchers that rely on background knowledge, which is used to overcome a terminological mismatch, between the matched ontologies. Such resources can be WordNet \cite{fellbaum1998wordnet} or UMLS\cite{bodenreider2004unified}. \cite{Euzenat:2011aa} 
+
+Of particular interest is consequently the performance of matchings systems, which is usually estimated using the measures $rrecision$, $recall$ and $f_1-measure$ \footnote{TODO add reference to section} from information retrieval. The OAEI offers different tracks that contain different ontologies to be matched. To illustrate the performance over those different datasets in the following the results of matching systems for four different datasets over last four years will be presented, which is an update of the work done in \cite{6104044}.
+
+\subsection{Bibliography Benchmark}
+\begin{figure}
+ \includegraphics[scale=.5]{figures/oaei/benchmark/top2011.png} 
+ \includegraphics[scale=.5]{figures/oaei/benchmark/top2012.png}
+ \includegraphics[scale=.5]{figures/oaei/benchmark/top2013.png}  
+ \includegraphics[scale=.5]{figures/oaei/benchmark/top2014.png} 
+ \caption{Top performing Ontology Matching Systems for  the OAEI Bibliography Benchmark Dataset}
+ \label{img::oaei_anatomy}
+\end{figure}
+
+\subsection{Conference}
+This data set contains 21 ontologies from the conference domain. They were either created manually, were present or created based on a website of the conference. The ontologies did not change over time and also the alignments between all ontologies are stable. In figure \ref{img::oaei_conf} the result of the top performing matching systems are presented. It can be observed that their has been no real improvement in terms of $f_1-measure$ since 2012. The best systems are AML \cite{Faria:2013aa}, YAM++ \cite{Ngo:2012ab} and LogMap \cite{JimACnez-Ruiz:2011aa}. 
+
+\begin{figure}
+ \includegraphics[scale=.5]{figures/oaei/conference/top2011.png} 
+ \includegraphics[scale=.5]{figures/oaei/conference/top2012.png}
+ \includegraphics[scale=.5]{figures/oaei/conference/top2013.png}  
+ \includegraphics[scale=.5]{figures/oaei/conference/top2014.png} 
+ \caption{Top performing Ontology Matching Systems for  the OAEI Conference Dataset}
+ \label{img::oaei_conf}
+\end{figure}
+
+
+\subsection{Anatomy}
+\label{sec::oaei_anatomy}
+For the anatomy dataset the task is set to match the Adult Mouse Anatomy with NCI Thesaurus \footnote{http://ncim.nci.nih.gov/ncimbrowser/}, that describes the human anatomy. The matching task is rather large and results in a big alignment. Despite some changes in the dataset from 2011 to 2012, it was stable over the last two years and therefore comparisons are possible. What can be seen is that there is a clear improvement in terms of $f_1-measure$ over the years, with CODI, AML, GOMMA, YAM++ and LogMap as best performing systems in different periods.
+
+\begin{figure}
+ \includegraphics[scale=.5]{figures/oaei/anatomy/top2011.png} 
+ \includegraphics[scale=.5]{figures/oaei/anatomy/top2012.png}
+ \includegraphics[scale=.5]{figures/oaei/anatomy/top2013.png}  
+ \includegraphics[scale=.5]{figures/oaei/anatomy/top2014.png} 
+ \caption{Top performing Ontology Matching Systems for  the OAEI Anatomy Dataset}
+ \label{img::oaei_anatomy}
+\end{figure}
+
+\subsection{Library}
+The OAEI organizers included in 2012 the current 
+\begin{figure}
+ \includegraphics[scale=.5]{figures/oaei/library/top2012.png}
+ \includegraphics[scale=.5]{figures/oaei/library/top2013.png}  
+ \includegraphics[scale=.5]{figures/oaei/library/top2014.png} 
+ \caption{Top performing Ontology Matching Systems for  the OAEI Library Dataset}
+ \label{img::oaei_anatomy}
+\end{figure}
+
+
+
+
+\clearpage
 \section{Challenges}
 \label{sec:challeng_ontology_matching}
-	Basicalle the Euzenant Paper
+The previous section demonstrated that the ontology matching community is improving their systems in terms of $f_1-measure$. Another way of looking at this is that there still exist various challenges that need be solved, to overcome the disparate dataspace. In \cite{6104044} a research agenda is presented, that list a lot of open issues of ontology matching, This now summarized.
 
+
+
+
+
+\begin{itemize}
+\item Name all challenges named in  Euzenat Paper
+\item Focus on Matcher selection, Combination and Tuning
+\end{itemize}
+Need for finding a function that combines different matcher, into one final matching. 
+No Training required
+Unsupervised
 
 %%%%% Bascially Literature review
 
