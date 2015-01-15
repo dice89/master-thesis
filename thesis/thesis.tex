@@ -8,6 +8,7 @@
 \usepackage{latexsym}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{ wasysym }
 
 \usepackage{wrapfig}
 \usepackage{ntheorem}
@@ -114,7 +115,8 @@
 	\item First define basic terms, like ontology, ontology matching process, ontology alignment
 	\item Give a simple motivating example
 	\item Shortly review the state of the art in ontology matching, mostly ensembles of multiple matchers
-	\item Express challenges, and focus on matcher selection and matcher cominbation
+	\item Express challenges, and focus on matcher selection and matcher combination
+	\item Define Problem investigated my master thesis
 	\end{itemize}
 	\section{Definitions}
 	\label{sec:defintions}
@@ -180,6 +182,7 @@ In the database oriented research on ontology matching this process is often cal
 Nevermind the fact that matters is that these definitions have in common that the process has as an input of two ontologies that needs to be matched and some parameters to control the internal behavior of the underlying algorithm, usually threshold parameters. In some definitions (\cite{euzenat2004api}) furthermore other resources are also included into the input domain, those can include initial alignments that will bootstrap the alignment process or background knowledge items. The output is consequently an alignment, which consists out of correspondences between entities of the given ontologies. In \cite{euzenat2013d} and  \cite{ehrig2006ontology} the functional character of the matching process is stressed leading to the definition of the matching process.
 
 \begin{definition} [Matching Process]
+\label{def::Matching_process}
 An ontology matching process is a function, based on two ontologies to match $O_1$ and $o_2$, a set of parameters $p$ and  a set of resources $r$
 \begin{equation*}
 A = f (o_1, o_2, p,r)
@@ -252,16 +255,9 @@ And an alignment $A$, with the domain $o_1$ and the codomain $0_2$ is called inj
 In \cite{euzenat2003towards} a expressive notation for the definition of multiplicities of alignments in ontology matching is introduced. There the an total and injective alignment is represented by 1, ? represents an injective alignment, + for total and * for an alignment that does not hold the definitions above. These properties are sensitive to the direction they are seen, for instance and A alignment of $o_1$ and $o_2$ can be injective from $0_1$ to $o_2$ and total from $o_2$ to $o_1$. Thus this results in the following different combinations: ?:?, ?:1, 1:?, 1:1, ?:+, +:?, 1:+, +:1, +:+, ?:*, *:?, 1:*, *:1, +:*, *:+, *:* .
 
 An example for this can be seen in Section \ref{sec:motivating_example}.
-\subsection{Matching Representation}
-\begin{LARGE}
-Think about if necessary
-\end{LARGE}
-
-RDF Format \cite{euzenat2004api}
-
 \section{Motivating Example}
 \label{sec:motivating_example}
-
+TODO
 \section{State-of-the Art}
 \label{sec:state_of_the_art}
 There exits several state-of-the-art of the ontology matching systems, developed all over the world. To evaluate the performance of different systems and approaches the Ontology Alignment Evaluation Initiative was started, to asses weaknesses and strength of ontology matching algorithms and by this give developers and researches and developers in this are a platform for knowledge transfer. \cite{Euzenat:2011aa} 
@@ -269,6 +265,7 @@ There the OAEI publishes each year a report on an assesment of current ontology 
 \begin{Huge}
 Add other reports
 \end{Huge}
+
 Mostly all systems that attended the challenge have in common that  they rely on multiple ontology matching functions. In order to overcome weakness of different types of functions, state-of-the art ontology matching systems use different measures. They exploit the structural properties, the name of elements and sometimes individuals of ontologies in order to match entities. The main drawback of this multiple strategy or hybrid matching is that there is a need of a combination function of the results of the so called base matchers. This can be a weighted average sum (TODO cite YAM) or a majority vote of the base matchers (\cite{Eckert:2009:IOM:1561533.1561553}). \cite{6104044}
 Another similarity is modern matchers try to be as efficient as possible and therefore align ontologies faster and in addition be able to align big ontologies.\cite{Rahm:2011aa}
 Furthermore most matching approaches use base matchers that rely on background knowledge, which is used to overcome a terminological mismatch, between the matched ontologies. Such resources can be WordNet \cite{fellbaum1998wordnet} or UMLS\cite{bodenreider2004unified}. \cite{Euzenat:2011aa} 
@@ -318,31 +315,65 @@ The OAEI organizers included in 2012 the current
  \includegraphics[scale=.5]{figures/oaei/library/top2013.png}  
  \includegraphics[scale=.5]{figures/oaei/library/top2014.png} 
  \caption{Top performing Ontology Matching Systems for  the OAEI Library Dataset}
- \label{img::oaei_anatomy}
+ \label{img::library}
 \end{figure}
-
-
-
 
 \clearpage
 \section{Challenges}
 \label{sec:challeng_ontology_matching}
-The previous section demonstrated that the ontology matching community is improving their systems in terms of $f_1-measure$. Another way of looking at this is that there still exist various challenges that need be solved, to overcome the disparate dataspace. In \cite{6104044} a research agenda is presented, that list a lot of open issues of ontology matching, This now summarized.
+The previous section demonstrated that the ontology matching community is improving their systems in terms of $f_1-measure$. Another way of looking at this is that there still exist various challenges that need be solved, to overcome the disparate dataspace. In \cite{6104044} and  \cite{euzenat2013d} a research agenda with open questions in the field of ontology matching is presented. In addition to that in \cite{OteroCerdeira2015949} a survery was performed among 33 researchers in the field of ontology matching. Table \ref{tab::challenges_in_onto_matching} summarizes the findings.
 
+\begin{table}[h]
 
+\begin{tabular}{c c c}
+\hline
+Future Challenge &  Shvaiko \& Euzenat & Otero-Cerdeira et. al. \\
+\hline
+Large Scale and Efficient Matching					& \checked	& \checked           \\                  
+Matching with Background Knowledge				& \checked	& \checked    \\                        
+Matcher Selection, Combination and Tuning		& \checked	& \checked \\
+User Involvement												& \checked	& \checked  \\
+Explanation of Matching Results						& \checked	& \checked  \\
+Uncertainty in Ontology Matching					& \checked	& \checked  \\
+Alignment Management									& \checked	& \checked \\
+Improvement of Precision and Recall				&					& \checked \\
+Semantic Mapping											&               	& \checked  \\                           
+Non-expert user tools										&					& \checked \\
+Holistic Ontology Matching								& 					& \checked \\
+Complex Relation Detection (non 1:1) 			& 					& \checked \\
+Practical Applications of created Mappings		& 					& \checked \\
+\hline
+\end{tabular}
+\caption{Challenges of Ontology Matching Research base on \cite{OteroCerdeira2015949}, \cite{euzenat2013d} and \cite{6104044} }
+\label{tab::challenges_in_onto_matching}
+\end{table}
+However in this thesis the focus lies on the open challenges of \emph{Matcher Selection, Combination and Tuning}. As already mentioned above current matching systems rely on multiple base matchers that have to be combined to create one final 	alignment and try by this to overcome the challenges of heterogenous ontology that need to interoperate. These systems need to elect base matchers and finally combine them  to obtain a comprehensive result. \cite{chuttur2011challenges}
 
+The best way of tackling this problem is to divide into two separate problems, first the matcher selection and second the matcher combination problem.
 
+The first problem can be treated as a feature selection problem, where base matchers are potential useful features that need to be selected. 
 
-\begin{itemize}
-\item Name all challenges named in  Euzenat Paper
-\item Focus on Matcher selection, Combination and Tuning
-\end{itemize}
-Need for finding a function that combines different matcher, into one final matching. 
-No Training required
-Unsupervised
+On the other hand there is the second problem which describes the combination of the output of the selected base matcher. Current approaches treat this as a weighted average function of the results of the base matchers. This does not incorporate that for matching specific entities some matchers might not be suitable while others predict the correspondence perfectly correct. Therefore there is a need for finding a flexible way to combine the output of selected base matchers, that embraces strength and punishes weakness of individual matchers, aligning judging over a specific correspondence. This leads to the definition of when a flexible ontology matching process.
 
+\begin{definition}[Flexible Ontology  Matching Process]
+Inspired by \cite{Ngo:2012aa} in this thesis an ontology matching system is flexible when it automatically selects and combines individual matchers to produce the best possible result in changing data domains.
+\end{definition}
+
+To allow a maximum degree of flexibility an unsupervised approach to select and combine multiple matcher will be superior to supervised approaches. Because by this the underlying algorithm does not rely on available training data to match algorithms in a distinct domain. Therefore such an algorithm can used in changing data domains, without additional resources needed. Outlier Detection might a possible methods to perform the combination with the demanded degree of flexibility. 
+
+The best way of summing up this section is to formalize the problem that will be investigated in this master thesis. The goal is to find a meta matching process that selects, runs and combines different individual matching processes, by using a matcher selection function $f_f$ and a combination function $f_c$ in the form of:
+\begin{definition}[Meta Ontology Matching Process]
+The meta ontology matching process can be seen as a function  of two ontologies $o_1$, $o_2$, a set of individual matching process $F$ (see definition \ref{def::Matching_process}), a combination function $f_c$, a feature selection function $f_f$, a set of parameter $p$ and a set of resource $r$, that return an alignment $A$:
+
+\begin{equation*}
+A = f' (o_1,o_1,F, f_c,f_f, p,r)
+\end{equation*}
+\end{definition}
+
+Of particular interest is to find a selection function $f_f$ that relies on unsupervised methods and a combination function $f_c$ that as well has no need for training. Therefore the use of  outlier analysis as a flexible unsupervised way will be investigated and evaluated in the remainder of this master thesis.
+
+In this section the ontology matching problem in general was introduced and defined, furthermore the current state-of-the art of ontology matching was based on the OAEI presented. Depended on this analysis some challenges from literature for research in ontology matching were enumerated and especially the problem of individual matcher combination and selection was stressed. Finally the meta ontology matching problem was formalized as finding a flexible matching process for blending multiple results into one final alignment, using outlier detection.  Thus in the following section an overview of current individual matching and meta matching techniques is given, in form of an literature review.
 %%%%% Bascially Literature review
-
 \chapter{Ontology Matching Approaches (Related Work)}
 This chapter presents the results of a conducted literature survey in the area of ontology matching.
 \section{Classification of Approaches}

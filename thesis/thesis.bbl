@@ -11,11 +11,18 @@ Olivier Bodenreider.
   terminology.
 \newblock {\em Nucleic acids research}, 32(suppl 1):D267--D270, 2004.
 
+\bibitem{chuttur2011challenges}
+M~Yasser Chuttur.
+\newblock Challenges faced by ontology matching techniques: Case study of the
+  oaei datasets.
+\newblock {\em Research Journal of Information Technology}, 3(1):33--42, 2011.
+
 \bibitem{dragisicresults}
 Zlatan Dragisic, Kai Eckert, J{\'e}r{\^o}me Euzenat, Daniel Faria12, Alfio
   Ferrara, Roger Granada, Valentina Ivanova, Ernesto Jim{\'e}nez-Ruiz,
   Andreas~Oskar Kempf, Patrick Lambrix, et~al.
 \newblock Results of the ontology alignment evaluation initiative 2014.
+\newblock 2014.
 
 \bibitem{Eckert:2009:IOM:1561533.1561553}
 Kai Eckert, Christian Meilicke, and Heiner Stuckenschmidt.
@@ -59,6 +66,16 @@ J\'er\^ome Euzenat and Pavel Shvaiko.
 \newblock {\em Ontology matching}.
 \newblock Springer-Verlag, Heidelberg (DE), 2nd edition, 2013.
 
+\bibitem{Faria:2013aa}
+Daniel Faria, Catia Pesquita, Emanuel Santos, Matteo Palmonari, IsabelF. Cruz,
+  and FranciscoM. Couto.
+\newblock The agreementmakerlight ontology matching system.
+\newblock In Robert Meersman, Herv{\~A}{\copyright} Panetto, Tharam Dillon,
+  Johann Eder, Zohra Bellahsene, Norbert Ritter, Pieter De~Leenheer, and
+  Deijing Dou, editors, {\em On the Move to Meaningful Internet Systems: OTM
+  2013 Conferences}, volume 8185 of {\em Lecture Notes in Computer Science},
+  pages 527--541. Springer Berlin Heidelberg, 2013.
+
 \bibitem{fellbaum1998wordnet}
 Christiane Fellbaum.
 \newblock {\em WordNet}.
@@ -81,6 +98,36 @@ Nicola Guarino and Pierdaniele Giaretta.
   clarification.
 \newblock In {\em Towards very Large Knowledge bases: Knowledge Building and
   Knowledge sharing}, pages 25--32. IOS Press, 1995.
+
+\bibitem{JimACnez-Ruiz:2011aa}
+Ernesto Jim{\~A}{\copyright}nez-Ruiz and Bernardo Cuenca~Grau.
+\newblock Logmap: Logic-based and scalable ontology matching.
+\newblock In Lora Aroyo, Chris Welty, Harith Alani, Jamie Taylor, Abraham
+  Bernstein, Lalana Kagal, Natasha Noy, and Eva Blomqvist, editors, {\em The
+  Semantic Web {\^a} ISWC 2011}, volume 7031 of {\em Lecture Notes in
+  Computer Science}, pages 273--288. Springer Berlin Heidelberg, 2011.
+
+\bibitem{Ngo:2012ab}
+DuyHoa Ngo and Zohra Bellahsene.
+\newblock Yam++ : A multi-strategy based approach for ontology matching task.
+\newblock In Annette ten Teije, Johanna V{\~A}¶lker, Siegfried Handschuh,
+  Heiner Stuckenschmidt, Mathieu d{\^a}Acquin, Andriy Nikolov, Nathalie
+  Aussenac-Gilles, and Nathalie Hernandez, editors, {\em Knowledge Engineering
+  and Knowledge Management}, volume 7603 of {\em Lecture Notes in Computer
+  Science}, pages 421--425. Springer Berlin Heidelberg, 2012.
+
+\bibitem{Ngo:2012aa}
+DuyHoa Ngo, Zohra Bellahsene, and Remi Coletta.
+\newblock A flexible system for ontology matching.
+\newblock In Selmin Nurcan, editor, {\em IS Olympics: Information Systems in a
+  Diverse World}, volume 107 of {\em Lecture Notes in Business Information
+  Processing}, pages 79--94. Springer Berlin Heidelberg, 2012.
+
+\bibitem{OteroCerdeira2015949}
+Lorena Otero-Cerdeira, Francisco J.~Rodr{\~A} guez Mart{\~A}-nez, and Alma
+  G{\~A}³mez-Rodr{\~A}-guez.
+\newblock Ontology matching: A literature review.
+\newblock {\em Expert Systems with Applications}, 42(2):949 -- 971, 2015.
 
 \bibitem{paulheim2011ontology}
 H.~Paulheim.

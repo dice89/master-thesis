@@ -4,48 +4,47 @@ The top-level auxiliary file: thesis.aux
 The style file: plain.bst
 Database file #1: bibliography.bib
 Warning--entry type for "OWL2a" isn't style-file defined
---line 79 of file bibliography.bib
+--line 199 of file bibliography.bib
 Warning--empty journal in dragisicresults
-Warning--empty year in dragisicresults
-You've used 20 entries,
+You've used 26 entries,
             2118 wiz_defined-function locations,
-            638 strings with 7468 characters,
-and the built_in function-call counts, 6936 in all, are:
-= -- 685
-> -- 289
-< -- 7
-+ -- 118
-- -- 94
-* -- 460
-:= -- 1124
-add.period$ -- 65
-call.type$ -- 20
-change.case$ -- 100
+            684 strings with 9245 characters,
+and the built_in function-call counts, 9992 in all, are:
+= -- 961
+> -- 473
+< -- 15
++ -- 185
+- -- 153
+* -- 710
+:= -- 1613
+add.period$ -- 88
+call.type$ -- 26
+change.case$ -- 135
 chr.to.int$ -- 0
-cite$ -- 22
-duplicate$ -- 293
-empty$ -- 581
-format.name$ -- 94
-if$ -- 1496
+cite$ -- 27
+duplicate$ -- 413
+empty$ -- 804
+format.name$ -- 153
+if$ -- 2163
 int.to.chr$ -- 0
-int.to.str$ -- 20
-missing$ -- 24
-newline$ -- 101
-num.names$ -- 44
-pop$ -- 129
+int.to.str$ -- 26
+missing$ -- 30
+newline$ -- 132
+num.names$ -- 64
+pop$ -- 166
 preamble$ -- 1
-purify$ -- 84
+purify$ -- 113
 quote$ -- 0
-skip$ -- 201
+skip$ -- 287
 stack$ -- 0
-substring$ -- 419
-swap$ -- 72
-text.length$ -- 7
+substring$ -- 601
+swap$ -- 120
+text.length$ -- 15
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 70
-warning$ -- 2
-while$ -- 69
-width$ -- 22
-write$ -- 223
-(There were 3 warnings)
+type$ -- 94
+warning$ -- 1
+while$ -- 96
+width$ -- 28
+write$ -- 299
+(There were 2 warnings)
