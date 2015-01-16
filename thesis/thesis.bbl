@@ -1,5 +1,11 @@
 \begin{thebibliography}{10}
 
+\bibitem{Akbari2009}
+I.~Akbari, M.~Fathian, and K.~Badie.
+\newblock An improved mlma+ and its application in ontology matching.
+\newblock In {\em Innovative Technologies in Intelligent Systems and Industrial
+  Applications, 2009. CITISIA 2009}, pages 56--60, July 2009.
+
 \bibitem{Antoniou:2012}
 Grigoris Antoniou, Paul Groth, Frank vanHarmelen, and Rinke Hoekstra.
 \newblock {\em A Semantic Web Primer}.
@@ -11,11 +17,26 @@ Olivier Bodenreider.
   terminology.
 \newblock {\em Nucleic acids research}, 32(suppl 1):D267--D270, 2004.
 
+\bibitem{Cheatham:2013aa}
+Michelle Cheatham and Pascal Hitzler.
+\newblock String similarity metrics for ontology alignment.
+\newblock In Harith Alani, Lalana Kagal, Achille Fokoue, Paul Groth, Chris
+  Biemann, JosianeXavier Parreira, Lora Aroyo, Natasha Noy, Chris Welty, and
+  Krzysztof Janowicz, editors, {\em The Semantic Web {\^a} ISWC 2013},
+  volume 8219 of {\em Lecture Notes in Computer Science}, pages 294--309.
+  Springer Berlin Heidelberg, 2013.
+
 \bibitem{chuttur2011challenges}
 M~Yasser Chuttur.
 \newblock Challenges faced by ontology matching techniques: Case study of the
   oaei datasets.
 \newblock {\em Research Journal of Information Technology}, 3(1):33--42, 2011.
+
+\bibitem{Cohen2003}
+William~W. Cohen, Pradeep Ravikumar, and Stephen~E. Fienberg.
+\newblock A comparison of string metrics for matching names and records.
+\newblock In {\em KDD WORKSHOP ON DATA CLEANING AND OBJECT CONSOLIDATION},
+  2003.
 
 \bibitem{dragisicresults}
 Zlatan Dragisic, Kai Eckert, J{\'e}r{\^o}me Euzenat, Daniel Faria12, Alfio
@@ -38,7 +59,7 @@ M.~Ehrig.
 
 \bibitem{euzenat2014}
 J.~Euzenat.
-\newblock Results of the results of the ontology alignment evaluation
+\newblock Todo results of the results of the ontology alignment evaluation
   initiative 2014.
 \newblock In {\em Ontology Matching}, 2014.
 
@@ -65,6 +86,15 @@ J{\'e}r{\^o}me Euzenat.
 J\'er\^ome Euzenat and Pavel Shvaiko.
 \newblock {\em Ontology matching}.
 \newblock Springer-Verlag, Heidelberg (DE), 2nd edition, 2013.
+
+\bibitem{EuzenatV04}
+J{\'{e}}r{\^{o}}me Euzenat and Petko Valtchev.
+\newblock Similarity-based ontology alignment in owl-lite.
+\newblock In Ramon~L{\'{o}}pez de~M{\'{a}}ntaras and Lorenza Saitta, editors,
+  {\em Proceedings of the 16th Eureopean Conference on Artificial Intelligence,
+  ECAI'2004, including Prestigious Applicants of Intelligent Systems, {PAIS}
+  2004, Valencia, Spain, August 22-27, 2004}, pages 333--337. {IOS} Press,
+  2004.
 
 \bibitem{Faria:2013aa}
 Daniel Faria, Catia Pesquita, Emanuel Santos, Matteo Palmonari, IsabelF. Cruz,
@@ -99,6 +129,19 @@ Nicola Guarino and Pierdaniele Giaretta.
 \newblock In {\em Towards very Large Knowledge bases: Knowledge Building and
   Knowledge sharing}, pages 25--32. IOS Press, 1995.
 
+\bibitem{He2011}
+Wei He, Xiaoping Yang, and Dupei Huang.
+\newblock A hybrid approach for measuring semantic similarity between
+  ontologies based on wordnet.
+\newblock In Hui Xiong and W.B. Lee, editors, {\em Knowledge Science,
+  Engineering and Management}, volume 7091 of {\em Lecture Notes in Computer
+  Science}, pages 68--78. Springer Berlin Heidelberg, 2011.
+
+\bibitem{jiang1997}
+Jay~J Jiang and David~W Conrath.
+\newblock Semantic similarity based on corpus statistics and lexical taxonomy.
+\newblock {\em arXiv preprint cmp-lg/9709008}, 1997.
+
 \bibitem{JimACnez-Ruiz:2011aa}
 Ernesto Jim{\~A}{\copyright}nez-Ruiz and Bernardo Cuenca~Grau.
 \newblock Logmap: Logic-based and scalable ontology matching.
@@ -106,6 +149,30 @@ Ernesto Jim{\~A}{\copyright}nez-Ruiz and Bernardo Cuenca~Grau.
   Bernstein, Lalana Kagal, Natasha Noy, and Eva Blomqvist, editors, {\em The
   Semantic Web {\^a} ISWC 2011}, volume 7031 of {\em Lecture Notes in
   Computer Science}, pages 273--288. Springer Berlin Heidelberg, 2011.
+
+\bibitem{JoslynPW08}
+Cliff Joslyn, Patrick~R. Paulson, and Amanda~M. White.
+\newblock Measuring the structural preservation of semantic hierarchy
+  alignment.
+\newblock In Pavel Shvaiko, J{\'{e}}r{\^{o}}me Euzenat, Fausto Giunchiglia,
+  Heiner Stuckenschmidt, Natalya~Fridman Noy, and Arnon Rosenthal, editors,
+  {\em Proceedings of the 4th International Workshop on Ontology Matching
+  {(OM-2009)} collocated with the 8th International Semantic Web Conference
+  {(ISWC-2009)} Chantilly, USA, October 25, 2009}, volume 551 of {\em {CEUR}
+  Workshop Proceedings}. CEUR-WS.org, 2009.
+
+\bibitem{lin1998}
+Dekang Lin.
+\newblock An information-theoretic definition of similarity.
+\newblock In {\em ICML}, volume~98, pages 296--304, 1998.
+
+\bibitem{Melnik:2002}
+Sergey Melnik, Hector Garcia-Molina, and Erhard Rahm.
+\newblock Similarity flooding: A versatile graph matching algorithm and its
+  application to schema matching.
+\newblock In {\em Proceedings of the 18th International Conference on Data
+  Engineering}, ICDE '02, pages 117--128, Washington, DC, USA, 2002. IEEE
+  Computer Society.
 
 \bibitem{Ngo:2012ab}
 DuyHoa Ngo and Zohra Bellahsene.
@@ -134,6 +201,18 @@ H.~Paulheim.
 \newblock {\em Ontology-based Application Integration}.
 \newblock SpringerLink : B{\"u}cher. Springer, 2011.
 
+\bibitem{pedersen2004}
+Ted Pedersen, Siddharth Patwardhan, and Jason Michelizzi.
+\newblock Wordnet:: Similarity: measuring the relatedness of concepts.
+\newblock In {\em Demonstration Papers at HLT-NAACL 2004}, pages 38--41.
+  Association for Computational Linguistics, 2004.
+
+\bibitem{porter1980}
+Martin~F Porter.
+\newblock An algorithm for suffix stripping.
+\newblock {\em Program: electronic library and information systems},
+  14(3):130--137, 1980.
+
 \bibitem{Rahm:2011aa}
 Erhard Rahm.
 \newblock Towards large-scale schema and ontology matching.
@@ -146,11 +225,23 @@ Erhard Rahm and Philip~A. Bernstein.
 \newblock A survey of approaches to automatic schema matching.
 \newblock {\em The VLDB Journal}, 10(4):334--350, December 2001.
 
+\bibitem{Salton1975}
+Gerard Salton, A.~Wong, and C.~S. Yang.
+\newblock A vector space model for automatic indexing.
+\newblock {\em Commun. {ACM}}, 18(11):613--620, 1975.
+
 \bibitem{6104044}
 P.~Shvaiko and J.~Euzenat.
 \newblock Ontology matching: State of the art and future challenges.
 \newblock {\em Knowledge and Data Engineering, IEEE Transactions on},
   25(1):158--176, Jan 2013.
+
+\bibitem{Stoilos:2005}
+Giorgos Stoilos, Giorgos Stamou, and Stefanos Kollias.
+\newblock A string metric for ontology alignment.
+\newblock In {\em Proceedings of the 4th International Conference on The
+  Semantic Web}, ISWC'05, pages 624--637, Berlin, Heidelberg, 2005.
+  Springer-Verlag.
 
 \bibitem{Studer:1998}
 Rudi Studer, V.~Richard Benjamins, and Dieter Fensel.
@@ -161,5 +252,12 @@ Rudi Studer, V.~Richard Benjamins, and Dieter Fensel.
 World Wide Web~Consortium (W3C).
 \newblock Owl 2 web ontology language. structural specification and
   functional-style syntax, 2009.
+
+\bibitem{wu1994verbs}
+Zhibiao Wu and Martha Palmer.
+\newblock Verbs semantics and lexical selection.
+\newblock In {\em Proceedings of the 32nd annual meeting on Association for
+  Computational Linguistics}, pages 133--138. Association for Computational
+  Linguistics, 1994.
 
 \end{thebibliography}

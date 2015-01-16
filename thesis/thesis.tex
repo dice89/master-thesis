@@ -74,9 +74,7 @@
 \begin{titlepage}
 	\vspace*{2cm}
   \begin{center}
-   {\Large Ontology Matching \\}
-   {\Large - using  -\\}
-   {\Large Outlier Detection  \\}
+   {\Large An Unsupervised Ontology Matching System Using Outlier Analysis \\}
    \vspace{2cm}
    {Master Thesis\\}
    \vspace{2cm}
@@ -261,7 +259,7 @@ TODO
 \section{State-of-the Art}
 \label{sec:state_of_the_art}
 There exits several state-of-the-art of the ontology matching systems, developed all over the world. To evaluate the performance of different systems and approaches the Ontology Alignment Evaluation Initiative was started, to asses weaknesses and strength of ontology matching algorithms and by this give developers and researches and developers in this are a platform for knowledge transfer. \cite{Euzenat:2011aa} 
-There the OAEI publishes each year a report on an assesment of current ontology matching systems. In order to validate the state-of-the-art, analyzing the techniques used by participants of OAEI is a good starting point. In this section this finding are shortly summarized, based on those reports. \cite{euzenat2014} 
+There the OAEI publishes each year a report on an assesment of current ontology matching systems. In order to validate the state-of-the-art, analyzing the techniques used by participants of OAEI is a good starting point. In this section this finding are shortly summarized, based on those reports. \cite{EuzenatOAEI11} \cite{AguirreOAEI12} \cite{GrauOAEI13}  \cite{euzenat2014}
 \begin{Huge}
 Add other reports
 \end{Huge}
@@ -378,25 +376,72 @@ In this section the ontology matching problem in general was introduced and defi
 This chapter presents the results of a conducted literature survey in the area of ontology matching.
 \section{Classification of Approaches}
 Tailored classification of approaches
-\section{Base Matcher}
+\section{Individual Matchers}
 
-\subsection{Label Based}
- \subsubsection{TODO}
-\subsection{Instance Based}
- \subsubsection{TODO}
-\subsection{Structure Based}
- \subsubsection{TODO}
-\section{Hybrid Matching Approaches}
-\section{Analysis of Hybrid Matching Approaches}
+\subsection{Element-level  Matchers}
+	\subsubsection{String-based Matchers}
+	Papers in this area:
+	\begin{itemize}
+	\item Survey of string metrics used by OAEI Systems in the recent years, based on paper and code of the OAEI Systems \cite{Cheatham:2013aa}
+	\item \cite{euzenat2013d} Chapter 5.2.1
+	\item Standard paper containing, basic methods, all implemented in the secondstring library\cite{Cohen2003}
+	\item String similarity for ontology matching \cite{Stoilos:2005}  A specificly for ontology matching developed string comparison metric
+ \item Combined levensthein distance with bag of word approache \cite{Akbari2009}
+	\end{itemize}	
+	\subsubsection{Language-based Matchers}
+	Rather consider entity names as real language words than simply strings.
+	Preprocessing steps:
+	\begin{itemize}
+		\item Tokenisation
+		\item Stemming \cite{porter1980}
+		\item lemmatization
+		\item stop word filtering
+		\item bag-of-words representation \cite{Salton1975}
+		\item tfidf vector creation \cite{Salton1975}
+	\end{itemize}		
+	
+	Vector-space-model based:
+	\begin{itemize}
+		\item TFIDF \cite{Salton1975},
+		\item  Soft-tfidf \cite{Cohen2003},
+	\end{itemize}
+	Word Net Based also called in  \cite{euzenat2013d} Chapter 5.2.2 extrinsic methods, because they use external resources lexicon, dictionaries and thesauri, therefore they can also be treated also be treated as formal resource-based
+	\begin{itemize}
+		\item Lin  \cite{lin1998}
+		\item Jiang-Conrath \cite{jiang1997}
+		\item Wu-Palmer \cite{wu1994verbs}
+		\item Path similarity (The measure path is equal to the
+inverse of the shortest path length between two concepts)   \cite{pedersen2004}
+		\item WNOntosim \cite{He2011} TODO write mail for code
+	\end{itemize}
+\subsection{Structure-level Matchers}
+Consider the whole ontology when matching instance and not only the local information present in the entity.Enumerate fields and then say that only graph-based matchers are in scope.
+	\subsubsection{Graph-based Matchers}
+Explain how to transform the ontology matching problem to a graph matching problem.
+
+Say the graph matching problem here is not a graph matching problem of the global dataspace as proposed in \cite{JoslynPW08}.	
+	
+\begin{itemize}
+	\item Variations of Similarity Flooding \cite{Melnik:2002} e.g. in RiMOM and Yam ++
+	\item Similarity Equation Fixed Point a.k.a OLA  \cite{EuzenatV04}
+\end{itemize}
+\section{Meta Matching Techniques}
+Enumerate basic approaches from literature
+
+\begin{itemize}
+\item 
+\end{itemize}
+
+\section{Analysis of Meta Matching Techniques}
 Show weaknesses of current approaches, supervised, often weighted average based, so not flexible (transferable to other domains)
 
-\chapter{Selected Approaches to Outlier Analysis}
+\chapter{Selected Approaches to Outlier Analysis (Related Work)}
 \section{Definition Outlier Analysis}
 \section{Approaches}
 
 %%%%%%%%%%%%%%%% Main Contribution
 
-\chapter{Hybrid Ontology Matching using Outlier Analysis}
+\chapter{An Unsupervised Ontology Matching System Using Outlier Analysis}
 \section{Motivation for using Outlier Analysis for Ontology Matching}
 Flexibility towards changing data domains
 No need to train weights upfront
@@ -412,13 +457,11 @@ Correlation between Outlier score and label
 
 \section{Overview}
 Presents the implemented Pipeline
-\section{Base Matchers used}
+\section{Individual Matchers used}
 What base matchers survived the selection process
-\section{Methods Used to combine Matchers}
-
 \section{Feature Selection}
 
-\section{Outlier Analysis}
+\section{Outlier Analysis  to Combine the Results}
 
 
 %%% Evaluation
