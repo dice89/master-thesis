@@ -25,21 +25,17 @@ import de.unima.dws.oamatching.measures.base.SecondStringTokenMatcher
 import de.unima.dws.oamatching.measures.base.StringFunctionMatcher
 import de.unima.dws.oamatching.util.wordnet.JiangConrath
 import de.unima.dws.oamatching.util.wordnet.LinWordMatching
-import de.unima.dws.omatching.matcher.BaseMatcher
-import de.unima.dws.omatching.matcher.MatchRelation
-import de.unima.dws.omatching.matcher.PostPrunedMatcher
+import de.unima.dws.omatching.matcher._
 import fr.inrialpes.exmo.align.impl.eval.PRecEvaluator
 import fr.inrialpes.exmo.ontosim.string.StringDistances
 import de.unima.dws.oamatching.measures.base.TokenizedStringMatcher
 import de.unima.dws.oamatching.measures.WordNetMeasureHelper
-import de.unima.dws.omatching.matcher.PostPrunedMatcher
 import org.junit.runner.Result
 import de.uniman.dws.oamatching.logging.ResultLogger
-import de.unima.dws.omatching.matcher.MatchRelation
 import scala.collection.convert.Wrappers.JEnumerationWrapper
 
 object MatcherRegistry {
-  val matcher_by_name: MutableMap[String, PostPrunedMatcher] = new HashMap[String, PostPrunedMatcher]();
+  val matcher_by_name: MutableMap[String, SimpleIndividualMatcher] = new HashMap[String, SimpleIndividualMatcher]();
 
   /**
    * Method inits Map with matcher
@@ -59,15 +55,15 @@ object MatcherRegistry {
     matcher_by_name += init_uri_fragment_string_distance_matcher("equalDistance");
     matcher_by_name += init_uri_fragment_string_similarity_matcher("prefix", false);
     matcher_by_name += init_uri_fragment_string_similarity_matcher("suffix", false);
-    matcher_by_name += init_uri_fragment_string_similarity_matcher("jiangConrath", true);
+    //matcher_by_name += init_uri_fragment_string_similarity_matcher("jiangConrath", true);
     matcher_by_name += init_uri_fragment_string_similarity_matcher("jaccardStemmed", true);
-    matcher_by_name += init_uri_fragment_string_similarity_matcher("lin", false);
+    //matcher_by_name += init_uri_fragment_string_similarity_matcher("lin", false);
     matcher_by_name += init_uri_fragment_string_similarity_matcher("mongeElkan", false);
     //init token based matchers
 
     //compose preprocessing function
     //maybe switch to Helper class
-    val tokenizer = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
+   /* val tokenizer = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
     val tokens_to_string = StringMeasureHelper.token_list_to_String _
     val simple_preprocessing = Function.untupled(tokens_to_string compose tokenizer compose StringMeasureHelper.porter_stem _ compose (StringMeasureHelper.getLabel _).tupled)
     // extractor takes now comments and referencing object and data properties into account
@@ -75,34 +71,34 @@ object MatcherRegistry {
 
     //build measures
     val tfidf_matcher = new TrainedMeasure(true, new SecondStringTokenMatcher(simple_preprocessing, new TFIDF(new SimpleTokenizer(true, false))))
-    matcher_by_name += ("simple_tfidf" -> new PostPrunedMatcher("simple_tfidf", tfidf_matcher))
+    matcher_by_name += ("simple_tfidf" -> new SimpleIndividualMatcher("simple_tfidf", tfidf_matcher))
 
     val soft_tfidf_matcher = new TrainedMeasure(true, new SecondStringTokenMatcher(simple_preprocessing, new SoftTFIDF(new SimpleTokenizer(true, false), new JaroWinkler(), 0.9)))
-    matcher_by_name += ("soft_tfidf_jaro" -> new PostPrunedMatcher("simple_soft_tfidf_jaro", soft_tfidf_matcher))
+    matcher_by_name += ("soft_tfidf_jaro" -> new SimpleIndividualMatcher("simple_soft_tfidf_jaro", soft_tfidf_matcher))
 
     val jaro_tfidf = new TrainedMeasure(true, new SecondStringTokenMatcher(simple_preprocessing, new JaroWinklerTFIDF()))
-    matcher_by_name += ("jaro_tfidf" -> new PostPrunedMatcher("jaro_tfidf", jaro_tfidf))
+    matcher_by_name += ("jaro_tfidf" -> new SimpleIndividualMatcher("jaro_tfidf", jaro_tfidf))
 
     val level2_jaro = new TrainedMeasure(true, new SecondStringTokenMatcher(simple_preprocessing, new Level2Jaro()))
-    matcher_by_name += ("level2_jaro" -> new PostPrunedMatcher("level2_jaro", level2_jaro))
+    matcher_by_name += ("level2_jaro" -> new SimpleIndividualMatcher("level2_jaro", level2_jaro))
 
     val level2_jaro_winkler = new TrainedMeasure(true, new SecondStringTokenMatcher(simple_preprocessing, new Level2JaroWinkler()))
-    matcher_by_name += ("level2_jaro_winkler" -> new PostPrunedMatcher("level2_jaro_winkler", level2_jaro_winkler))
+    matcher_by_name += ("level2_jaro_winkler" -> new SimpleIndividualMatcher("level2_jaro_winkler", level2_jaro_winkler))
 
     val level2_monge_elkan = new TrainedMeasure(true, new SecondStringTokenMatcher(simple_preprocessing, new Level2MongeElkan()))
-    matcher_by_name += ("level2_monge_elkan" -> new PostPrunedMatcher("level2_monge_elkan", level2_monge_elkan))
+    matcher_by_name += ("level2_monge_elkan" -> new SimpleIndividualMatcher("level2_monge_elkan", level2_monge_elkan))
 
     val lin_new = new StandardMeasure(true, new TokenizedStringMatcher(StringMeasureHelper.getLabel, tokenizer, SimpleMeasures.computeLin))
-    matcher_by_name += ("new_lin" -> new PostPrunedMatcher("new_lin", lin_new))
+    matcher_by_name += ("new_lin" -> new SimpleIndividualMatcher("new_lin", lin_new))
 
     val path = new StandardMeasure(true, new TokenizedStringMatcher(StringMeasureHelper.getLabel, tokenizer, SimpleMeasures.computePath))
-    matcher_by_name += ("path" -> new PostPrunedMatcher("path", path))
+    matcher_by_name += ("path" -> new SimpleIndividualMatcher("path", path))
 
     val jiang_conrath_new = new StandardMeasure(true, new TokenizedStringMatcher(StringMeasureHelper.getLabel, tokenizer, SimpleMeasures.computeJiangConrath))
-    matcher_by_name += ("jiang_conrath_new" -> new PostPrunedMatcher("jiang_conrath_new", jiang_conrath_new))
+    matcher_by_name += ("jiang_conrath_new" -> new SimpleIndividualMatcher("jiang_conrath_new", jiang_conrath_new))
 
     val wu_palmer = new StandardMeasure(true, new TokenizedStringMatcher(StringMeasureHelper.getLabel, tokenizer, SimpleMeasures.computeJiangConrath))
-    matcher_by_name += ("wu_palmer" -> new PostPrunedMatcher("wu_palmer", wu_palmer))
+    matcher_by_name += ("wu_palmer" -> new SimpleIndividualMatcher("wu_palmer", wu_palmer))
 
     /* val level2_leven = new TrainedMeasure(true, new SecondStringTokenMatcher(simple_preprocessing,new Level2Levenstein()))
     matcher_by_name += ("level2_leven" -> new PostPrunedMatcher("level2_leven", level2_leven))
@@ -110,24 +106,25 @@ object MatcherRegistry {
 
     //with extended preprocessing
     val advanced_tfidf_matcher = new TrainedMeasure(true, new SecondStringTokenMatcher(advanced_preprocessing, new TFIDF(new SimpleTokenizer(true, false))))
-    matcher_by_name += ("advanced_tfidf" -> new PostPrunedMatcher("advanced_tfidf", advanced_tfidf_matcher))
+    matcher_by_name += ("advanced_tfidf" -> new SimpleIndividualMatcher("advanced_tfidf", advanced_tfidf_matcher))
 
     //structural Matcher from alignment API
 
     //matcher_by_name += ("class_struct_alignment_api" -> new StrucSubsDistAlignment())
     //matcher_by_name += ("name_and_property_alignment_api" -> new NameAndPropertyAlignment())
+    */
   }
 
   /**
    * @param measure
    * @return
    */
-  def init_uri_fragment_string_distance_matcher(measure: String): (String, PostPrunedMatcher) = {
+  def init_uri_fragment_string_distance_matcher(measure: String): (String, SimpleIndividualMatcher) = {
     val name: String = measure + "_matcher";
     val measure_fct: (String, String) => Double = get_string_matching_function(measure)
 
     val stringfunction = new StandardMeasure(false, new StringFunctionMatcher(StringMeasureHelper.getLabel _, measure_fct))
-    (name, new PostPrunedMatcher(measure, stringfunction))
+    (name, new SimpleIndividualMatcher(measure, stringfunction))
   }
 
   /**
@@ -135,7 +132,7 @@ object MatcherRegistry {
    * @param tokenized
    * @return
    */
-  def init_uri_fragment_string_similarity_matcher(measure: String, tokenized: Boolean): (String, PostPrunedMatcher) = {
+  def init_uri_fragment_string_similarity_matcher(measure: String, tokenized: Boolean): (String, SimpleIndividualMatcher) = {
 
     val name: String = measure + "_matcher";
     def measure_fct = get_string_matching_function(measure)
@@ -153,7 +150,7 @@ object MatcherRegistry {
 
     val stringfunction = new StandardMeasure(true, new StringFunctionMatcher(StringMeasureHelper.getLabel _, measure_fct))
 
-    (name, new PostPrunedMatcher(measure, stringfunction));
+    (name, new SimpleIndividualMatcher(measure, stringfunction));
   }
 
   /**
@@ -183,54 +180,6 @@ object MatcherRegistry {
     }
   }
 
-  /**
-   * @param problem
-   * @param matcher_name
-   * @param dataset_name
-   * @param threshold
-   * @return
-   */
-  def matchSingle(problem: MatchingProblem, matcher_name: String, threshold: Double): (EvaluationResult, Map[de.unima.dws.omatching.matcher.MatchRelation, Double]) = {
-
-    val matcher = matcher_by_name.get(matcher_name).get
-
-    matcher.prepare(problem.ontology1, problem.ontology2, problem.reference)
-    val result = matcher.align(threshold)
-
-    (matcher.evaluate, result)
-  }
-
-  def matchSingleOptimizeOnly(problem: MatchingProblem, matcher_name: String, threshold: Double): EvaluationResult = {
-    val matcher = matcher_by_name.get(matcher_name).get
-
-    matcher.prepare(problem.ontology1, problem.ontology2, problem.reference)
-    matcher.setType("*?")
-    matcher.align_optimize_only(threshold)
-
-    val alignments = new JEnumerationWrapper(matcher.getElements()).toList;
-
-    val eval_res = matcher.evaluate
-    //println(eval_res)
-    eval_res
-
-  }
-
-  def matchProblemsWithOneMatcher(problems: Seq[MatchingProblem], matcher_name: String, dataset_name: String, threshold: Double): (EvaluationResult, Seq[Map[MatchRelation, Double]]) = {
-
-    val results = problems.map({ case (matching_problem) => matchSingle(matching_problem, matcher_name, threshold) })
-
-    val tuple_list = results.unzip
-
-    (aggregate_MacroAverage(tuple_list._1), tuple_list._2)
-
-  }
-
-  def matchProblemsWithOneMatcherOptimizeOnly(problems: Seq[MatchingProblem], matcher_name: String, dataset_name: String, threshold: Double): EvaluationResult = {
-    val results = problems.map({ case (matching_problem) => matchSingleOptimizeOnly(matching_problem, matcher_name, threshold) })
-
-    aggregate_MacroAverage(results)
-  }
-
   def aggregate_MacroAverage(results: Seq[EvaluationResult]): EvaluationResult = {
     // unapply to get tuples and then unzip to get three list of doubles in a tuple
     val res_list = results.map(A => EvaluationResult.unapply(A).get)
@@ -257,7 +206,7 @@ object MatcherRegistry {
    * @param name
    * @return
    */
-  def getMatcherByName(name: String): Option[PostPrunedMatcher] = {
+  def getMatcherByName(name: String): Option[SimpleIndividualMatcher] = {
     matcher_by_name.get(name)
   }
 /*

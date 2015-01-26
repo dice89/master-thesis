@@ -16,12 +16,11 @@ import fr.inrialpes.exmo.ontowrap.owlapi30.OWLAPI3OntologyFactory
 import scala.collection.mutable.Buffer
 import org.semanticweb.owl.align.Cell
 import scala.collection.mutable.ListBuffer
-import de.unima.dws.omatching.pipeline.EvaluationResult
+import de.unima.dws.omatching.pipeline.{MatchingEvaluationProblem, EvaluationResult, MatchingProblem}
 import fr.inrialpes.exmo.align.impl.eval.PRecEvaluator
 import fr.inrialpes.exmo.align.impl.Extensions
 import java.util.Hashtable
 import java.util.Set
-import de.unima.dws.omatching.pipeline.MatchingProblem
 
 class PostPrunedMatcher(val name: String, val similarityObject: MatrixMeasure, var reference: Alignment) extends BaseMatcher {
 
@@ -29,7 +28,7 @@ class PostPrunedMatcher(val name: String, val similarityObject: MatrixMeasure, v
     this(name, similarityObject, null)
   }
 
-  def prepare(problem:MatchingProblem):Unit ={
+  def prepare(problem:MatchingEvaluationProblem):Unit ={
     prepare(problem.ontology1 , problem.ontology2 ,problem.reference )
   }
   

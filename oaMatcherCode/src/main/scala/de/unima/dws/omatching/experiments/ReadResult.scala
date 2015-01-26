@@ -2,10 +2,6 @@ package de.unima.dws.omatching.experiments
 
 import java.io.File
 
-import com.rapidminer.{Process => RProcess}
-import com.rapidminer.RapidMiner
-import com.rapidminer.operator.io.CSVDataReader
-import com.rapidminer.operator.io.CSVExampleSetWriter
 
 object ReadResult extends App {
 
@@ -27,7 +23,7 @@ object ReadResult extends App {
   
   println(evaluator.eval(p))*/
   
-  RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
+/*  RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
   RapidMiner.init();
   
   var process:RProcess = new RProcess(new File("/Users/mueller/Documents/master-thesis/RapidminerRepo/oacode.rmp"));
@@ -39,5 +35,5 @@ object ReadResult extends App {
   process.getOperator("Output").setParameter(  CSVExampleSetWriter.PARAMETER_CSV_FILE,  f_res.getAbsolutePath())
 
   process.run();
-  
+  */
 }	

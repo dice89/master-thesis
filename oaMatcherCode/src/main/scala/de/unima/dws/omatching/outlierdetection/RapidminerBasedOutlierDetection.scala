@@ -1,18 +1,17 @@
 package de.unima.dws.omatching.outlierdetection
 
-import de.unima.dws.omatching.matcher.MatchRelationURI
-import de.unima.dws.omatching.matcher.MatchRelation
 import java.io.File
-import de.unima.dws.omatching.pipeline.MatcherRegistry
-import com.github.tototoshi.csv.CSVReader
-import com.github.tototoshi.csv.CSVWriter
 import java.net.URI
-import com.rapidminer.{ Process => RProcess }
-import com.rapidminer.RapidMiner
+
+import com.github.tototoshi.csv.{CSVReader, CSVWriter}
+
+import de.unima.dws.omatching.matcher.{MatchRelation, MatchRelationURI}
+import de.unima.dws.omatching.pipeline.MatcherRegistry
+
 
 object RapidminerBasedOutlierDetection {
-   RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
-  RapidMiner.init();
+  // RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
+ // RapidMiner.init();
   
   
   def rapidminerOutlierReadWrite(csv_prefix:String) = {
@@ -32,14 +31,14 @@ object RapidminerBasedOutlierDetection {
 
     val input_csv: File = writeFunction(matchings)
     //Rapidminer Handling
-
-    var process: RProcess = new RProcess(new File("/Users/mueller/Documents/master-thesis/RapidminerRepo/oacode_only_cluster.rmp"));
-
     val output_csv: File = new File("output.csv");
+   /* var process: RProcess = new RProcess(new File("/Users/mueller/Documents/master-thesis/RapidminerRepo/oacode_only_cluster.rmp"));
+
+
     process.getOperator("Input").setParameter("csv_file", input_csv.getAbsolutePath())
     process.getOperator("Output").setParameter("csv_file", output_csv.getAbsolutePath())
     process.run();
-
+*/
     readFunction(output_csv)
   }
 

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SBT: de.unima:alignmentapi.mavenized:4.6:jar">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/de/unima/alignmentapi.mavenized/4.6/alignmentapi.mavenized-4.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

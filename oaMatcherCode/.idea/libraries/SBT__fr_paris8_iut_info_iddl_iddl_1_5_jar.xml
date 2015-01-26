@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SBT: fr.paris8.iut.info.iddl:iddl:1.5:jar">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/fr/paris8/iut/info/iddl/iddl/1.5/iddl-1.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SBT: org.neon_toolkit.registery:oyster2:0.99:jar">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/neon_toolkit/registery/oyster2/0.99/oyster2-0.99.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

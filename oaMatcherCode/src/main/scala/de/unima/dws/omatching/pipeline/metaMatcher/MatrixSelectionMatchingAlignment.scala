@@ -5,7 +5,7 @@ import java.util.Properties
 import org.semanticweb.owl.align.Alignment
 import java.net.URI
 import fr.inrialpes.exmo.align.impl.BasicRelation
-import com.rapidminer.tools.jep.function.expressions.text.Contains
+
 
 class MatrixSelectionMatchingAlignment(override val matchings: Map[MatchRelationURI, Double], override val threshold: Double) extends OutlierMatchingCombinationAlignment(matchings, threshold) {
 

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SBT: edu.cmu.lti:jawjaw:1.0.2:jar">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/edu/cmu/lti/jawjaw/1.0.2/jawjaw-1.0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

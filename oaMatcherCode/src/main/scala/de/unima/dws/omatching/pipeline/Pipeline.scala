@@ -1,7 +1,7 @@
 package de.unima.dws.omatching.pipeline
 
 import java.io.File
-import java.net.URI
+import java.net.{URL, URI}
 
 import scala.collection.convert.Wrappers.JEnumerationWrapper
 import scala.collection.immutable.Map
@@ -23,17 +23,18 @@ import de.unima.dws.omatching.pipeline.util.RdfFileFilter
 import de.uniman.dws.oamatching.logging.ResultLogger
 import fr.inrialpes.exmo.align.impl.eval.PRecEvaluator
 import fr.inrialpes.exmo.align.parser.AlignmentParser
+import org.apache.log4j.Logger;
 
 case class EvaluationResult(precision: Double, recall: Double, fmeasure: Double, tp: Int, fptp: Int, fnfp: Int)
-
+/*
 case class OutlierAnalysisResult(left: String, relation: String, right: String, outlierFactor: Double)
 
 case class MatcherResult(metaResult: EvaluationResult, singleResult: Map[String, EvaluationResult])
 
 case class MatchingProblem(ontology1: URI, ontology2: URI, reference: Alignment, name: String)
-
+*/
 object Pipeline {
-
+/*
   MatcherRegistry.init
 
   val usage = """
@@ -85,6 +86,17 @@ object Pipeline {
       new File("matchings/" + file_name).delete()
     }
 
+
+    val test : URL = getClass().getClassLoader.getResource("log4j.properties");
+
+
+    println(test.toString)
+
+    val logger :Logger = Logger.getLogger("runtime.log");
+
+    Logger.getLogger("experiment.log").debug("test");
+    Logger.getLogger("experiment.log").info("test");
+
     /* val file_onto1: File = new File("ontos/2014/conference/ekaw.owl");
 
     val file_onto2: File = new File("ontos/2014/conference/iasted.owl");
@@ -102,7 +114,7 @@ object Pipeline {
 
     
     optimizeMetaMatchingThreshold(parse_conference_2014)("ontos/2014/conference","conference",10)
-    //matchAndEvaluateProblems(parse_conference_2014)("ontos/2014/conference", "conference", 0.5)
+    //matchAndEvaluateProblems(parse_conference_2014)("ontos/2014/conference", "conference", 0.6)
   }
 
   def optimizeThresholdBaseMatcherLocal(matcher_name: String, steps: Int, problem: MatchingProblem, dataset_name: String): Double = {
@@ -348,6 +360,7 @@ object Pipeline {
 
     val unique_elements = results.map({ case (name, (eval, matchings)) => matchings.keySet }).flatten
     val results_per_matching = unique_elements.map(matching => matching -> results.filter(triple => triple._2._2.contains(matching)).map({ case (name, (eval, matchings)) => name -> matchings.get(matching) })).toMap
+
     val eval_map = results.map({ case (name, (eval, matchings)) => name -> eval });
 
     (results_per_matching, eval_map)
@@ -445,4 +458,5 @@ object Pipeline {
     MatcherResult(meta_result _2, matchings._2)
   }
  */
+ * */
 }

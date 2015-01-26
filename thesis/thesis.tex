@@ -127,7 +127,7 @@ In philosophy the term ontology describes the study of being and existence, tryi
 In literature there exist various definitions for ontologies on different levels, some of which are discussed in \cite{Guarino:1997}. Nevertheless one of the most cited definitions is the one by \cite{Gruber:1995}: "An ontology is an explicit specification of a conceptualization".  But probably as often as its cited its extended by other definitions like: "An ontology is an explicit formal specification of a shared conceptualization of a domain of interest"\cite{Studer:1998} and "a logical theory which gives and explicit, partial account of a conceptualization" \cite{Guarino95}. These two definitions extends the understanding of an ontology in three points. First of all an ontology needs to be formal, so for instance a textual description is not sufficient.\cite{Studer:1998} Moreover it needs to cover a specific domain, so that there exist more than one ontology (a key difference to philosophy). And finally a ontology can only partial conceptualize facts of the real world, so it's a simplified abstraction of the reality.\cite{ehrig2006ontology}
 
 This rather textual definition will be in the following precised by the introduction of the Web Ontology Language (OWL) which is  heavily used in the semantic web (TODO cite linked open data the story to far) and most of the datasets provided by the OAEI are in OWL format. \cite{dragisicresults}
-\subsubsection{OWL a Ontology Language}
+\subsubsection{OWL a Ontology Language for the Web}
 There exist a variety of ontology languages, but in this work the Web Ontology Language (OWL) will be used. OWL is based upon the eXtensinble Markup Language, a succressor of the ontology languages DAMl and OIL, extending RDF and RDFS. In this thesis the OWL 2 Standard is used, which is the second iteration of OWL and became an W3C recommendation 2009 \cite{OWL2a}. \footnote{In the following the term OWL is used instead of OWL 2, when to some specialties of OWL 2 is referred, it will be explicitly mentioned}
 
 OWL is an essential part of the linked open data stack, used as a format to express knowledge about the world. OWL exists in two flavors: OWL DL and OWL Full. The main difference lies in the decidability with reasoning with those ontologies. Since reasoning is not in scope of this thesis, the only thing worth mentioning for completeness it that OWL DL is decidable, because it is based on description logic, where OWL Full not decidable. Despite this fact, the main focus at this point lies in the concepts of OWL to conceptualize facts from the real world, by modeling an ontology. Thus is in the following an introduction of basic OWL elements is given, which is based on \cite{Antoniou:2012}.
@@ -256,67 +256,7 @@ An example for this can be seen in Section \ref{sec:motivating_example}.
 \section{Motivating Example}
 \label{sec:motivating_example}
 TODO
-\section{State-of-the Art}
-\label{sec:state_of_the_art}
-There exits several state-of-the-art of the ontology matching systems, developed all over the world. To evaluate the performance of different systems and approaches the Ontology Alignment Evaluation Initiative was started, to asses weaknesses and strength of ontology matching algorithms and by this give developers and researches and developers in this are a platform for knowledge transfer. \cite{Euzenat:2011aa} 
-There the OAEI publishes each year a report on an assesment of current ontology matching systems. In order to validate the state-of-the-art, analyzing the techniques used by participants of OAEI is a good starting point. In this section this finding are shortly summarized, based on those reports. \cite{EuzenatOAEI11} \cite{AguirreOAEI12} \cite{GrauOAEI13}  \cite{euzenat2014}
-\begin{Huge}
-Add other reports
-\end{Huge}
 
-Mostly all systems that attended the challenge have in common that  they rely on multiple ontology matching functions. In order to overcome weakness of different types of functions, state-of-the art ontology matching systems use different measures. They exploit the structural properties, the name of elements and sometimes individuals of ontologies in order to match entities. The main drawback of this multiple strategy or hybrid matching is that there is a need of a combination function of the results of the so called base matchers. This can be a weighted average sum (TODO cite YAM) or a majority vote of the base matchers (\cite{Eckert:2009:IOM:1561533.1561553}). \cite{6104044}
-Another similarity is modern matchers try to be as efficient as possible and therefore align ontologies faster and in addition be able to align big ontologies.\cite{Rahm:2011aa}
-Furthermore most matching approaches use base matchers that rely on background knowledge, which is used to overcome a terminological mismatch, between the matched ontologies. Such resources can be WordNet \cite{fellbaum1998wordnet} or UMLS\cite{bodenreider2004unified}. \cite{Euzenat:2011aa} 
-
-Of particular interest is consequently the performance of matchings systems, which is usually estimated using the measures $rrecision$, $recall$ and $f_1-measure$ \footnote{TODO add reference to section} from information retrieval. The OAEI offers different tracks that contain different ontologies to be matched. To illustrate the performance over those different datasets in the following the results of matching systems for four different datasets over last four years will be presented, which is an update of the work done in \cite{6104044}.
-
-\subsection{Bibliography Benchmark}
-\begin{figure}
- \includegraphics[scale=.5]{figures/oaei/benchmark/top2011.png} 
- \includegraphics[scale=.5]{figures/oaei/benchmark/top2012.png}
- \includegraphics[scale=.5]{figures/oaei/benchmark/top2013.png}  
- \includegraphics[scale=.5]{figures/oaei/benchmark/top2014.png} 
- \caption{Top performing Ontology Matching Systems for  the OAEI Bibliography Benchmark Dataset}
- \label{img::oaei_anatomy}
-\end{figure}
-
-\subsection{Conference}
-This data set contains 21 ontologies from the conference domain. They were either created manually, were present or created based on a website of the conference. The ontologies did not change over time and also the alignments between all ontologies are stable. In figure \ref{img::oaei_conf} the result of the top performing matching systems are presented. It can be observed that their has been no real improvement in terms of $f_1-measure$ since 2012. The best systems are AML \cite{Faria:2013aa}, YAM++ \cite{Ngo:2012ab} and LogMap \cite{JimACnez-Ruiz:2011aa}. 
-
-\begin{figure}
- \includegraphics[scale=.5]{figures/oaei/conference/top2011.png} 
- \includegraphics[scale=.5]{figures/oaei/conference/top2012.png}
- \includegraphics[scale=.5]{figures/oaei/conference/top2013.png}  
- \includegraphics[scale=.5]{figures/oaei/conference/top2014.png} 
- \caption{Top performing Ontology Matching Systems for  the OAEI Conference Dataset}
- \label{img::oaei_conf}
-\end{figure}
-
-
-\subsection{Anatomy}
-\label{sec::oaei_anatomy}
-For the anatomy dataset the task is set to match the Adult Mouse Anatomy with NCI Thesaurus \footnote{http://ncim.nci.nih.gov/ncimbrowser/}, that describes the human anatomy. The matching task is rather large and results in a big alignment. Despite some changes in the dataset from 2011 to 2012, it was stable over the last two years and therefore comparisons are possible. What can be seen is that there is a clear improvement in terms of $f_1-measure$ over the years, with CODI, AML, GOMMA, YAM++ and LogMap as best performing systems in different periods.
-
-\begin{figure}
- \includegraphics[scale=.5]{figures/oaei/anatomy/top2011.png} 
- \includegraphics[scale=.5]{figures/oaei/anatomy/top2012.png}
- \includegraphics[scale=.5]{figures/oaei/anatomy/top2013.png}  
- \includegraphics[scale=.5]{figures/oaei/anatomy/top2014.png} 
- \caption{Top performing Ontology Matching Systems for  the OAEI Anatomy Dataset}
- \label{img::oaei_anatomy}
-\end{figure}
-
-\subsection{Library}
-The OAEI organizers included in 2012 the current 
-\begin{figure}
- \includegraphics[scale=.5]{figures/oaei/library/top2012.png}
- \includegraphics[scale=.5]{figures/oaei/library/top2013.png}  
- \includegraphics[scale=.5]{figures/oaei/library/top2014.png} 
- \caption{Top performing Ontology Matching Systems for  the OAEI Library Dataset}
- \label{img::library}
-\end{figure}
-
-\clearpage
 \section{Challenges}
 \label{sec:challeng_ontology_matching}
 The previous section demonstrated that the ontology matching community is improving their systems in terms of $f_1-measure$. Another way of looking at this is that there still exist various challenges that need be solved, to overcome the disparate dataspace. In \cite{6104044} and  \cite{euzenat2013d} a research agenda with open questions in the field of ontology matching is presented. In addition to that in \cite{OteroCerdeira2015949} a survery was performed among 33 researchers in the field of ontology matching. Table \ref{tab::challenges_in_onto_matching} summarizes the findings.
@@ -425,19 +365,86 @@ Say the graph matching problem here is not a graph matching problem of the globa
 	\item Variations of Similarity Flooding \cite{Melnik:2002} e.g. in RiMOM and Yam ++
 	\item Similarity Equation Fixed Point a.k.a OLA  \cite{EuzenatV04}
 \end{itemize}
+
+
 \section{Meta Matching Techniques}
 Enumerate basic approaches from literature
 
 \begin{itemize}
 \item 
 \end{itemize}
+\section{State-of-the Art Matching Systems}
+
+\section{Performance of State-of-the Art Matching Systems}
+\label{sec:state_of_the_art}
+There exits several state-of-the-art of the ontology matching systems, developed all over the world. To evaluate the performance of different systems and approaches the Ontology Alignment Evaluation Initiative was started, to asses weaknesses and strength of ontology matching algorithms and by this give developers and researches and developers in this are a platform for knowledge transfer. \cite{Euzenat:2011aa} 
+There the OAEI publishes each year a report on an assesment of current ontology matching systems. In order to validate the state-of-the-art, analyzing the techniques used by participants of OAEI is a good starting point. In this section this finding are shortly summarized, based on those reports. \cite{EuzenatOAEI11} \cite{AguirreOAEI12} \cite{GrauOAEI13}  \cite{euzenat2014}
+\begin{Huge}
+Add other reports
+\end{Huge}
+
+Mostly all systems that attended the challenge have in common that  they rely on multiple ontology matching functions. In order to overcome weakness of different types of functions, state-of-the art ontology matching systems use different measures. They exploit the structural properties, the name of elements and sometimes individuals of ontologies in order to match entities. The main drawback of this multiple strategy or hybrid matching is that there is a need of a combination function of the results of the so called base matchers. This can be a weighted average sum (TODO cite YAM) or a majority vote of the base matchers (\cite{Eckert:2009:IOM:1561533.1561553}). \cite{6104044}
+Another similarity is modern matchers try to be as efficient as possible and therefore align ontologies faster and in addition be able to align big ontologies.\cite{Rahm:2011aa}
+Furthermore most matching approaches use base matchers that rely on background knowledge, which is used to overcome a terminological mismatch, between the matched ontologies. Such resources can be WordNet \cite{fellbaum1998wordnet} or UMLS\cite{bodenreider2004unified}. \cite{Euzenat:2011aa} 
+
+Of particular interest is consequently the performance of matchings systems, which is usually estimated using the measures $rrecision$, $recall$ and $f_1-measure$ \footnote{TODO add reference to section} from information retrieval. The OAEI offers different tracks that contain different ontologies to be matched. To illustrate the performance over those different datasets in the following the results of matching systems for four different datasets over last four years will be presented, which is an update of the work done in \cite{6104044}.
+
+\subsection{Bibliography Benchmark}
+\begin{figure}
+ \includegraphics[scale=.5]{figures/oaei/benchmark/top2011.png} 
+ \includegraphics[scale=.5]{figures/oaei/benchmark/top2012.png}
+ \includegraphics[scale=.5]{figures/oaei/benchmark/top2013.png}  
+ \includegraphics[scale=.5]{figures/oaei/benchmark/top2014.png} 
+ \caption{Top performing Ontology Matching Systems for  the OAEI Bibliography Benchmark Dataset}
+ \label{img::oaei_anatomy}
+\end{figure}
+
+\subsection{Conference}
+This data set contains 21 ontologies from the conference domain. They were either created manually, were present or created based on a website of the conference. The ontologies did not change over time and also the alignments between all ontologies are stable. In figure \ref{img::oaei_conf} the result of the top performing matching systems are presented. It can be observed that their has been no real improvement in terms of $f_1-measure$ since 2012. The best systems are AML \cite{Faria:2013aa}, YAM++ \cite{Ngo:2012ab} and LogMap \cite{JimACnez-Ruiz:2011aa}. 
+
+\begin{figure}
+ \includegraphics[scale=.5]{figures/oaei/conference/top2011.png} 
+ \includegraphics[scale=.5]{figures/oaei/conference/top2012.png}
+ \includegraphics[scale=.5]{figures/oaei/conference/top2013.png}  
+ \includegraphics[scale=.5]{figures/oaei/conference/top2014.png} 
+ \caption{Top performing Ontology Matching Systems for  the OAEI Conference Dataset}
+ \label{img::oaei_conf}
+\end{figure}
+
+
+\subsection{Anatomy}
+\label{sec::oaei_anatomy}
+For the anatomy dataset the task is set to match the Adult Mouse Anatomy with NCI Thesaurus \footnote{http://ncim.nci.nih.gov/ncimbrowser/}, that describes the human anatomy. The matching task is rather large and results in a big alignment. Despite some changes in the dataset from 2011 to 2012, it was stable over the last two years and therefore comparisons are possible. What can be seen is that there is a clear improvement in terms of $f_1-measure$ over the years, with CODI, AML, GOMMA, YAM++ and LogMap as best performing systems in different periods.
+
+\begin{figure}
+ \includegraphics[scale=.5]{figures/oaei/anatomy/top2011.png} 
+ \includegraphics[scale=.5]{figures/oaei/anatomy/top2012.png}
+ \includegraphics[scale=.5]{figures/oaei/anatomy/top2013.png}  
+ \includegraphics[scale=.5]{figures/oaei/anatomy/top2014.png} 
+ \caption{Top performing Ontology Matching Systems for  the OAEI Anatomy Dataset}
+ \label{img::oaei_anatomy}
+\end{figure}
+
+\subsection{Library}
+The OAEI organizers included in 2012 the current 
+\begin{figure}
+ \includegraphics[scale=.5]{figures/oaei/library/top2012.png}
+ \includegraphics[scale=.5]{figures/oaei/library/top2013.png}  
+ \includegraphics[scale=.5]{figures/oaei/library/top2014.png} 
+ \caption{Top performing Ontology Matching Systems for  the OAEI Library Dataset}
+ \label{img::library}
+\end{figure}
+
+\clearpage
+
 
 \section{Analysis of Meta Matching Techniques}
 Show weaknesses of current approaches, supervised, often weighted average based, so not flexible (transferable to other domains)
 
-\chapter{Selected Approaches to Outlier Analysis (Related Work)}
+\chapter{Outlier Analysis (Related Work)}
 \section{Definition Outlier Analysis}
-\section{Approaches}
+\section{Categorization of Outlier Analysis Techniques}
+\section{Selected Approaches}
 
 %%%%%%%%%%%%%%%% Main Contribution
 

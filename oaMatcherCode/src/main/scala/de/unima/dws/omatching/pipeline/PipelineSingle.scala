@@ -9,7 +9,7 @@ import org.semanticweb.owl.align.Alignment
 object PipelineSingle {
   def main(args: Array[String]): Unit = {
 
-    val ds_name = "edas-iasted"
+   /* val ds_name = "edas-iasted"
     val file_onto1: File = new File("ontos/2014/conference/edas.owl");
 
     val file_onto2: File = new File("ontos/2014/conference/iasted.owl");
@@ -26,6 +26,6 @@ object PipelineSingle {
 
     val res = Pipeline.metaMatchAndEvaluate(RapidminerBasedOutlierDetection.rapidminerOutlierReadWrite(ds_name))(Pipeline.combineMatchingsMatrix)(Pipeline.validate(problem.reference))(problem, ds_name, 0.9)
 
-    println(res.metaResult)
+    println(res.metaResult)*/
   }
 }

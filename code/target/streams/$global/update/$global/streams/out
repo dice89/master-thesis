@@ -1,0 +1,278 @@
+[info] Updating {file:/Users/mueller/Documents/master-thesis/code/}code...
+[debug] :: resolving dependencies :: default#code_2.11;1.0
+[debug] 	confs: [compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool]
+[debug] 	validate = true
+[debug] 	refresh = false
+[debug] resolving dependencies for configuration 'compile'
+[debug] == resolving dependencies for default#code_2.11;1.0 [compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->default(compile)]
+[info] Resolving org.scala-lang#scala-library;2.11.5 ...
+[debug] sbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@548e1cd6
+[debug] 		tried /Users/mueller/.ivy2/local/org.scala-lang/scala-library/2.11.5/ivys/ivy.xml
+[debug] 	local: no ivy file found for org.scala-lang#scala-library;2.11.5
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.5/scala-library-2.11.5.pom
+[debug] 	public: found md file for org.scala-lang#scala-library;2.11.5
+[debug] 		=> http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.5/scala-library-2.11.5.pom (2.11.5)
+[debug] downloading http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.5/scala-library-2.11.5.pom ...
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.5/scala-library-2.11.5.pom
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.5/scala-library-2.11.5.pom.sha1
+[debug] sha1 OK for http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.5/scala-library-2.11.5.pom
+[debug] 	[SUCCESSFUL ] org.scala-lang#scala-library;2.11.5!scala-library.pom(pom.original) (262ms)
+[debug] 		tried /Users/mueller/.ivy2/local/org.scala-lang/scala-library/2.11.5/jars/scala-library.jar
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.5/scala-library-2.11.5.jar
+[debug] 	found org.scala-lang#scala-library;2.11.5 in public
+[debug] 	[2.11.5] org.scala-lang#scala-library;2.11.5
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->runtime]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->master]
+[debug] resolving dependencies for configuration 'runtime'
+[debug] == resolving dependencies for default#code_2.11;1.0 [runtime]
+[debug] == resolving dependencies for default#code_2.11;1.0 [compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->default(compile)]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->runtime]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->master]
+[debug] resolving dependencies for configuration 'test'
+[debug] == resolving dependencies for default#code_2.11;1.0 [test]
+[debug] == resolving dependencies for default#code_2.11;1.0 [runtime]
+[debug] == resolving dependencies for default#code_2.11;1.0 [compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->default(compile)]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->runtime]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->master]
+[debug] resolving dependencies for configuration 'provided'
+[debug] == resolving dependencies for default#code_2.11;1.0 [provided]
+[debug] resolving dependencies for configuration 'optional'
+[debug] == resolving dependencies for default#code_2.11;1.0 [optional]
+[debug] resolving dependencies for configuration 'compile-internal'
+[debug] == resolving dependencies for default#code_2.11;1.0 [compile-internal]
+[debug] == resolving dependencies for default#code_2.11;1.0 [compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->default(compile)]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->runtime]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->master]
+[debug] == resolving dependencies for default#code_2.11;1.0 [optional]
+[debug] == resolving dependencies for default#code_2.11;1.0 [provided]
+[debug] resolving dependencies for configuration 'runtime-internal'
+[debug] == resolving dependencies for default#code_2.11;1.0 [runtime-internal]
+[debug] == resolving dependencies for default#code_2.11;1.0 [runtime]
+[debug] == resolving dependencies for default#code_2.11;1.0 [compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->default(compile)]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->runtime]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->master]
+[debug] == resolving dependencies for default#code_2.11;1.0 [optional]
+[debug] resolving dependencies for configuration 'test-internal'
+[debug] == resolving dependencies for default#code_2.11;1.0 [test-internal]
+[debug] == resolving dependencies for default#code_2.11;1.0 [test]
+[debug] == resolving dependencies for default#code_2.11;1.0 [runtime]
+[debug] == resolving dependencies for default#code_2.11;1.0 [compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->default(compile)]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->runtime]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [compile->master]
+[debug] == resolving dependencies for default#code_2.11;1.0 [optional]
+[debug] == resolving dependencies for default#code_2.11;1.0 [provided]
+[debug] resolving dependencies for configuration 'plugin'
+[debug] == resolving dependencies for default#code_2.11;1.0 [plugin]
+[debug] resolving dependencies for configuration 'sources'
+[debug] == resolving dependencies for default#code_2.11;1.0 [sources]
+[debug] resolving dependencies for configuration 'docs'
+[debug] == resolving dependencies for default#code_2.11;1.0 [docs]
+[debug] resolving dependencies for configuration 'pom'
+[debug] == resolving dependencies for default#code_2.11;1.0 [pom]
+[debug] resolving dependencies for configuration 'scala-tool'
+[debug] == resolving dependencies for default#code_2.11;1.0 [scala-tool]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-compiler;2.11.5 [scala-tool->default]
+[info] Resolving org.scala-lang#scala-compiler;2.11.5 ...
+[debug] sbt-chain: Checking cache for: dependency: org.scala-lang#scala-compiler;2.11.5 {scala-tool=[default, optional(default)]}
+[debug] 		tried /Users/mueller/.ivy2/local/org.scala-lang/scala-compiler/2.11.5/ivys/ivy.xml
+[debug] 	local: no ivy file found for org.scala-lang#scala-compiler;2.11.5
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.5/scala-compiler-2.11.5.pom
+[debug] 	public: found md file for org.scala-lang#scala-compiler;2.11.5
+[debug] 		=> http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.5/scala-compiler-2.11.5.pom (2.11.5)
+[debug] downloading http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.5/scala-compiler-2.11.5.pom ...
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.5/scala-compiler-2.11.5.pom
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.5/scala-compiler-2.11.5.pom.sha1
+[debug] sha1 OK for http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.5/scala-compiler-2.11.5.pom
+[debug] 	[SUCCESSFUL ] org.scala-lang#scala-compiler;2.11.5!scala-compiler.pom(pom.original) (248ms)
+[debug] 		tried /Users/mueller/.ivy2/local/org.scala-lang/scala-compiler/2.11.5/jars/scala-compiler.jar
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.5/scala-compiler-2.11.5.jar
+[debug] 	found org.scala-lang#scala-compiler;2.11.5 in public
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-compiler;2.11.5 [scala-tool->runtime]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-compiler;2.11.5 [scala-tool->compile]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-library;2.11.5 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-library;2.11.5 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-library;2.11.5 [compile->default]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-library;2.11.5 [compile->runtime]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-library;2.11.5 [compile->compile]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-library;2.11.5 [compile->master]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-library;2.11.5 [compile->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-library;2.11.5 [compile->compile]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-library;2.11.5 [compile->optional(default)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-reflect;2.11.5 [compile->master(*)]
+[info] Resolving org.scala-lang#scala-reflect;2.11.5 ...
+[debug] sbt-chain: Checking cache for: dependency: org.scala-lang#scala-reflect;2.11.5 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[debug] 		tried /Users/mueller/.ivy2/local/org.scala-lang/scala-reflect/2.11.5/ivys/ivy.xml
+[debug] 	local: no ivy file found for org.scala-lang#scala-reflect;2.11.5
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.5/scala-reflect-2.11.5.pom
+[debug] 	public: found md file for org.scala-lang#scala-reflect;2.11.5
+[debug] 		=> http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.5/scala-reflect-2.11.5.pom (2.11.5)
+[debug] downloading http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.5/scala-reflect-2.11.5.pom ...
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.5/scala-reflect-2.11.5.pom
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.5/scala-reflect-2.11.5.pom.sha1
+[debug] sha1 OK for http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.5/scala-reflect-2.11.5.pom
+[debug] 	[SUCCESSFUL ] org.scala-lang#scala-reflect;2.11.5!scala-reflect.pom(pom.original) (302ms)
+[debug] 		tried /Users/mueller/.ivy2/local/org.scala-lang/scala-reflect/2.11.5/jars/scala-reflect.jar
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.5/scala-reflect-2.11.5.jar
+[debug] 	found org.scala-lang#scala-reflect;2.11.5 in public
+[debug] 	[2.11.5] org.scala-lang#scala-reflect;2.11.5
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-reflect;2.11.5 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.5->org.scala-lang#scala-library;2.11.5 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.5->org.scala-lang#scala-library;2.11.5 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-reflect;2.11.5 [compile->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-reflect;2.11.5 [compile->compile]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.5->org.scala-lang#scala-library;2.11.5 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.11.5->org.scala-lang#scala-library;2.11.5 [runtime->compile]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang.modules#scala-xml_2.11;1.0.3 [compile->master(*)]
+[info] Resolving org.scala-lang.modules#scala-xml_2.11;1.0.3 ...
+[debug] sbt-chain: Checking cache for: dependency: org.scala-lang.modules#scala-xml_2.11;1.0.3 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[debug] 		tried /Users/mueller/.ivy2/local/org.scala-lang.modules/scala-xml_2.11/1.0.3/ivys/ivy.xml
+[debug] 	local: no ivy file found for org.scala-lang.modules#scala-xml_2.11;1.0.3
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.3/scala-xml_2.11-1.0.3.pom
+[debug] 	public: found md file for org.scala-lang.modules#scala-xml_2.11;1.0.3
+[debug] 		=> http://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.3/scala-xml_2.11-1.0.3.pom (1.0.3)
+[debug] downloading http://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.3/scala-xml_2.11-1.0.3.pom ...
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.3/scala-xml_2.11-1.0.3.pom
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.3/scala-xml_2.11-1.0.3.pom.sha1
+[debug] sha1 OK for http://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.3/scala-xml_2.11-1.0.3.pom
+[debug] 	[SUCCESSFUL ] org.scala-lang.modules#scala-xml_2.11;1.0.3!scala-xml_2.11.pom(pom.original) (260ms)
+[debug] 		tried /Users/mueller/.ivy2/local/org.scala-lang.modules/scala-xml_2.11/1.0.3/bundles/scala-xml_2.11.jar
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.3/scala-xml_2.11-1.0.3.jar
+[debug] 	found org.scala-lang.modules#scala-xml_2.11;1.0.3 in public
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang.modules#scala-xml_2.11;1.0.3 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang.modules#scala-xml_2.11;1.0.3->org.scala-lang#scala-library;2.11.4 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang.modules#scala-xml_2.11;1.0.3->org.scala-lang#scala-library;2.11.5 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang.modules#scala-xml_2.11;1.0.3->org.scala-lang#scala-library;2.11.4 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang.modules#scala-xml_2.11;1.0.3->org.scala-lang#scala-library;2.11.5 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang.modules#scala-xml_2.11;1.0.3 [compile->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang.modules#scala-xml_2.11;1.0.3 [compile->compile]
+[debug] == resolving dependencies org.scala-lang.modules#scala-xml_2.11;1.0.3->org.scala-lang#scala-library;2.11.4 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang.modules#scala-xml_2.11;1.0.3->org.scala-lang#scala-library;2.11.5 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang.modules#scala-xml_2.11;1.0.3->org.scala-lang#scala-library;2.11.5 [runtime->compile]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3 [compile->master(*)]
+[info] Resolving org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3 ...
+[debug] sbt-chain: Checking cache for: dependency: org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
+[debug] 		tried /Users/mueller/.ivy2/local/org.scala-lang.modules/scala-parser-combinators_2.11/1.0.3/ivys/ivy.xml
+[debug] 	local: no ivy file found for org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.3/scala-parser-combinators_2.11-1.0.3.pom
+[debug] 	public: found md file for org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3
+[debug] 		=> http://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.3/scala-parser-combinators_2.11-1.0.3.pom (1.0.3)
+[debug] downloading http://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.3/scala-parser-combinators_2.11-1.0.3.pom ...
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.3/scala-parser-combinators_2.11-1.0.3.pom
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.3/scala-parser-combinators_2.11-1.0.3.pom.sha1
+[debug] sha1 OK for http://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.3/scala-parser-combinators_2.11-1.0.3.pom
+[debug] 	[SUCCESSFUL ] org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3!scala-parser-combinators_2.11.pom(pom.original) (277ms)
+[debug] 		tried /Users/mueller/.ivy2/local/org.scala-lang.modules/scala-parser-combinators_2.11/1.0.3/bundles/scala-parser-combinators_2.11.jar
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.3/scala-parser-combinators_2.11-1.0.3.jar
+[debug] 	found org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3 in public
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3->org.scala-lang#scala-library;2.11.2 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3->org.scala-lang#scala-library;2.11.5 [compile->master(*)]
+[debug] == resolving dependencies org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3->org.scala-lang#scala-library;2.11.2 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3->org.scala-lang#scala-library;2.11.5 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3 [compile->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3 [compile->compile]
+[debug] == resolving dependencies org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3->org.scala-lang#scala-library;2.11.2 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3->org.scala-lang#scala-library;2.11.5 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3->org.scala-lang#scala-library;2.11.5 [runtime->compile]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-library;2.11.5 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-library;2.11.5 [runtime->compile]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-reflect;2.11.5 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang#scala-reflect;2.11.5 [runtime->compile]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang.modules#scala-xml_2.11;1.0.3 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang.modules#scala-xml_2.11;1.0.3 [runtime->compile]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3 [runtime->runtime(*)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3 [runtime->compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-compiler;2.11.5 [scala-tool->master]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-compiler;2.11.5 [scala-tool->optional(default)]
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->jline#jline;2.12 [optional->master(*)]
+[info] Resolving jline#jline;2.12 ...
+[debug] sbt-chain: Checking cache for: dependency: jline#jline;2.12 {optional=[compile(*), master(*)]}
+[debug] 		tried /Users/mueller/.ivy2/local/jline/jline/2.12/ivys/ivy.xml
+[debug] 	local: no ivy file found for jline#jline;2.12
+[debug] 		tried http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.pom
+[debug] 	public: found md file for jline#jline;2.12
+[debug] 		=> http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.pom (2.12)
+[debug] downloading http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.pom ...
+[debug] 	public: downloading http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.pom
+[debug] 	public: downloading http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.pom.sha1
+[debug] sha1 OK for http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.pom
+[debug] 	[SUCCESSFUL ] jline#jline;2.12!jline.pom(pom.original) (598ms)
+[info] Resolving org.sonatype.oss#oss-parent;7 ...
+[debug] sbt-chain: Checking cache for: dependency: org.sonatype.oss#oss-parent;7 {}
+[debug] sbt-chain: module revision found in cache: org.sonatype.oss#oss-parent;7
+[debug] 	local: revision in cache: org.sonatype.oss#oss-parent;7
+[debug] 		tried /Users/mueller/.ivy2/local/jline/jline/2.12/jars/jline.jar
+[debug] 		tried http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.jar
+[debug] 	found jline#jline;2.12 in public
+[debug] == resolving dependencies org.scala-lang#scala-compiler;2.11.5->jline#jline;2.12 [optional->compile(*)]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [scala-tool->default]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [scala-tool->runtime]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [scala-tool->compile]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [scala-tool->master]
+[debug] == resolving dependencies default#code_2.11;1.0->org.scala-lang#scala-library;2.11.5 [scala-tool->optional(default)]
+[debug] 	resolved ivy file produced in cache
+[debug] :: downloading artifacts ::
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.5/scala-library-2.11.5.jar
+[info] downloading http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.5/scala-library-2.11.5.jar ...
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.5/scala-library-2.11.5.jar
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.5/scala-library-2.11.5.jar.sha1
+[debug] sha1 OK for http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.11.5/scala-library-2.11.5.jar
+[info] 	[SUCCESSFUL ] org.scala-lang#scala-library;2.11.5!scala-library.jar (7679ms)
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.5/scala-compiler-2.11.5.jar
+[info] downloading http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.5/scala-compiler-2.11.5.jar ...
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.5/scala-compiler-2.11.5.jar
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.5/scala-compiler-2.11.5.jar.sha1
+[debug] sha1 OK for http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.11.5/scala-compiler-2.11.5.jar
+[info] 	[SUCCESSFUL ] org.scala-lang#scala-compiler;2.11.5!scala-compiler.jar (15044ms)
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.5/scala-reflect-2.11.5.jar
+[info] downloading http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.5/scala-reflect-2.11.5.jar ...
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.5/scala-reflect-2.11.5.jar
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.5/scala-reflect-2.11.5.jar.sha1
+[debug] sha1 OK for http://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.11.5/scala-reflect-2.11.5.jar
+[info] 	[SUCCESSFUL ] org.scala-lang#scala-reflect;2.11.5!scala-reflect.jar (4452ms)
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.3/scala-xml_2.11-1.0.3.jar
+[info] downloading http://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.3/scala-xml_2.11-1.0.3.jar ...
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.3/scala-xml_2.11-1.0.3.jar
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.3/scala-xml_2.11-1.0.3.jar.sha1
+[debug] sha1 OK for http://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.11/1.0.3/scala-xml_2.11-1.0.3.jar
+[info] 	[SUCCESSFUL ] org.scala-lang.modules#scala-xml_2.11;1.0.3!scala-xml_2.11.jar(bundle) (667ms)
+[debug] 		tried http://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.3/scala-parser-combinators_2.11-1.0.3.jar
+[info] downloading http://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.3/scala-parser-combinators_2.11-1.0.3.jar ...
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.3/scala-parser-combinators_2.11-1.0.3.jar
+[debug] 	public: downloading http://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.3/scala-parser-combinators_2.11-1.0.3.jar.sha1
+[debug] sha1 OK for http://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.0.3/scala-parser-combinators_2.11-1.0.3.jar
+[info] 	[SUCCESSFUL ] org.scala-lang.modules#scala-parser-combinators_2.11;1.0.3!scala-parser-combinators_2.11.jar(bundle) (677ms)
+[debug] 		tried http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.jar
+[info] downloading http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.jar ...
+[debug] 	public: downloading http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.jar
+[debug] 	public: downloading http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.jar.sha1
+[debug] sha1 OK for http://repo1.maven.org/maven2/jline/jline/2.12/jline-2.12.jar
+[info] 	[SUCCESSFUL ] jline#jline;2.12!jline.jar (646ms)
+[debug] :: resolution report :: resolve 4508ms :: artifacts dl 29168ms
+[debug] 	report for default#code_2.11;1.0 compile produced in /Users/mueller/Documents/master-thesis/code/target/resolution-cache/reports/default-code_2.11-compile.xml
+[debug] 	report for default#code_2.11;1.0 runtime produced in /Users/mueller/Documents/master-thesis/code/target/resolution-cache/reports/default-code_2.11-runtime.xml
+[debug] 	report for default#code_2.11;1.0 test produced in /Users/mueller/Documents/master-thesis/code/target/resolution-cache/reports/default-code_2.11-test.xml
+[debug] 	report for default#code_2.11;1.0 provided produced in /Users/mueller/Documents/master-thesis/code/target/resolution-cache/reports/default-code_2.11-provided.xml
+[debug] 	report for default#code_2.11;1.0 optional produced in /Users/mueller/Documents/master-thesis/code/target/resolution-cache/reports/default-code_2.11-optional.xml
+[debug] 	report for default#code_2.11;1.0 compile-internal produced in /Users/mueller/Documents/master-thesis/code/target/resolution-cache/reports/default-code_2.11-compile-internal.xml
+[debug] 	report for default#code_2.11;1.0 runtime-internal produced in /Users/mueller/Documents/master-thesis/code/target/resolution-cache/reports/default-code_2.11-runtime-internal.xml
+[debug] 	report for default#code_2.11;1.0 test-internal produced in /Users/mueller/Documents/master-thesis/code/target/resolution-cache/reports/default-code_2.11-test-internal.xml
+[debug] 	report for default#code_2.11;1.0 plugin produced in /Users/mueller/Documents/master-thesis/code/target/resolution-cache/reports/default-code_2.11-plugin.xml
+[debug] 	report for default#code_2.11;1.0 sources produced in /Users/mueller/Documents/master-thesis/code/target/resolution-cache/reports/default-code_2.11-sources.xml
+[debug] 	report for default#code_2.11;1.0 docs produced in /Users/mueller/Documents/master-thesis/code/target/resolution-cache/reports/default-code_2.11-docs.xml
+[debug] 	report for default#code_2.11;1.0 pom produced in /Users/mueller/Documents/master-thesis/code/target/resolution-cache/reports/default-code_2.11-pom.xml
+[debug] 	report for default#code_2.11;1.0 scala-tool produced in /Users/mueller/Documents/master-thesis/code/target/resolution-cache/reports/default-code_2.11-scala-tool.xml
+[debug] 	resolve done (4508ms resolve - 29168ms download)
+[info] Done updating.

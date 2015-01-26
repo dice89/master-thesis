@@ -6,7 +6,7 @@ import de.unima.dws.oamatching.config.Config
 import de.uniman.dws.oamatching.logging.ResultLogger
 
 object ThresholdOptimizationPlatform {
-  //init redis client
+/*  //init redis client
   val redis_client = new RedisClient(Config.REDIS_HOST, Config.REDIS_PORT)
   redis_client.connect
 
@@ -14,7 +14,7 @@ object ThresholdOptimizationPlatform {
 
   def main(args: Array[String]): Unit = {
     //TODO parameter handling
-    val problems = Pipeline.parse_conference_2014("ontos/2014/conference")
+    val problems = null //Pipeline.parse_conference_2014("ontos/2014/conference")
     optimizeThresholdBaseMachterGlobal(problems, 10, "conference")
   }
 
@@ -152,5 +152,5 @@ object ThresholdOptimizationPlatform {
 
     //TODO
   }
-
+  */
 }
