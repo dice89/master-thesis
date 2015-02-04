@@ -2,9 +2,10 @@ package de.unima.dws.oamatching.matcher
 
 import com.wcohen.ss._
 import com.wcohen.ss.tokens.SimpleTokenizer
-import de.unima.dws.oamatching.core.matcher.{SimilarityFloodingMatcher, StructuralLevelMatcher, Matcher, ElementLevelMatcher}
+import de.unima.dws.oamatching.core.matcher.{StructuralLevelMatcher, Matcher, ElementLevelMatcher}
 import de.unima.dws.oamatching.matcher.elementlevel.{TokenizedStringMatcher, TrainedSecondStringMatcher, PreProcessedStringMatcher, SimpleStringFunctionMatcher}
-import de.unima.dws.oamatching.measures.{StringMeasureHelper, StringMeasures}
+import de.unima.dws.oamatching.matcher.structurallevel.{GraphBasedUsedClassMatcher, SimilarityFloodingMatcher, GraphBasedUsedPropertyMatcher}
+import de.unima.dws.oamatching.measures.{SemanticMeasures, StringMeasureHelper, StringMeasures}
 import edu.cmu.lti.ws4j.impl.JiangConrath
 import fr.inrialpes.exmo.ontosim.string.StringDistances
 import org.semanticweb.owlapi.model.{OWLEntity, OWLOntology}
@@ -12,14 +13,22 @@ import org.semanticweb.owlapi.model.{OWLEntity, OWLOntology}
 import scala.collection.mutable.{HashMap, Map => MutableMap}
 
 object MatcherRegistry {
-  val matcher_by_name: MutableMap[String, Matcher] = new HashMap[String, Matcher]()
+  var matcher_by_name: Map[String, Matcher] = Map[String, Matcher]()
 
   val structural_matcher_by_name : MutableMap[String, StructuralLevelMatcher] = new HashMap[String, StructuralLevelMatcher]()
 
 
   def initStructuralMatcher() = {
     structural_matcher_by_name += ( ("simFloodMatcher",new SimilarityFloodingMatcher()))
+    structural_matcher_by_name += ( ("graphBasedUsedPropMatcher",new GraphBasedUsedPropertyMatcher()))
+    structural_matcher_by_name += ( ("graphBasedUsedClassMatcher",new GraphBasedUsedClassMatcher()))
   }
+
+  def initWebServiceBasedMatcher() = {
+    //matcher_by_name += init_uri_fragment_tokenized_matcher("umbcphrasesim",true)
+    //matcher_by_name += init_uri_fragment_tokenized_matcher("umbcstssim",true)
+  }
+
 
 
   /**
@@ -29,6 +38,7 @@ object MatcherRegistry {
   def init = {
     //init Structural Matcher
     initStructuralMatcher()
+    initWebServiceBasedMatcher()
     //init simple string metrics
     matcher_by_name += init_uri_fragment_string_distance_matcher("hammingDistance")
     matcher_by_name += init_uri_fragment_string_distance_matcher("jaroWinklerMeasure")
@@ -41,12 +51,14 @@ object MatcherRegistry {
     matcher_by_name += init_uri_fragment_string_distance_matcher("equalDistance")
     matcher_by_name += init_uri_fragment_string_similarity_matcher("prefix", tokenized = false)
     matcher_by_name += init_uri_fragment_string_similarity_matcher("suffix", tokenized = false)
-    //matcher_by_name += init_uri_fragment_string_similarity_matcher("jiangConrath", true);
     matcher_by_name += init_uri_fragment_string_similarity_matcher("jaccardStemmed", tokenized = true)
-    //matcher_by_name += init_uri_fragment_string_similarity_matcher("lin", false);
     matcher_by_name += init_uri_fragment_string_similarity_matcher("mongeElkan", tokenized = false)
-    //init token based matchers
 
+   //word2vec measure
+
+    matcher_by_name += init_uri_fragment_tokenized_matcher("word2Vec",false)
+
+    //init token based matchers
     //compose preprocessing function
     //maybe switch to Helper class
     val tokenizer = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
@@ -56,7 +68,6 @@ object MatcherRegistry {
 
 
     //add language based measures
-
     //tfidf
     matcher_by_name += ("simple_tfidf" -> new TrainedSecondStringMatcher(true,simple_preprocessing, new TFIDF(new SimpleTokenizer(true, false))))
 
@@ -99,7 +110,7 @@ object MatcherRegistry {
    */
   def init_uri_fragment_string_similarity_matcher(measure: String, tokenized: Boolean): (String, Matcher) = {
 
-    val name: String = measure + "_matcher"
+    val name: String = measure
     def measure_fct = get_string_matching_function(measure)
 
     var preprocess: (String) => String = null
@@ -113,6 +124,25 @@ object MatcherRegistry {
     }
 
     (name,new PreProcessedStringMatcher(true, preprocess, measure_fct))
+
+  }
+
+
+  def init_uri_fragment_tokenized_matcher(measure: String, stemmed:Boolean):(String,Matcher) = {
+    var preprocess: (String) => String = null
+    def measure_fct = get_string_matching_function(measure)
+
+    val tokenizer = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
+    val tokens_to_string = StringMeasureHelper.token_list_to_String _
+    if(stemmed){
+      val stemmed_tokenizer =  tokenizer compose StringMeasureHelper.porter_stem  compose StringMeasureHelper.minimalPreprocess
+      (measure, new TokenizedStringMatcher(true,StringMeasureHelper.minimalPreprocess,stemmed_tokenizer,measure_fct))
+
+    }else {
+      (measure, new TokenizedStringMatcher(true,StringMeasureHelper.minimalPreprocess,tokenizer,measure_fct))
+    }
+
+
 
   }
 
@@ -132,11 +162,11 @@ object MatcherRegistry {
       case "smoaDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.smoaDistance)
       case "subStringDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.subStringDistance)
       case "equalDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.equalDistance)
-
+      case "word2Vec" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.word2VecSimilarityMeasure)
       //case "lin" => StringMeasureHelper.distance_lower_cased(new LinWordMatching().getSimScoreTokenized)
       //case "jiangConrath" => StringMeasureHelper.distance_lower_cased(new JiangConrath().getSimScoreTokenized)
-
-
+      case "umbcphrasesim" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.callPhraseSimServiceUMBCRegular)
+      case "umbcstssim" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.callSTSServiceUMBC)
       case "jaccardStemmed" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeJaccard)
       case "mongeElkan" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeMongeElkan)
       case "prefix" => StringMeasureHelper.distance_lower_cased(StringMeasures.computePrefixBiDirectional)

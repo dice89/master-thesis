@@ -32,6 +32,13 @@ libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.7.8"
 
 libraryDependencies += "de.unima.alex" % "owlsimflood" % "1.0"
 
+libraryDependencies +=  "org.scalaj" %% "scalaj-http" % "1.1.1"
+
+libraryDependencies += "org.scalanlp" % "epic_2.10" % "0.3"
+
+libraryDependencies += "com.typesafe.play" % "play-json_2.10" % "2.4.0-M2"
+
+libraryDependencies += "org.scalanlp" % "english_2.10" % "2015.1.25"
 
 resolvers += "Local Maven Repository" at "file:///Users/mueller/.m2/repository/"
 

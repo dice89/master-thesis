@@ -2,109 +2,373 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e6a4e497-266b-47ba-8e75-9782798c37e5" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../misc/~$OAEIAnalaysis.xlsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/activator.bat" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cmt-conference.rdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/SassyReader-0.5.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/blas.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/collections-generic.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/colt.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-codec-1.4.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-collections.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-httpclient-3.1.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-lang-2.4.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.1.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/concurrent.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dom4j-1.6.1.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/encog.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/freehep/freehep-export.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/freehep/freehep-graphics2d.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/freehep/freehep-graphicsio-emf.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/freehep/freehep-graphicsio-pdf.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/freehep/freehep-graphicsio-ps.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/freehep/freehep-graphicsio-svg.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/freehep/freehep-graphicsio-swf.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/freehep/freehep-graphicsio.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/freehep/freehep-io.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/freehep/freehep-swing.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/freehep/freehep-util.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/freehep/freehep-xml.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/groovy-all-1.7.7.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/itextpdf-5.3.3.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/ivy-2.2.0.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jama.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jcommon.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jdbc/hsqldb.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jdbc/iijdbc-10.0-4.0.6.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jdbc/jtds-1.2.8.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jdbc/mysql-connector-java-5.1.24-bin.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jdbc/ojdbc14.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jdbc/postgresql-9.2-1002.jdbc4.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jdbc/vertica-jdk5-6.0.1-0.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jep.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jfreechart.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jmathplot.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/joone-engine.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jugpreview.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jung-algorithms.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jung-api.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jung-graph-impl.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jung-visualization.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/junit.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/jxl.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/kdb.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/launcher.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/library-notes.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/looks.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/mail.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/microba.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/poi-3.8-20120326.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/poi-excelant-3.8-20120326.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/poi-ooxml-3.8-20120326.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/poi-ooxml-schemas-3.8-20120326.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/poi-scratchpad-3.8-20120326.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/rapidminer.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/rm_doc.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/rsyntaxtextarea.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/swingx-all-1.6.4.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/vldocking.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/ws-commons-util-1.0.2.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/xml-apis-1.4.01.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/xmlbeans-2.3.0.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/xmlpull.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/xmlrpc-client-3.1.3.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/xmlrpc-common-3.1.3.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/xpp3.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/xstream.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/log4j.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project/build.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/matcher/GridOptmizeMatcher.scala" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../~$analysis.xlsx" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/measures/WordNetMeasureHelper.scala" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/measures/WordNetMeasureHelper.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../misc/OAEIAnalaysis.xlsx" afterPath="$PROJECT_DIR$/../misc/OAEIAnalaysis.xlsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../analysis.xlsx" afterPath="$PROJECT_DIR$/../analysis.xlsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../thesis/outline.pdf" afterPath="$PROJECT_DIR$/../thesis/outline.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../thesis/thesis.pdf" afterPath="$PROJECT_DIR$/../thesis/thesis.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../thesis/thesis.synctex.gz" afterPath="$PROJECT_DIR$/../thesis/thesis.synctex.gz" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/FromFileEvaluator.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/FromFileEvaluator.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/MatcherRegistry.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/MatcherRegistry.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/metaMatcher/MatrixSelectionMatchingAlignment.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/metaMatcher/MatrixSelectionMatchingAlignment.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/Pipeline.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/Pipeline.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/PipelineSingle.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/PipelineSingle.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/matcher/PostPrunedMatcher.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/matcher/PostPrunedMatcher.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/outlierdetection/RapidminerBasedOutlierDetection.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/outlierdetection/RapidminerBasedOutlierDetection.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/experiments/ReadResult.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/experiments/ReadResult.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/TestEnv.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/TestEnv.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/ThresholdOptimizationPlatform.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/ThresholdOptimizationPlatform.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../thesis/bibliography.bib" afterPath="$PROJECT_DIR$/../thesis/bibliography.bib" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.sbt" afterPath="$PROJECT_DIR$/build.sbt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/log4j.properties" afterPath="$PROJECT_DIR$/src/main/resources/log4j.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../thesis/thesis.aux" afterPath="$PROJECT_DIR$/../thesis/thesis.aux" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../thesis/thesis.lof" afterPath="$PROJECT_DIR$/../thesis/thesis.lof" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../thesis/thesis.lot" afterPath="$PROJECT_DIR$/../thesis/thesis.lot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../thesis/thesis.tex" afterPath="$PROJECT_DIR$/../thesis/thesis.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../thesis/thesis.thm" afterPath="$PROJECT_DIR$/../thesis/thesis.thm" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../thesis/thesis.toc" afterPath="$PROJECT_DIR$/../thesis/thesis.toc" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/config/Config.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/pipeline/evaluation/Evaluation.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/pipeline/evaluation/EvaluationMatchingRunner.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/pipeline/util/MetaDataMgmt.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/pipeline/optimize/ParameterOptimizer.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/pipeline/evaluation/RdfFileFilter.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/pipeline/util/ResultLogger.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/pipeline/Runner.scala" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/dictionaries/mueller.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_esotericsoftware_reflectasm_reflectasm_1_07_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_fasterxml_jackson_core_jackson_annotations_2_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_fasterxml_jackson_core_jackson_core_2_3_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_fasterxml_jackson_core_jackson_databind_2_3_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_google_code_findbugs_jsr305_1_3_9_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_google_guava_guava_14_0_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_google_inject_guice_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_codec_commons_codec_1_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_mesos_mesos_0_18_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_orbit_javax_activation_1_1_0_v201105071233_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_orbit_javax_mail_glassfish_1_4_1_v201005082020_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_orbit_javax_servlet_3_0_0_v201112011016_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_orbit_javax_transaction_1_1_1_v201105210645_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_slf4j_jcl_over_slf4j_1_7_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_slf4j_slf4j_api_1_7_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_slf4j_slf4j_api_1_7_7_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_slf4j_slf4j_log4j12_1_7_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_slf4j_slf4j_log4j12_1_7_6_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_sonatype_sisu_inject_cglib_2_2_1_v20090111_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init$8.class" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment$$anonfun$3.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment$$anonfun$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment$$anonfun$4.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment$$anonfun$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment$$anonfun$5.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment$$anonfun$5.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment$$anonfun$6.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment$$anonfun$6.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment$$anonfun$asMatchRelationMap$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment$$anonfun$asMatchRelationMap$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment$$anonfun$removeCorrespondence$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment$$anonfun$removeCorrespondence$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/Alignment.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/AlignmentParser$$anonfun$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/AlignmentParser$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/AlignmentParser$$anonfun$2.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/AlignmentParser$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/AlignmentParser$.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/AlignmentParser$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/EvaluationResult.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/EvaluationResult.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/EvaluationResultAggregator$.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/EvaluationResultAggregator$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/EvaluationResultAggregator.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/core/EvaluationResultAggregator.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/FeatureVector$.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/FeatureVector$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/FeatureVector.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/FeatureVector.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$10.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$10.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$11.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$11.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$2.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$3.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$4.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$5.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$5.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$6.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$6.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$7.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$7.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$8.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$8.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$9.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$9.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$10.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$10.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$11.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$11.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$12.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$12.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$13.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$13.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$14.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$14.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$2.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$3.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$4.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$5.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$5.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$6.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$6.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$7.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$7.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$8.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$8.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$9.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$get_string_matching_function$9.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init_uri_fragment_string_similarity_matcher$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init_uri_fragment_string_similarity_matcher$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init_uri_fragment_string_similarity_matcher$2.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init_uri_fragment_string_similarity_matcher$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init_uri_fragment_string_similarity_matcher$3.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$$anonfun$init_uri_fragment_string_similarity_matcher$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/matcher/MatcherRegistry.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingEvaluationProblem$.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingEvaluationProblem$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingEvaluationProblem.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingEvaluationProblem.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore$$anonfun$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore$$anonfun$2.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore$$anonfun$3.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore$$anonfun$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore$$anonfun$4.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore$$anonfun$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore$$anonfun$5.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore$$anonfun$5.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore$.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPipelineCore.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingProblem$.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingProblem$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingProblem.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingProblem.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPruner$.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPruner$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPruner.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/MatchingPruner.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$2.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$3.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$rapidminerOutlierDetection$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$rapidminerOutlierDetection$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$rapidminerOutlierDetection$2.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$rapidminerOutlierDetection$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$rapidminerOutlierDetection$3.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$rapidminerOutlierDetection$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$writeCSV$1$$anonfun$apply$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$writeCSV$1$$anonfun$apply$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$writeCSV$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$$anonfun$writeCSV$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/RapidminerJobs$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs$$anonfun$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs$$anonfun$2.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs$$anonfun$3.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs$$anonfun$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs$$anonfun$4.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs$$anonfun$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs$$anonfun$5.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs$$anonfun$5.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs$.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/analysis/SparkJobs.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$2.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$3.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$4.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$5$$anonfun$apply$2.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$5$$anonfun$apply$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$5$$anonfun$apply$3$$anonfun$apply$1.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$5$$anonfun$apply$3$$anonfun$apply$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$5$$anonfun$apply$3.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$5$$anonfun$apply$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$5.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$5.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$6.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$6.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$7.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$7.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$8.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$8.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$9.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$$anonfun$9.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil.class" afterPath="$PROJECT_DIR$/../ontologymatcher/target/scala-2.10/classes/de/unima/dws/oamatching/pipeline/VectorUtil.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/streams/$global/update/$global/streams/output" afterPath="$PROJECT_DIR$/../ontologymatcher/target/streams/$global/update/$global/streams/output" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/core/Alignment.scala" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/core/Alignment.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/core/AlignmentParser.scala" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/core/AlignmentParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/core/EvaluationResultAggregator.scala" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/core/EvaluationResultAggregator.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/matcher/MatcherRegistry.scala" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/matcher/MatcherRegistry.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/pipeline/MatchingPipelineCore.scala" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/pipeline/MatchingPipelineCore.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/pipeline/MatchingPruner.scala" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/pipeline/MatchingPruner.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/analysis/RapidminerJobs.scala" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/analysis/RapidminerJobs.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__aopalliance_aopalliance_1_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__aopalliance_aopalliance_1_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__cglib_cglib_3_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__cglib_cglib_3_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_clearspring_analytics_stream_2_7_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_clearspring_analytics_stream_2_7_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_codahale_metrics_metrics_core_3_0_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_codahale_metrics_metrics_core_3_0_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_codahale_metrics_metrics_graphite_3_0_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_codahale_metrics_metrics_graphite_3_0_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_codahale_metrics_metrics_json_3_0_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_codahale_metrics_metrics_json_3_0_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_codahale_metrics_metrics_jvm_3_0_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_codahale_metrics_metrics_jvm_3_0_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_esotericsoftware_kryo_kryo_2_21_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_esotericsoftware_kryo_kryo_2_21_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_esotericsoftware_minlog_minlog_1_2_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_esotericsoftware_minlog_minlog_1_2_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_fasterxml_jackson_core_jackson_annotations_2_3_3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_fasterxml_jackson_core_jackson_annotations_2_3_3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_fasterxml_jackson_core_jackson_core_2_3_3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_fasterxml_jackson_core_jackson_core_2_3_3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_fasterxml_jackson_core_jackson_databind_2_3_3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_fasterxml_jackson_core_jackson_databind_2_3_3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_github_fommil_netlib_core_1_1_2_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_github_fommil_netlib_core_1_1_2_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_github_jsonld_java_jsonld_java_0_5_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_github_jsonld_java_jsonld_java_0_5_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_github_jsonld_java_jsonld_java_sesame_0_5_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_github_jsonld_java_jsonld_java_sesame_0_5_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_github_rwl_jtransforms_2_4_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_github_rwl_jtransforms_2_4_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_github_tototoshi_scala_csv_2_10_1_1_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_github_tototoshi_scala_csv_2_10_1_1_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_google_guava_guava_17_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_google_guava_guava_17_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_google_inject_extensions_guice_multibindings_4_0_beta_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_google_inject_extensions_guice_multibindings_4_0_beta_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_google_inject_guice_4_0_beta_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_google_inject_guice_4_0_beta_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_google_protobuf_protobuf_java_2_5_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_google_protobuf_protobuf_java_2_5_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_ning_compress_lzf_1_0_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_ning_compress_lzf_1_0_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_sun_jersey_contribs_jersey_guice_1_9_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_sun_jersey_contribs_jersey_guice_1_9_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_sun_jersey_jersey_json_1_9_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_sun_jersey_jersey_json_1_9_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_sun_jersey_jersey_server_1_9_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_sun_jersey_jersey_server_1_9_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_sun_jersey_jersey_test_framework_jersey_test_framework_grizzly2_1_9_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_sun_jersey_jersey_test_framework_jersey_test_framework_grizzly2_1_9_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_sun_xml_bind_jaxb_impl_2_2_3_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_sun_xml_bind_jaxb_impl_2_2_3_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_thoughtworks_paranamer_paranamer_2_6_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_thoughtworks_paranamer_paranamer_2_6_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_chill_2_10_0_5_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_chill_2_10_0_5_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_chill_java_0_5_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_chill_java_0_5_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_column_1_6_0rc3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_column_1_6_0rc3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_common_1_6_0rc3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_common_1_6_0rc3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_encoding_1_6_0rc3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_encoding_1_6_0rc3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_format_2_2_0_rc1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_format_2_2_0_rc1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_generator_1_6_0rc3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_generator_1_6_0rc3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_hadoop_1_6_0rc3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_hadoop_1_6_0rc3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_jackson_1_6_0rc3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_twitter_parquet_jackson_1_6_0rc3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_typesafe_akka_akka_actor_2_10_2_3_2_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_typesafe_akka_akka_actor_2_10_2_3_2_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_typesafe_config_1_2_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__com_typesafe_config_1_2_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_beanutils_commons_beanutils_1_7_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_beanutils_commons_beanutils_1_7_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_cli_commons_cli_1_2_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_cli_commons_cli_1_2_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_codec_commons_codec_1_6_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_codec_commons_codec_1_6_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_collections_commons_collections_3_2_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_collections_commons_collections_3_2_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_configuration_commons_configuration_1_6_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_configuration_commons_configuration_1_6_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_digester_commons_digester_1_8_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_digester_commons_digester_1_8_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_httpclient_commons_httpclient_3_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_httpclient_commons_httpclient_3_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_io_commons_io_2_4_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_io_commons_io_2_4_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_lang_commons_lang_2_5_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_lang_commons_lang_2_5_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_logging_commons_logging_1_1_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_logging_commons_logging_1_1_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_net_commons_net_2_2_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_net_commons_net_2_2_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_pool_commons_pool_1_6_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__commons_pool_commons_pool_1_6_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__io_netty_netty_3_8_0_Final_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__io_netty_netty_3_8_0_Final_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__io_netty_netty_all_4_0_23_Final_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__io_netty_netty_all_4_0_23_Final_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__javax_activation_activation_1_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__javax_activation_activation_1_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__javax_inject_javax_inject_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__javax_inject_javax_inject_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__javax_xml_bind_jaxb_api_2_2_2_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__javax_xml_bind_jaxb_api_2_2_2_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__jline_jline_0_9_94_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__jline_jline_0_9_94_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__junit_junit_4_7_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__junit_junit_4_7_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__log4j_log4j_1_2_17_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__log4j_log4j_1_2_17_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_debasishg_redisclient_2_10_2_13_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_debasishg_redisclient_2_10_2_13_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_java_dev_jets3t_jets3t_0_7_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_java_dev_jets3t_jets3t_0_7_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_jpountz_lz4_lz4_1_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_jpountz_lz4_lz4_1_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_sf_jwordnet_jwnl_1_4_rc3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_sf_jwordnet_jwnl_1_4_rc3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_sf_opencsv_opencsv_2_3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_sf_opencsv_opencsv_2_3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_sf_py4j_py4j_0_8_2_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_sf_py4j_py4j_0_8_2_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_sf_trove4j_trove4j_3_0_3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_sf_trove4j_trove4j_3_0_3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_sourceforge_f2j_arpack_combined_all_0_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_sourceforge_f2j_arpack_combined_all_0_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_sourceforge_owlapi_owlapi_distribution_4_0_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__net_sourceforge_owlapi_owlapi_distribution_4_0_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_avro_avro_1_7_4_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_avro_avro_1_7_4_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_commons_commons_compress_1_4_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_commons_commons_compress_1_4_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_commons_commons_lang3_3_3_2_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_commons_commons_lang3_3_3_2_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_commons_commons_math3_3_1_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_commons_commons_math3_3_1_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_commons_commons_math_2_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_commons_commons_math_2_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_curator_curator_client_2_4_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_curator_curator_client_2_4_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_curator_curator_framework_2_4_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_curator_curator_framework_2_4_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_curator_curator_recipes_2_4_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_curator_curator_recipes_2_4_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_directory_studio_org_apache_commons_io_2_4_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_directory_studio_org_apache_commons_io_2_4_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_annotations_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_annotations_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_auth_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_auth_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_client_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_client_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_common_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_common_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_hdfs_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_hdfs_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_mapreduce_client_app_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_mapreduce_client_app_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_mapreduce_client_common_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_mapreduce_client_common_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_mapreduce_client_core_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_mapreduce_client_core_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_mapreduce_client_jobclient_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_mapreduce_client_jobclient_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_mapreduce_client_shuffle_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_mapreduce_client_shuffle_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_yarn_api_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_yarn_api_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_yarn_client_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_yarn_client_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_yarn_common_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_yarn_common_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_yarn_server_common_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_yarn_server_common_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_yarn_server_nodemanager_2_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_hadoop_hadoop_yarn_server_nodemanager_2_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_httpcomponents_httpclient_4_2_5_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_httpcomponents_httpclient_4_2_5_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_httpcomponents_httpclient_cache_4_2_5_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_httpcomponents_httpclient_cache_4_2_5_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_httpcomponents_httpcore_4_2_5_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_httpcomponents_httpcore_4_2_5_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_jena_jena_core_2_12_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_jena_jena_core_2_12_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_jena_jena_iri_1_1_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_jena_jena_iri_1_1_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_lucene_lucene_analyzers_common_4_10_3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_lucene_lucene_analyzers_common_4_10_3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_lucene_lucene_core_4_10_3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_lucene_lucene_core_4_10_3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_catalyst_2_10_1_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_catalyst_2_10_1_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_core_2_10_1_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_core_2_10_1_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_mllib_2_10_1_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_mllib_2_10_1_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_network_common_2_10_1_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_network_common_2_10_1_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_network_shuffle_2_10_1_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_network_shuffle_2_10_1_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_sql_2_10_1_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_sql_2_10_1_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_streaming_2_10_1_2_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_spark_spark_streaming_2_10_1_2_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_zookeeper_zookeeper_3_4_5_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_apache_zookeeper_zookeeper_3_4_5_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_codehaus_jackson_jackson_core_asl_1_9_11_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_codehaus_jackson_jackson_core_asl_1_9_11_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_codehaus_jackson_jackson_jaxrs_1_8_8_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_codehaus_jackson_jackson_jaxrs_1_8_8_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_codehaus_jackson_jackson_mapper_asl_1_9_11_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_codehaus_jackson_jackson_mapper_asl_1_9_11_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_codehaus_jackson_jackson_xc_1_8_8_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_codehaus_jackson_jackson_xc_1_8_8_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_codehaus_jettison_jettison_1_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_codehaus_jettison_jettison_1_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_continuation_8_1_14_v20131031_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_continuation_8_1_14_v20131031_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_http_8_1_14_v20131031_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_http_8_1_14_v20131031_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_io_8_1_14_v20131031_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_io_8_1_14_v20131031_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_jndi_8_1_14_v20131031_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_jndi_8_1_14_v20131031_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_plus_8_1_14_v20131031_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_plus_8_1_14_v20131031_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_security_8_1_14_v20131031_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_security_8_1_14_v20131031_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_server_8_1_14_v20131031_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_server_8_1_14_v20131031_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_servlet_8_1_14_v20131031_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_servlet_8_1_14_v20131031_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_util_8_1_14_v20131031_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_util_8_1_14_v20131031_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_webapp_8_1_14_v20131031_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_webapp_8_1_14_v20131031_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_xml_8_1_14_v20131031_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_jetty_xml_8_1_14_v20131031_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_orbit_javax_activation_1_1_0_v201105071233_orbit.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_orbit_javax_activation_1_1_0_v201105071233_orbit.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_orbit_javax_mail_glassfish_1_4_1_v201005082020_orbit.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_orbit_javax_mail_glassfish_1_4_1_v201005082020_orbit.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_orbit_javax_servlet_3_0_0_v201112011016_orbit.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_orbit_javax_servlet_3_0_0_v201112011016_orbit.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_orbit_javax_transaction_1_1_1_v201105210645_orbit.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_eclipse_jetty_orbit_javax_transaction_1_1_1_v201105210645_orbit.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_jblas_jblas_1_2_3_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_jblas_jblas_1_2_3_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_json4s_json4s_ast_2_10_3_2_10_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_json4s_json4s_ast_2_10_3_2_10_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_json4s_json4s_core_2_10_3_2_10_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_json4s_json4s_core_2_10_3_2_10_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_json4s_json4s_jackson_2_10_3_2_10_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_json4s_json4s_jackson_2_10_3_2_10_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_mortbay_jetty_jetty_util_6_1_26_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_mortbay_jetty_jetty_util_6_1_26_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_objenesis_objenesis_1_2_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_objenesis_objenesis_1_2_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_model_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_model_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_api_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_api_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_binary_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_binary_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_datatypes_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_datatypes_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_languages_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_languages_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_n3_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_n3_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_nquads_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_nquads_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_ntriples_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_ntriples_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_rdfjson_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_rdfjson_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_rdfxml_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_rdfxml_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_trig_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_trig_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_trix_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_trix_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_turtle_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_rio_turtle_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_util_2_7_12_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_openrdf_sesame_sesame_util_2_7_12_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_ow2_asm_asm_4_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_ow2_asm_asm_4_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_ow2_asm_asm_tree_4_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_ow2_asm_asm_tree_4_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_ow2_asm_asm_util_4_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_ow2_asm_asm_util_4_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_roaringbitmap_RoaringBitmap_0_4_5_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_roaringbitmap_RoaringBitmap_0_4_5_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scala_lang_scala_compiler_2_10_4_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scala_lang_scala_compiler_2_10_4_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scala_lang_scala_library_2_10_4_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scala_lang_scala_library_2_10_4_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scala_lang_scala_reflect_2_10_4_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scala_lang_scala_reflect_2_10_4_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scala_lang_scalap_2_10_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scala_lang_scalap_2_10_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scalamacros_quasiquotes_2_10_2_0_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scalamacros_quasiquotes_2_10_2_0_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scalanlp_breeze_2_10_0_10_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scalanlp_breeze_2_10_0_10_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scalanlp_breeze_macros_2_10_0_3_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_scalanlp_breeze_macros_2_10_0_3_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_semarglproject_semargl_core_0_6_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_semarglproject_semargl_core_0_6_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_semarglproject_semargl_rdf_0_6_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_semarglproject_semargl_rdf_0_6_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_semarglproject_semargl_rdfa_0_6_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_semarglproject_semargl_rdfa_0_6_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_semarglproject_semargl_sesame_0_6_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_semarglproject_semargl_sesame_0_6_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_slf4j_jcl_over_slf4j_1_7_7_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_slf4j_jcl_over_slf4j_1_7_7_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_slf4j_jul_to_slf4j_1_7_5_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_slf4j_jul_to_slf4j_1_7_5_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_slf4j_slf4j_api_1_7_8_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_slf4j_slf4j_api_1_7_8_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_slf4j_slf4j_log4j12_1_7_8_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_slf4j_slf4j_log4j12_1_7_8_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spark_project_akka_akka_actor_2_10_2_3_4_spark_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spark_project_akka_akka_actor_2_10_2_3_4_spark_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spark_project_akka_akka_remote_2_10_2_3_4_spark_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spark_project_akka_akka_remote_2_10_2_3_4_spark_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spark_project_akka_akka_slf4j_2_10_2_3_4_spark_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spark_project_akka_akka_slf4j_2_10_2_3_4_spark_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spark_project_protobuf_protobuf_java_2_5_0_spark_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spark_project_protobuf_protobuf_java_2_5_0_spark_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spark_project_pyrolite_2_0_1_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spark_project_pyrolite_2_0_1_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spark_project_spark_unused_1_0_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spark_project_spark_unused_1_0_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spire_math_spire_2_10_0_7_4_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spire_math_spire_2_10_0_7_4_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spire_math_spire_macros_2_10_0_7_4_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_spire_math_spire_macros_2_10_0_7_4_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_tachyonproject_tachyon_0_5_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_tachyonproject_tachyon_0_5_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_tachyonproject_tachyon_client_0_5_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_tachyonproject_tachyon_client_0_5_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_tukaani_xz_1_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_tukaani_xz_1_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_uncommons_maths_uncommons_maths_1_2_2a_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_uncommons_maths_uncommons_maths_1_2_2a_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_xerial_snappy_snappy_java_1_1_1_6_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_xerial_snappy_snappy_java_1_1_1_6_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_xerial_sqlite_jdbc_3_7_2_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__org_xerial_sqlite_jdbc_3_7_2_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__xerces_xercesImpl_2_11_0_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__xerces_xercesImpl_2_11_0_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__xml_apis_xml_apis_1_4_01_jar.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/libraries/SBT__xml_apis_xml_apis_1_4_01_jar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/analysis/SparkJobs.scala" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/analysis/SparkJobs.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/pipeline/VectorUtil.scala" afterPath="$PROJECT_DIR$/../ontologymatcher/src/main/scala/de/unima/dws/oamatching/pipeline/VectorUtil.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/ontos/2014/conference/reference-alignment/conference-confOf.rdf" afterPath="$PROJECT_DIR$/../ontologymatcher/ontos/2014/conference/reference-alignment/conference-confOf.rdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sbt_2.10-default.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sbt_2.10-default.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_2.10-default.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_2.10-default.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-compile-internal.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-compile-internal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-compile.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-compile.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-docs.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-docs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-optional.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-optional.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-plugin.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-plugin.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-pom.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-provided.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-provided.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-runtime-internal.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-runtime-internal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-runtime.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-runtime.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-scala-tool.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-scala-tool.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-sources.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-sources.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-test-internal.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-test-internal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-test.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher$sources_javadoc_2.10-test.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-compile-internal.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-compile-internal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-compile.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-compile.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-docs.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-docs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-optional.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-optional.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-plugin.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-plugin.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-pom.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-provided.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-provided.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-runtime-internal.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-runtime-internal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-runtime.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-runtime.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-scala-tool.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-scala-tool.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-sources.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-sources.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-test-internal.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-test-internal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-test.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/reports/default-ontologymatcher_2.10-test.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/streams/compile/compile/$global/streams/export" afterPath="$PROJECT_DIR$/../ontologymatcher/target/streams/compile/compile/$global/streams/export" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/streams/compile/incCompileSetup/$global/streams/inc_compile_2.10" afterPath="$PROJECT_DIR$/../ontologymatcher/target/streams/compile/incCompileSetup/$global/streams/inc_compile_2.10" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/misc.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/modules/ontologymatcher-build.iml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/modules/ontologymatcher-build.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/modules/ontologymatcher.iml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/modules/ontologymatcher.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/streams/$global/update/$global/streams/out" afterPath="$PROJECT_DIR$/../ontologymatcher/target/streams/$global/update/$global/streams/out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/streams/$global/updateClassifiers/$global/streams/out" afterPath="$PROJECT_DIR$/../ontologymatcher/target/streams/$global/updateClassifiers/$global/streams/out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/streams/$global/updateSbtClassifiers/$global/streams/out" afterPath="$PROJECT_DIR$/../ontologymatcher/target/streams/$global/updateSbtClassifiers/$global/streams/out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/streams/compile/compile/$global/streams/out" afterPath="$PROJECT_DIR$/../ontologymatcher/target/streams/compile/compile/$global/streams/out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/streams/compile/runMain/$global/streams/out" afterPath="$PROJECT_DIR$/../ontologymatcher/target/streams/compile/runMain/$global/streams/out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher$sbt_2.10/1.0/resolved.xml.properties" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher$sbt_2.10/1.0/resolved.xml.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher$sources_2.10/1.0/resolved.xml.properties" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher$sources_2.10/1.0/resolved.xml.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher$sources_javadoc_2.10/1.0/resolved.xml.properties" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher$sources_javadoc_2.10/1.0/resolved.xml.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher_2.10/1.0/resolved.xml.properties" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher_2.10/1.0/resolved.xml.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher$sbt_2.10/1.0/resolved.xml.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher$sbt_2.10/1.0/resolved.xml.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher$sources_2.10/1.0/resolved.xml.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher$sources_2.10/1.0/resolved.xml.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher$sources_javadoc_2.10/1.0/resolved.xml.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher$sources_javadoc_2.10/1.0/resolved.xml.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher_2.10/1.0/resolved.xml.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/target/resolution-cache/default/ontologymatcher_2.10/1.0/resolved.xml.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/sbt.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/sbt.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/vcs.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ontologymatcher/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../ontologymatcher/.idea/workspace.xml" />
     </list>
     <ignored path="ontology matching.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -144,18 +408,38 @@
       <file leaf-file-name="build.sbt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.sbt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="570">
-              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="62" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="570">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="64" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimpleIndividualMatcher.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/matcher/SimpleIndividualMatcher.scala">
+      <file leaf-file-name="TestEnv.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/TestEnv.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="945">
-              <caret line="20" column="37" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="315">
+              <caret line="12" column="41" selection-start-line="12" selection-start-column="41" selection-end-line="12" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Config.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/config/Config.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="390" max-vertical-offset="540">
+              <caret line="26" column="12" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ThresholdOptimizationPlatform.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/ThresholdOptimizationPlatform.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.48392037" vertical-offset="1694" max-vertical-offset="2370">
+              <caret line="137" column="5" selection-start-line="137" selection-start-column="5" selection-end-line="137" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -164,11 +448,19 @@
       <file leaf-file-name="Pipeline.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/Pipeline.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4966" max-vertical-offset="6660">
-              <caret line="360" column="1" selection-start-line="360" selection-start-column="1" selection-end-line="362" selection-end-column="0" />
-              <folding>
-                <marker date="1421946274000" expanded="true" signature="1608:19079" placeholder="/.../" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="2940" max-vertical-offset="7005">
+              <caret line="196" column="38" selection-start-line="196" selection-start-column="38" selection-end-line="196" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ResultLogger.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/de/uniman/dws/oamatching/logging/ResultLogger.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="660">
+              <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -176,21 +468,19 @@
       <file leaf-file-name="BestSelectOutlierMatchingAlignment.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/metaMatcher/BestSelectOutlierMatchingAlignment.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="585">
+            <state vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="645">
               <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MatrixSelectionMatchingAlignment.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MatrixSelectionMatchingAlignment.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/metaMatcher/MatrixSelectionMatchingAlignment.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.95309883" vertical-offset="436" max-vertical-offset="1425">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1005" max-vertical-offset="1425">
               <caret line="67" column="7" selection-start-line="14" selection-start-column="4" selection-end-line="67" selection-end-column="7" />
-              <folding>
-                <element signature="e#53#107#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -198,7 +488,7 @@
       <file leaf-file-name="MatchingPipelineCore.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/MatchingPipelineCore.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="12" max-vertical-offset="1920">
+            <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="2055">
               <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
               <folding />
             </state>
@@ -208,43 +498,9 @@
       <file leaf-file-name="RapidminerBasedOutlierDetection.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/outlierdetection/RapidminerBasedOutlierDetection.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="766" max-vertical-offset="1755">
+            <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="1755">
               <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="14" selection-end-column="2" />
-              <folding>
-                <element signature="e#49#68#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StringMeasureHelper.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/measures/StringMeasureHelper.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1275" max-vertical-offset="2955">
-              <caret line="85" column="47" selection-start-line="85" selection-start-column="47" selection-end-line="85" selection-end-column="47" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SecondStringTokenMatcher.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/measures/base/SecondStringTokenMatcher.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="660">
-              <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TrainedMeasure.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/measures/TrainedMeasure.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="840">
-              <caret line="18" column="68" selection-start-line="18" selection-start-column="68" selection-end-line="18" selection-end-column="68" />
-              <folding>
-                <element signature="e#42#91#0" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -281,8 +537,8 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
-    <option name="width" value="960" />
-    <option name="height" value="717" />
+    <option name="width" value="1280" />
+    <option name="height" value="773" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -340,8 +596,30 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
+              <option name="myItemId" value="ontology matching" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oaMatcherCode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="logging" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -366,6 +644,10 @@
               <option name="myItemId" value="scala" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -386,10 +668,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="metaMatcher" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -416,200 +694,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="pipeline" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ontology matching" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oaMatcherCode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pipeline" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Pipeline.scala" />
-              <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ontology matching" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oaMatcherCode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pipeline" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MatchingPipelineCore.scala" />
-              <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ontology matching" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oaMatcherCode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pipeline" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Matcher.scala" />
-              <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ontology matching" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oaMatcherCode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="outlierdetection" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ontology matching" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oaMatcherCode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="matcher" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ontology matching" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oaMatcherCode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="base" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ontology matching" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oaMatcherCode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="measures" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -667,28 +751,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ontology matching" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oaMatcherCode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="project" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -718,6 +780,7 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="SearchEverywhereHistoryKey" value="result&#9;null&#9;null" />
   </component>
   <component name="RunManager" selected="Application.MatchingPipelineCore">
     <configuration default="false" name="Pipeline" type="Application" factoryName="Application" temporary="true">
@@ -1097,6 +1160,9 @@
     </option>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="e6a4e497-266b-47ba-8e75-9782798c37e5" name="Default" comment="" />
@@ -1106,11 +1172,15 @@
       <workItem from="1421830470072" duration="703000" />
       <workItem from="1421831739344" duration="24365000" />
       <workItem from="1422011064842" duration="1904000" />
+      <workItem from="1422363601950" duration="62000" />
+      <workItem from="1422370331277" duration="2000" />
+      <workItem from="1422443090665" duration="2644000" />
+      <workItem from="1422522986798" duration="118000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26972000" />
+    <option name="totallyTimeSpent" value="29798000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -1133,8 +1203,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="960" height="717" extended-state="0" />
-    <editor active="false" />
+    <frame x="0" y="23" width="1280" height="773" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1153,7 +1223,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.51965064" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38592234" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -1192,6 +1262,43 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/MatchingPipelineCore.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="2055">
+          <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/outlierdetection/RapidminerBasedOutlierDetection.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="1755">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="14" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/measures/StringMeasureHelper.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1275" max-vertical-offset="2955">
+          <caret line="85" column="47" selection-start-line="85" selection-start-column="47" selection-end-line="85" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/measures/base/SecondStringTokenMatcher.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="660">
+          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/measures/TrainedMeasure.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="840">
+          <caret line="18" column="68" selection-start-line="18" selection-start-column="68" selection-end-line="18" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/build.sbt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="570">
@@ -1204,7 +1311,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="945">
           <caret line="20" column="37" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1212,7 +1318,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2250" max-vertical-offset="3840">
           <caret line="150" column="96" selection-start-line="150" selection-start-column="77" selection-end-line="150" selection-end-column="96" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1220,9 +1325,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="5018" max-vertical-offset="7005">
           <caret line="360" column="1" selection-start-line="360" selection-start-column="1" selection-end-line="362" selection-end-column="0" />
-          <folding>
-            <marker date="1421946274000" expanded="true" signature="1608:19079" placeholder="/.../" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1238,9 +1341,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="1740">
           <caret line="30" column="44" selection-start-line="30" selection-start-column="44" selection-end-line="30" selection-end-column="44" />
-          <folding>
-            <element signature="e#49#68#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1248,7 +1349,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1275" max-vertical-offset="2955">
           <caret line="85" column="47" selection-start-line="85" selection-start-column="47" selection-end-line="85" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1256,7 +1356,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="165" max-vertical-offset="285">
           <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1264,7 +1363,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="660">
           <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1272,9 +1370,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="840">
           <caret line="18" column="68" selection-start-line="18" selection-start-column="68" selection-end-line="18" selection-end-column="68" />
-          <folding>
-            <element signature="e#42#91#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1303,9 +1398,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1470" max-vertical-offset="6465">
           <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
-          <folding>
-            <marker date="1421946274000" expanded="true" signature="1608:19079" placeholder="/.../" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1320,13 +1413,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="4671" max-vertical-offset="5100">
           <caret line="47" column="68" selection-start-line="47" selection-start-column="68" selection-end-line="47" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/config/Config.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1351,24 +1437,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/ThresholdOptimizationPlatform.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1941" max-vertical-offset="2370">
-          <caret line="154" column="4" selection-start-line="154" selection-start-column="4" selection-end-line="154" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/PipelineSingle.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="480">
           <caret line="28" column="29" selection-start-line="28" selection-start-column="29" selection-end-line="28" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/TestEnv.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="315">
-          <caret line="12" column="41" selection-start-line="12" selection-start-column="41" selection-end-line="12" selection-end-column="41" />
         </state>
       </provider>
     </entry>
@@ -1425,7 +1497,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
           <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1433,7 +1504,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="592" max-vertical-offset="3360">
           <caret line="150" column="96" selection-start-line="150" selection-start-column="77" selection-end-line="150" selection-end-column="96" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1441,7 +1511,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="660">
           <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1449,9 +1518,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="840">
           <caret line="18" column="68" selection-start-line="18" selection-start-column="68" selection-end-line="18" selection-end-column="68" />
-          <folding>
-            <element signature="e#42#91#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1473,15 +1539,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2007" max-vertical-offset="2760">
           <caret line="85" column="47" selection-start-line="85" selection-start-column="47" selection-end-line="85" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.sbt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="570">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="62" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1496,7 +1553,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="945">
           <caret line="20" column="37" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1505,26 +1561,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="12" max-vertical-offset="1920">
           <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/outlierdetection/RapidminerBasedOutlierDetection.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="766" max-vertical-offset="1755">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="14" selection-end-column="2" />
-          <folding>
-            <element signature="e#49#68#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/Pipeline.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="5018" max-vertical-offset="7005">
-          <caret line="360" column="1" selection-start-line="360" selection-start-column="1" selection-end-line="362" selection-end-column="0" />
-          <folding>
-            <marker date="1421946274000" expanded="true" signature="1608:19079" placeholder="/.../" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1538,11 +1574,65 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/metaMatcher/MatrixSelectionMatchingAlignment.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.95309883" vertical-offset="436" max-vertical-offset="1425">
+        <state vertical-scroll-proportion="0.0" vertical-offset="710" max-vertical-offset="1365">
           <caret line="67" column="7" selection-start-line="14" selection-start-column="4" selection-end-line="67" selection-end-column="7" />
-          <folding>
-            <element signature="e#53#107#0" expanded="true" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/outlierdetection/RapidminerBasedOutlierDetection.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="1665">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="14" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/Pipeline.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2940" max-vertical-offset="7005">
+          <caret line="196" column="38" selection-start-line="196" selection-start-column="38" selection-end-line="196" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/de/uniman/dws/oamatching/logging/ResultLogger.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="600">
+          <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.sbt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="570">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/TestEnv.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="315">
+          <caret line="12" column="41" selection-start-line="12" selection-start-column="41" selection-end-line="12" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/config/Config.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
+          <caret line="26" column="12" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/omatching/pipeline/ThresholdOptimizationPlatform.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48392037" vertical-offset="1694" max-vertical-offset="2370">
+          <caret line="137" column="5" selection-start-line="137" selection-start-column="5" selection-end-line="137" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>

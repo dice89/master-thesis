@@ -12,7 +12,18 @@ import scala.collection.mutable
 case class MatchRelation(left: String, relation: String, right: String,owl_type:String)
 
 class Alignment(val onto1:String, val onto2:String) {
-  var correspondences: mutable.MutableList[Cell] = new mutable.MutableList[Cell]
+
+  var correspondences: Set[Cell] =Set.empty[Cell]
+
+  /**
+   * Copy constructor
+   * @param alignment_to_Copy Alingment to Copy
+   */
+  def this(alignment_to_Copy: Alignment) = {
+    this(alignment_to_Copy.onto1,alignment_to_Copy.onto2)
+    this.correspondences = alignment_to_Copy.correspondences.map(cell => new Cell(cell))
+  }
+
 
   def this ( onto1:String,  onto2:String, correspondences:List[Cell]){
     this(onto1,onto2)
@@ -31,25 +42,53 @@ class Alignment(val onto1:String, val onto2:String) {
     this(onto1,onto2)
     val corresp = matchings.filter(tuple => tuple._2 >= threshold).map({
       case(matchrelation, similiarity) => {
-        new Cell(matchrelation.left,matchrelation.right,similiarity,matchrelation.relation,matchrelation.owl_type)
+        val test = new Cell(matchrelation.left,matchrelation.right,similiarity,matchrelation.relation,matchrelation.owl_type)
+
+        if(this.correspondences.contains(test)){
+          println("bla")
+        }
+        test
       }
     })
-    this.correspondences =  this.correspondences++(corresp)
+    this.correspondences++=(corresp)
   }
 
+  /**
+   * Constructor for creation from a feature vector
+   * @param onto1
+   * @param onto2
+   * @param matchings
+   */
   def this (onto1:String, onto2:String, matchings:Map[MatchRelation,Double]){
     this(onto1,onto2)
     val corresp = matchings.map({
       case(matchrelation, similiarity) => {
-        new Cell(matchrelation.left,matchrelation.right,similiarity,matchrelation.relation,matchrelation.owl_type)
+        val test = new Cell(matchrelation.left,matchrelation.right,similiarity,matchrelation.relation,matchrelation.owl_type)
+
+        if(this.correspondences.contains(test)){
+          println("bla")
+        }
+        test
+
       }
     })
-    this.correspondences =  this.correspondences++(corresp)
+    this.correspondences++=(corresp)
   }
 
 
   def addToCorrespondences(cell:Cell): Unit = {
+
     correspondences.+=(cell)
+  }
+
+  def addAllCorrespondeces(cells:Set[Cell]): Unit = {
+
+    correspondences=  cells ++ correspondences
+  }
+
+  def addAllCorrespondeces(cells:mutable.Set[Cell]): Unit = {
+    val immutable_cells:Set[Cell] = Set(cells.toSeq:_*)
+    correspondences=  immutable_cells ++ correspondences
   }
 
   def removeCorrespondence(cell_to_remove:Cell):Unit = {
@@ -72,7 +111,6 @@ class Alignment(val onto1:String, val onto2:String) {
 
 
   def evaluate(reference:Alignment) :EvaluationResult = {
-    //present in both sets
 
     //
     val tp =  correspondences.filter(cell => reference.correspondences.contains(cell)).size
@@ -84,9 +122,6 @@ class Alignment(val onto1:String, val onto2:String) {
     val fn =  reference.correspondences.filterNot(cell => correspondences.contains(cell)).size
 
     EvaluationResultAggregator.createEvaluationResult(tp,fp,fn)
-
-
-
 
   }
 }

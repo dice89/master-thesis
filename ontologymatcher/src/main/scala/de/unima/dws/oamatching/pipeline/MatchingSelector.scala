@@ -19,6 +19,7 @@ object MatchingSelector {
    */
   def greedyRankSelector(matchings: Map[MatchRelation, Double],threshold: Double):Map[MatchRelation, Double] ={
     val match_to_value = matchings.keySet.map(relation => ((relation.left.toString(), relation.right.toString()), matchings.get(relation).get)) toMap
+    val match_to_owl_type = matchings.keySet.map(relation => ((relation.left.toString(), relation.right.toString()),relation.owl_type)) toMap
 
     //get keys as seperate list
     val keys = match_to_value.keySet.unzip
@@ -53,11 +54,12 @@ object MatchingSelector {
         val uri_left = keyset_left(index)._1.trim()
         val uri_right = keyset_right(best_row_elem._2)._1.trim()
 
-        (uri_left, uri_right, "=", best_row_elem._1.getOrElse(0.0))
+       val owl_type =  match_to_owl_type(uri_left,uri_right)
+        (uri_left, uri_right, "=", owl_type,best_row_elem._1.getOrElse(0.0))
       }
     })
     //eliminate duplicate right elements
-    val best_row_selected = results.groupBy({case(left,right,relation,score) => right} ).map({case(right,list_of_relations) => list_of_relations.reduceLeft((A,B)=>{
+    val best_row_selected = results.groupBy({case(left,right,relation,owl_type,score) => right} ).map({case(right,list_of_relations) => list_of_relations.reduceLeft((A,B)=>{
       if(A._4 > B._4 ){
         A
       }else {
@@ -65,7 +67,7 @@ object MatchingSelector {
       }
     })} )
     //select those that are over the threshold and add them to alignment
-    val filtered_matchings: Map[MatchRelation, Double] =   best_row_selected.filter({case(left,right,relation,score) => score >= threshold}).map({case(left,right,relation,score) => MatchRelation(left,relation,right, "TODO")->score}).toMap
+    val filtered_matchings: Map[MatchRelation, Double] =   best_row_selected.filter({case(left,right,relation,owl_type,score) => score >= threshold}).map({case(left,right,relation,owl_type,score) => MatchRelation(left,relation,right, owl_type)->score}).toMap
 
     filtered_matchings
   }

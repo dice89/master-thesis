@@ -1,31 +1,25 @@
 package de.unima.dws.oamatching.pipeline
 
 import java.io.File
-import javax.swing.text.html.HTML.Attribute
 
-import de.unima.dws.oamatching.analysis.{RapidminerJobs, SparkJobs}
+import de.unima.dws.oamatching.analysis.{SparkJobs, RapidminerJobs}
 import de.unima.dws.oamatching.core.matcher.{StructuralLevelMatcher, Matcher}
-import de.unima.dws.oamatching.core.{AlignmentParser, Alignment, MatchRelation, OntologyLoader}
+import de.unima.dws.oamatching.core.{MatchRelation, Alignment, AlignmentParser, OntologyLoader}
 import de.unima.dws.oamatching.matcher.MatcherRegistry
-import org.apache.spark.mllib.linalg.{Matrix, Vectors}
-import org.apache.spark.mllib.stat.{MultivariateStatisticalSummary, Statistics}
-import org.apache.spark.rdd.RDD
-import org.apache.spark.{SparkConf, SparkContext}
 import org.semanticweb.owlapi.model.OWLOntology
 
-import scala.{Predef, collection}
-import scala.collection.immutable.{Map, Iterable}
-import scala.collection.mutable
+import scala.collection.immutable.Map
+import scala.collection.parallel.immutable.ParMap
 
-/**
- * Created by mueller on 21/01/15.
- */
 
 case class MatchingProblem(ontology1: OWLOntology, ontology2: OWLOntology, name: String)
 
 case class MatchingEvaluationProblem(ontology1: OWLOntology, ontology2: OWLOntology, reference: Alignment, name: String)
 
-
+/**
+ * Core Single to implement matching of two ontologies
+ * Created by mueller on 21/01/15.
+ */
 object MatchingPipelineCore{
 
 
@@ -33,21 +27,7 @@ object MatchingPipelineCore{
 
   def main(args: Array[String]): Unit = {
 
-    val file_onto1: File = new File("ontos/2014/conference/cmt.owl")
-    val file_onto2: File = new File("ontos/2014/conference/Conference.owl")
 
-    val onto1  =OntologyLoader.load(file_onto1)
-    val onto2 = OntologyLoader.load(file_onto2)
-
-    val test_problem = MatchingProblem(onto1 ,onto2,"test")
-
-    val test = matchProblem(test_problem, Map(("threshold",0.9999)))
-    val reference = AlignmentParser.parseRDF("ontos/2014/conference/reference-alignment/cmt-conference.rdf")
-
-
-    println(test._1.evaluate(reference))
-
-    println(test._1.toString)
 
   }
 
@@ -60,21 +40,32 @@ object MatchingPipelineCore{
    */
   def matchProblem(problem: MatchingProblem, parameters: Map[String,Double] ): (Alignment,FeatureVector) = {
 
+    val onto1_namespace = problem.ontology1.getOntologyID.getOntologyIRI.get().toString
+    val onto2_namespace = problem.ontology2.getOntologyID.getOntologyIRI.get().toString
+    println(onto1_namespace)
+    println(onto2_namespace)
+    val allowed_namespaces = List(onto1_namespace,onto2_namespace)
+
     val threshold = parameters.getOrElse("threshold",0.8)
 
+    val remove_correlated_threshold = parameters.getOrElse("correlation_threshold",0.5)
+    println("Start element Level Matching")
     val individual_matcher_results:FeatureVector = matchAllIndividualMatchers(problem)
-
-    val uncorrelated_matcher_results:FeatureVector = removeCorrelatedMatchers(individual_matcher_results)
-
+    println("Element Level Matching Done")
+    println("Start remove correlated")
+    val uncorrelated_matcher_results:FeatureVector = removeCorrelatedMatchers(individual_matcher_results,remove_correlated_threshold)
+    println(" remove correlated done")
     val structural_matcher_results:Option[FeatureVector] =  matchAllStructuralMatchers(problem,uncorrelated_matcher_results)
 
-    val outlier_analysis_vector:FeatureVector = if(structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results,structural_matcher_results.get)).get else individual_matcher_results
+    val outlier_analysis_vector:FeatureVector = if(structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results,structural_matcher_results.get),problem.name).get else individual_matcher_results
     println("Start Outlier analysis")
 
-    val outlier_analysis_result: Map[MatchRelation, Double] =  RapidminerJobs.rapidminerOutlierDetection("test") (outlier_analysis_vector)
+    val outlier_analysis_result: Map[MatchRelation, Double] =  RapidminerJobs.rapidminerOutlierDetectionNormalized(problem.name) (outlier_analysis_vector)
 
     println("Outlier Analysis Done")
-    val namespace_filtered = MatchingPruner.nameSpaceFilter(outlier_analysis_result, null)
+
+
+    val namespace_filtered = MatchingPruner.nameSpaceFilter(outlier_analysis_result, allowed_namespaces)
     //now perform outlier analysis
     println("Namespace Filtering done")
     val selected =  MatchingSelector.greedyRankSelector(namespace_filtered,threshold)
@@ -102,14 +93,14 @@ object MatchingPipelineCore{
    * @return
    */
   def matchAllIndividualMatchers(problem:MatchingProblem):FeatureVector = {
-    val vector = MatcherRegistry.matcher_by_name.map({case (name,matcher) => {
+    val vector: ParMap[String, Map[MatchRelation, Double]] = MatcherRegistry.matcher_by_name.par.map({case (name,matcher) => {
       (name,matchIndividualMatcher(matcher, problem))}}) toMap
 
     val matcher_name_to_index: Map[String, Int] = vector.keys.toList.zipWithIndex.toMap
     val matcher_index_to_name:Map[Int,String] = matcher_name_to_index.map(tuple => (tuple._2,tuple._1)).toMap
-    val vector_per_matchings = VectorUtil.createInvertedVector(vector)
+    val vector_per_matchings = VectorUtil.createInvertedVector(vector.seq)
 
-    FeatureVector(vector,vector_per_matchings,matcher_name_to_index,matcher_index_to_name)
+    FeatureVector(problem.name,vector.seq,vector_per_matchings,matcher_name_to_index,matcher_index_to_name)
   }
 
   /**
@@ -124,7 +115,7 @@ object MatchingPipelineCore{
       matchStructuralMatcher(matcher._2, problem, featureVector)
     }.toList
     //combine and return results
-    VectorUtil.combineFeatureVectors(results)
+    VectorUtil.combineFeatureVectors(results,problem.name)
 
   }
 
@@ -136,12 +127,12 @@ object MatchingPipelineCore{
    * @return
    */
   def matchStructuralMatcher(matcher:StructuralLevelMatcher, problem:MatchingProblem,featureVector:FeatureVector):FeatureVector = {
-
+    //TODO add parallelism
     val results: Map[String, Map[MatchRelation, Double]] =  for(matcher_res <- featureVector.vector) yield {
-      (matcher_res._1+matcher.getClass.getName, matchStructuralMatcherWithAlignment(matcher,problem,matcher_res._2))
+      (matcher_res._1+matcher.getClass.getName.replace(".",""), matchStructuralMatcherWithAlignment(matcher,problem,matcher_res._2))
     }
     //return a feature vector
-    VectorUtil.createVectorFromResult(results)
+    VectorUtil.createVectorFromResult(results,problem.name)
   }
 
   /**
@@ -165,8 +156,8 @@ object MatchingPipelineCore{
    * @param feature_vector
    * @return
    */
-  def removeCorrelatedMatchers(feature_vector:FeatureVector) = {
-    SparkJobs.removeCorrelatedFeatures(feature_vector)
+  def removeCorrelatedMatchers(feature_vector:FeatureVector,threshold:Double) = {
+    SparkJobs.removeCorrelatedFeatures(feature_vector,threshold)
   }
 
 

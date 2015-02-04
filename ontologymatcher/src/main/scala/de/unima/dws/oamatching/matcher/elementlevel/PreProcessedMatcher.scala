@@ -15,6 +15,7 @@ abstract class PreProcessedMatcher(override val similarity:Boolean, val preproce
 
      score(preprocess_function(getFragmentOfEntity(owlEntity1)), preprocess_function(getFragmentOfEntity(owlEntity2)))
    }
+
   override def alignClass(owlClass1: OWLClass, owlClass2: OWLClass): Double = {
     score(owlClass1,owlClass2)
   }

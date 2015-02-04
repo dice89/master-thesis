@@ -14,6 +14,8 @@ import scala.collection.convert.Wrappers.JSetWrapper
  */
 object StringMeasureHelper {
 
+
+
   /**
    *  Curryable Function to match normalized Strings
    * @param normalization A Normalization Function e.g. to lower case
@@ -44,6 +46,10 @@ object StringMeasureHelper {
 
   def tokenize_low_dash(a: String): List[String] = {
     a.split("_")toList
+  }
+
+  def tokenize_low_whiteSpace(a: String): List[String] = {
+    a.split(" ")toList
   }
 
   def combine_two_tokenizer(tokenizer_a: String => List[String], tokenizer_b: String => List[String])(a: String): List[String] = {
@@ -102,6 +108,21 @@ object StringMeasureHelper {
    */
   def minimalPreprocess(a:String):String = {
     a
+  }
+
+  def addPosTag(tokenize_fct:String=>List[String])(a:String):String = {
+
+    val tagger = epic.models.PosTagSelector.loadTagger("en").get // or another 2 letter code.
+
+    val tags = tagger.bestSequence(tokenize_fct(a).toIndexedSeq)
+
+    println(tags)
+
+    a
+  }
+
+  def epicTokenizer(a:String):List[String] = {
+    null
   }
 
   /*def getLabel(entity: OWLEntity, ontology: OWLOntology): String = {

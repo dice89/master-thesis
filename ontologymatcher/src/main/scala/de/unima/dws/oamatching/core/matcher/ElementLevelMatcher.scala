@@ -23,8 +23,40 @@ abstract class ElementLevelMatcher(val similarity:Boolean) extends Matcher {
 
     val alignment:Alignment =  new Alignment(null,null)
 
+
+    entities1.par.foreach(entity1 => {
+      entities2.par.foreach(entity2=> {
+        //check for classes
+        if(entity1.isOWLClass && entity2.isOWLClass){
+          val similarity: Double = getSimilarity(alignClass(entity1.asOWLClass(), entity2.asOWLClass()))
+
+          if(similarity >= threshold) {
+            alignment.addToCorrespondences( new Cell(entity1.getIRI.toURI,entity2.getIRI.toURI, similarity, "=", Cell.TYPE_CLASS))
+          }
+
+
+        }
+
+        //align Datatype Properties
+        if(entity1.isOWLDataProperty && entity2.isOWLDataProperty){
+          val similarity: Double = getSimilarity(alignDatatypeProperty(entity1.asOWLDataProperty(),entity2.asOWLDataProperty()))
+          if(similarity >= threshold) {
+            alignment.addToCorrespondences( new Cell(entity1.getIRI.toURI,entity2.getIRI.toURI, similarity, "=",Cell.TYPE_DT_PROPERTY))
+          }
+        }
+
+        //align Object Properties
+        if(entity1.isOWLObjectProperty && entity2.isOWLObjectProperty) {
+          val similarity = getSimilarity(alignObjectProperty(entity1.asOWLObjectProperty(), entity2.asOWLObjectProperty()))
+          if(similarity >= threshold) {
+            alignment.addToCorrespondences( new Cell(entity1.getIRI.toURI,entity2.getIRI.toURI, similarity, "=", Cell.TYPE_OBJECT_PROPERTY))
+          }
+        }
+      })
+
+    })
     //start producing alignments time complexity is O(n^2)
-    for(entity1 <- entities1;
+    /*for(entity1 <- entities1;
         entity2 <- entities2){
 
         //check for classes
@@ -54,7 +86,7 @@ abstract class ElementLevelMatcher(val similarity:Boolean) extends Matcher {
           }
         }
 
-    }
+    }*/
     //return alignment
     alignment
   }

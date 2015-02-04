@@ -4,7 +4,7 @@
 		module="ontologymatcher_2.10"
 		revision="1.0"
 		status="integration"
-		publication="20150126205435"
+		publication="20150202215357"
 	>
 		<description>
 		ontologymatcher
@@ -27,9 +27,7 @@
 	</configurations>
 	<publications>
 		<artifact name="ontologymatcher_2.10" type="pom" ext="pom" conf="pom"/>
-		<artifact name="ontologymatcher_2.10" type="jar" ext="jar" conf="compile"/>
-		<artifact name="ontologymatcher_2.10" type="src" ext="jar" conf="sources" e:classifier="sources"/>
-		<artifact name="ontologymatcher_2.10" type="doc" ext="jar" conf="docs" e:classifier="javadoc"/>
+		<artifact name="ontologymatcher_2.10" type="jar" ext="jar" conf="optional" e:classifier="download"/>
 	</publications>
 	<dependencies>
 		<dependency org="org.scala-lang" name="scala-compiler" rev="2.10.4" conf="scala-tool->default,optional(default)"/>
@@ -47,5 +45,9 @@
 		<dependency org="fr.inrialpes.exmo" name="ontosim" rev="2.4" conf="compile->default(compile)"/>
 		<dependency org="org.apache.lucene" name="lucene-analyzers-common" rev="4.10.3" conf="compile->default(compile)"/>
 		<dependency org="de.unima.alex" name="owlsimflood" rev="1.0" conf="compile->default(compile)"/>
+		<dependency org="org.scalaj" name="scalaj-http_2.10" rev="1.1.1" conf="compile->default(compile)"/>
+		<dependency org="org.scalanlp" name="epic_2.10" rev="0.3" conf="compile->default(compile)"/>
+		<dependency org="com.typesafe.play" name="play-json_2.10" rev="2.4.0-M2" conf="compile->default(compile)"/>
+		<dependency org="org.scalanlp" name="english_2.10" rev="2015.1.25" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>

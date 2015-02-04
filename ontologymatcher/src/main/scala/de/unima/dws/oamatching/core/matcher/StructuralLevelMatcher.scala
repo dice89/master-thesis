@@ -9,7 +9,7 @@ import org.semanticweb.owlapi.model.OWLOntology
  */
 abstract class StructuralLevelMatcher extends Matcher{
 
-  protected def align( onto1:OWLOntology,  onto2:OWLOntology,initial_Alignment:Alignment,threshold:Double) :Alignment
+  protected def align(onto1:OWLOntology,  onto2:OWLOntology,initial_Alignment:Alignment,threshold:Double) :Alignment
 
   def align(problem: MatchingProblem, initial_Alignment:Alignment, threshold: Double): Alignment = {
     align(problem.ontology1,problem.ontology2,initial_Alignment,threshold)

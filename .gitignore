@@ -1,19 +1,14 @@
 RapidminerRepo
-.cache
-oaMatcherCode/.cache
-
-oaMatcherCode/.classpath
-
-*.log
-
-oaMatcherCode/runtime.log
-
-*.log
-
 *.csv
+ontologymatcher/target
+ontologymatcher/.idea
+ontologymatcher/project/target
+tudarmstadtmatcher
 
-oaMatcherCode/result.csv
+*.log
 
-oaMatcherCode/output.csv
+*.log
 
-oaMatcherCode/matching_matcher_result.csv
+*.log
+
+ontologymatcher/runtime.log

@@ -1,6 +1,7 @@
 package de.unima.dws.oamatching.pipeline
 
-import de.unima.dws.oamatching.core.MatchRelation
+import _root_.de.unima.dws.oamatching.core.MatchRelation
+
 
 import scala.collection.immutable.{Iterable, Map}
 
@@ -8,7 +9,7 @@ import scala.collection.immutable.{Iterable, Map}
  * Created by mueller on 23/01/15.
  */
 
-case class FeatureVector(vector: Map[String, Map[MatchRelation, Double]], transposed_vector: Map[MatchRelation, Map[String, Double]], matcher_name_to_index: Map[String, Int], matcher_index_to_name: Map[Int, String])
+case class FeatureVector(data_set_name:String,vector: Map[String, Map[MatchRelation, Double]], transposed_vector: Map[MatchRelation, Map[String, Double]], matcher_name_to_index: Map[String, Int], matcher_index_to_name: Map[Int, String])
 
 object VectorUtil {
 
@@ -27,7 +28,7 @@ object VectorUtil {
     val matcher_index_to_name: Map[Int, String] = matcher_name_to_index.map(tuple => (tuple._2, tuple._1)).toMap
     val vector_per_matchings = createInvertedVector(vector)
 
-    FeatureVector(vector, vector_per_matchings, matcher_name_to_index, matcher_index_to_name)
+    FeatureVector(feature_vector.data_set_name,vector, vector_per_matchings, matcher_name_to_index, matcher_index_to_name)
   }
 
   /**
@@ -46,12 +47,12 @@ object VectorUtil {
    * @param result
    * @return
    */
-  def createVectorFromResult(result: Map[String, Map[MatchRelation, Double]]): FeatureVector = {
+  def createVectorFromResult(result: Map[String, Map[MatchRelation, Double]], name:String): FeatureVector = {
     val matcher_name_to_index: Map[String, Int] = result.keys.toList.zipWithIndex.toMap
     val matcher_index_to_name: Map[Int, String] = matcher_name_to_index.map(tuple => (tuple._2, tuple._1)).toMap
     val vector_per_matchings = VectorUtil.createInvertedVector(result)
 
-    FeatureVector(result, vector_per_matchings, matcher_name_to_index, matcher_index_to_name)
+    FeatureVector(name,result, vector_per_matchings, matcher_name_to_index, matcher_index_to_name)
   }
 
   /**
@@ -59,7 +60,7 @@ object VectorUtil {
    * @param feature_vectors
    * @return
    */
-  def combineFeatureVectors(feature_vectors:Iterable[FeatureVector]): Option[FeatureVector] ={
+  def combineFeatureVectors(feature_vectors:Iterable[FeatureVector],name:String): Option[FeatureVector] ={
     if(feature_vectors.size != 0) {
 
 
@@ -70,7 +71,7 @@ object VectorUtil {
 
     println("Should be the same " + size1 + "---" + whole_map.size)
       println(whole_map.keys)
-      Option.apply(VectorUtil.createVectorFromResult(whole_map))
+      Option.apply(VectorUtil.createVectorFromResult(whole_map,name))
     }else {
       Option.empty
     }

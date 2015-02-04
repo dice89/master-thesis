@@ -3,11 +3,7 @@
     <CLASSES>
       <root url="jar://$USER_HOME$/.ivy2/cache/org.semarglproject/semargl-core/jars/semargl-core-0.6.1.jar!/" />
     </CLASSES>
-    <JAVADOC>
-      <root url="jar://$USER_HOME$/.ivy2/cache/org.semarglproject/semargl-core/docs/semargl-core-0.6.1-javadoc.jar!/" />
-    </JAVADOC>
-    <SOURCES>
-      <root url="jar://$USER_HOME$/.ivy2/cache/org.semarglproject/semargl-core/srcs/semargl-core-0.6.1-sources.jar!/" />
-    </SOURCES>
+    <JAVADOC />
+    <SOURCES />
   </library>
 </component>
