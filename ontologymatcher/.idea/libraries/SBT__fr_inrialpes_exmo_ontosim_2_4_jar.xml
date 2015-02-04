@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="SBT: fr.inrialpes.exmo:ontosim:2.4:jar">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/fr/inrialpes/exmo/ontosim/2.4/ontosim-2.4.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
