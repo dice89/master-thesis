@@ -29,8 +29,8 @@ object SparkJobs{
   val conf = new SparkConf()
     .setAppName("Alex Master Thesis")
     //this needs to be parameterized.
-    .setMaster("local[1]")
-    .set("spark.executor.memory", "4g")
+    .setMaster("local[2]")
+    .set("spark.executor.memory", "3g")
     //.set("spark.rdd.compress", "true")
 
   val sc = new SparkContext(conf)

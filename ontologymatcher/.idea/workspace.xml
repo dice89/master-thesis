@@ -2,31 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1d161d69-97c4-4e63-8350-b593a4c7602d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/pipeline/util/CosineSimilarity.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/matcher/structurallevel/GraphBasedUsedClassMatcher.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/matcher/structurallevel/GraphBasedUsedPropertyMatcher.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/measures/SemanticMeasures.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/pipeline/util/TxtFileFilter.scala" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/core/matcher/SimilarityFloodingMatcher.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/matcher/structurallevel/SimilarityFloodingMatcher.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gitignore" afterPath="$PROJECT_DIR$/../.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/core/Alignment.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/core/Alignment.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/core/AlignmentParser.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/core/AlignmentParser.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/core/Cell.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/core/Cell.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/config/Config.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/config/Config.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/core/matcher/ElementLevelMatcher.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/core/matcher/ElementLevelMatcher.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/pipeline/evaluation/Evaluation.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/pipeline/evaluation/Evaluation.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/matcher/MatcherRegistry.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/matcher/MatcherRegistry.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/pipeline/MatchingPipelineCore.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/pipeline/MatchingPipelineCore.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/pipeline/optimize/ParameterOptimizer.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/pipeline/optimize/ParameterOptimizer.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/matcher/elementlevel/PreProcessedMatcher.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/matcher/elementlevel/PreProcessedMatcher.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/analysis/RapidminerJobs.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/analysis/RapidminerJobs.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/pipeline/Runner.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/pipeline/Runner.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/analysis/SparkJobs.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/analysis/SparkJobs.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/measures/StringMeasureHelper.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/measures/StringMeasureHelper.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/core/matcher/StructuralLevelMatcher.scala" afterPath="$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/core/matcher/StructuralLevelMatcher.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.sbt" afterPath="$PROJECT_DIR$/build.sbt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/runtime.log" afterPath="$PROJECT_DIR$/runtime.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.rmp" afterPath="$PROJECT_DIR$/test.rmp" />
     </list>
     <ignored path="ontologymatcher.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -107,11 +83,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SparkJobs.scala" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SparkJobs.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/analysis/SparkJobs.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="570" max-vertical-offset="3375">
-              <caret line="31" column="23" selection-start-line="0" selection-start-column="0" selection-end-line="236" selection-end-column="0" />
+            <state vertical-scroll-proportion="-5.7419353" vertical-offset="2880" max-vertical-offset="3375">
+              <caret line="31" column="23" selection-start-line="31" selection-start-column="23" selection-end-line="31" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -137,10 +113,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RapidminerJobs.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RapidminerJobs.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/analysis/RapidminerJobs.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.064516" vertical-offset="0" max-vertical-offset="2175">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2175">
               <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
               <folding />
             </state>
@@ -317,37 +293,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="pipeline" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="VectorUtil.scala" />
-              <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ontologymatcher" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ontologymatcher" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pipeline" />
+              <option name="myItemId" value="analysis" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -405,7 +351,7 @@
         </pattern>
       </extension>
       <option name="MAIN_CLASS_NAME" value="de.unima.dws.oamatching.pipeline.Runner" />
-      <option name="VM_PARAMETERS" value="-Xmx4g" />
+      <option name="VM_PARAMETERS" value="-Xmx6g" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -869,12 +815,12 @@
       <workItem from="1422895263066" duration="1343000" />
       <workItem from="1422899639516" duration="4539000" />
       <workItem from="1422952877153" duration="1858000" />
-      <workItem from="1422957232697" duration="8851000" />
+      <workItem from="1422957232697" duration="9584000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53670000" />
+    <option name="totallyTimeSpent" value="54403000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="773" extended-state="6" />
@@ -1259,14 +1205,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/analysis/SparkJobs.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="570" max-vertical-offset="3375">
-          <caret line="31" column="23" selection-start-line="0" selection-start-column="0" selection-end-line="236" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/pipeline/util/CosineSimilarity.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="615">
@@ -1311,8 +1249,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/analysis/RapidminerJobs.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.064516" vertical-offset="0" max-vertical-offset="2175">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2175">
           <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/de/unima/dws/oamatching/analysis/SparkJobs.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.7419353" vertical-offset="2880" max-vertical-offset="3375">
+          <caret line="31" column="23" selection-start-line="31" selection-start-column="23" selection-end-line="31" selection-end-column="23" />
           <folding />
         </state>
       </provider>
