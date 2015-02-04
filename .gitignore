@@ -2,13 +2,11 @@ RapidminerRepo
 *.csv
 ontologymatcher/target
 ontologymatcher/.idea
-ontologymatcher/project/target
+ontologymatcher/project/
 tudarmstadtmatcher
 
 *.log
 
-*.log
-
-*.log
-
 ontologymatcher/runtime.log
+
+ontologymatcher/project/target

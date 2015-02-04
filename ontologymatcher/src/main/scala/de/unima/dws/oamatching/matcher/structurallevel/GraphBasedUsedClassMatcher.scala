@@ -84,29 +84,34 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
     val matchings: mutable.Set[Option[List[(MatchRelation, Double)]]] = for (prop_onto2 <- onto2.getObjectPropertiesInSignature()) yield {
       // get domain
       val domain = onto2.getObjectPropertyDomainAxioms(prop_onto2)
-      val domain_class = domain.head.getClassesInSignature().head
-      // get candidates with the domain
-      val option_candidates: Option[List[(String, String, Double)]] = candidates_by_domain_class.get(domain_class.toStringID)
 
-      if (option_candidates.isDefined) {
-        val range = onto2.getObjectPropertyRangeAxioms(prop_onto2)
-        val range_class = domain.head.getClassesInSignature().head
-        //get List to retrieve multiple candidates and check each of it
-
-        val optional_final = for (candidate <- option_candidates.get) yield {
-          if (candidate._2.equals(range_class.toStringID)) {
-            // yes = add alignment
-            //we got a real matching
-            Option(MatchRelation(candidate._1, "=", prop_onto2.toStringID, Cell.TYPE_OBJECT_PROPERTY) -> candidate._3)
-          } else {
-            // no = do nothing
-            Option.empty
-          }
-        }
-
-        Option(optional_final.filter(optional => optional.isDefined).map(option => option.get))
-      } else {
+      if(domain.size() < 1){
         Option.empty
+      }else {
+        val domain_class = domain.head.getClassesInSignature().head
+        // get candidates with the domain
+        val option_candidates: Option[List[(String, String, Double)]] = candidates_by_domain_class.get(domain_class.toStringID)
+
+        if (option_candidates.isDefined) {
+          val range = onto2.getObjectPropertyRangeAxioms(prop_onto2)
+          val range_class = domain.head.getClassesInSignature().head
+          //get List to retrieve multiple candidates and check each of it
+
+          val optional_final = for (candidate <- option_candidates.get) yield {
+            if (candidate._2.equals(range_class.toStringID)) {
+              // yes = add alignment
+              //we got a real matching
+              Option(MatchRelation(candidate._1, "=", prop_onto2.toStringID, Cell.TYPE_OBJECT_PROPERTY) -> candidate._3)
+            } else {
+              // no = do nothing
+              Option.empty
+            }
+          }
+
+          Option(optional_final.filter(optional => optional.isDefined).map(option => option.get))
+        } else {
+          Option.empty
+        }
       }
 
     }
