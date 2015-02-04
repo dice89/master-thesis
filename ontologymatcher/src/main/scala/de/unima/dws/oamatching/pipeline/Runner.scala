@@ -5,7 +5,7 @@ import java.io.File
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.{OntologyLoader, AlignmentParser}
 import de.unima.dws.oamatching.matcher.MatcherRegistry
-import de.unima.dws.oamatching.pipeline.evaluation.EvaluationMatchingRunner
+import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingTaskWithParameters, EvaluationMatchingRunner}
 
 /**
  * Created by mueller on 28/01/15.
@@ -13,7 +13,8 @@ import de.unima.dws.oamatching.pipeline.evaluation.EvaluationMatchingRunner
 object Runner extends App {
   MatcherRegistry.init
   //EvaluationMatchingRunner.matchAndEvaluateConference("ontos/2014/conference",Map(("threshold",0.6)))
-  runRound()
+  //runRound()
+  runSinglePlatform()
   //runSingleStructural()
 
   def runSingleStructural():Unit = {
@@ -48,5 +49,21 @@ object Runner extends App {
 
     EvaluationMatchingRunner.matchAndEvaluateConference(Config.PATH_TO_CONFERENCE, Map(("threshold",0.3)) )
 
+  }
+
+  def runSinglePlatform():Unit =  {
+
+    val file_onto1: File = new File("ontos/2014/conference/cmt.owl")
+    val file_onto2: File = new File("ontos/2014/conference/Conference.owl")
+    val reference = AlignmentParser.parseRDF("ontos/2014/conference/reference-alignment/cmt-conference.rdf")
+
+
+    val onto1  =OntologyLoader.load(file_onto1)
+    val onto2 = OntologyLoader.load(file_onto2)
+    val test_problem = MatchingProblem(onto1 ,onto2,"test_single_run")
+
+    val params = Map(("threshold",0.3))
+    val task = EvaluationMatchingTaskWithParameters(test_problem, params, reference)
+    EvaluationMatchingRunner.matchAndEvaluateSingle(task)
   }
 }

@@ -15,6 +15,9 @@ import scala.collection.mutable.{HashMap, Map => MutableMap}
 object MatcherRegistry {
   var matcher_by_name: Map[String, Matcher] = Map[String, Matcher]()
 
+  var webservice_matcher_by_name: Map[String, Matcher] = Map[String, Matcher]()
+
+
   val structural_matcher_by_name : MutableMap[String, StructuralLevelMatcher] = new HashMap[String, StructuralLevelMatcher]()
 
 
@@ -25,8 +28,8 @@ object MatcherRegistry {
   }
 
   def initWebServiceBasedMatcher() = {
-    //matcher_by_name += init_uri_fragment_tokenized_matcher("umbcphrasesim",true)
-    //matcher_by_name += init_uri_fragment_tokenized_matcher("umbcstssim",true)
+    webservice_matcher_by_name += init_uri_fragment_tokenized_matcher("umbcphrasesim",true)
+    webservice_matcher_by_name += init_uri_fragment_tokenized_matcher("umbcstssim",true)
   }
 
 

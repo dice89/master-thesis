@@ -27,13 +27,13 @@ object ParameterOptimizer extends App {
  //val test_matcher = MatcherRegistry.getMatcherByName("umbcphrasesim").get
 
   //val test = optimizeSingleThresholdElementLevelMatcher(test_matcher,problems,getDoubleGrid(0.5,0.999,4))
-  val test = optimizeThresholdForAllBaseMatcher("conference", problems,getDoubleGrid(0.2,0.99,10))
-
+  val o_res_norm = optimizeThresholdForAllBaseMatcher(MatcherRegistry.matcher_by_name,"conference", problems,getDoubleGrid(0.1,0.99,20))
   val totaltime = System.currentTimeMillis() - start
-
   println(totaltime)
+  println(o_res_norm)
+  val o_res_ws = optimizeThresholdForAllBaseMatcher(MatcherRegistry.webservice_matcher_by_name,"conference", problems,getDoubleGrid(0.2,0.99,5))
 
-println(test)
+
   //def optimizeAdvancedPipeline =  optimizeThresholdPipeline(MatchingPipelineCore.matchProblem)_
 
   /**
@@ -43,18 +43,20 @@ println(test)
    * @param thresholds
    * @return
    */
-  def optimizeThresholdForAllBaseMatcher(task_name: String, problems: Seq[EvaluationMatchingTask], thresholds: List[Double]): Map[String, Double] = {
+  def optimizeThresholdForAllBaseMatcher(matchers:Map[String,Matcher],task_name: String, problems: Seq[EvaluationMatchingTask], thresholds: List[Double]): Map[String, Double] = {
 
-    val optimized: ParMap[String, Double] = MatcherRegistry.matcher_by_name.par.map { case (name, matcher) => {
+    val optimized: ParMap[String, Double] = matchers.par.map { case (name, matcher) => {
       println("Optimize for " + name)
       val res  = (name, optimizeSingleThresholdElementLevelMatcher(matcher, problems, thresholds))
       println("Optimization done for  " + name)
+
+      MetaDataMgmt.storeThreshold(task_name,name, res._2)
       res
     }
     }.toMap
 
     println("Now store results")
-    storeThresholds(task_name, optimized.seq)
+   // storeThresholds(task_name, optimized.seq)
 
     optimized.seq
   }

@@ -74,7 +74,12 @@ object RapidminerJobs {
 
     process.run()
     val norm_value = Math.sqrt(no_of_features.toDouble * 4)
-    normalizeFct(norm_value,readFunction(output_csv))
+    val test = normalizeFct(norm_value,readFunction(output_csv))
+
+    test.foreach(value =>{
+
+    if(value._2>0.05) println(value) })
+    test
   }
 
 

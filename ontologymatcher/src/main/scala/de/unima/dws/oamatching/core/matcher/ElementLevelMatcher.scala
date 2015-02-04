@@ -23,7 +23,7 @@ abstract class ElementLevelMatcher(val similarity:Boolean) extends Matcher {
 
     val alignment:Alignment =  new Alignment(null,null)
 
-
+/*
     entities1.par.foreach(entity1 => {
       entities2.par.foreach(entity2=> {
         //check for classes
@@ -54,9 +54,9 @@ abstract class ElementLevelMatcher(val similarity:Boolean) extends Matcher {
         }
       })
 
-    })
+    })*/
     //start producing alignments time complexity is O(n^2)
-    /*for(entity1 <- entities1;
+    for(entity1 <- entities1;
         entity2 <- entities2){
 
         //check for classes
@@ -86,7 +86,7 @@ abstract class ElementLevelMatcher(val similarity:Boolean) extends Matcher {
           }
         }
 
-    }*/
+    }
     //return alignment
     alignment
   }

@@ -46,6 +46,7 @@ object SparkJobs{
   def removeCorrelatedFeatures(feature_vector: FeatureVector, threshold: Double): FeatureVector = {
     println("start spark job")
     val no_of_matcher: Int = feature_vector.matcher_index_to_name.size
+    println(no_of_matcher)
     val initial_vector: Map[MatchRelation, Map[String, Double]] = feature_vector.transposed_vector
 
     //create column vectors for correlation matrix creation

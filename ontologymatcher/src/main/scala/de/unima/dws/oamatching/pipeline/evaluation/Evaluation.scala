@@ -71,7 +71,7 @@ object Evaluation extends App {
     val bet_majority_vote_matcher = majority_vote_res.f1Measure < core_platform_result.f1Measure
 
     val round_res: EvaluationRoundResult =  EvaluationRoundResult(created_alignment, core_platform_result, base_matcher_results, majority_vote_res, best_base_matcher, bet_best_base_matcher, bet_majority_vote_matcher)
-
+    println(core_platform_result)
     //log round result
     ResultLogger.log(problem_name + ":" + round_res.toString)
 
