@@ -16,7 +16,7 @@ import scala.collection.parallel.immutable.ParMap
  */
 object ParameterOptimizer extends App {
   val start = System.currentTimeMillis()
-  MatcherRegistry.init
+  MatcherRegistry.initLargeScale()
   val problems = EvaluationMatchingRunner.parseConference("ontos/2014/conference")
   //optimizeAdvancedPipeline("conference",problems, List(0.3, 0.4))
 

@@ -12,11 +12,8 @@ import de.unima.dws.oamatching.pipeline.util.MetaDataMgmt
  * Created by mueller on 28/01/15.
  */
 object Runner extends App {
-  MatcherRegistry.init
-  //EvaluationMatchingRunner.matchAndEvaluateConference("ontos/2014/conference",Map(("threshold",0.6)))
-
-  //runSinglePlatform()
-  //runSingleStructural()
+  MatcherRegistry.initLargeScale()
+  
   val problems = EvaluationMatchingRunner.parseConference("ontos/2014/conference");
 
 
@@ -24,6 +21,16 @@ object Runner extends App {
 
   //runSingleStructural("simFloodMatcher","word2Vec","ontos/2014/conference/cmt.owl","ontos/2014/conference/Conference.owl","ontos/2014/conference/reference-alignment/cmt-conference.rdf",0.0,"conference")
 
+  /**
+   * Runs a single structural Matcher based on a base matcher result
+   * @param struct_matcher_name
+   * @param base_matcher_name
+   * @param onto1
+   * @param onto2
+   * @param ref
+   * @param threshold
+   * @param problem_name
+   */
   def runSingleStructural(struct_matcher_name:String,base_matcher_name:String, onto1:String, onto2:String, ref:String, threshold:Double, problem_name:String):Unit = {
 
     val (reference: Alignment, test_problem: MatchingProblem) = prepareDataSet(onto1, onto2, ref,problem_name)
@@ -44,18 +51,24 @@ object Runner extends App {
   }
 
 
-
+  /**
+   * Runs the whole platform on conference
+   * @param threshold
+   */
   def runRound(threshold:Double):Unit = {
     //TODO include other datasets
     EvaluationMatchingRunner.matchAndEvaluateConference(Config.PATH_TO_CONFERENCE, Map(("threshold",threshold)) )
 
   }
 
-  /*"ontos/2014/conference/cmt.owl"
-  "ontos/2014/conference/confOf.owl"
-  "ontos/2014/conference/reference-alignment/cmt-confOf.rdf"
-  0.3
-  */
+  /**
+   * Runs the platform on one particular matching problem
+   * @param onto1
+   * @param onto2
+   * @param ref
+   * @param threshold
+   * @param problem_name
+   */
   def runSinglePlatform(onto1:String, onto2:String, ref:String, threshold:Double, problem_name:String):Unit =  {
     val (reference: Alignment, test_problem: MatchingProblem) = prepareDataSet(onto1, onto2, ref,problem_name)
 
@@ -114,7 +127,14 @@ object Runner extends App {
   }
 
 
-
+  /**
+   * Returns a matching problem for a
+   * @param onto1
+   * @param onto2
+   * @param ref
+   * @param data_set_name
+   * @return
+   */
   def prepareDataSet(onto1: String, onto2: String, ref: String, data_set_name:String): (Alignment, MatchingProblem) = {
     val file_onto1: File = new File(onto1)
     val file_onto2: File = new File(onto2)

@@ -3,25 +3,28 @@ package de.unima.dws.oamatching.config
 import java.io.File
 
 object Config {
-
+	//Redis configuration
 	val REDIS_HOST:String = "localhost"
 	val REDIS_PORT:Int =6379
-
-	val DEFAULT_MATCHER_THRESHOLD = 0.8;
-
 	val REDIS_THRESHOLD_HASH_KEY = "MA_THRESHOLDS"
 
+
+	val DEFAULT_MATCHER_THRESHOLD = 0.8;
+	//webserbice based config
 	val UMBC_STS_SERVICE_URL = "http://swoogle.umbc.edu/StsService/GetStsSim"
-
 	val UMBC_PHRASE_SIM_SERVICE_URL = "http://swoogle.umbc.edu/SimService/GetSimilarity"
-
 	val BIG_HUGE_THESAURUS_SERVICE_URL ="http://words.bighugelabs.com/api/2/74a732bd0c883ad86cc768493c0ccbac"
-
+	//external models
 	val WORD_2_VEC_MODEL_PATH:String = "/Users/mueller/Coding/Word2Vectors/Webbase10P/model_word2vec.ser"
-
 	val WORD_2_VEC_STEMMED_MODEL_PATH:String = "/Users/mueller/Coding/Word2Vectors/Webbase10P/model_word2vec_stemmed.ser"
 
+	//dataset paths
 	val PATH_TO_CONFERENCE:String = "ontos/2014/conference"
+
+	//Matcher configuration files
+	val PATH_TO_SMALL_SCALE_CONFIG = "config/matcher_config_small_scale.csv"
+	val PATH_TO_LARGE_SCALE_CONFIG = "config/matcher_config_large_scale.csv"
+
 
 	// Word Net Parameters
 	/*val WNBASE_DIR:String 	= "/Users/mueller/WordNet/WordNet21"

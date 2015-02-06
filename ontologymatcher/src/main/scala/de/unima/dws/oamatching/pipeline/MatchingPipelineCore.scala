@@ -22,10 +22,6 @@ case class MatchingEvaluationProblem(ontology1: OWLOntology, ontology2: OWLOntol
  */
 object MatchingPipelineCore{
 
-
-  MatcherRegistry.init
-
-
   /**
    * To execute matching process
    * @param problem
