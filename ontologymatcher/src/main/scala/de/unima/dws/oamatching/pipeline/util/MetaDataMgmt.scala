@@ -26,6 +26,7 @@ object MetaDataMgmt {
    * @return threshold of the matcher for the data_set
    */
   def getThreshold(data_set:String, matcher:String):Option[Double] = {
-    redis_client.hget[Double](Config.REDIS_THRESHOLD_HASH_KEY, data_set+"_"+matcher)(com.redis.serialization.Format.default, com.redis.serialization.Parse.Implicits.parseDouble)
+    println(data_set.toLowerCase()+"_"+matcher)
+    redis_client.hget[Double](Config.REDIS_THRESHOLD_HASH_KEY, data_set.toLowerCase()+"_"+matcher)(com.redis.serialization.Format.default, com.redis.serialization.Parse.Implicits.parseDouble)
   }
 }

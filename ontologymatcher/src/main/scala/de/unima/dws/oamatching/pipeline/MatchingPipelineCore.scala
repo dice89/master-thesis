@@ -25,12 +25,6 @@ object MatchingPipelineCore{
 
   MatcherRegistry.init
 
-  def main(args: Array[String]): Unit = {
-
-
-
-  }
-
 
   /**
    * To execute matching process

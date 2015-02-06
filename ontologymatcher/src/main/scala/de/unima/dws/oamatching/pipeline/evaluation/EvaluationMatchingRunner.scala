@@ -20,6 +20,7 @@ case class EvaluationMatchingTask(matching_problem: MatchingProblem, reference: 
 
 object EvaluationMatchingRunner {
 
+  //TODO add benchmark
   def matchAndEvaluateConference(path_to_conf:String,parameters:Map[String,Double]):Unit = {
     matchAndEvaluate(parseConference(path_to_conf),parameters,"Conference")
   }
@@ -143,7 +144,7 @@ object EvaluationMatchingRunner {
       val onto2 = OntologyLoader.load(name_onto2)
       //parse alignments
       val reference: Alignment =  AlignmentParser.parseRDF(ref_align_file.getAbsolutePath())
-      println(ref_align_file.getAbsolutePath())
+
       val name: String = ref_align_file.getName().dropRight(4)
 
       val matching_problem = MatchingProblem(onto1, onto2, name)

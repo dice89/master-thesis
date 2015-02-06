@@ -3,7 +3,7 @@ package de.unima.dws.oamatching.pipeline.evaluation
 import java.io.File
 
 import de.unima.dws.oamatching.core._
-import de.unima.dws.oamatching.pipeline.util.ResultLogger
+import de.unima.dws.oamatching.pipeline.util.{MetaDataMgmt, ResultLogger}
 import de.unima.dws.oamatching.pipeline.{MatchingPipelineCore, MatchingProblem, FeatureVector}
 
 
@@ -117,7 +117,8 @@ object Evaluation extends App {
   def calcAllBaseMatchersAlignments(featureVector: FeatureVector): Map[String, Alignment] = {
     //filter base matcher for their threshold and build alignment and yield it to automatically return it
     for ((matcher, relations) <- featureVector.vector) yield {
-      val threshold: Double = getBaseMatcherThreshold(matcher, "TODO");
+      //TODO check if name is correct here
+      val threshold: Double = getBaseMatcherThreshold(matcher, featureVector.data_set_name);
       val filtered_relation: Map[MatchRelation, Double] = relations.filter { case (relation, measure) => measure >= threshold}
 
       (matcher, new Alignment(null, null, filtered_relation))
@@ -164,7 +165,6 @@ object Evaluation extends App {
    * @return
    */
   def getBaseMatcherThreshold(matcher_name: String, dataset_name: String): Double = {
-    // TODO
-    0.8
+    MetaDataMgmt.getThreshold(dataset_name, matcher_name).getOrElse(0.8)
   }
 }

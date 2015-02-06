@@ -58,8 +58,12 @@ object MatcherRegistry {
     matcher_by_name += init_uri_fragment_string_similarity_matcher("mongeElkan", tokenized = false)
 
    //word2vec measure
-
     matcher_by_name += init_uri_fragment_tokenized_matcher("word2Vec",false)
+    matcher_by_name += init_uri_fragment_tokenized_matcher("word2VecStemmed",true)
+    matcher_by_name += init_uri_fragment_tokenized_matcher("umbcSim",false)
+    //Umbc Matcher
+
+
 
     //init token based matchers
     //compose preprocessing function
@@ -166,6 +170,8 @@ object MatcherRegistry {
       case "subStringDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.subStringDistance)
       case "equalDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.equalDistance)
       case "word2Vec" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.word2VecSimilarityMeasure)
+      case "word2VecStemmed" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.word2VecSimilarityMeasureStemmed)
+      case "umbcSim" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.umbcSim)
       //case "lin" => StringMeasureHelper.distance_lower_cased(new LinWordMatching().getSimScoreTokenized)
       //case "jiangConrath" => StringMeasureHelper.distance_lower_cased(new JiangConrath().getSimScoreTokenized)
       case "umbcphrasesim" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.callPhraseSimServiceUMBCRegular)
@@ -174,7 +180,7 @@ object MatcherRegistry {
       case "mongeElkan" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeMongeElkan)
       case "prefix" => StringMeasureHelper.distance_lower_cased(StringMeasures.computePrefixBiDirectional)
       case "suffix" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeSuffixBiDirectional)
-      case "_" => StringMeasureHelper.distance_lower_cased(StringDistances.equalDistance) //default is equal distance
+      case _ => StringMeasureHelper.distance_lower_cased(StringDistances.equalDistance) //default is equal distance
 
     }
   }

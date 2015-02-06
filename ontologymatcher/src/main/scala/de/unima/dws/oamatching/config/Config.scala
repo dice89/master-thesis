@@ -17,7 +17,9 @@ object Config {
 
 	val BIG_HUGE_THESAURUS_SERVICE_URL ="http://words.bighugelabs.com/api/2/74a732bd0c883ad86cc768493c0ccbac"
 
-	val WORD_2_VEC_MODEL_PATH:String = "word2vecmodel.ser"
+	val WORD_2_VEC_MODEL_PATH:String = "/Users/mueller/Coding/Word2Vectors/Webbase10P/model_word2vec.ser"
+
+	val WORD_2_VEC_STEMMED_MODEL_PATH:String = "/Users/mueller/Coding/Word2Vectors/Webbase10P/model_word2vec_stemmed.ser"
 
 	val PATH_TO_CONFERENCE:String = "ontos/2014/conference"
 

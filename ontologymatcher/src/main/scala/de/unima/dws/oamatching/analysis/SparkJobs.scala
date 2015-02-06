@@ -35,7 +35,7 @@ object SparkJobs{
 
   val sc = new SparkContext(conf)
   val word_2_vec_model = loadWord2VecModel(Config.WORD_2_VEC_MODEL_PATH)
-
+  val word_2_vec_model_stemmed = loadWord2VecModel(Config.WORD_2_VEC_STEMMED_MODEL_PATH)
 
 
   /**

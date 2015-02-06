@@ -1,7 +1,9 @@
 package de.unima.dws.oamatching.measures
 
+
 import de.unima.dws.oamatching.analysis.SparkJobs
 import de.unima.dws.oamatching.config.Config
+import de.unima.dws.alex.simservice.{Config => Sim_Service_Config, SimService}
 import org.apache.spark.mllib.feature.Word2VecModel
 import play.api.libs.json.{JsString, JsArray, JsValue, Json}
 
@@ -11,14 +13,19 @@ import scalaj.http.{Http, HttpResponse}
 /**
  * Created by mueller on 31/01/15.
  */
-object SemanticMeasures extends App {
-  //TODO cache results (probably in redis hashmap)
+object SemanticMeasures {
+
+   //init SimService config
+  Sim_Service_Config.readFromFile("sim_config.txt")
+  val semantic_sim = SimService.createSimService(SimService.MODEL_WEBBASE)
 
   def word2VecSimilarityMeasure: (String, String) => Double = word2VecCosineSimilarity(SparkJobs.word_2_vec_model)_
 
+  def word2VecSimilarityMeasureStemmed: (String, String) => Double = word2VecCosineSimilarity(SparkJobs.word_2_vec_model_stemmed)_
+
   def word2VecCosineSimilarity(model:Word2VecModel)(term1:String,term2:String):Double= {
     try {
-      val value = SparkJobs.cousineSimilarityBetweenTerms(SparkJobs.word_2_vec_model,term1.trim,term2.trim)
+      val value = SparkJobs.cousineSimilarityBetweenTerms(model,term1.trim,term2.trim)
       value
     }catch {
       case e: Exception => {
@@ -26,6 +33,15 @@ object SemanticMeasures extends App {
         0.0
       }
     }
+  }
+
+
+  def umbcSim(term1:String,term2:String):Double = {
+    semantic_sim.getSimilarity(term1,term2,true)
+  }
+
+  def umbcPosSim(term1:String,term2:String):Double = {
+    semantic_sim.getPosSimilarity(term1, term2, true)
   }
 
   def callSTSServiceUMBC(phrase1: String, phrase2: String): Double = {

@@ -21,8 +21,6 @@ object AlignmentParser {
    * @return
    */
   def parseRDF(path_to_alignment: String): Alignment = {
-    println("Parsing" + path_to_alignment)
-
     val model: Model = ModelFactory.createDefaultModel()
 
     val in: InputStream = FileManager.get().open(path_to_alignment)
@@ -45,7 +43,6 @@ object AlignmentParser {
       println("fail")
     }
     val alignment_parent: Resource = iter.nextStatement().getSubject
-    println(namespace)
     //get onto1
     val alignment_onto1_query = model.createProperty(namespace + "onto1")
     val onto1_namespace = alignment_parent.getProperty(alignment_onto1_query).getResource.getURI
@@ -72,8 +69,6 @@ object AlignmentParser {
       new Cell(entity1, entity2, measure, relation, Cell.TYPE_UNKOWN)
     }).toList
 
-
-    println(correspondences.size)
 
     new Alignment(onto1_namespace, onto2_namespace, correspondences)
   }
