@@ -1,13 +1,30 @@
 RapidminerRepo
-*.csv
 ontologymatcher/target
 ontologymatcher/.idea
 ontologymatcher/project/
 tudarmstadtmatcher
-
+ontologymatcher/matchings
 *.log
 
 ontologymatcher/runtime.log
 
 ontologymatcher/project/target
 ontologymatcher/test.rmp
+
+ontologymatcher/matching_matcher_result.csv
+
+ontologymatcher/meta_matcher_result.csv
+
+oaMatcherCode/test_result.csv
+
+oaMatcherCode/result.csv
+
+oaMatcherCode/output.csv
+
+ontologymatcher/test_result.csv
+
+ontologymatcher/thesisexperiments/conference_results_base.csv
+
+ontologymatcher/vectortest_train.csv
+
+oaMatcherCode/matching_matcher_result.csv
