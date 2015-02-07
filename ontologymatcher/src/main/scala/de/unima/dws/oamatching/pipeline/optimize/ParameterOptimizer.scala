@@ -6,7 +6,7 @@ import de.unima.dws.oamatching.core.{AggregatedEvaluationResult, Alignment, Eval
 import de.unima.dws.oamatching.matcher.MatcherRegistry
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingRunner, EvaluationMatchingTask}
 import de.unima.dws.oamatching.pipeline.util.MetaDataMgmt
-import de.unima.dws.oamatching.pipeline.{FeatureVector, MatchingProblem}
+import de.unima.dws.oamatching.pipeline.{MatchingPipelineCore, FeatureVector, MatchingProblem}
 
 import scala.collection.immutable.Map
 import scala.collection.parallel.immutable.ParMap
@@ -14,10 +14,10 @@ import scala.collection.parallel.immutable.ParMap
 /**
  * Created by mueller on 28/01/15.
  */
-object ParameterOptimizer extends App {
-  val start = System.currentTimeMillis()
+object ParameterOptimizer {
+  /*val start = System.currentTimeMillis()
   MatcherRegistry.initLargeScale()
-  val problems = EvaluationMatchingRunner.parseConference("ontos/2014/conference")
+
   //optimizeAdvancedPipeline("conference",problems, List(0.3, 0.4))
   val matcher = MatcherRegistry.matcher_by_name.get("jaccard").get
 
@@ -32,8 +32,10 @@ object ParameterOptimizer extends App {
   val totaltime = System.currentTimeMillis() - start
   println(totaltime)
   //println(o_res_norm)
+  */
 
-  //def optimizeAdvancedPipeline =  optimizeThresholdPipeline(MatchingPipelineCore.matchProblem)_
+  def optimizeAdvancedPipeline =  optimizeThresholdPipeline(MatchingPipelineCore.matchProblem)_
+
 
   /**
    *

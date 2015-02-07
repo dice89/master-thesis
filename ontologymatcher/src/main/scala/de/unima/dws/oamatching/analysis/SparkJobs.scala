@@ -54,10 +54,10 @@ object SparkJobs{
 
     //create column vectors for correlation matrix creation
     val columns: Iterable[Array[Double]] = initial_vector.map({ case (matchrelation, matchermap) => matchermap.values.toArray})
-    println("transform dataset")
+
     //now create spark dataset
     val features: RDD[Vector] = sc.parallelize(columns.map(column => Vectors.dense(column)).toList)
-    println("transformed")
+
     //println some usefull statistics
     //val test: MultivariateStatisticalSummary = Statistics.colStats(features)
     //println(test.variance)
@@ -67,7 +67,7 @@ object SparkJobs{
 
 
     //based on the correlMatrix now perform
-    println(correlMatrix)
+
 
     //create list of triples in the form (row_index,column_index, correlation)
     val row_column_value_correlMatrix: Array[(Int, Int, Double)] = correlMatrix.toArray.zipWithIndex.map({ case (value, index) => {
@@ -76,7 +76,6 @@ object SparkJobs{
       (row_index, column_index, value)
     }
     })
-
 
     //TODO print pair wise correlation
 
@@ -94,10 +93,10 @@ object SparkJobs{
 
     val filtered_feature_vector = VectorUtil.createVectorFromResult(filtered_vector, feature_vector.data_set_name)
 
-    println(to_be_removed_parameters)
+    //println(to_be_removed_parameters)
     println("Total number of parameters to be removed" + to_be_removed_parameters.size)
 
-    println("before:" + feature_vector.matcher_index_to_name.size + "after " + filtered_feature_vector.matcher_index_to_name.size)
+    //println("before:" + feature_vector.matcher_index_to_name.size + "after " + filtered_feature_vector.matcher_index_to_name.size)
     filtered_feature_vector
   }
 
