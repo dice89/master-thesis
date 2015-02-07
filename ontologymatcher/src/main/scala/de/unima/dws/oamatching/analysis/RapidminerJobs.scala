@@ -43,7 +43,7 @@ object RapidminerJobs {
     val output_csv: File = new File("output.csv");
 
     //dynamic parameter selection
-    val process_file = XMLTest.transformXMLProcess("/Users/mueller/Documents/master-thesis/RapidminerRepo/oacode_only_cluster.rmp", Option.apply(matchings))
+    val process_file = XMLTest.transformXMLProcess("/Users/mueller/Documents/master-thesis/RapidminerRepo/oacode_only_cluster_2.rmp", Option.apply(matchings))
     val file = new File(process_file);
 
     var process: RProcess = new RProcess(file);
@@ -147,7 +147,7 @@ object RapidminerJobs {
     }) toMap
 
     //normalize Values
-    val finalmap = mapped_values.map(A => A._1 -> A._2 / mapped_values.values.max)
+    val finalmap = mapped_values.map(A => A._1 -> A._2 )
     finalmap
   }
 

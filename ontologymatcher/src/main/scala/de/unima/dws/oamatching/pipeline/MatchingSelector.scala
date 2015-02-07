@@ -13,11 +13,14 @@ object MatchingSelector {
 
   /**
    * Should be same mechanismn as in AML
-   * @param matchings
+   * @param raw_matchings
    * @param threshold
    * @return
    */
-  def greedyRankSelector(matchings: Map[MatchRelation, Double],threshold: Double):Map[MatchRelation, Double] ={
+  def greedyRankSelector(raw_matchings: Map[MatchRelation, Double],threshold: Double):Map[MatchRelation, Double] ={
+
+    val matchings = raw_matchings.filter(tuple => tuple._2 >=threshold)
+
     val match_to_value = matchings.keySet.map(relation => ((relation.left.toString(), relation.right.toString()), matchings.get(relation).get)) toMap
     val match_to_owl_type = matchings.keySet.map(relation => ((relation.left.toString(), relation.right.toString()),relation.owl_type)) toMap
 

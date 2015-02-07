@@ -19,13 +19,19 @@ object ParameterOptimizer extends App {
   MatcherRegistry.initLargeScale()
   val problems = EvaluationMatchingRunner.parseConference("ontos/2014/conference")
   //optimizeAdvancedPipeline("conference",problems, List(0.3, 0.4))
+  val matcher = MatcherRegistry.matcher_by_name.get("jaccard").get
 
-   val o_res_norm = optimizeThresholdForAllBaseMatcher(MatcherRegistry.matcher_by_name,"conference", problems,getDoubleGrid(0.1,0.99,20))
+  val res: Double = optimizeSingleThresholdElementLevelMatcher(matcher, problems, getDoubleGrid(0.001,0.9999,20))
+
+  MetaDataMgmt.storeThreshold("conference", "jaccard",res)
+ /* val res2: Double = optimizeSingleThresholdElementLevelMatcher(jaroWMatcher, problems, getDoubleGrid(0.1,0.99999,25))
+
+  MetaDataMgmt.storeThreshold("conference", "jaroWinklerMeasure",res2)*/
+
+//val o_res_norm = optimizeThresholdForAllBaseMatcher(MatcherRegistry.matcher_by_name,"conference", problems,getDoubleGrid(0.1,0.99,20))
   val totaltime = System.currentTimeMillis() - start
   println(totaltime)
-  println(o_res_norm)
-  //val o_res_ws = optimizeThresholdForAllBaseMatcher(MatcherRegistry.webservice_matcher_by_name,"conference", problems,getDoubleGrid(0.2,0.99,5))
-
+  //println(o_res_norm)
 
   //def optimizeAdvancedPipeline =  optimizeThresholdPipeline(MatchingPipelineCore.matchProblem)_
 

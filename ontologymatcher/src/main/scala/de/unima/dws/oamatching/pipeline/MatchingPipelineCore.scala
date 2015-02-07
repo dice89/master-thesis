@@ -48,10 +48,11 @@ object MatchingPipelineCore{
     val structural_matcher_results:Option[FeatureVector] =  matchAllStructuralMatchers(problem,uncorrelated_matcher_results)
 
     val outlier_analysis_vector:FeatureVector = if(structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results,structural_matcher_results.get),problem.name).get else individual_matcher_results
+    val filtered_outlier_analysis_vector:FeatureVector = MatchingPruner.featureVectorNameSpaceFilter(outlier_analysis_vector, allowed_namespaces)
+
+
     println("Start Outlier analysis")
-
-    val outlier_analysis_result: Map[MatchRelation, Double] =  RapidminerJobs.rapidminerOutlierDetectionNormalized(problem.name) (outlier_analysis_vector)
-
+    val outlier_analysis_result: Map[MatchRelation, Double] =  RapidminerJobs.rapidminerOutlierDetection(problem.name) (filtered_outlier_analysis_vector)
     println("Outlier Analysis Done")
 
 

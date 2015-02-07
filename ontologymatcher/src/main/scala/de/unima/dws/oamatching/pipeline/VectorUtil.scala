@@ -38,7 +38,10 @@ object VectorUtil {
    */
   def createInvertedVector(vector: Map[String, Map[MatchRelation, Double]]): Map[MatchRelation, Map[String, Double]] = {
     val unique_matchings: Iterable[MatchRelation] = vector.map({ case (name, matchings) => matchings.keySet}).flatten
-    val vector_per_matchings: Map[MatchRelation, Map[String, Double]] = unique_matchings.map(matching => (matching, vector.filter(tuple => tuple._2.contains(matching)).map(tuple => (tuple._1, tuple._2.get(matching).getOrElse(0.0))))).toMap
+
+
+    val vector_per_matchings: Map[MatchRelation, Map[String, Double]] = unique_matchings.map(matching => (matching, vector.map(tuple => (tuple._1, tuple._2.get(matching).getOrElse(0.0))))).toMap
+    //val vector_per_matchings: Map[MatchRelation, Map[String, Double]] = unique_matchings.map(matching => (matching, vector.filter(tuple => tuple._2.contains(matching)).map(tuple => (tuple._1, tuple._2.get(matching).getOrElse(0.0))))).toMap
     vector_per_matchings
   }
 
@@ -69,8 +72,8 @@ object VectorUtil {
     val whole_map: Map[String, Map[MatchRelation, Double]] = list_of_maps.reduceLeft(_++_)
 
 
-    println("Should be the same " + size1 + "---" + whole_map.size)
-      println(whole_map.keys)
+      //println("Should be the same " + size1 + "---" + whole_map.size)
+      //println(whole_map.keys)
       Option.apply(VectorUtil.createVectorFromResult(whole_map,name))
     }else {
       Option.empty

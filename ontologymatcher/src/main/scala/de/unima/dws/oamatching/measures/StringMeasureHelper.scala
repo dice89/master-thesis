@@ -1,10 +1,12 @@
 package de.unima.dws.oamatching.measures
 
+
+import de.unima.dws.oamatching.config.Config
 import org.semanticweb.owlapi.model.{AxiomType, IRI, OWLAnnotation, OWLEntity, OWLLiteral, OWLOntology}
 import org.tartarus.snowball.ext.PorterStemmer
-import uk.ac.manchester.cs.owl.owlapi.OWLAnnotationPropertyImpl
 
-import scala.collection.convert.Wrappers.JSetWrapper
+import scala.collection.immutable.IndexedSeq
+import scala.io.Source
 
 /**
  *  Util classes for string matching
@@ -14,7 +16,7 @@ import scala.collection.convert.Wrappers.JSetWrapper
  */
 object StringMeasureHelper {
 
-
+  val stoplist:IndexedSeq[String] = createStopWordList(Config.PATH_TO_STOP_LIST)
 
   /**
    *  Curryable Function to match normalized Strings
@@ -89,6 +91,21 @@ object StringMeasureHelper {
     a
   }
 
+
+  def stemMultiple(terms :List[String]):List[String] = {
+      terms.map(term => porter_stem(term))
+  }
+
+  def stopWordFilter(terms:List[String]):List[String] = {
+    val terms_size = terms.size
+    val res = terms.filter(term => !stoplist.contains(term.toLowerCase()))
+   /* if((terms_size-res.size) >1){
+      println("stop filtered something")
+    }*/
+
+    res
+  }
+
   /**
    * Stem with basic basic on word net stemmer
    * @param a
@@ -124,6 +141,12 @@ object StringMeasureHelper {
   def epicTokenizer(a:String):List[String] = {
     null
   }
+
+  def createStopWordList(file:String):IndexedSeq[String] = {
+    Source.fromFile(file,"utf-8").getLines.map(stopword => stopword.trim).toIndexedSeq
+  }
+
+
 
   /*def getLabel(entity: OWLEntity, ontology: OWLOntology): String = {
     var label: String = entity.getIRI().toURI().getFragment()

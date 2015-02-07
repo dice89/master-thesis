@@ -5,7 +5,7 @@ import de.unima.dws.oamatching.analysis.SparkJobs
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.alex.simservice.{Config => Sim_Service_Config, SimService}
 import org.apache.spark.mllib.feature.Word2VecModel
-import play.api.libs.json.{JsString, JsArray, JsValue, Json}
+import play.api.libs.json._
 
 import scalaj.http.{Http, HttpResponse}
 
@@ -16,8 +16,8 @@ import scalaj.http.{Http, HttpResponse}
 object SemanticMeasures {
 
    //init SimService config
-  Sim_Service_Config.readFromFile("sim_config.txt")
-  val semantic_sim = SimService.createSimService(SimService.MODEL_WEBBASE)
+  Sim_Service_Config.readFromFile("config/umbc/sim_config.txt")
+  var semantic_sim:SimService = null
 
   def word2VecSimilarityMeasure: (String, String) => Double = word2VecCosineSimilarity(SparkJobs.word_2_vec_model)_
 
@@ -43,6 +43,30 @@ object SemanticMeasures {
   def umbcPosSim(term1:String,term2:String):Double = {
     semantic_sim.getPosSimilarity(term1, term2, true)
   }
+
+
+  def esaSim(term1:String,term2:String):Double = {
+
+    val response: HttpResponse[String] = Http("http://localhost:8890/esaservice")
+      .param("task","esa")
+      .param("term1",term1)
+      .param("term2",term2).asString
+
+    if(response.isNotError){
+      val intermediate = Json.parse(response.body)
+      val res = intermediate.as[JsString].value.toDouble
+      if(res < 0){
+        0.0
+      }else {
+        res
+      }
+    } else {
+      println("No connection")
+      0.0
+    }
+
+  }
+
 
   def callSTSServiceUMBC(phrase1: String, phrase2: String): Double = {
 

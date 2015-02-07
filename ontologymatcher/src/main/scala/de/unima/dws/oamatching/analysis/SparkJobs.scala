@@ -30,10 +30,11 @@ object SparkJobs{
     .setAppName("Alex Master Thesis")
     //this needs to be parameterized.
     .setMaster("local[2]")
-    .set("spark.executor.memory", "3g")
+    .set("spark.executor.memory", "4g")
     //.set("spark.rdd.compress", "true")
 
   val sc = new SparkContext(conf)
+  println(Config.WORD_2_VEC_MODEL_PATH)
   val word_2_vec_model = loadWord2VecModel(Config.WORD_2_VEC_MODEL_PATH)
   val word_2_vec_model_stemmed = loadWord2VecModel(Config.WORD_2_VEC_STEMMED_MODEL_PATH)
 
@@ -47,12 +48,13 @@ object SparkJobs{
     println("start spark job")
     val no_of_matcher: Int = feature_vector.matcher_index_to_name.size
     println(no_of_matcher)
+    println(feature_vector.vector.size)
+
     val initial_vector: Map[MatchRelation, Map[String, Double]] = feature_vector.transposed_vector
 
     //create column vectors for correlation matrix creation
     val columns: Iterable[Array[Double]] = initial_vector.map({ case (matchrelation, matchermap) => matchermap.values.toArray})
     println("transform dataset")
-
     //now create spark dataset
     val features: RDD[Vector] = sc.parallelize(columns.map(column => Vectors.dense(column)).toList)
     println("transformed")

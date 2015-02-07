@@ -1,0 +1,3 @@
+file=test_result.csv
+ref=/Users/mueller/Documents/master-thesis/ontologymatcher/ontos/2014/conference/reference-alignment/cmt-conference.rdf
+thresh=0.5

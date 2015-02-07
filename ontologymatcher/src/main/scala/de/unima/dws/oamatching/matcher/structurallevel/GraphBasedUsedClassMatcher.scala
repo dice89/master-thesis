@@ -1,8 +1,9 @@
 package de.unima.dws.oamatching.matcher.structurallevel
 
-import de.unima.dws.oamatching.core.{Cell, MatchRelation, Alignment}
 import de.unima.dws.oamatching.core.matcher.StructuralLevelMatcher
-import org.semanticweb.owlapi.model.{OWLClass, OWLObjectPropertyDomainAxiom, OWLOntology}
+import de.unima.dws.oamatching.core.{Alignment, Cell, MatchRelation}
+import org.semanticweb.owlapi.model.{OWLClass, OWLOntology}
+
 import scala.collection.JavaConversions._
 import scala.collection.mutable
 
@@ -34,34 +35,34 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
       //get domain and range of property
       val domain = onto1.getObjectPropertyDomainAxioms(prop_onto1)
       val range = onto1.getObjectPropertyRangeAxioms(prop_onto1)
-
-      if (domain.head.getClassesInSignature().size() > 1) {
-        println(domain.size())
-      }
-
-      if (range.head.getClassesInSignature().size() > 1) {
-        println(range.size())
-      }
-      //assuming only one class per domain
-      val domain_class = domain.head.getClassesInSignature().head
-      val range_class = range.head.getClassesInSignature().head
-      //check if domain and range have corresponding match in onto2
-      val domain_match: Option[Set[(String, Double)]] = match_partner_map.get(domain_class.toStringID)
-      val range_match: Option[Set[(String, Double)]] = match_partner_map.get(range_class.toStringID)
-
-      if (domain_match.isDefined && range_match.isDefined) {
-        //if yes add as candidate in a map by domain
-
-        val sub_candidates = for (domain_class <- domain_match.get;
-                                  range_class <- range_match.get) yield {
-          val sim = (domain_class._2 + range_class._2) / 2
-          (domain_class._1, (prop_onto1.toStringID, range_class._1, sim))
+      if (domain.size() < 1 || range.size() < 1) {
+        Option.empty
+      } else {
+        /*if (domain.head.getClassesInSignature().size() > 1) {
+          println(domain.size())
         }
 
+        if (range.head.getClassesInSignature().size() > 1) {
+          println(range.size())
+        }*/
+        //assuming only one class per domain
+        val domain_class = domain.head.getClassesInSignature().head
+        val range_class = range.head.getClassesInSignature().head
+        //check if domain and range have corresponding match in onto2
+        val domain_match: Option[Set[(String, Double)]] = match_partner_map.get(domain_class.toStringID)
+        val range_match: Option[Set[(String, Double)]] = match_partner_map.get(range_class.toStringID)
 
-        Option(sub_candidates.toList)
-      } else {
-        Option.empty
+        if (domain_match.isDefined && range_match.isDefined) {
+          //if yes add as candidate in a map by domain
+          val sub_candidates = for (domain_class <- domain_match.get;
+                                    range_class <- range_match.get) yield {
+            val sim = (domain_class._2 + range_class._2) / 2
+            (domain_class._1, (prop_onto1.toStringID, range_class._1, sim))
+          }
+          Option(sub_candidates.toList)
+        } else {
+          Option.empty
+        }
       }
 
     }
@@ -70,11 +71,11 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
     val filtered_candidates: List[(String, (String, String, Double))] = candidates.toList.filter(sub_category => sub_category.isDefined).map(sub_category => sub_category.get).flatten.toList
 
 
-    println("Candidates Size " + filtered_candidates.size)
+    //println("Candidates Size " + filtered_candidates.size)
 
     val distinct_domains = filtered_candidates.unzip._1.distinct
 
-    println("post distinct_domains " + distinct_domains.size)
+    //println("post distinct_domains " + distinct_domains.size)
 
     val candidates_by_domain_class: Map[String, List[(String, String, Double)]] = distinct_domains.map(domain_class => (domain_class, filtered_candidates.filter(elm => elm._1.equals(domain_class)).unzip._2)).toMap
 
@@ -85,9 +86,9 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
       // get domain
       val domain = onto2.getObjectPropertyDomainAxioms(prop_onto2)
 
-      if(domain.size() < 1){
+      if (domain.size() < 1) {
         Option.empty
-      }else {
+      } else {
         val domain_class = domain.head.getClassesInSignature().head
         // get candidates with the domain
         val option_candidates: Option[List[(String, String, Double)]] = candidates_by_domain_class.get(domain_class.toStringID)

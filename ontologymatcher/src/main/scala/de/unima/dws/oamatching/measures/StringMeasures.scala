@@ -1,7 +1,6 @@
 package de.unima.dws.oamatching.measures
 
-import com.wcohen.ss.Jaccard
-import com.wcohen.ss.MongeElkan
+import com.wcohen.ss._
 import com.wcohen.ss.tokens.SimpleTokenizer
 
 /**
@@ -117,6 +116,25 @@ object StringMeasures {
     mongeElkan.setScaling(true)
     //perform score
     mongeElkan.score(a.toLowerCase, b.toLowerCase)
+  }
+
+  /**
+   * Simple wrapper function for second string Jaro Winkler Distance
+   * @param a
+   * @param b
+   * @return
+   */
+  def computeJaroWinkler(a:String,b:String):Double = {
+    val jarow = new JaroWinkler()
+
+    jarow.score(a.toLowerCase,b.toLowerCase)
+  }
+
+  def computeJaro(a:String,b:String):Double = {
+    val jaro = new Jaro()
+
+    jaro.score(a.toLowerCase,b.toLowerCase)
+
   }
 
   /**
