@@ -104,6 +104,10 @@ object RapidminerJobs {
     //Init CSV Writer
 
     val csv_file = new File(oa_base_dir+File.separator+"matchings" +File.separator+ prefix + "_raw_matchings.csv")
+
+     if(!csv_file.exists()){
+     csv_file.createNewFile()
+    }
     val writer = CSVWriter.open(csv_file)
 
     //print Headline
