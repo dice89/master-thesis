@@ -3,6 +3,7 @@ package de.unima.dws.oamatching.pipeline.evaluation
 import java.io.File
 import java.net.URI
 
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core._
 import de.unima.dws.oamatching.pipeline.util.ResultLogger
 import de.unima.dws.oamatching.pipeline.{MatchingPipelineCore, MatchingProblem}
@@ -22,7 +23,7 @@ object EvaluationMatchingRunner {
 
   //TODO add benchmark
   def matchAndEvaluateConference(path_to_conf:String,parameters:Map[String,Double]):Unit = {
-    matchAndEvaluate(parseConference(path_to_conf),parameters,"Conference")
+    matchAndEvaluate(parseConference(path_to_conf),parameters,"conference")
   }
 
   def matchAndEvaluate(matchingTasks:Seq[EvaluationMatchingTask], parameters:Map[String,Double], run_name:String) = {
@@ -100,7 +101,7 @@ object EvaluationMatchingRunner {
    * @return
    */
   def matchAndEvaluateSingle(eval_task: EvaluationMatchingTaskWithParameters): EvaluationRoundResult = {
-    Evaluation.evaluate(MatchingPipelineCore.matchProblem)(eval_task.matching_problem, eval_task.reference, eval_task.parameters)
+    Evaluation.evaluate(MatchingPipelineCore.matchProblem(Config.OA_PROCESS, Config.OA_BASE_DIR))(eval_task.matching_problem, eval_task.reference, eval_task.parameters)
   }
 
 

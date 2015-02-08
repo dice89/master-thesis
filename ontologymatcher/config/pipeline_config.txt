@@ -1,1 +1,3 @@
 w2vmodels=/Users/mueller/Coding/Word2Vectors/Webbase10P
+oabasedir=/Users/mueller/Documents/master-thesis/ontologymatcher
+oaprocess=/Users/mueller/Documents/master-thesis/RapidminerRepo/oacode_only_cluster_2.rmp

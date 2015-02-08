@@ -1,6 +1,7 @@
 package de.unima.dws.oamatching.pipeline.optimize
 
 
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.matcher.Matcher
 import de.unima.dws.oamatching.core.{AggregatedEvaluationResult, Alignment, EvaluationResultAggregator}
 import de.unima.dws.oamatching.matcher.MatcherRegistry
@@ -34,7 +35,7 @@ object ParameterOptimizer {
   //println(o_res_norm)
   */
 
-  def optimizeAdvancedPipeline =  optimizeThresholdPipeline(MatchingPipelineCore.matchProblem)_
+  def optimizeAdvancedPipeline =  optimizeThresholdPipeline(MatchingPipelineCore.matchProblem( Config.OA_PROCESS,Config.OA_BASE_DIR))_
 
 
   /**

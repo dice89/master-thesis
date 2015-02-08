@@ -47,22 +47,27 @@ object SemanticMeasures {
 
   def esaSim(term1:String,term2:String):Double = {
 
-    val response: HttpResponse[String] = Http("http://localhost:8890/esaservice")
-      .param("task","esa")
-      .param("term1",term1)
-      .param("term2",term2).asString
+    try {
+      val response: HttpResponse[String] = Http("http://localhost:8890/esaservice")
+        .param("task", "esa")
+        .param("term1", term1)
+        .param("term2", term2).asString
 
-    if(response.isNotError){
-      val intermediate = Json.parse(response.body)
-      val res = intermediate.as[JsString].value.toDouble
-      if(res < 0){
+      if (response.isNotError) {
+        val intermediate = Json.parse(response.body)
+        val res = intermediate.as[JsString].value.toDouble
+        if (res < 0) {
+          0.0
+        } else {
+          res
+        }
+      } else {
+        println("No connection")
         0.0
-      }else {
-        res
       }
-    } else {
-      println("No connection")
-      0.0
+    }
+    catch {
+      case _ => 0.0
     }
 
   }

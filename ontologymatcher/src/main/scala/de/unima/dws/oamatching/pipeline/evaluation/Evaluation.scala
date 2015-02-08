@@ -14,24 +14,7 @@ case class EvaluationRoundResult(createdAlignment: Alignment, evaluationResult: 
 /**
  * Created by mueller on 28/01/15.
  */
-object Evaluation extends App {
-
-  val file_onto1: File = new File("ontos/2014/conference/cmt.owl")
-  val file_onto2: File = new File("ontos/2014/conference/Conference.owl")
-
-  val onto1 = OntologyLoader.load(file_onto1)
-  val onto2 = OntologyLoader.load(file_onto2)
-
-  val test_problem = MatchingProblem(onto1, onto2, "test")
-  val reference = AlignmentParser.parseRDF("ontos/2014/conference/reference-alignment/cmt-conference.rdf")
-  val test = evaluate(MatchingPipelineCore.matchProblem)(test_problem, reference, Map(("threshold", 0.6)))
-
-  println("pipeline")
-  println(test.evaluationResult)
-  println("best base")
-  println(test.bestBaseMatcher)
-  println("majority vote")
-  println(test.majorityVoteResult)
+object Evaluation  {
 
 
   /**

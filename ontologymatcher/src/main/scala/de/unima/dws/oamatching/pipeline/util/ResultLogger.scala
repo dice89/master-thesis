@@ -1,6 +1,9 @@
 package de.unima.dws.oamatching.pipeline.util
 
+import java.io.File
+
 import com.github.tototoshi.csv.CSVWriter
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.{AggregatedEvaluationResult, EvaluationResult}
 import org.apache.log4j.{Level, Logger, PropertyConfigurator}
 
@@ -12,10 +15,10 @@ object ResultLogger {
 
   
   //logging each value
-  val matcher_writer = CSVWriter.open("matching_matcher_result.csv")
+  val matcher_writer = CSVWriter.open(Config.OA_BASE_DIR+File.separator+"matching_matcher_result.csv")
   matcher_writer.writeRow(List[String]("dataset", "matcher", "precision", "recall", "f1-measure"))
 
-  val result_writer = CSVWriter.open("meta_matcher_result.csv")
+  val result_writer = CSVWriter.open(Config.OA_BASE_DIR+File.separator+"meta_matcher_result.csv")
   result_writer.writeRow(List[String]("dataset", "matcher","res_type", "precision", "recall", "f1-measure"))
 
   /**

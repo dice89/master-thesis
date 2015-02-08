@@ -28,7 +28,7 @@ object MatchingPipelineCore{
    * @param parameters
    * @return
    */
-  def matchProblem(problem: MatchingProblem, parameters: Map[String,Double] ): (Alignment,FeatureVector) = {
+  def matchProblem(rapidminer_file:String, oa_base_dir:String)(problem: MatchingProblem, parameters: Map[String,Double]): (Alignment,FeatureVector) = {
 
     val onto1_namespace = problem.ontology1.getOntologyID.getOntologyIRI.get().toString
     val onto2_namespace = problem.ontology2.getOntologyID.getOntologyIRI.get().toString
@@ -52,7 +52,7 @@ object MatchingPipelineCore{
 
 
     println("Start Outlier analysis")
-    val outlier_analysis_result: Map[MatchRelation, Double] =  RapidminerJobs.rapidminerOutlierDetection(problem.name) (filtered_outlier_analysis_vector)
+    val outlier_analysis_result: Map[MatchRelation, Double] =  RapidminerJobs.rapidminerOutlierDetection(problem.name,rapidminer_file,oa_base_dir) (filtered_outlier_analysis_vector)
     println("Outlier Analysis Done")
 
 

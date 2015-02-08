@@ -22,9 +22,9 @@ object RapidminerJobs {
   RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE)
   RapidMiner.init()
 
-  def rapidminerOutlierDetection(csv_prefix: String): (FeatureVector) => Map[MatchRelation, Double] = rapidminerOutlier(writeCSV(csv_prefix))(readCSV) _
+  def rapidminerOutlierDetection(csv_prefix: String, rapidminer_file:String, base_dir:String): (FeatureVector) => Map[MatchRelation, Double] = rapidminerOutlier(writeCSV(csv_prefix,base_dir))(readCSV)(rapidminer_file,base_dir) _
 
-  def rapidminerOutlierDetectionNormalized(csv_prefix: String): (FeatureVector) => Map[MatchRelation, Double] = normalizedRapidminerOutlier(normalize)(writeCSV(csv_prefix))(readCSV) _
+  def rapidminerOutlierDetectionNormalized(csv_prefix: String, base_dir:String): (FeatureVector) => Map[MatchRelation, Double] = normalizedRapidminerOutlier(normalize)(writeCSV(csv_prefix,base_dir))(readCSV) _
 
 
   /**
@@ -35,15 +35,16 @@ object RapidminerJobs {
    * @param matchings
    * @return
    */
-  def rapidminerOutlier(writeFunction: FeatureVector => File)(readFunction: File => Map[MatchRelation, Double])(matchings: FeatureVector): Map[MatchRelation, Double] = {
+  def rapidminerOutlier(writeFunction: FeatureVector => File)(readFunction: File => Map[MatchRelation, Double])(rapidminer_file:String,oa_base_dir:String)(matchings: FeatureVector): Map[MatchRelation, Double] = {
 
 
     val input_csv: File = writeFunction(matchings)
     //Rapidminer Handling
-    val output_csv: File = new File("output.csv");
+
+    val output_csv: File = new File(oa_base_dir+File.separator+"output.csv");
 
     //dynamic parameter selection
-    val process_file = XMLTest.transformXMLProcess("/Users/mueller/Documents/master-thesis/RapidminerRepo/oacode_only_cluster_2.rmp", Option.apply(matchings))
+    val process_file = XMLTest.transformXMLProcess(rapidminer_file, Option.apply(matchings))
     val file = new File(process_file);
 
     var process: RProcess = new RProcess(file);
@@ -94,7 +95,7 @@ object RapidminerJobs {
    * @param result
    * @return
    */
-  def writeCSV(prefix: String)(result: FeatureVector): File = {
+  def writeCSV(prefix: String, oa_base_dir:String)(result: FeatureVector): File = {
 
     // prepare
     val matcher_name_to_index = result.matcher_name_to_index
@@ -102,7 +103,7 @@ object RapidminerJobs {
     val matcher_index_to_name = result.matcher_index_to_name
     //Init CSV Writer
 
-    val csv_file = new File("matchings/" + prefix + "_raw_matchings.csv")
+    val csv_file = new File(oa_base_dir+File.separator+"matchings" +File.separator+ prefix + "_raw_matchings.csv")
     val writer = CSVWriter.open(csv_file)
 
     //print Headline

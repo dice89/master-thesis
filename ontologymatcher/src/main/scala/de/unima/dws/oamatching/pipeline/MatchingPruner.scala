@@ -32,7 +32,7 @@ object MatchingPruner {
 
   /**
    * Simple namespace filter,only return matching which ids are start with the once mentioned in the allowedNamespaces list
-   * @param matchings matchings to filter
+   * @param vector vector to filter
    * @param allowedNameSpaces list of allowed OWL namespaces
    * @return
    */
