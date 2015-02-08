@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.3.013">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <parameter key="parallelize_main_process" value="false"/>
+    <process expanded="true">
+      <operator activated="true" class="read_csv" compatibility="5.3.013" expanded="true" height="60" name="Input" width="90" x="45" y="30">
+        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/oaMatcherCode/matchings/test_raw_matchings.csv"/>
+        <parameter key="column_separators" value=","/>
+        <parameter key="trim_lines" value="true"/>
+        <parameter key="use_quotes" value="true"/>
+        <parameter key="quotes_character" value="&quot;"/>
+        <parameter key="escape_character" value="\"/>
+        <parameter key="skip_comments" value="false"/>
+        <parameter key="comment_characters" value="#"/>
+        <parameter key="parse_numbers" value="true"/>
+        <parameter key="decimal_character" value="."/>
+        <parameter key="grouped_digits" value="false"/>
+        <parameter key="grouping_character" value=","/>
+        <parameter key="date_format" value=""/>
+        <parameter key="first_row_as_names" value="false"/>
+        <list key="annotations">
+          <parameter key="0" value="Name"/>
+        </list>
+        <parameter key="time_zone" value="SYSTEM"/>
+        <parameter key="locale" value="English (United States)"/>
+        <parameter key="encoding" value="UTF-8"/>
+        <list key="data_set_meta_data_information">
+          <parameter key="0" value="left.true.polynominal.attribute"/>
+          <parameter key="1" value="relation.true.binominal.attribute"/>
+          <parameter key="2" value="right.true.polynominal.attribute"/>
+          <parameter key="3" value="needlemanWunsch2Distance_matcher.true.real.attribute"/>
+          <parameter key="4" value="equalDistance_matcher.true.real.attribute"/>
+          <parameter key="5" value="jiang_conrath_new.true.real.attribute"/>
+          <parameter key="6" value="new_lin.true.real.attribute"/>
+          <parameter key="7" value="subStringDistance_matcher.true.real.attribute"/>
+          <parameter key="8" value="level2_monge_elkan.true.real.attribute"/>
+          <parameter key="9" value="lin_matcher.true.real.attribute"/>
+          <parameter key="10" value="jaro_tfidf.true.real.attribute"/>
+          <parameter key="11" value="level2_jaro_winkler.true.real.attribute"/>
+          <parameter key="12" value="wu_palmer.true.real.attribute"/>
+          <parameter key="13" value="advanced_tfidf.true.real.attribute"/>
+          <parameter key="14" value="jaroWinklerMeasure_matcher.true.real.attribute"/>
+          <parameter key="15" value="mongeElkan_matcher.true.real.attribute"/>
+          <parameter key="16" value="jiangConrath_matcher.true.real.attribute"/>
+          <parameter key="17" value="jaccardStemmed_matcher.true.real.attribute"/>
+          <parameter key="18" value="ngramDistance_matcher.true.real.attribute"/>
+          <parameter key="19" value="levenshteinDistance_matcher.true.real.attribute"/>
+          <parameter key="20" value="smoaDistance_matcher.true.real.attribute"/>
+          <parameter key="21" value="level2_jaro.true.real.attribute"/>
+          <parameter key="22" value="soft_tfidf_jaro.true.real.attribute"/>
+          <parameter key="23" value="hammingDistance_matcher.true.real.attribute"/>
+          <parameter key="24" value="simple_tfidf.true.real.attribute"/>
+          <parameter key="25" value="jaroMeasure_matcher.true.real.attribute"/>
+        </list>
+        <parameter key="read_not_matching_values_as_missings" value="true"/>
+        <parameter key="datamanagement" value="double_array"/>
+      </operator>
+      <operator activated="true" class="replace_missing_values" compatibility="5.3.013" expanded="true" height="94" name="Replace Missing Values" width="90" x="179" y="30">
+        <parameter key="return_preprocessing_model" value="false"/>
+        <parameter key="create_view" value="false"/>
+        <parameter key="attribute_filter_type" value="no_missing_values"/>
+        <parameter key="attribute" value=""/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="attribute_value"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="time"/>
+        <parameter key="block_type" value="attribute_block"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_matrix_row_start"/>
+        <parameter key="invert_selection" value="true"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <parameter key="default" value="zero"/>
+        <list key="columns"/>
+      </operator>
+      <operator activated="true" class="remove_useless_attributes" compatibility="5.3.013" expanded="true" height="76" name="Remove Useless Attributes" width="90" x="313" y="30">
+        <parameter key="numerical_min_deviation" value="0.1"/>
+        <parameter key="nominal_useless_above" value="1.0"/>
+        <parameter key="nominal_remove_id_like" value="false"/>
+        <parameter key="nominal_useless_below" value="0.0"/>
+      </operator>
+      <operator activated="true" class="remove_correlated_attributes" compatibility="5.3.013" expanded="true" height="76" name="Remove Correlated Attributes" width="90" x="45" y="210">
+        <parameter key="correlation" value="0.9"/>
+        <parameter key="filter_relation" value="greater"/>
+        <parameter key="attribute_order" value="original"/>
+        <parameter key="use_absolute_correlation" value="true"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+      </operator>
+      <operator activated="true" class="normalize" compatibility="5.3.013" expanded="true" height="94" name="Normalize" width="90" x="179" y="210">
+        <parameter key="return_preprocessing_model" value="false"/>
+        <parameter key="create_view" value="false"/>
+        <parameter key="attribute_filter_type" value="all"/>
+        <parameter key="attribute" value=""/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="numeric"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="real"/>
+        <parameter key="block_type" value="value_series"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_series_end"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <parameter key="method" value="Z-transformation"/>
+        <parameter key="min" value="0.0"/>
+        <parameter key="max" value="1.0"/>
+      </operator>
+      <connect from_op="Input" from_port="output" to_op="Replace Missing Values" to_port="example set input"/>
+      <connect from_op="Replace Missing Values" from_port="example set output" to_op="Remove Useless Attributes" to_port="example set input"/>
+      <connect from_op="Remove Useless Attributes" from_port="example set output" to_op="Remove Correlated Attributes" to_port="example set input"/>
+      <connect from_op="Remove Correlated Attributes" from_port="example set output" to_op="Normalize" to_port="example set input"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+    </process>
+  </operator>
+</process>

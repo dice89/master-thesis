@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.3.013">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <parameter key="parallelize_main_process" value="false"/>
+    <process expanded="true">
+      <operator activated="true" class="generate_data" compatibility="5.3.013" expanded="true" height="60" name="Generate Data" width="90" x="45" y="30">
+        <parameter key="target_function" value="gaussian mixture clusters"/>
+        <parameter key="number_examples" value="10000"/>
+        <parameter key="number_of_attributes" value="2"/>
+        <parameter key="attributes_lower_bound" value="-10.0"/>
+        <parameter key="attributes_upper_bound" value="10.0"/>
+        <parameter key="use_local_random_seed" value="true"/>
+        <parameter key="local_random_seed" value="3594"/>
+        <parameter key="datamanagement" value="double_array"/>
+      </operator>
+      <operator activated="true" class="map" compatibility="5.3.013" expanded="true" height="76" name="Map to Normal" width="90" x="246" y="30">
+        <parameter key="attribute_filter_type" value="subset"/>
+        <parameter key="attribute" value=""/>
+        <parameter key="attributes" value="label|"/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="attribute_value"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="time"/>
+        <parameter key="block_type" value="attribute_block"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_matrix_row_start"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="true"/>
+        <list key="value_mappings"/>
+        <parameter key="replace_what" value=".*"/>
+        <parameter key="replace_by" value="normal"/>
+        <parameter key="consider_regular_expressions" value="true"/>
+        <parameter key="add_default_mapping" value="false"/>
+      </operator>
+      <operator activated="true" class="generate_data" compatibility="5.3.013" expanded="true" height="60" name="Generate Data (2)" width="90" x="45" y="165">
+        <parameter key="target_function" value="random classification"/>
+        <parameter key="number_examples" value="100"/>
+        <parameter key="number_of_attributes" value="2"/>
+        <parameter key="attributes_lower_bound" value="-10.0"/>
+        <parameter key="attributes_upper_bound" value="10.0"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+        <parameter key="datamanagement" value="double_array"/>
+      </operator>
+      <operator activated="true" class="map" compatibility="5.3.013" expanded="true" height="76" name="Map to Normal (2)" width="90" x="246" y="165">
+        <parameter key="attribute_filter_type" value="subset"/>
+        <parameter key="attribute" value=""/>
+        <parameter key="attributes" value="|label"/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="attribute_value"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="time"/>
+        <parameter key="block_type" value="attribute_block"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_matrix_row_start"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="true"/>
+        <list key="value_mappings"/>
+        <parameter key="replace_what" value=".*"/>
+        <parameter key="replace_by" value="outlier"/>
+        <parameter key="consider_regular_expressions" value="true"/>
+        <parameter key="add_default_mapping" value="false"/>
+      </operator>
+      <operator activated="true" class="append" compatibility="5.3.013" expanded="true" height="94" name="Append" width="90" x="380" y="75">
+        <parameter key="datamanagement" value="double_array"/>
+        <parameter key="merge_type" value="all"/>
+      </operator>
+      <operator activated="true" class="store" compatibility="5.3.013" expanded="true" height="60" name="Store" width="90" x="514" y="165">
+        <parameter key="repository_entry" value="//Rapidminer5Repo/RapidminerRepo/outlier_analysis_tut_data"/>
+      </operator>
+      <connect from_op="Generate Data" from_port="output" to_op="Map to Normal" to_port="example set input"/>
+      <connect from_op="Map to Normal" from_port="example set output" to_op="Append" to_port="example set 2"/>
+      <connect from_op="Generate Data (2)" from_port="output" to_op="Map to Normal (2)" to_port="example set input"/>
+      <connect from_op="Map to Normal (2)" from_port="example set output" to_op="Append" to_port="example set 1"/>
+      <connect from_op="Append" from_port="merged set" to_op="Store" to_port="input"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+    </process>
+  </operator>
+</process>
