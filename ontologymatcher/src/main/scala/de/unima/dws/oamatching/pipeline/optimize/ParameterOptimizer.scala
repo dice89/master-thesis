@@ -108,13 +108,10 @@ object ParameterOptimizer {
    */
   def optimizeSingleRoundPipeline(pipelineFct: (MatchingProblem, Map[String, Double]) => (Alignment, FeatureVector))(problems: Seq[EvaluationMatchingTask], threshold: Double): AggregatedEvaluationResult = {
     println("optimize round")
-    val results = problems.map(task => {
+    val results = problems.view.map(task => {
       val param_map: Map[String, Double] = Map(("threshold", threshold))
       val pipeline_res = pipelineFct(task.matching_problem, param_map)
-
-      val alignment = pipeline_res._1
-      val res = alignment.evaluate(task.reference)
-      res
+       pipeline_res._1.evaluate(task.reference)
     });
 
     EvaluationResultAggregator.aggregateEvaluationResults(results.toList)
@@ -129,9 +126,9 @@ object ParameterOptimizer {
    */
   def optimizeThresholdPipeline(pipelineFct: (MatchingProblem, Map[String, Double]) => (Alignment, FeatureVector))(data_set: String, problems: Seq[EvaluationMatchingTask], thresholds: List[Double]): Double = {
 
-    val optimization_result = thresholds.map(threshold => (threshold, optimizeSingleRoundPipeline(pipelineFct)(problems, threshold)))
+    val optimization_result = thresholds.view.map(threshold => (threshold, (optimizeSingleRoundPipeline(pipelineFct)(problems, threshold)).macro_eval_res))
 
-    val best_result = optimization_result.maxBy(result => result._2.micro_eval_res.f1Measure)
+    val best_result = optimization_result.maxBy(result => result._2.f1Measure)
 
     //store result
     MetaDataMgmt.storeThreshold(data_set, "pipeline", best_result._1)

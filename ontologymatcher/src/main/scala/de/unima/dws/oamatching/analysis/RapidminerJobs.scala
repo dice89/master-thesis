@@ -54,6 +54,9 @@ object RapidminerJobs {
 
     process.run()
 
+    //trigger garbage collection
+    System.gc()
+
     readFunction(output_csv)
   }
 
@@ -105,7 +108,8 @@ object RapidminerJobs {
 
     val csv_file = new File(oa_base_dir+File.separator+"matchings" +File.separator+ prefix + "_raw_matchings.csv")
 
-     if(!csv_file.exists()){
+
+    if(!csv_file.exists()){
      csv_file.createNewFile()
     }
     val writer = CSVWriter.open(csv_file)

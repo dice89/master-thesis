@@ -52,7 +52,7 @@ object VectorUtil {
    */
   def createVectorFromResult(result: Map[String, Map[MatchRelation, Double]], name:String): FeatureVector = {
     val matcher_name_to_index: Map[String, Int] = result.keys.toList.zipWithIndex.toMap
-    val matcher_index_to_name: Map[Int, String] = matcher_name_to_index.map(tuple => (tuple._2, tuple._1)).toMap
+    val matcher_index_to_name: Map[Int, String] = matcher_name_to_index.view.map(tuple => (tuple._2, tuple._1)).toMap
     val vector_per_matchings = VectorUtil.createInvertedVector(result)
 
     FeatureVector(name,result, vector_per_matchings, matcher_name_to_index, matcher_index_to_name)

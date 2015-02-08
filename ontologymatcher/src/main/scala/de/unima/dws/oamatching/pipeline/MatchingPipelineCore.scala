@@ -30,6 +30,8 @@ object MatchingPipelineCore{
    */
   def matchProblem(rapidminer_file:String, oa_base_dir:String)(problem: MatchingProblem, parameters: Map[String,Double]): (Alignment,FeatureVector) = {
 
+    val runtime = Runtime.getRuntime
+    val mb = 1024*1024
     val onto1_namespace = problem.ontology1.getOntologyID.getOntologyIRI.get().toString
     val onto2_namespace = problem.ontology2.getOntologyID.getOntologyIRI.get().toString
     println(onto1_namespace)
@@ -40,20 +42,24 @@ object MatchingPipelineCore{
 
     val remove_correlated_threshold = parameters.getOrElse("correlation_threshold",0.5)
     println("Start element Level Matching")
+    println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
     val individual_matcher_results:FeatureVector = matchAllIndividualMatchers(problem)
     println("Element Level Matching Done")
+    println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
     println("Start remove correlated")
     val uncorrelated_matcher_results:FeatureVector = removeCorrelatedMatchers(individual_matcher_results,remove_correlated_threshold)
     println(" remove correlated done")
+    println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
     val structural_matcher_results:Option[FeatureVector] =  matchAllStructuralMatchers(problem,uncorrelated_matcher_results)
 
     val outlier_analysis_vector:FeatureVector = if(structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results,structural_matcher_results.get),problem.name).get else individual_matcher_results
     val filtered_outlier_analysis_vector:FeatureVector = MatchingPruner.featureVectorNameSpaceFilter(outlier_analysis_vector, allowed_namespaces)
 
-
+    println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
     println("Start Outlier analysis")
     val outlier_analysis_result: Map[MatchRelation, Double] =  RapidminerJobs.rapidminerOutlierDetection(problem.name,rapidminer_file,oa_base_dir) (filtered_outlier_analysis_vector)
     println("Outlier Analysis Done")
+    println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
 
 
     val namespace_filtered = MatchingPruner.nameSpaceFilter(outlier_analysis_result, allowed_namespaces)
@@ -63,6 +69,9 @@ object MatchingPipelineCore{
     println("Greedy Rank Selection done")
 
     val alignment = new Alignment(null,null, selected)
+    println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
+    System.gc()
+    println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
     (alignment,outlier_analysis_vector)
   }
 

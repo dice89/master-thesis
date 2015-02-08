@@ -43,17 +43,17 @@ class GraphBasedUsedPropertyMatcher extends StructuralLevelMatcher {
 
     def getDomain(owl_entity: OWLEntity, onto: OWLOntology): Set[OWLClass] = {
       if (owl_entity.isOWLDataProperty) {
-        onto.getDataPropertyDomainAxioms(owl_entity.asOWLDataProperty()).map(axiom => axiom.getClassesInSignature).flatten.toSet
+        onto.getDataPropertyDomainAxioms(owl_entity.asOWLDataProperty()).view.map(axiom => axiom.getClassesInSignature).flatten.toSet
       } else {
-        onto.getObjectPropertyDomainAxioms(owl_entity.asOWLObjectProperty()).map(axiom => axiom.getClassesInSignature).flatten.toSet
+        onto.getObjectPropertyDomainAxioms(owl_entity.asOWLObjectProperty()).view.map(axiom => axiom.getClassesInSignature).flatten.toSet
       }
     }
 
     def getRange(owl_entity: OWLEntity, onto: OWLOntology): Set[OWLClass] = {
       if (owl_entity.isOWLDataProperty) {
-        onto.getDataPropertyRangeAxioms(owl_entity.asOWLDataProperty()).map(axiom => axiom.getClassesInSignature).flatten.toSet
+        onto.getDataPropertyRangeAxioms(owl_entity.asOWLDataProperty()).view.map(axiom => axiom.getClassesInSignature).flatten.toSet
       } else {
-        onto.getObjectPropertyRangeAxioms(owl_entity.asOWLObjectProperty()).map(axiom => axiom.getClassesInSignature).flatten.toSet
+        onto.getObjectPropertyRangeAxioms(owl_entity.asOWLObjectProperty()).view.map(axiom => axiom.getClassesInSignature).flatten.toSet
       }
     }
 

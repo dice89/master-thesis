@@ -27,3 +27,5 @@ ontologymatcher/thesisexperiments/conference_results_base.csv
 ontologymatcher/vectortest_train.csv
 
 oaMatcherCode/matching_matcher_result.csv
+
+ontologymatcher/output.csv

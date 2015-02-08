@@ -25,6 +25,7 @@ import scala.collection.mutable
 class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
   override protected def align(onto1: OWLOntology, onto2: OWLOntology, initial_Alignment: Alignment, threshold: Double): Alignment = {
 
+
     //loop over alignment and build map for class access
     //build map
 
@@ -130,11 +131,13 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
 
     copied_alignment.addAllCorrespondeces(cells_to_add.toSet)
 
+    System.gc()
+
     copied_alignment
   }
 
   def buildMap(alignment: Alignment, onto1: OWLOntology, onto2: OWLOntology): Map[String, Set[(String, Double)]] = {
-    val fromMap: Map[String, Set[(String, Double)]] = onto1.getClassesInSignature().map(owl_class => {
+    val fromMap: Map[String, Set[(String, Double)]] = onto1.getClassesInSignature().view.map(owl_class => {
       findAlignFromMap(owl_class, alignment)
     }).toMap
 

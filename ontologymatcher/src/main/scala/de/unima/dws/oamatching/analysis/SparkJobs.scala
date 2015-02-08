@@ -29,8 +29,8 @@ object SparkJobs{
   val conf = new SparkConf()
     .setAppName("Alex Master Thesis")
     //this needs to be parameterized.
-    .setMaster("local[2]")
-    .set("spark.executor.memory", "4g")
+    .setMaster("local[1]")
+    .set("spark.executor.memory", "3g")
     //.set("spark.rdd.compress", "true")
 
   val sc = new SparkContext(conf)
@@ -50,25 +50,20 @@ object SparkJobs{
     println(no_of_matcher)
     println(feature_vector.vector.size)
 
-    val initial_vector: Map[MatchRelation, Map[String, Double]] = feature_vector.transposed_vector
+    //val initial_vector: Map[MatchRelation, Map[String, Double]] = feature_vector.transposed_vector
 
     //create column vectors for correlation matrix creation
-    val columns: Iterable[Array[Double]] = initial_vector.map({ case (matchrelation, matchermap) => matchermap.values.toArray})
+   //val columns: Iterable[Array[Double]] = initial_vector.map({ case (matchrelation, matchermap) => matchermap.values.toArray})
 
     //now create spark dataset
-    val features: RDD[Vector] = sc.parallelize(columns.map(column => Vectors.dense(column)).toList)
+    val features: RDD[Vector] =    sc.parallelize( feature_vector.transposed_vector.view.map({ case (matchrelation, matchermap) => Vectors.dense(matchermap.values.toArray)}).toList)
 
-    //println some usefull statistics
-    //val test: MultivariateStatisticalSummary = Statistics.colStats(features)
-    //println(test.variance)
 
     //correlate
     val correlMatrix = Statistics.corr(features)
 
 
     //based on the correlMatrix now perform
-
-
     //create list of triples in the form (row_index,column_index, correlation)
     val row_column_value_correlMatrix: Array[(Int, Int, Double)] = correlMatrix.toArray.zipWithIndex.map({ case (value, index) => {
       val column_index = (index % no_of_matcher)
@@ -96,6 +91,7 @@ object SparkJobs{
     //println(to_be_removed_parameters)
     println("Total number of parameters to be removed" + to_be_removed_parameters.size)
 
+    System.gc()
     //println("before:" + feature_vector.matcher_index_to_name.size + "after " + filtered_feature_vector.matcher_index_to_name.size)
     filtered_feature_vector
   }

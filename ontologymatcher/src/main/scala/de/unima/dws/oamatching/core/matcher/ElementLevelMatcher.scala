@@ -87,6 +87,8 @@ abstract class ElementLevelMatcher(val similarity:Boolean) extends Matcher {
         }
 
     }
+
+    System.gc()
     //return alignment
     alignment
   }
