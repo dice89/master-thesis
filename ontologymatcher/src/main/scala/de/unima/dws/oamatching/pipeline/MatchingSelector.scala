@@ -1,6 +1,7 @@
 package de.unima.dws.oamatching.pipeline
 
 import java.net.URI
+import scala.collection.mutable.{Set=>MutableSet}
 
 import de.unima.dws.oamatching.core.MatchRelation
 
@@ -20,6 +21,8 @@ object MatchingSelector {
   def greedyRankSelector(raw_matchings: Map[MatchRelation, Double],threshold: Double):Map[MatchRelation, Double] ={
 
     val matchings = raw_matchings.filter(tuple => tuple._2 >=threshold)
+
+    matchings.foreach(println _)
 
     val match_to_value = matchings.keySet.map(relation => ((relation.left.toString(), relation.right.toString()), matchings.get(relation).get)) toMap
     val match_to_owl_type = matchings.keySet.map(relation => ((relation.left.toString(), relation.right.toString()),relation.owl_type)) toMap
@@ -75,5 +78,32 @@ object MatchingSelector {
     filtered_matchings
   }
 
+
+
+  def greedyRankSelectorSimple(raw_matchings: Map[MatchRelation, Double],threshold: Double):Map[MatchRelation, Double] = {
+    val matchings: Map[MatchRelation, Double] = raw_matchings.filter(tuple => tuple._2 >=threshold)
+
+    val sorted_matchings = matchings.toList.sortWith(_._2 > _._2)
+
+    sorted_matchings.foreach(println _)
+
+    var already_contained_left: MutableSet[String] = MutableSet[String]()
+    var already_contained_right: MutableSet[String] = MutableSet[String]()
+
+    //iterate over them
+
+    val selected_matchings_raw: List[Option[(MatchRelation, Double)]] = for (matching <- sorted_matchings)yield{
+      if((! already_contained_left.contains(matching._1.left)) && (! already_contained_right.contains(matching._1.right))){
+
+         already_contained_left.add(matching._1.left)
+          already_contained_right.add(matching._1.right)
+        Option(matching)
+      }else{
+        Option.empty
+      }
+    }
+
+    selected_matchings_raw.filter(_.isDefined).map(_.get).toMap
+  }
 
 }

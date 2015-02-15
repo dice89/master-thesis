@@ -28,13 +28,11 @@ object SparkJobs{
 
   val conf = new SparkConf()
     .setAppName("Alex Master Thesis")
-    //this needs to be parameterized.
-    .setMaster("local[1]")
-    .set("spark.executor.memory", "3g")
+    .setMaster("local[2]")
+    .set("spark.executor.memory", "4g")
     //.set("spark.rdd.compress", "true")
 
   val sc = new SparkContext(conf)
-  println(Config.WORD_2_VEC_MODEL_PATH)
   val word_2_vec_model = loadWord2VecModel(Config.WORD_2_VEC_MODEL_PATH)
   val word_2_vec_model_stemmed = loadWord2VecModel(Config.WORD_2_VEC_STEMMED_MODEL_PATH)
 
@@ -138,28 +136,9 @@ object SparkJobs{
   }
 
   def cousineSimilarityBetweenTerms(model: Word2VecModel, term1: String, term2: String): Double = {
-
     val vec_1: Vector = model.transform(term1)
     val vec_2: Vector = model.transform(term2)
     val cosine_sim = CosineSimilarity.cosineSimilarity(vec_1.toArray, vec_2.toArray)
-
-
-
-/*
-    val test_1 = vec_1.toArray.zipWithIndex
-    val test_2: Map[Int, Double] = vec_2.toArray.zipWithIndex.map(tuple => (tuple._2, tuple._1)).toMap
-
-    val rows: Array[Vector] = test_1.map { case (value, index) => {
-      Vectors.dense(Seq(value, test_2.get(index).get).toArray)
-    }
-    }
-
-    val rows_par: RDD[Vector] = sc.parallelize(rows)
-    val mat = new RowMatrix(rows_par)
-    val exact = mat.columnSimilarities()
-
-    val cosine_sim: Double = exact.entries.first().value
-*/
     cosine_sim
   }
 

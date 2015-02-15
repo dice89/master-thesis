@@ -22,14 +22,18 @@ case class MatchingEvaluationProblem(ontology1: OWLOntology, ontology2: OWLOntol
  */
 object MatchingPipelineCore{
 
+
+  def createMatchingPipeline(outlierFct: (String,FeatureVector)=>(Int,Map[MatchRelation,Double])) (normFct: (Int,Iterable[(MatchRelation,Double)])=>Iterable[(MatchRelation,Double)]): (MatchingProblem, Double, Double) => (Alignment, FeatureVector) = {
+    matchProblem(outlierFct)(normFct)
+  }
   /**
    * To execute matching process
    * @param problem
-   * @param parameters
+
    * @return
    */
-  def matchProblem(rapidminer_file:String, oa_base_dir:String)(problem: MatchingProblem, parameters: Map[String,Double]): (Alignment,FeatureVector) = {
-
+  def matchProblem(outlierFct: (String,FeatureVector)=>(Int,Map[MatchRelation,Double])) (normFct: (Int,Iterable[(MatchRelation,Double)])=>Iterable[(MatchRelation,Double)])(problem: MatchingProblem,threshold:Double, remove_correlated_threshold:Double): (Alignment,FeatureVector) = {
+    val start_time = System.currentTimeMillis()
     val runtime = Runtime.getRuntime
     val mb = 1024*1024
     val onto1_namespace = problem.ontology1.getOntologyID.getOntologyIRI.get().toString
@@ -38,9 +42,6 @@ object MatchingPipelineCore{
     println(onto2_namespace)
     val allowed_namespaces = List(onto1_namespace,onto2_namespace)
 
-    val threshold = parameters.getOrElse("threshold",0.8)
-
-    val remove_correlated_threshold = parameters.getOrElse("correlation_threshold",0.5)
     println("Start element Level Matching")
     println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
     val individual_matcher_results:FeatureVector = matchAllIndividualMatchers(problem)
@@ -53,26 +54,53 @@ object MatchingPipelineCore{
     val structural_matcher_results:Option[FeatureVector] =  matchAllStructuralMatchers(problem,uncorrelated_matcher_results)
 
     val outlier_analysis_vector:FeatureVector = if(structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results,structural_matcher_results.get),problem.name).get else individual_matcher_results
+
+
     val filtered_outlier_analysis_vector:FeatureVector = MatchingPruner.featureVectorNameSpaceFilter(outlier_analysis_vector, allowed_namespaces)
 
     println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
     println("Start Outlier analysis")
-    val outlier_analysis_result: Map[MatchRelation, Double] =  RapidminerJobs.rapidminerOutlierDetection(problem.name,rapidminer_file,oa_base_dir) (filtered_outlier_analysis_vector)
+    val outlier_analysis_result: (Int, Map[MatchRelation, Double]) =  outlierFct(problem.name , filtered_outlier_analysis_vector)
+
     println("Outlier Analysis Done")
     println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
 
 
-    val namespace_filtered = MatchingPruner.nameSpaceFilter(outlier_analysis_result, allowed_namespaces)
+    //dimensionality normalization
+
+    val final_result = normFct.tupled(outlier_analysis_result)
+    /*
+    val final_result: Iterable[(MatchRelation, Double)] = if(do_dim_norm > 0.0){
+
+      val dims = outlier_analysis_result._1
+
+      println(dims)
+      val maxDistance = Math.sqrt(dims.toDouble*4)
+      println("dim norm " + maxDistance)
+      outlier_analysis_result._2.view.map{case (match_relation,distance) =>{
+        (match_relation, (distance/maxDistance))
+      }
+
+      }
+    }else outlier_analysis_result._2*/
+
+
+
+
+    val namespace_filtered = MatchingPruner.nameSpaceFilter(final_result.toMap, allowed_namespaces)
     //now perform outlier analysis
     println("Namespace Filtering done")
-    val selected =  MatchingSelector.greedyRankSelector(namespace_filtered,threshold)
+    println(threshold)
+    val selected =  MatchingSelector.greedyRankSelectorSimple(namespace_filtered,threshold)
     println("Greedy Rank Selection done")
 
     val alignment = new Alignment(null,null, selected)
     println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
     System.gc()
     println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
-    (alignment,outlier_analysis_vector)
+
+    println("Total Execution Time: " +(System.currentTimeMillis() -start_time))
+    (alignment,filtered_outlier_analysis_vector)
   }
 
 
@@ -111,7 +139,7 @@ object MatchingPipelineCore{
    */
   def matchAllStructuralMatchers(problem:MatchingProblem, featureVector:FeatureVector): Option[FeatureVector] ={
 
-    val results: List[FeatureVector] = MatcherRegistry.structural_matcher_by_name.map { case matcher =>
+    val results: List[FeatureVector] = MatcherRegistry.structural_matcher_by_name.par.map { case matcher =>
       matchStructuralMatcher(matcher._2, problem, featureVector)
     }.toList
     //combine and return results
@@ -127,7 +155,7 @@ object MatchingPipelineCore{
    * @return
    */
   def matchStructuralMatcher(matcher:StructuralLevelMatcher, problem:MatchingProblem,featureVector:FeatureVector):FeatureVector = {
-    //TODO add parallelism
+
     val results: Map[String, Map[MatchRelation, Double]] =  for(matcher_res <- featureVector.vector) yield {
       (matcher_res._1+matcher.getClass.getName.replace(".",""), matchStructuralMatcherWithAlignment(matcher,problem,matcher_res._2))
     }
@@ -144,9 +172,12 @@ object MatchingPipelineCore{
    */
   def matchStructuralMatcherWithAlignment(matcher:StructuralLevelMatcher, problem:MatchingProblem,correspondences:Map[MatchRelation,Double]): Map[MatchRelation, Double] ={
     //create alignment frm correspondences
+    val starttime = System.currentTimeMillis()
     val initial_alignment = new Alignment(null,null,0.0, correspondences)
 
-    matcher.align(problem,initial_alignment,0.0).asMatchRelationMap()
+    val res =  matcher.align(problem,initial_alignment,0.0).asMatchRelationMap()
+    //println(matcher.getClass.getSimpleName + " took "+ (System.currentTimeMillis()-starttime) +" ms")
+    res
   }
 
 
@@ -159,14 +190,4 @@ object MatchingPipelineCore{
   def removeCorrelatedMatchers(feature_vector:FeatureVector,threshold:Double) = {
     SparkJobs.removeCorrelatedFeatures(feature_vector,threshold)
   }
-
-
-
-  def performMatcherAggregation(feature_vector: FeatureVector):Map[MatchRelation,String] = {
-    null
-  }
-
-
-
-
 }

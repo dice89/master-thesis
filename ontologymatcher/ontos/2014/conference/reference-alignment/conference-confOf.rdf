@@ -6,7 +6,7 @@
 				<xml>yes</xml>
 				<level>0</level>
 				<type>??</type>
-
+				
 				<onto1>
 				<Ontology rdf:about="http://conference">
 				  <location>http://nb.vse.cz/~svabo/oaei2010/Conference.owl</location>
@@ -17,7 +17,7 @@
 				  <location>http://nb.vse.cz/~svabo/oaei2010/confOf.owl</location>
 				</Ontology>
 				</onto2>
-				<map>
+							<map>
 								<Cell cid='1'>
 									<entity1 rdf:resource='http://conference#Conference_participant'/>
 									<entity2 rdf:resource='http://confOf#Participant'/>

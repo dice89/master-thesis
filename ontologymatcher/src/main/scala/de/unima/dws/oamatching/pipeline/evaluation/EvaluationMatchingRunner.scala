@@ -3,10 +3,11 @@ package de.unima.dws.oamatching.pipeline.evaluation
 import java.io.File
 import java.net.URI
 
+import de.unima.dws.oamatching.analysis.RapidminerJobs
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core._
 import de.unima.dws.oamatching.pipeline.util.ResultLogger
-import de.unima.dws.oamatching.pipeline.{MatchingPipelineCore, MatchingProblem}
+import de.unima.dws.oamatching.pipeline._
 
 import scala.collection.JavaConversions.JEnumerationWrapper
 
@@ -14,7 +15,7 @@ import scala.collection.JavaConversions.JEnumerationWrapper
  * Created by mueller on 28/01/15.
  */
 
-case class EvaluationMatchingTaskWithParameters(matching_problem: MatchingProblem, parameters: Map[String, Double], reference: Alignment)
+case class EvaluationMatchingTaskWithParameters(matching_problem: MatchingProblem, config: RunConfiguration, reference: Alignment)
 
 case class EvaluationMatchingTask(matching_problem: MatchingProblem, reference: Alignment)
 
@@ -22,12 +23,12 @@ case class EvaluationMatchingTask(matching_problem: MatchingProblem, reference: 
 object EvaluationMatchingRunner {
 
   //TODO add benchmark
-  def matchAndEvaluateConference(path_to_conf:String,parameters:Map[String,Double]):Unit = {
-    matchAndEvaluate(parseConference(path_to_conf),parameters,"conference")
+  def matchAndEvaluateConference(path_to_conf:String,config:RunConfiguration):Unit = {
+    matchAndEvaluate(parseConference(path_to_conf),config,"conference")
   }
 
-  def matchAndEvaluate(matchingTasks:Seq[EvaluationMatchingTask], parameters:Map[String,Double], run_name:String) = {
-      val matching_tasks_with_parameters = matchingTasks.map(task => EvaluationMatchingTaskWithParameters(task.matching_problem,parameters, task.reference))
+  def matchAndEvaluate(matchingTasks:Seq[EvaluationMatchingTask], config: RunConfiguration, run_name:String) = {
+      val matching_tasks_with_parameters = matchingTasks.map(task => EvaluationMatchingTaskWithParameters(task.matching_problem,config, task.reference))
 
      val matching_task_results =matching_tasks_with_parameters.map(task => {
         matchAndEvaluateSingle(task)
@@ -35,6 +36,7 @@ object EvaluationMatchingRunner {
 
     //may not efficient way but prepare each single datastructure
     val base_matcher_results: Seq[Map[String, EvaluationResult]] = matching_task_results.map(result => result.baseMatcherResults)
+
     val best_base_matcher_results = matching_task_results.map(result => result.bestBaseMatcher)
     val majority_vote_results =  matching_task_results.map(result => result.majorityVoteResult)
     val core_pipeline_results =  matching_task_results.map(result => result.evaluationResult)
@@ -101,7 +103,8 @@ object EvaluationMatchingRunner {
    * @return
    */
   def matchAndEvaluateSingle(eval_task: EvaluationMatchingTaskWithParameters): EvaluationRoundResult = {
-    Evaluation.evaluate(MatchingPipelineCore.matchProblem(Config.OA_PROCESS, Config.OA_BASE_DIR))(eval_task.matching_problem, eval_task.reference, eval_task.parameters)
+
+    Evaluation.evaluate(eval_task.matching_problem, eval_task.reference, eval_task.config)
   }
 
 

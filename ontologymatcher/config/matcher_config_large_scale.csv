@@ -21,11 +21,10 @@ esaSim,E,sim,true,none,true
 word2VecStemmed,E,sim,true,stemmed,true
 umbcSim,E,sim,true,none,true
 simFloodMatcher,S
-graphBasedUsedPropMatcher,S
-graphBasedUsedClassMatcher,S
 simple_tfidf,T
 soft_tfidf_jaro,T
 jaro_winkler_tfidf,T
 level2_jaro,T
 level2_jara_winkler,T
 level2_monge_elkan,T
+graphBasedUsedPropMatcher,S

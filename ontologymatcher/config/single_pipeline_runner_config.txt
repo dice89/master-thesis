@@ -1,5 +1,5 @@
-onto1=/Users/mueller/Documents/master-thesis/ontologymatcher/ontos/2014/conference/cmt.owl
-onto2=/Users/mueller/Documents/master-thesis/ontologymatcher/ontos/2014/conference/Conference.owl
-ref=/Users/mueller/Documents/master-thesis/ontologymatcher/ontos/2014/conference/reference-alignment/cmt-conference.rdf
-thresh=0.5
+onto1=/Users/mueller/Documents/master-thesis/ontologymatcher/ontos/2014/conference/edas.owl
+onto2=/Users/mueller/Documents/master-thesis/ontologymatcher/ontos/2014/conference/sigkdd.owl
+ref=/Users/mueller/Documents/master-thesis/ontologymatcher/ontos/2014/conference/reference-alignment/edas-sigkdd.rdf
 dsname=conference
+norm=none

@@ -5,7 +5,7 @@ import de.unima.dws.oamatching.core.{Alignment, Cell, MatchRelation}
 import org.semanticweb.owlapi.model.{OWLClass, OWLOntology}
 
 import scala.collection.JavaConversions._
-import scala.collection.mutable
+import scala.collection.{IterableView, mutable}
 
 /**
  * Graphbased Matcher:
@@ -28,9 +28,10 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
 
     //loop over alignment and build map for class access
     //build map
-
+    val starttime = System.currentTimeMillis()
     val match_partner_map: Map[String, Set[(String, Double)]] = buildMap(initial_Alignment, onto1, onto2)
 
+    val step1time =System.currentTimeMillis();
     //loop over object properties in onto1
     val candidates: mutable.Set[Option[List[(String, (String, String, Double))]]] = for (prop_onto1 <- onto1.getObjectPropertiesInSignature()) yield {
       //get domain and range of property
@@ -67,7 +68,7 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
       }
 
     }
-
+    val step2time =System.currentTimeMillis();
 
     val filtered_candidates: List[(String, (String, String, Double))] = candidates.toList.filter(sub_category => sub_category.isDefined).map(sub_category => sub_category.get).flatten.toList
 
@@ -83,8 +84,7 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
 
     //step 2 candidate pruning
     //loop over object properties in onto2
-    val matchings: mutable.Set[Option[List[(MatchRelation, Double)]]] = for (prop_onto2 <- onto2.getObjectPropertiesInSignature()) yield {
-      // get domain
+    val matchings = onto2.getObjectPropertiesInSignature().map(prop_onto2 => {
       val domain = onto2.getObjectPropertyDomainAxioms(prop_onto2)
 
       if (domain.size() < 1) {
@@ -98,8 +98,7 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
           val range = onto2.getObjectPropertyRangeAxioms(prop_onto2)
           val range_class = domain.head.getClassesInSignature().head
           //get List to retrieve multiple candidates and check each of it
-
-          val optional_final = for (candidate <- option_candidates.get) yield {
+          val optional_final = option_candidates.get.map(candidate => {
             if (candidate._2.equals(range_class.toStringID)) {
               // yes = add alignment
               //we got a real matching
@@ -108,7 +107,7 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
               // no = do nothing
               Option.empty
             }
-          }
+          })
 
           Option(optional_final.filter(optional => optional.isDefined).map(option => option.get))
         } else {
@@ -116,9 +115,9 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
         }
       }
 
-    }
+    })
 
-
+    val step3time =System.currentTimeMillis();
 
 
     //filter threshold and non defined
@@ -131,6 +130,11 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
 
     copied_alignment.addAllCorrespondeces(cells_to_add.toSet)
 
+    val finshedTime =System.currentTimeMillis();
+   /* println("Step 1 time " + (step1time -starttime))
+    println("Step 2 time " + (step2time -step1time))
+    println("Step 3 time " + (step3time -step2time))
+    println("Final Step time " + (finshedTime -step3time))*/
     System.gc()
 
     copied_alignment

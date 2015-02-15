@@ -29,3 +29,5 @@ ontologymatcher/vectortest_train.csv
 oaMatcherCode/matching_matcher_result.csv
 
 ontologymatcher/output.csv
+
+*.xlsx

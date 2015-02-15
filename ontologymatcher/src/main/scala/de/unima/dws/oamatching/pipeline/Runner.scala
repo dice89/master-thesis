@@ -9,18 +9,17 @@ import de.unima.dws.oamatching.matcher.MatcherRegistry
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingTask, EvaluationMatchingTaskWithParameters, EvaluationMatchingRunner}
 import de.unima.dws.oamatching.pipeline.util.MetaDataMgmt
 
+import scala.io.Source
+
 /**
  * Created by mueller on 28/01/15.
  */
+case class RunConfiguration(threshold:Double,normalization:String,data_set_name:String,path_to_dataset:String, matching_pipline: (MatchingProblem, Double, Double) => (Alignment, FeatureVector))
 object Runner {
+  //init stuff
   MatcherRegistry.initLargeScale()
-
-  //val problems = EvaluationMatchingRunner.parseConference("ontos/2014/conference");
-  //runRound(0.01)
-
-  //runSingleBaseMatcherForMultipleProblems("jaroMeasure",problems.toVector,0.8,"conference")
-
-  //runSingleStructural("simFloodMatcher","word2Vec","ontos/2014/conference/cmt.owl","ontos/2014/conference/Conference.owl","ontos/2014/conference/reference-alignment/cmt-conference.rdf",0.0,"conference")
+  RapidminerJobs.init()
+  //TODO spark init
 
   /**
    * Runs a single structural Matcher based on a base matcher result
@@ -53,28 +52,24 @@ object Runner {
 
 
   /**
-   * Runs the whole platform on conference
-   * @param threshold
+   * Runs the whole platform on a specified dataset
+   * @param config
    */
-  def runRound(threshold:Double):Unit = {
-    //TODO include other datasets
-    EvaluationMatchingRunner.matchAndEvaluateConference(Config.PATH_TO_CONFERENCE, Map(("threshold",threshold)) )
-
+  def runRound(config:RunConfiguration):Unit = {
+    EvaluationMatchingRunner.matchAndEvaluateConference(Config.PATH_TO_CONFERENCE, config )
   }
 
   /**
-   * Runs the platform on one particular matching problem
+   *  Runs the platform on one particular matching problem
    * @param onto1
    * @param onto2
    * @param ref
-   * @param threshold
-   * @param problem_name
+   * @param runConfiguration
    */
-  def runSinglePlatform(onto1:String, onto2:String, ref:String, threshold:Double, problem_name:String):Unit =  {
-    val (reference: Alignment, test_problem: MatchingProblem) = prepareDataSet(onto1, onto2, ref,problem_name)
+  def runSinglePlatform(onto1:String, onto2:String, ref:String, runConfiguration: RunConfiguration):Unit =  {
+    val (reference: Alignment, test_problem: MatchingProblem) = prepareDataSet(onto1, onto2, ref,runConfiguration.data_set_name)
 
-    val params = Map(("threshold",threshold))
-    val task = EvaluationMatchingTaskWithParameters(test_problem, params, reference)
+    val task = EvaluationMatchingTaskWithParameters(test_problem, runConfiguration, reference)
     val result = EvaluationMatchingRunner.matchAndEvaluateSingle(task)
     println("pipeline res")
     println(result.evaluationResult)
@@ -152,8 +147,8 @@ object Runner {
 
   def runEvaluateFromRapidminerFile(path:String,ref_file:String, threshold:Double): Unit = {
     val file:File = new File(path)
-    val matchings = RapidminerJobs.readCSV(file)
-
+    val matchings_and_dim = RapidminerJobs.readCSV(file)
+    val matchings = matchings_and_dim._2
     val selected =  MatchingSelector.greedyRankSelector(matchings,threshold)
     selected.foreach(matching => println(matching._1))
     val alignment = new Alignment(null,null, selected)
@@ -164,6 +159,38 @@ object Runner {
 
     println(alignment.evaluate(reference))
 
+  }
+
+
+  def parseRunConfig():RunConfiguration = {
+
+    val paramMap: Map[String, String] = Source.fromFile("config/pipeline_run_config.txt").getLines().map(line =>{
+      val tuple = line.split("=")
+      val key:String = tuple(0)
+      val value:String = tuple(1)
+
+      if(key.equals("thresh")){
+        key->value
+      }else if(key.equals("norm")){
+        key->value
+      }else if(key.equals("dsname")){
+        key->value
+      }else if(key.equals("pathtods")) {
+        key -> value
+      } else {
+        ""->""
+      }
+
+    }).toMap
+
+
+
+    //build pipeline
+    val outlier_function= RapidminerJobs.rapidminerOutlierDetection(Config.OA_PROCESS, Config.OA_BASE_DIR)_
+    val norm_function = ScoreNormalizationFunctions.getNormFunction(paramMap.get("norm").get)
+    val matching_pipline: (MatchingProblem, Double, Double) => (Alignment, FeatureVector) =  MatchingPipelineCore.createMatchingPipeline(outlier_function)(norm_function)
+
+    RunConfiguration(paramMap.get("thresh").get.toDouble, paramMap.get("norm").get,paramMap.get("dsname").get, paramMap.get("pathtods").get, matching_pipline)
   }
 
 

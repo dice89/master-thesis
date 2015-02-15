@@ -4,7 +4,7 @@ import java.io.File
 
 import de.unima.dws.oamatching.core._
 import de.unima.dws.oamatching.pipeline.util.{MetaDataMgmt, ResultLogger}
-import de.unima.dws.oamatching.pipeline.{MatchingPipelineCore, MatchingProblem, FeatureVector}
+import de.unima.dws.oamatching.pipeline.{RunConfiguration, MatchingPipelineCore, MatchingProblem, FeatureVector}
 
 
 import scala.collection.immutable.Map
@@ -19,17 +19,16 @@ object Evaluation  {
 
   /**
    *
-   * @param matchingFkt Core Pipeline Function
    * @param matching_problem
    * @param reference
-   * @param params
+
    * @return
    */
-  def evaluate(matchingFkt: (MatchingProblem, Map[String, Double]) => (Alignment, FeatureVector))(matching_problem: MatchingProblem, reference: Alignment, params: Map[String, Double]): EvaluationRoundResult = {
+  def evaluate(matching_problem: MatchingProblem, reference: Alignment, config: RunConfiguration): EvaluationRoundResult = {
     //match core platform and store results
 
     val problem_name = matching_problem.name;
-    val core_pipeline_res = matchingFkt(matching_problem, params)
+    val core_pipeline_res =   config.matching_pipline(matching_problem, config.threshold, 0.5)
     val created_alignment = core_pipeline_res._1
     val feature_vector = core_pipeline_res._2
 

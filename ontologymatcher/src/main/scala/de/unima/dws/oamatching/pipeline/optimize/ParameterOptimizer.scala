@@ -35,10 +35,8 @@ object ParameterOptimizer {
   //println(o_res_norm)
   */
 
-  def optimizeAdvancedPipeline =  optimizeThresholdPipeline(MatchingPipelineCore.matchProblem( Config.OA_PROCESS,Config.OA_BASE_DIR))_
-
-
-  /**
+  //TODO add configuration
+ /**
    *
    * @param task_name
    * @param problems
@@ -106,15 +104,17 @@ object ParameterOptimizer {
    * @param threshold the threshold
    * @return
    */
-  def optimizeSingleRoundPipeline(pipelineFct: (MatchingProblem, Map[String, Double]) => (Alignment, FeatureVector))(problems: Seq[EvaluationMatchingTask], threshold: Double): AggregatedEvaluationResult = {
+  def optimizeSingleRoundPipeline(pipelineFct: (MatchingProblem, Double,Double) => (Alignment, FeatureVector))(problems: Seq[EvaluationMatchingTask], threshold: Double): AggregatedEvaluationResult = {
     println("optimize round")
     val results = problems.view.map(task => {
-      val param_map: Map[String, Double] = Map(("threshold", threshold))
-      val pipeline_res = pipelineFct(task.matching_problem, param_map)
+      //TODO make remove correlated attributes configurable
+      val pipeline_res = pipelineFct(task.matching_problem, threshold, 0.5)
        pipeline_res._1.evaluate(task.reference)
     });
 
-    EvaluationResultAggregator.aggregateEvaluationResults(results.toList)
+    val aggregated_results  = EvaluationResultAggregator.aggregateEvaluationResults(results.toList)
+    println(aggregated_results.macro_eval_res)
+    aggregated_results
   }
 
   /**
@@ -124,7 +124,7 @@ object ParameterOptimizer {
    * @param thresholds
    * @return
    */
-  def optimizeThresholdPipeline(pipelineFct: (MatchingProblem, Map[String, Double]) => (Alignment, FeatureVector))(data_set: String, problems: Seq[EvaluationMatchingTask], thresholds: List[Double]): Double = {
+  def optimizeThresholdPipeline(pipelineFct: (MatchingProblem,Double,Double) => (Alignment, FeatureVector))(data_set: String, problems: Seq[EvaluationMatchingTask], thresholds: List[Double]): Double = {
 
     val optimization_result = thresholds.view.map(threshold => (threshold, (optimizeSingleRoundPipeline(pipelineFct)(problems, threshold)).macro_eval_res))
 

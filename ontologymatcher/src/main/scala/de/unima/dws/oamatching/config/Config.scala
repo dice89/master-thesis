@@ -35,7 +35,7 @@ object Config {
 
   def parseConfig() = {
 
-    Source.fromFile("config/pipeline_config.txt").getLines().foreach(line => {
+    Source.fromFile("config/pipeline_base_config.txt").getLines().foreach(line => {
       val tuple = line.split("=")
       val key: String = tuple(0)
       val value: String = tuple(1)

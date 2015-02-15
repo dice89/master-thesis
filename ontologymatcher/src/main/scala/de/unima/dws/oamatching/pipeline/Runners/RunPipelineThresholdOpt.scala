@@ -1,6 +1,7 @@
 package de.unima.dws.oamatching.pipeline.Runners
 
 import de.unima.dws.oamatching.matcher.MatcherRegistry
+import de.unima.dws.oamatching.pipeline.Runner
 import de.unima.dws.oamatching.pipeline.evaluation.EvaluationMatchingRunner
 import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
 
@@ -10,6 +11,8 @@ import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
 object RunPipelineThresholdOpt extends App{
   MatcherRegistry.initLargeScale()
   val problems = EvaluationMatchingRunner.parseConference("ontos/2014/conference")
+  val config =  Runner.parseRunConfig()
 
-  ParameterOptimizer.optimizeAdvancedPipeline("conference",problems,ParameterOptimizer.getDoubleGrid(0.1,0.95,15))
+  ParameterOptimizer.optimizeThresholdPipeline(config.matching_pipline)("conference",problems,ParameterOptimizer.getDoubleGrid(0.4,0.8,4))
+
 }

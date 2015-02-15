@@ -40,6 +40,8 @@ libraryDependencies += "com.typesafe.play" % "play-json_2.10" % "2.4.0-M2"
 
 libraryDependencies += "org.scalanlp" % "english_2.10" % "2015.1.25"
 
+libraryDependencies += "org.apache.commons" % "commons-math3" % "3.2"
+
 resolvers += "Local Maven Repository" at "file:///Users/mueller/.m2/repository/"
 
 resolvers += "Third Party" at "http://trianacode.org/maven/"

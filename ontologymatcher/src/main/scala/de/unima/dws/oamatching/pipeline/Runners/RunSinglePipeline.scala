@@ -1,6 +1,7 @@
 package de.unima.dws.oamatching.pipeline.Runners
 
 import de.unima.dws.oamatching.pipeline.Runner
+import de.unima.dws.oamatching.pipeline.util.MetaDataMgmt
 
 import scala.io.Source
 
@@ -9,7 +10,7 @@ import scala.io.Source
  */
 object RunSinglePipeline extends App{
 
-  def parseConfig():(String,String,String,String,Double) = {
+  def parseConfig():(String,String,String,String) = {
 
     val paramMap: Map[String, String] = Source.fromFile("config/single_pipeline_runner_config.txt").getLines().map(line =>{
       val tuple = line.split("=")
@@ -22,8 +23,6 @@ object RunSinglePipeline extends App{
         key->value
       }else if(key.equals("ref")){
         key->value
-      }else if(key.equals("thresh")) {
-        key -> value
       } else if(key.equals("dsname")){
           key->value
       }else{
@@ -31,10 +30,11 @@ object RunSinglePipeline extends App{
       }
 
     }).toMap
-    (paramMap.get("onto1").get,paramMap.get("onto2").get,paramMap.get("ref").get,paramMap.get("dsname").get, paramMap.get("thresh").get.toDouble)
+    (paramMap.get("onto1").get,paramMap.get("onto2").get,paramMap.get("ref").get,paramMap.get("dsname").get)
   }
-
+  //load configurations
   val config = parseConfig()
+  val pipeline_config = Runner.parseRunConfig();
 
-  Runner.runSinglePlatform(config._1, config._2,config._3,config._5,config._4)
+  Runner.runSinglePlatform(config._1, config._2,config._3,pipeline_config)
 }

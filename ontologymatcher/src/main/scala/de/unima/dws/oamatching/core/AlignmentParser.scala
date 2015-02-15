@@ -22,7 +22,6 @@ object AlignmentParser {
    */
   def parseRDF(path_to_alignment: String): Alignment = {
     val model: Model = ModelFactory.createDefaultModel()
-
     val in: InputStream = FileManager.get().open(path_to_alignment)
 
     if (in == null) {
@@ -79,7 +78,6 @@ object AlignmentParser {
    * @return
    */
   def parseRDF(alignment_file: File): Alignment = {
-    println(alignment_file.toURI.toString)
     parseRDF(alignment_file.toURI.toString)
   }
 
@@ -150,7 +148,6 @@ object AlignmentParser {
 
     val rdf_doc = getRDFDoc(xml_alignment)
     scala.xml.XML.save(file,rdf_doc,"UTF-8", true, null)
-
 
   }
 }
