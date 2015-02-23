@@ -1,5 +1,8 @@
 package de.unima.dws.oamatching.pipeline
 
+import java.io.File
+import com.github.tototoshi.csv._
+
 import _root_.de.unima.dws.oamatching.core.MatchRelation
 
 
@@ -79,6 +82,7 @@ object VectorUtil {
       Option.empty
     }
   }
+
 
 
 }

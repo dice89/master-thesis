@@ -65,10 +65,19 @@ object MatchingPipelineCore{
     println("Outlier Analysis Done")
     println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
 
+    println("Total Execution Time: " +(System.currentTimeMillis() -start_time))
 
     //dimensionality normalization
 
-    val final_result = normFct.tupled(outlier_analysis_result)
+    val alignment: Alignment = postProcessMatchings(normFct, threshold, outlier_analysis_result)
+
+
+    (alignment,filtered_outlier_analysis_vector)
+  }
+
+
+  def postProcessMatchings(normFct: (Int, Iterable[(MatchRelation, Double)]) => Iterable[(MatchRelation, Double)], threshold: Double, outlier_analysis_result: (Int, Map[MatchRelation, Double])): Alignment = {
+    val final_result: Iterable[(MatchRelation, Double)] = normFct.tupled(outlier_analysis_result)
     /*
     val final_result: Iterable[(MatchRelation, Double)] = if(do_dim_norm > 0.0){
 
@@ -85,25 +94,15 @@ object MatchingPipelineCore{
     }else outlier_analysis_result._2*/
 
 
-
-
-    val namespace_filtered = MatchingPruner.nameSpaceFilter(final_result.toMap, allowed_namespaces)
     //now perform outlier analysis
     println("Namespace Filtering done")
     println(threshold)
-    val selected =  MatchingSelector.greedyRankSelectorSimple(namespace_filtered,threshold)
+    val selected = MatchingSelector.greedyRankSelectorSimple(final_result.toMap, threshold)
     println("Greedy Rank Selection done")
 
-    val alignment = new Alignment(null,null, selected)
-    println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
-    System.gc()
-    println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
-
-    println("Total Execution Time: " +(System.currentTimeMillis() -start_time))
-    (alignment,filtered_outlier_analysis_vector)
+    val alignment = new Alignment(null, null, selected)
+    alignment
   }
-
-
 
   /**
    * Calls an Individual matcher, for feature vector creation

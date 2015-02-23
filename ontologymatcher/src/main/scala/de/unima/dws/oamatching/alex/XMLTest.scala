@@ -34,7 +34,7 @@ object XMLTest {
   println(transformXMLProcess(xml_file, Option.empty[FeatureVector]))
   */
 
-  def transformXMLProcess(path_to_file:String, vector: Option[FeatureVector]): String = {
+  def transformXMLProcess(path_to_file:String, vector:  Map[String,Int]): String = {
 
     val xml_file: Elem = scala.xml.XML.loadFile(path_to_file)
 
@@ -45,13 +45,13 @@ object XMLTest {
           <parameter key="3" value="owl_type.true.polynominal.attribute"/>)
     }
 
-    def transform_featureVector_toType(start_key: Int, vector: Option[FeatureVector]): Seq[Node] = {
+    def transform_featureVector_toType(start_key: Int, vector: Map[String,Int]): Seq[Node] = {
       //if vector not present return emptyset
       if (vector.isEmpty) {
         Seq()
       } else {
         //get xml elements
-        vector.get.matcher_name_to_index.map { case (matcher_name, index) => {
+        vector.map { case (matcher_name, index) => {
             <parameter key={(index+start_key)+""}  value={matcher_name+".true.real.attribute"} />
         }
         }.toSeq

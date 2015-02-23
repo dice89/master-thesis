@@ -13,6 +13,6 @@ object RunPipelineThresholdOpt extends App{
   val problems = EvaluationMatchingRunner.parseConference("ontos/2014/conference")
   val config =  Runner.parseRunConfig()
 
-  ParameterOptimizer.optimizeThresholdPipeline(config.matching_pipline)("conference",problems,ParameterOptimizer.getDoubleGrid(0.4,0.8,4))
+  ParameterOptimizer.optimizeThresholdPipeline(config.matching_pipline)("conference",problems,ParameterOptimizer.getDoubleGrid(0.45,0.6,6))
 
 }

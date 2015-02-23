@@ -22,7 +22,7 @@ case class EvaluationMatchingTask(matching_problem: MatchingProblem, reference: 
 
 object EvaluationMatchingRunner {
 
-  //TODO add benchmark
+
   def matchAndEvaluateConference(path_to_conf:String,config:RunConfiguration):Unit = {
     matchAndEvaluate(parseConference(path_to_conf),config,"conference")
   }

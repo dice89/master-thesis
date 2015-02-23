@@ -1,14 +1,16 @@
 package de.unima.dws.oamatching.thesis
 
-import java.io.{PrintWriter, File}
-import java.nio.file.Path
+import java.io.{File, PrintWriter}
 
 import com.github.tototoshi.csv.CSVWriter
 import de.unima.dws.oamatching.analysis.RapidminerJobs
-import de.unima.dws.oamatching.core.{Cell, AlignmentParser}
+import de.unima.dws.oamatching.core.{AlignmentParser, Cell}
 import de.unima.dws.oamatching.matcher.MatcherRegistry
 import de.unima.dws.oamatching.pipeline.Runner
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingRunner, RdfFileFilter}
+import org.apache.commons.math.stat.descriptive.moment.Mean
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation
+import org.jfree.chart.JFreeChart
 
 import scala.collection.parallel.immutable.ParVector
 import scala.io.Source
@@ -16,7 +18,11 @@ import scala.io.Source
 /**
  * Created by mueller on 06/02/15.
  */
+
+
 object MiscExperiments extends App {
+
+  //computeAndVisualizeOutlierScores("/Users/mueller/Documents/master-thesis/RapidminerRepo/oacode_loop_2.rmp")
   //MatcherRegistry.initLargeScale()
 
   //createVectorWithLabels()
@@ -25,8 +31,7 @@ object MiscExperiments extends App {
 
   //bestMatcherForDataset()
 
-
-  computePairWiseSimilarityForAllMatchings()
+  //computePairWiseSimilarityForAllMatchings()
   def bestMatcherForDataset(): Unit = {
     val problems = EvaluationMatchingRunner.parseConference("ontos/2014/conference");
     val results = MatcherRegistry.matcher_by_name.keys.par.map(name => {
@@ -59,20 +64,21 @@ object MiscExperiments extends App {
 
   }
 
-  def printDataSetSizes():Unit = {
+  def printDataSetSizes(): Unit = {
 
     val pairs: List[(File, File)] = getListOfMatchingRefPairs
 
-    pairs.foreach{case(ref_file,raw_file) => {
+    pairs.foreach { case (ref_file, raw_file) => {
       val alignment = AlignmentParser.parseRDF(ref_file)
-      val lines =  Source.fromFile(raw_file).getLines()
+      val lines = Source.fromFile(raw_file).getLines()
       val total_matchings = lines.size
       val alignment_size = alignment.correspondences.size
-      val ratio = (alignment_size.toDouble/total_matchings.toDouble)*100
-      val onto1 = alignment.onto1.replace("http://","")
-      val onto2 = alignment.onto2.replace("http://","")
+      val ratio = (alignment_size.toDouble / total_matchings.toDouble) * 100
+      val onto1 = alignment.onto1.replace("http://", "")
+      val onto2 = alignment.onto2.replace("http://", "")
       println(s"$onto1-$onto2,$total_matchings,$alignment_size,$ratio")
-    }}
+    }
+    }
   }
 
 
@@ -83,12 +89,12 @@ object MiscExperiments extends App {
 
 
     //write new csv with one more column :is matching?
-   val ratios: List[Double] =  pairs.map{case (ref_file, raw_file) => {
+    val ratios: List[Double] = pairs.map { case (ref_file, raw_file) => {
       val name = raw_file.getName
-      val writer = new PrintWriter(new File("thesisexperiments/matchings/"+name))
+      val writer = new PrintWriter(new File("thesisexperiments/matchings/" + name))
       val alignment = AlignmentParser.parseRDF(ref_file)
 
-      val lines =  Source.fromFile(raw_file).getLines()
+      val lines = Source.fromFile(raw_file).getLines()
       val total_matchings = lines.size
       val alignment_size = alignment.correspondences.size
       lines.foreach(line => {
@@ -96,29 +102,30 @@ object MiscExperiments extends App {
 
         val left = splitted(0)
 
-        val relation =splitted(1)
+        val relation = splitted(1)
         val right = splitted(2)
         //type and measure here not imporatant
 
-        val new_line = if(! left.equals("left")){
+        val new_line = if (!left.equals("left")) {
           //not first row
-          val cell = new Cell(left,right,1.0,relation,"nn")
-          if(alignment.correspondences.contains(cell)){
-           line +",1"
-          }else {
-            line+",0"
+          val cell = new Cell(left, right, 1.0, relation, "nn")
+          if (alignment.correspondences.contains(cell)) {
+            line + ",1"
+          } else {
+            line + ",0"
           }
-        }else {
-         line +",isinRef"
+        } else {
+          line + ",isinRef"
         }
         writer.println(new_line)
       })
       writer.close()
 
-      alignment_size.toDouble/total_matchings.toDouble
-    }}
+      alignment_size.toDouble / total_matchings.toDouble
+    }
+    }
 
-    val average_ratio = ratios.reduceLeft(_ + _)/ratios.length.toDouble
+    val average_ratio = ratios.reduceLeft(_ + _) / ratios.length.toDouble
 
     println(average_ratio)
   }
@@ -160,11 +167,11 @@ object MiscExperiments extends App {
   }
 
 
-  def computePairWiseSimilarityForAllMatchings():Unit = {
+  def computePairWiseSimilarityForAllMatchings(): Unit = {
     val file: File = new File("matchings")
     val list_of_raw_matchings = file.listFiles().toList
 
-    list_of_raw_matchings.foreach(matchings =>{
+    list_of_raw_matchings.foreach(matchings => {
       println(matchings.getName)
       println(computePairWiseSimilarity(matchings))
     })
@@ -172,49 +179,49 @@ object MiscExperiments extends App {
   }
 
 
-  def computePairWiseSimilarity(matching:File):(Int,Int, Double,Double,Double) ={
+  def computePairWiseSimilarity(matching: File): (Int, Int, Double, Double, Double) = {
 
-    val lines =  Source.fromFile(matching).getLines();
-     val file_as_vector: ParVector[(Vector[Double], Int)] =  lines.map(line => {
-         val vector = line.split(",")
-         val real_vector: Vector[Double] = vector.map(elem => {
+    val lines = Source.fromFile(matching).getLines();
+    val file_as_vector: ParVector[(Vector[Double], Int)] = lines.map(line => {
+      val vector = line.split(",")
+      val real_vector: Vector[Double] = vector.map(elem => {
 
-           try {
-             Option(elem.toDouble)
-           }
-           catch {
-             case other :Throwable => Option.empty
-           }
-         }).filter(_.isDefined).map(_.get).toVector
-        real_vector
-      }).toVector.filter(vector => vector.size > 1).zipWithIndex.par;
+        try {
+          Option(elem.toDouble)
+        }
+        catch {
+          case other: Throwable => Option.empty
+        }
+      }).filter(_.isDefined).map(_.get).toVector
+      real_vector
+    }).toVector.filter(vector => vector.size > 1).zipWithIndex.par;
 
-   /*val distances =  for((vector_a,index_a)<-file_as_vector;
-        (vector_b,index_b)<-file_as_vector)yield {
-      val euclidean_distance = computeEuclideanDistance(vector_a,vector_b)
-      euclidean_distance
-    }
+    /*val distances =  for((vector_a,index_a)<-file_as_vector;
+         (vector_b,index_b)<-file_as_vector)yield {
+       val euclidean_distance = computeEuclideanDistance(vector_a,vector_b)
+       euclidean_distance
+     }
 
-    val mean = distances.reduceLeft(_+_)/distances.length
+     val mean = distances.reduceLeft(_+_)/distances.length
 
-    //println(mean)
+     //println(mean)
 
-    val variance = distances.map(distance => Math.pow(distance -mean,2.0)).reduceLeft(_ + _)/distances.length
+     val variance = distances.map(distance => Math.pow(distance -mean,2.0)).reduceLeft(_ + _)/distances.length
 
-    //println(variance)
+     //println(variance)
 
-    val stdev = Math.sqrt(variance)
-*/
+     val stdev = Math.sqrt(variance)
+ */
     //println(stdev)
 
-    (file_as_vector.size,file_as_vector.head._1.size,0.0,0.0,0.0)
+    (file_as_vector.size, file_as_vector.head._1.size, 0.0, 0.0, 0.0)
     //(file_as_vector.size,file_as_vector.head._1.size,mean,variance,stdev)
 
   }
 
- def computeEuclideanDistance(a:Vector[Double], b:Vector[Double]):Double = {
-   val squared_diff: Vector[Double] = a.zip(b).map(tuple => Math.pow(tuple._1 - tuple._2,2.0))
+  def computeEuclideanDistance(a: Vector[Double], b: Vector[Double]): Double = {
+    val squared_diff: Vector[Double] = a.zip(b).map(tuple => Math.pow(tuple._1 - tuple._2, 2.0))
 
-   Math.sqrt(squared_diff.reduceLeft(_ + _))
- }
+    Math.sqrt(squared_diff.reduceLeft(_ + _))
+  }
 }

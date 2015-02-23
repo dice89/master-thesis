@@ -44,9 +44,7 @@ class Alignment(val onto1:String, val onto2:String) {
       case(matchrelation, similiarity) => {
         val test = new Cell(matchrelation.left,matchrelation.right,similiarity,matchrelation.relation,matchrelation.owl_type)
 
-        if(this.correspondences.contains(test)){
-          println("bla")
-        }
+
         test
       }
     })
@@ -65,9 +63,6 @@ class Alignment(val onto1:String, val onto2:String) {
       case(matchrelation, similiarity) => {
         val test = new Cell(matchrelation.left,matchrelation.right,similiarity,matchrelation.relation,matchrelation.owl_type)
 
-        if(this.correspondences.contains(test)){
-          println("bla")
-        }
         test
 
       }
