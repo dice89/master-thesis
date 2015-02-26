@@ -73,39 +73,15 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   val delta_fuzzy_selection = 0.001
 
 
-  val outlier_processes_for_eval = List("/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluationV2/non_separated/pre_pro_pca_f/oacode_cblof_unweighted_regular_db_scan.rmp")
-
-
-  // val outlier_processes_for_eval = List("/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/separated/pre_pro_pca/oacode_cblof_unweighted_regular_db_scan.rmp")
-
-
-  /*val outlier_processes_for_eval = List("/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/remove_corr_pre/oacode_loop_2.rmp",
-    "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/remove_corr_pre/oacode_lof.rmp",
-    "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/remove_corr_pre/oacode_lof_regular.rmp",
-    "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/remove_corr_pre/oacode_cblof_unweighted.rmp",
-    "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/remove_corr_pre/oacode_cblof_unweighted_regular.rmp",
-    "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/remove_corr_pre/oacode_ldcof.rmp",
-    "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/remove_corr_pre/oacode_ldcof_regular.rmp",
-    "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/remove_corr_pre/oacode_cblof_unweighted_regular_db_scan.rmp")*/
-
-  /*val outlier_processes_for_eval = List("/Users/mueller/Documents/master-thesis/RapidminerRepo/oacode_loop_2.rmp",
-     "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/oacode_lof.rmp",
-     "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/oacode_lof_regular.rmp",
-     "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/oacode_cblof_unweighted.rmp",
-     "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/oacode_cblof_unweighted_regular.rmp",
-     "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/oacode_ldcof.rmp",
-     "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/oacode_ldcof_regular.rmp",
-     "/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/oacode_cblof_unweighted_regular_db_scan.rmp")*/
-
-
-  //computeAndVisualizeOutlierScoresSeparated("ontos/2014/conference",outlier_processes_for_eval.head)
   val select_fct = MatchingSelector.fuzzyGreedyRankSelectorDelta(delta_fuzzy_selection)
   val matching_pairs: List[(File, File)] = MiscExperiments.getListOfMatchingRefPairs
+
+  runAllNonSeparatedForAllAlgos("thesisexperiments/outliereval", matching_pairs, select_fct )
 
 
   def runAllNonSeparatedForAllAlgos(base_folder:String, matching_pairs: List[(File, File)] , select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double]): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
     val results = IMPLEMENTED_OUTLIER_METHODS_BY_NAME.map{case(name,files)=> {
-      runAllNonSeparated("cblof_regular_x_means","thesisexperiments/outliereval",matching_pairs, select_fct)
+      runAllNonSeparated("cblof_regular_x_means",base_folder,matching_pairs, select_fct)
     }}
 
     val best_result: (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) =  results.maxBy(_._2._2.best_result._2.best_result._2._2.macro_eval_res.f1Measure)
