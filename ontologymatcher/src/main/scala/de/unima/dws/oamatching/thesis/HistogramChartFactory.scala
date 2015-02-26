@@ -5,6 +5,7 @@ import java.awt.geom.Rectangle2D
 import java.io.FileOutputStream
 
 import com.itextpdf.awt.PdfGraphics2D
+import com.itextpdf.text
 import com.itextpdf.text._
 import com.itextpdf.text.pdf._
 import de.unima.dws.oamatching.core._
@@ -14,13 +15,274 @@ import org.jfree.chart.plot.PlotOrientation
 import org.jfree.chart.{ChartFactory, JFreeChart}
 import org.jfree.data.statistics.HistogramDataset
 import org.jfree.data.xy.{XYSeries, XYSeriesCollection}
+
+import scala.collection.immutable.Map
 ;
 
 /**
  * Singleton to create some vizualizations of the data sets
  * Created by mueller on 18/02/15.
  */
-object HistogramChartFactory {
+object HistogramChartFactory{
+
+  def createExecutionSummaryReport(folder:String,name:String,best_result: (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))):Unit = {
+    val document: Document = new Document();
+    val writer: PdfWriter = PdfWriter.getInstance(document, new FileOutputStream(folder+"/"+name+".pdf"));
+
+    document.open()
+    val best_result_res = best_result._2
+
+    val anchor = new Anchor("Results of Analysis for: " + name);
+    anchor.setName("results");
+
+    // Second parameter is the number of the chapter
+    val catPart = new Chapter(new Paragraph(anchor), 1);
+
+    val section1 = catPart.addSection("Overview")
+
+    val table: PdfPTable = new PdfPTable(2);
+
+    val c1: PdfPCell = new PdfPCell(new Phrase("Field"));
+    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c1);
+
+    val c2: PdfPCell = new PdfPCell(new Phrase("Value"));
+    c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c2);
+
+    table.addCell(new Phrase("Algorithm "))
+    table.addCell(new Phrase(name))
+
+    table.addCell(new Phrase("Pre Pro Technique:"))
+    table.addCell(new Phrase(best_result_res._1.toString))
+
+    table.addCell(new Phrase("Process: "))
+    table.addCell(new Phrase(best_result_res._2.best_result._1))
+
+    table.addCell(new Phrase("Norm Technique: "))
+    table.addCell(new Phrase( best_result_res._2.best_result._2.best_result._1))
+
+    table.addCell(new Phrase("Threshold: "))
+    table.addCell(new Phrase(best_result_res._2.best_result._2.best_result._2._1.toString))
+
+    table.addCell(new Phrase("Result (Macro)"))
+    table.addCell(new Phrase(best_result_res._2.best_result._2.best_result._2._2.macro_eval_res.toString))
+
+    table.addCell(new Phrase("Result (Micro)"))
+    table.addCell(new Phrase(best_result_res._2.best_result._2.best_result._2._2.micro_eval_res.toString))
+
+    section1.add(table)
+    val para_config = best_result_res._1
+
+
+    val section2 = catPart.addSection("Parameter Configuration")
+
+    val table2: PdfPTable = new PdfPTable(3);
+
+    val c1_2: PdfPCell = new PdfPCell(new Phrase("Category"));
+    c1_2.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table2.addCell(c1_2);
+
+    val c2_2: PdfPCell = new PdfPCell(new Phrase("Parameter"));
+    c2_2.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table2.addCell(c2_2);
+
+
+    val c3_2: PdfPCell = new PdfPCell(new Phrase("Value"));
+    c3_2.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table2.addCell(c3_2);
+
+    para_config.foreach{case(category,param_map)=>{
+      param_map.foreach{case(parameter,value)=>{
+        table2.addCell(category)
+        table2.addCell(parameter)
+        table2.addCell(value.toString)
+      }}
+    }}
+    section2.add(table2)
+
+    document.add(catPart)
+
+    document.close()
+  }
+
+  def createReportForExecutionRun(folder:String,name:String, results:ProcessEvalExecutionResultsNonSeparated,para_config:Map[String, Map[String, Double]]): Unit ={
+    val document: Document = new Document();
+    val writer: PdfWriter = PdfWriter.getInstance(document, new FileOutputStream(folder+"/"+name+".pdf"));
+
+    // step 3
+    document.open();
+
+    val cb: PdfContentByte = writer.getDirectContent();
+    val chart_width = PageSize.A4.getWidth().toFloat
+    val chart_height = (PageSize.A4.getHeight() / 2).toFloat;
+
+
+    //title page
+    document.add(startingTable(name, results,para_config))
+    document.newPage()
+    var i = 2;
+    results.results.foreach{case(name,result)=>{
+        val anchor = new Anchor("Outlier Analysis process technique " + name);
+        val chapter = new Chapter(new Paragraph(anchor), i);
+        //print best global result
+        printBestResult(name,result.best_result,chapter)
+        chapter.newPage()
+        //print global thresholds
+        printGlobalThresholdsPage(name,result.local_global_threshold.best_global_results, chapter)
+        chapter.newPage()
+
+        //print local thresholds
+        printLocalThresholdsPage(name,result.local_global_threshold.agg_local_optimum,result.local_global_threshold.local_optima_per_ds, chapter)
+        chapter.newPage()
+
+        //print top results pages
+        printPDFTopNEvaluatedPage(result.top_n_results, chapter)
+        chapter.newPage()
+        val title = new Paragraph("Precision Recall Curves for " +name)
+        val section = chapter.addSection(title)
+        document.add(chapter)
+        document.newPage()
+        printPrecisionRecallChart(result.local_global_threshold.global_results_per_threshold, cb,chart_width,chart_height,document)
+
+        i = i+1
+    }}
+
+    document.close()
+
+
+  }
+
+
+  def printBestResult(name: String, results: (String, (Double, AggregatedEvaluationResult)), chapter:Chapter):Unit = {
+    val title = new Paragraph("Best Result for  " + name);
+
+    val section = chapter.addSection(title)
+    // Second parameter is the number of the chapter
+
+    val best_result = results
+    val table: PdfPTable = new PdfPTable(2);
+
+    val c1: PdfPCell = new PdfPCell(new Phrase("Field"));
+    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c1);
+
+    val c2: PdfPCell = new PdfPCell(new Phrase("Value"));
+    c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c2);
+
+    table.addCell(new Phrase("Norm Technique"))
+    table.addCell(new Phrase(best_result._1))
+
+    table.addCell(new Phrase("threshold"))
+    table.addCell(new Phrase(best_result._2._1.toString))
+
+    table.addCell(new Phrase("F1 Measure (Macro)"))
+    table.addCell(new Phrase(best_result._2._2.macro_eval_res.f1Measure.toString))
+
+    table.addCell(new Phrase("Precision (Macro)"))
+    table.addCell(new Phrase(best_result._2._2.macro_eval_res.precision.toString))
+
+    table.addCell(new Phrase("Recall (Macro)"))
+    table.addCell(new Phrase(best_result._2._2.macro_eval_res.recall.toString))
+
+    table.addCell(new Phrase("F1 Measure (Micro)"))
+    table.addCell(new Phrase(best_result._2._2.micro_eval_res.f1Measure.toString))
+
+    table.addCell(new Phrase("Precision (Micro)"))
+    table.addCell(new Phrase(best_result._2._2.micro_eval_res.precision.toString))
+
+    table.addCell(new Phrase("Recall (Micro)"))
+    table.addCell(new Phrase(best_result._2._2.micro_eval_res.recall.toString))
+
+
+    section.add(table)
+
+  }
+
+
+  def startingTable(name: String, results: ProcessEvalExecutionResultsNonSeparated, para_config:Map[String, Map[String, Double]]):Element = {
+    val anchor = new Anchor("Results of Analysis for: " + name);
+    anchor.setName("results");
+
+    // Second parameter is the number of the chapter
+    val catPart = new Chapter(new Paragraph(anchor), 1);
+
+    val section1 = catPart.addSection("Overview")
+    val paragraph = new Paragraph("Best result based on threshold optimization is: " + results.best_result._1)
+    section1.add(paragraph)
+
+    val best_result = results.best_result._2.best_result
+    val table: PdfPTable = new PdfPTable(2);
+
+    val c1: PdfPCell = new PdfPCell(new Phrase("Field"));
+    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c1);
+
+    val c2: PdfPCell = new PdfPCell(new Phrase("Value"));
+    c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c2);
+
+    table.addCell(new Phrase("Process"))
+    table.addCell(new Phrase(results.best_result._1))
+
+    table.addCell(new Phrase("Norm Technique"))
+    table.addCell(new Phrase(best_result._1))
+
+    table.addCell(new Phrase("threshold"))
+    table.addCell(new Phrase(best_result._2._1.toString))
+
+    table.addCell(new Phrase("F1 Measure (Macro)"))
+    table.addCell(new Phrase(best_result._2._2.macro_eval_res.f1Measure.toString))
+
+    table.addCell(new Phrase("Precision (Macro)"))
+    table.addCell(new Phrase(best_result._2._2.macro_eval_res.precision.toString))
+
+    table.addCell(new Phrase("Recall (Macro)"))
+    table.addCell(new Phrase(best_result._2._2.macro_eval_res.recall.toString))
+
+    table.addCell(new Phrase("F1 Measure (Micro)"))
+    table.addCell(new Phrase(best_result._2._2.micro_eval_res.f1Measure.toString))
+
+    table.addCell(new Phrase("Precision (Micro)"))
+    table.addCell(new Phrase(best_result._2._2.micro_eval_res.precision.toString))
+
+    table.addCell(new Phrase("Recall (Micro)"))
+    table.addCell(new Phrase(best_result._2._2.micro_eval_res.recall.toString))
+
+
+    section1.add(table)
+
+
+    val section2 = catPart.addSection("Parameter Configuration")
+
+    val table2: PdfPTable = new PdfPTable(3);
+
+    val c1_2: PdfPCell = new PdfPCell(new Phrase("Category"));
+    c1_2.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table2.addCell(c1_2);
+
+    val c2_2: PdfPCell = new PdfPCell(new Phrase("Parameter"));
+    c2_2.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table2.addCell(c2_2);
+
+
+    val c3_2: PdfPCell = new PdfPCell(new Phrase("Value"));
+    c3_2.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table2.addCell(c3_2);
+
+    para_config.foreach{case(category,param_map)=>{
+      param_map.foreach{case(parameter,value)=>{
+        table2.addCell(category)
+        table2.addCell(parameter)
+        table2.addCell(value.toString)
+      }}
+    }}
+    section2.add(table2)
+
+
+    catPart
+  }
 
   def createHistogramForOutlierScores(results: Map[MatchRelation, Double], filename: String): (JFreeChart, JFreeChart) = {
 
@@ -51,19 +313,13 @@ object HistogramChartFactory {
 
     //compute aggregated result
 
-    val eval_results = charts.map(tuples => tuples._2.eval_at_top_k).toList
-    val aggregated_result = EvaluationMatchingRunner.computeAggregatedResults(eval_results)
-
-    document.add(printAggregatedStatisticsPage(aggregated_result))
+   // document.add(printGlobalThresholdsPage(optimal_thresholds._1))
     document.newPage()
 
-    document.add(printGlobalThresholdsPage(optimal_thresholds._1))
+    //document.add(printLocalThresholdsPage(optimal_thresholds._2, optimal_thresholds._3))
     document.newPage()
 
-    document.add(printLocalThresholdsPage(optimal_thresholds._2, optimal_thresholds._3))
-    document.newPage()
-
-    printPrecisionRecallChart(precision_recall_data, cb, width - 20, height - 30, document)
+  //  printPrecisionRecallChart(precision_recall_data, cb, width - 20, height - 30, document)
 
     for (chart_tuple <- charts) {
       document.add(printPDFStatisticsPage(chart_tuple._2))
@@ -85,7 +341,7 @@ object HistogramChartFactory {
     document.close
   }
 
-  def printPrecisionRecallChart(precision_recall_data: Map[String, Seq[(Double, AggregatedEvaluationResult)]], cb: PdfContentByte, width: Float, height: Float, document: Document): Unit = {
+  def printPrecisionRecallChart(precision_recall_data: Map[String, Seq[(Double, AggregatedEvaluationResult)]], cb: PdfContentByte, width: Float, height: Float, document:Document): Unit = {
 
     val series_per_technique = precision_recall_data.map { case (technique, results) => {
       val series_micro: XYSeries = new XYSeries(technique + " Micro Average");
@@ -128,12 +384,11 @@ object HistogramChartFactory {
   }
 
 
-  def printLocalThresholdsPage(agg_local_result: Map[String, AggregatedEvaluationResult], best_thresholds: Map[String, Seq[(Double, EvaluationResult)]]): Element = {
-    val anchor = new Anchor("Local threshold optimization results");
-    anchor.setName("Statistics");
+  def printLocalThresholdsPage(process_name:String,agg_local_result: Map[String, AggregatedEvaluationResult], best_thresholds: Map[String, Seq[(Double, EvaluationResult)]], chapter:Chapter) = {
 
-    // Second parameter is the number of the chapter
-    val catPart = new Chapter(new Paragraph(anchor), 1);
+    val title = new Paragraph("Local threshold optimization results" + process_name)
+    val section = chapter.addSection(title)
+
     val table: PdfPTable = new PdfPTable(3);
 
     val c1: PdfPCell = new PdfPCell(new Phrase("Norm Technique"));
@@ -154,16 +409,16 @@ object HistogramChartFactory {
       table.addCell(tuple._2.micro_eval_res.f1Measure.toString)
     })
 
-    catPart.add(table)
+    section.add(table)
 
-    catPart.newPage()
+    section.newPage()
 
     best_thresholds.foreach { case (norm_technique, thresholds) => {
-      catPart.add(printBestLocalThresholdTable(norm_technique, thresholds))
-      catPart.newPage()
+      section.add(printBestLocalThresholdTable(norm_technique, thresholds))
+      section.newPage()
     }
     }
-    catPart
+
   }
 
 
@@ -201,12 +456,10 @@ object HistogramChartFactory {
   }
 
 
-  def printGlobalThresholdsPage(best_thresholds: Map[String, (Double, AggregatedEvaluationResult)]): Element = {
-    val anchor = new Anchor("Threshold optimization results");
-    anchor.setName("Statistics");
+  def printGlobalThresholdsPage(process_name:String,best_thresholds: Map[String, (Double, AggregatedEvaluationResult)], chapter: Chapter) = {
+    val title = new Paragraph("Global Threshold optimization results" + process_name)
+    val section = chapter.addSection(title)
 
-    // Second parameter is the number of the chapter
-    val catPart = new Chapter(new Paragraph(anchor), 1);
     val table: PdfPTable = new PdfPTable(4);
 
     val c1: PdfPCell = new PdfPCell(new Phrase("Norm Technique"));
@@ -234,9 +487,8 @@ object HistogramChartFactory {
     })
 
 
-    catPart.add(table)
+    section.add(table)
 
-    catPart
   }
 
 
@@ -340,24 +592,6 @@ object HistogramChartFactory {
     table.addCell("Top Outlier Score")
     table.addCell(statistics.top_outlier_score.toString)
 
-    table.addCell("Precision at top k")
-    table.addCell(statistics.eval_at_top_k.precision.toString)
-
-    table.addCell("Recall at top k")
-    table.addCell(statistics.eval_at_top_k.recall.toString)
-
-    table.addCell("F1 Measure at top k")
-    table.addCell(statistics.eval_at_top_k.f1Measure.toString)
-
-    table.addCell("tp at top k")
-    table.addCell(statistics.eval_at_top_k.truePositives.toString)
-
-    table.addCell("fp at top k")
-    table.addCell(statistics.eval_at_top_k.falsePositives.toString)
-
-    table.addCell("fn at top k")
-    table.addCell(statistics.eval_at_top_k.FalseNegatives.toString)
-
 
 
 
@@ -365,6 +599,48 @@ object HistogramChartFactory {
 
     catPart
   }
+
+  def printPDFTopNEvaluatedPage(top_relations: Map[String, Map[String, Seq[(MatchRelation, Double, Boolean)]]], chapter:Chapter) = {
+
+    val ds_name = top_relations.keys.head
+    val result_by_technique = top_relations.values.head
+
+    val section = chapter.addSection("Top Results")
+
+    result_by_technique.foreach{case (norm_technique,results)=>{
+      val subsection = section.addSection("Top "+results.size + " for " + norm_technique)
+      val table: PdfPTable = new PdfPTable(3);
+
+      val c1: PdfPCell = new PdfPCell(new Phrase("Relation"));
+      c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+      table.addCell(c1);
+
+      val c2: PdfPCell = new PdfPCell(new Phrase("Value"));
+      c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+      table.addCell(c2);
+
+      val c3: PdfPCell = new PdfPCell(new Phrase("Tp"));
+      c3.setHorizontalAlignment(Element.ALIGN_CENTER);
+      table.addCell(c3);
+
+
+      for ((relation, score,tp) <- results) {
+        table.addCell(relation.toString)
+        table.addCell(score.toString)
+        if(tp){
+          table.addCell("X")
+        }else {
+          table.addCell("")
+        }
+
+      }
+
+      subsection.add(table)
+
+    }}
+
+  }
+
 
   def printPDFTopNPage(top_relations: Seq[(MatchRelation, Double)], ds_name: String, ref_alignment: Alignment): Element = {
     val anchor = new Anchor("Top Elements for " + ds_name);

@@ -148,7 +148,7 @@ object Runner {
   def runEvaluateFromRapidminerFile(path:String,ref_file:String, threshold:Double): Unit = {
     val file:File = new File(path)
     val matchings_and_dim = RapidminerJobs.readCSV(file)
-    val matchings = matchings_and_dim._2
+    val matchings = matchings_and_dim._3
     val selected =  MatchingSelector.greedyRankSelector(matchings,threshold)
     selected.foreach(matching => println(matching._1))
     val alignment = new Alignment(null,null, selected)

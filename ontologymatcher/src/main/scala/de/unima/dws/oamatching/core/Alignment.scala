@@ -108,13 +108,19 @@ class Alignment(val onto1:String, val onto2:String) {
   def evaluate(reference:Alignment) :EvaluationResult = {
 
     //
-    val tp =  correspondences.filter(cell => reference.correspondences.contains(cell)).size
+    val tp =  if(reference.correspondences.size ==0 ){0}else  {
+      correspondences.filter(cell => reference.correspondences.contains(cell)).size
+    }
     //val tp =  correspondences.count(cell => reference.correspondences.contains(cell))
     //val tp =  correspondences.filter(cell => reference.correspondences.exists(cell2 => cell.equals(cell2))).size
     //false positives only present in this correspondance
-    val fp = correspondences.filterNot(cell => reference.correspondences.contains(cell)).size
-    //true negatives
-    val fn =  reference.correspondences.filterNot(cell => correspondences.contains(cell)).size
+    val fp = if(reference.correspondences.size ==0 ){correspondences.size}else  {
+      correspondences.filterNot(cell => reference.correspondences.contains(cell)).size
+    }
+    //false negatives
+    val fn =  if(reference.correspondences.size ==0 ){0}else  {
+      reference.correspondences.filterNot(cell => correspondences.contains(cell)).size
+    }
 
     EvaluationResultAggregator.createEvaluationResult(tp,fp,fn)
 

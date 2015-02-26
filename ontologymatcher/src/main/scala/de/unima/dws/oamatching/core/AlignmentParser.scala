@@ -5,11 +5,14 @@ import java.net.URI
 
 import com.hp.hpl.jena.rdf.model._
 import com.hp.hpl.jena.util.FileManager
+import org.semanticweb.owlapi.model.OWLOntology
 
 import scala.collection
 import scala.collection.convert.Wrappers.JIteratorWrapper
+import scala.collection.immutable.HashSet
 import scala.collection.{immutable, mutable}
 import scala.xml.Elem
+import scala.collection.JavaConversions._
 
 /**
  * Created by mueller on 22/01/15.
@@ -66,6 +69,92 @@ object AlignmentParser {
       val entity2: URI = new URI(cell.getProperty(model.createProperty(namespace + "entity2")).getResource.getURI)
 
       new Cell(entity1, entity2, measure, relation, Cell.TYPE_UNKOWN)
+    }).toList
+
+
+    new Alignment(onto1_namespace, onto2_namespace, correspondences)
+  }
+
+  /**
+   * Add the relation owl type to the ontologies
+   * @param path_to_alignment
+   * @param path_to_onto1
+   * @param path_to_onto2
+   * @return
+   */
+  def parseRDFWithOntos(path_to_alignment: String, path_to_onto1:String, path_to_onto2:String): Alignment = {
+    val model: Model = ModelFactory.createDefaultModel()
+    val in: InputStream = FileManager.get().open(path_to_alignment)
+
+    if (in == null) {
+      //TODO ERROR handling
+    }
+
+    //parse ontos and make the IRIs of the classes and properties random access available
+    val onto1: OWLOntology = OntologyLoader.load(path_to_onto1)
+    val onto2: OWLOntology = OntologyLoader.load(path_to_onto2)
+
+    val onto1_obj_properties:Vector[String] = onto1.getObjectPropertiesInSignature().toVector.map(property => property.getIRI.toString).toVector
+    val onto2_obj_properties:Vector[String] = onto2.getObjectPropertiesInSignature().toVector.map(property => property.getIRI.toString).toVector
+
+    val onto1_data_properties:Vector[String] = onto1.getDataPropertiesInSignature().toVector.map(property => property.getIRI.toString).toVector
+    val onto2_data_properties:Vector[String] =  onto2.getDataPropertiesInSignature().toVector.map(property => property.getIRI.toString).toVector
+
+    val onto1_classes:Vector[String] = onto1.getClassesInSignature().map(o_class => o_class.getIRI.toString).toVector
+    val onto2_classes:Vector[String] =  onto2.getClassesInSignature().map(o_class => o_class.getIRI.toString).toVector
+
+
+    // read the RDF/XML file
+    model.read(in, null)
+
+
+    val namespace: String = "http://knowledgeweb.semanticweb.org/heterogeneity/alignment"
+    val alignment_node: Resource = model.createResource(namespace + "Alignment")
+
+    val iter: StmtIterator = model.listStatements(null, null, alignment_node.asInstanceOf[Resource])
+
+    if (!iter.hasNext) {
+      //TODO Error handling
+      println("fail")
+    }
+    val alignment_parent: Resource = iter.nextStatement().getSubject
+    //get onto1
+    val alignment_onto1_query = model.createProperty(namespace + "onto1")
+    val onto1_namespace = alignment_parent.getProperty(alignment_onto1_query).getResource.getURI
+
+    //get onto2
+    val alignment_onto2_query = model.createProperty(namespace + "onto2")
+    val onto2_namespace = alignment_parent.getProperty(alignment_onto2_query).getResource.getURI
+
+
+    val alignment_cell_query = model.createProperty(namespace + "map")
+    //wrap and map to RDFResource
+    val alignment_cells: List[Resource] = JIteratorWrapper(alignment_parent.listProperties(alignment_cell_query)).toList.map(cell => cell.getResource)
+
+
+    //map to cells
+    val correspondences = alignment_cells.map(cell => {
+      val relation: String = cell.getProperty(model.createProperty(namespace + "relation")).getString
+
+      val measure: Double = cell.getProperty(model.createProperty(namespace + "measure")).getLiteral.getLexicalForm.toDouble
+
+      val entity1: URI = new URI(cell.getProperty(model.createProperty(namespace + "entity1")).getResource.getURI)
+      val entity2: URI = new URI(cell.getProperty(model.createProperty(namespace + "entity2")).getResource.getURI)
+
+      // add type of relation with ontos
+      val cell_type = if(onto1_classes.contains(entity1.toString) && onto2_classes.contains(entity2.toString)){
+        Cell.TYPE_CLASS
+      }else if(onto1_obj_properties.contains(entity1.toString) && onto2_obj_properties.contains(entity2.toString))  {
+        Cell.TYPE_OBJECT_PROPERTY
+      }else if(onto1_data_properties.contains(entity1.toString) && onto2_data_properties.contains(entity2.toString))  {
+        Cell.TYPE_OBJECT_PROPERTY
+      }else {
+        // if alignment is sound this should never happen
+        println("CONFLICT!!!!!")
+        Cell.TYPE_UNKOWN
+      }
+
+      new Cell(entity1, entity2, measure, relation, cell_type)
     }).toList
 
 

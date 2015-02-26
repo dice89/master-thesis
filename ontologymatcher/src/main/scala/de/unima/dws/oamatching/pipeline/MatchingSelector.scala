@@ -105,10 +105,16 @@ object MatchingSelector {
   }
 
 
-  def fuzzyGreedyRankSelectorSimple(raw_matchings: Map[MatchRelation, Double], threshold: Double, ratio_threshold: Double = 1.05): Map[MatchRelation, Double] = {
+
+  def fuzzyGreedyRankSelectorRatio: (Double) => (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double] = fuzzyGreedyRankSelector(selectFuzzySingleRatio)_
+  def fuzzyGreedyRankSelectorDelta: (Double) => (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double] = fuzzyGreedyRankSelector(selectFuzzySingleDelta)_
+
+
+
+  def fuzzyGreedyRankSelector(select_fct: (Double,Double, (MatchRelation, Double)) => Option[(MatchRelation, Double)]) (fuzzy_value:Double)(raw_matchings: Map[MatchRelation, Double], threshold: Double): Map[MatchRelation, Double] = {
     val matchings: Map[MatchRelation, Double] = raw_matchings.filter(tuple => tuple._2 >= threshold)
 
-    val sorted_matchings = raw_matchings.toList.sortWith(_._2 > _._2)
+    val sorted_matchings = matchings.toList.sortWith(_._2 > _._2)
 
     //sorted_matchings.foreach(println _)
 
@@ -130,10 +136,16 @@ object MatchingSelector {
         } else {
           //case one left is already in selected -> right not
           if (already_contained_left_threshold.contains(matching._1.left) && (!already_contained_right_threshold.contains(matching._1.right))) {
-            selectFuzzySingle(ratio_threshold, already_contained_left_threshold, matching)
+            val already_contained_sim_value: Double = already_contained_left_threshold.get(matching._1.left).getOrElse(0.0)
+
+            select_fct(fuzzy_value,already_contained_sim_value, matching )
+
             //case two right is already in selected -> left not
           } else if (already_contained_right_threshold.contains(matching._1.right) && (!already_contained_left_threshold.contains(matching._1.left))) {
-            selectFuzzySingle(ratio_threshold, already_contained_right_threshold, matching)
+            val already_contained_sim_value: Double = already_contained_right_threshold.get(matching._1.right).getOrElse(0.0)
+
+            select_fct(fuzzy_value,already_contained_sim_value, matching )
+
             //both are in -> return option empty
           } else {
             Option.empty
@@ -144,18 +156,31 @@ object MatchingSelector {
     selected_matchings_raw.filter(_.isDefined).map(_.get).toMap
   }
 
+
+
   /**
    * Function to define wether or not to select an element already in the selected matchings should be considered
    * @param ratio_threshold
-   * @param already_contained_left_threshold
    * @param matching
    * @return
    */
-  def selectFuzzySingle(ratio_threshold: Double, already_contained_left_threshold: MutableMap[String, Double], matching: (MatchRelation, Double)): Option[(MatchRelation, Double)] = {
-    val already_contained_sim_value: Double = already_contained_left_threshold.get(matching._1.left).getOrElse(0.0)
+  def selectFuzzySingleRatio(ratio_threshold: Double,already_contained_sim_value:Double, matching: (MatchRelation, Double)): Option[(MatchRelation, Double)] = {
     val ratio = already_contained_sim_value / matching._2
     // E.g left has already a relation with 1.0 similarity and now a second comes with 0.95 => ratio = 1.0/0.95= 1.0526315789
     if (ratio < ratio_threshold) {
+      //take it
+      Option(matching)
+    } else {
+      //leave it
+      Option.empty
+    }
+  }
+
+  def selectFuzzySingleDelta(delta_threshold: Double,already_contained_sim_value:Double, matching: (MatchRelation, Double)): Option[(MatchRelation, Double)] = {
+
+    val delta = Math.abs(already_contained_sim_value - matching._2)
+    // E.g left has already a relation with 1.0 similarity and now a second comes with 0.95 => delta = 1.0-0.95= 0.05
+    if (delta <= delta_threshold) {
       //take it
       Option(matching)
     } else {

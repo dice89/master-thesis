@@ -24,7 +24,13 @@ object EvaluationResultAggregator {
       0.0
     }
 
-    val recall: Double = (truePositives).toDouble / (truePositives + falseNegatives).toDouble
+
+    val recall = if (truePositives + falseNegatives > 0) {
+      (truePositives).toDouble / (truePositives + falseNegatives).toDouble
+    } else {
+      0.0
+    }
+
     val fMeasure: Double = if (precision + recall > 0.0) {
       (2 * ((precision * recall) / (precision + recall)))
     } else {
@@ -64,7 +70,11 @@ object EvaluationResultAggregator {
     }
 
 
-    val recall: Double = (sum.truePositives).toDouble / (sum.truePositives + sum.FalseNegatives).toDouble
+    val recall=  if(  (sum.truePositives + sum.FalseNegatives) > 0){
+      (sum.truePositives).toDouble / (sum.truePositives + sum.FalseNegatives).toDouble
+    }else {
+      0.0
+    }
 
     //calculate with check for 0 in denominator
     val fMeasure: Double = if((precision + recall) > 0){

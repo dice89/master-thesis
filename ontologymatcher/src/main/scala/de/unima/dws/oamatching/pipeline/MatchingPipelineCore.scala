@@ -23,7 +23,7 @@ case class MatchingEvaluationProblem(ontology1: OWLOntology, ontology2: OWLOntol
 object MatchingPipelineCore{
 
 
-  def createMatchingPipeline(outlierFct: (String,FeatureVector)=>(Int,Map[MatchRelation,Double])) (normFct: (Int,Iterable[(MatchRelation,Double)])=>Iterable[(MatchRelation,Double)]): (MatchingProblem, Double, Double) => (Alignment, FeatureVector) = {
+  def createMatchingPipeline(outlierFct: (String,FeatureVector)=>(Int, Map[String, (Double, Double)],Map[MatchRelation, Double])) (normFct: (Int, Map[String, (Double, Double)],Map[MatchRelation, Double])=>Iterable[(MatchRelation,Double)]): (MatchingProblem, Double, Double) => (Alignment, FeatureVector) = {
     matchProblem(outlierFct)(normFct)
   }
   /**
@@ -32,7 +32,7 @@ object MatchingPipelineCore{
 
    * @return
    */
-  def matchProblem(outlierFct: (String,FeatureVector)=>(Int,Map[MatchRelation,Double])) (normFct: (Int,Iterable[(MatchRelation,Double)])=>Iterable[(MatchRelation,Double)])(problem: MatchingProblem,threshold:Double, remove_correlated_threshold:Double): (Alignment,FeatureVector) = {
+  def matchProblem(outlierFct: (String,FeatureVector)=>(Int, Map[String, (Double, Double)],Map[MatchRelation, Double])) (normFct: (Int, Map[String, (Double, Double)],Map[MatchRelation, Double])=>Iterable[(MatchRelation,Double)])(problem: MatchingProblem,threshold:Double, remove_correlated_threshold:Double): (Alignment,FeatureVector) = {
     val start_time = System.currentTimeMillis()
     val runtime = Runtime.getRuntime
     val mb = 1024*1024
@@ -60,7 +60,7 @@ object MatchingPipelineCore{
 
     println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
     println("Start Outlier analysis")
-    val outlier_analysis_result: (Int, Map[MatchRelation, Double]) =  outlierFct(problem.name , filtered_outlier_analysis_vector)
+    val outlier_analysis_result: (Int, Map[String, (Double, Double)],Map[MatchRelation, Double]) =  outlierFct(problem.name , filtered_outlier_analysis_vector)
 
     println("Outlier Analysis Done")
     println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory)/mb))
@@ -75,24 +75,15 @@ object MatchingPipelineCore{
     (alignment,filtered_outlier_analysis_vector)
   }
 
-
-  def postProcessMatchings(normFct: (Int, Iterable[(MatchRelation, Double)]) => Iterable[(MatchRelation, Double)], threshold: Double, outlier_analysis_result: (Int, Map[MatchRelation, Double])): Alignment = {
+  /**
+   * Post processing of the results:
+   * @param normFct
+   * @param threshold
+   * @param outlier_analysis_result
+   * @return
+   */
+  def postProcessMatchings(normFct: (Int, Map[String, (Double, Double)],Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], threshold: Double, outlier_analysis_result: (Int, Map[String, (Double, Double)],Map[MatchRelation, Double])): Alignment = {
     val final_result: Iterable[(MatchRelation, Double)] = normFct.tupled(outlier_analysis_result)
-    /*
-    val final_result: Iterable[(MatchRelation, Double)] = if(do_dim_norm > 0.0){
-
-      val dims = outlier_analysis_result._1
-
-      println(dims)
-      val maxDistance = Math.sqrt(dims.toDouble*4)
-      println("dim norm " + maxDistance)
-      outlier_analysis_result._2.view.map{case (match_relation,distance) =>{
-        (match_relation, (distance/maxDistance))
-      }
-
-      }
-    }else outlier_analysis_result._2*/
-
 
     //now perform outlier analysis
     println("Namespace Filtering done")

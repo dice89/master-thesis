@@ -8,12 +8,14 @@ import de.unima.dws.oamatching.pipeline.evaluation.EvaluationMatchingRunner
 import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
 import de.unima.dws.oamatching.pipeline.{MatchingPipelineCore, ScoreNormalizationFunctions}
 
+import scala.collection.immutable.Map
+
 /**
  * Created by mueller on 18/02/15.
  */
 object FileBasedThresholdOptimization extends App {
   RapidminerJobs.init()
-  analyseAndEvaluate("/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/oacode_lof_regular.rmp", ParameterOptimizer.getDoubleGrid(0.95, 0.999999999, 10))
+  /*analyseAndEvaluate("/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluation/oacode_lof_regular.rmp", ParameterOptimizer.getDoubleGrid(0.95, 0.999999999, 10))
 
   def analyseAndEvaluate(rapidminer_file: String, thresholds: Seq[Double]): Unit = {
     val pairs: List[(File, File)] = MiscExperiments.getListOfMatchingRefPairs
@@ -21,7 +23,7 @@ object FileBasedThresholdOptimization extends App {
     val results: Map[Double, AggregatedEvaluationResult] = thresholds.map(threshold => {
       val eval_res = pairs.map { case (ref_file, matching_file) => {
         val ref_alingment = AlignmentParser.parseRDF(ref_file)
-        val result: (Int, Map[MatchRelation, Double]) = RapidminerJobs.rapidminerOutlierDetectionExperiments(rapidminer_file, matching_file)
+        val result: (Int, Map[String, (Double, Double)],Map[MatchRelation, Double]) = RapidminerJobs.rapidminerOutlierDetectionExperiments(rapidminer_file, matching_file,null)
         val alignment = MatchingPipelineCore.postProcessMatchings(ScoreNormalizationFunctions.normalizeByGaussianScaling, threshold, result)
 
         val res = alignment.evaluate(ref_alingment)
@@ -45,5 +47,5 @@ object FileBasedThresholdOptimization extends App {
 
     println("Result: " + best_res._2)
   }
-
+*/
 }

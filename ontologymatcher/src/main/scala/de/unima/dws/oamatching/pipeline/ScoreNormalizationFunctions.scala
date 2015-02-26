@@ -5,6 +5,8 @@ import org.apache.commons.math.stat.descriptive.moment.Mean
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation
 import org.apache.commons.math3.special.{Gamma, Erf}
 
+import scala.collection.immutable.Map
+
 /**
  * Created by mueller on 10/02/15.
  */
@@ -13,7 +15,7 @@ object ScoreNormalizationFunctions {
   val mean_computer = new Mean()
 
 
-  def getNormFunction(normFCT:String): (Int, Iterable[(MatchRelation, Double)]) => Iterable[(MatchRelation, Double)] = {
+  def getNormFunction(normFCT:String): (Int, Map[String, (Double, Double)],Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)] = {
     normFCT match {
       case "none" => noNormalization _
       case "maxeuclidean"  =>  normalizeByMaxEuclideanDistance _
@@ -22,11 +24,18 @@ object ScoreNormalizationFunctions {
     }
   }
 
-  def normalizeByMaxEuclideanDistance(dimensions: Int, relations: Iterable[(MatchRelation, Double)]): Iterable[(MatchRelation, Double)] = {
-    val maxDistance = Math.sqrt(dimensions.toDouble * 4)
+  def normalizeByMaxEuclideanDistance(dimensions: Int, max_min_by_dim:Map[String, (Double, Double)],relations: Iterable[(MatchRelation, Double)]): Iterable[(MatchRelation, Double)] = {
+    //val maxDistance = Math.sqrt(dimensions.toDouble * 4)
 
+    //calc max distance by min max difference
+
+    val squared =  max_min_by_dim.map(tuple => Math.pow((tuple._2._1-tuple._2._2),2.0))
+    val squared_sum = squared.reduceLeft(_+_)
+    val max_distance = Math.sqrt(squared_sum)
+
+    println("MAX Distance "+ max_distance)
     relations.view.map { case (match_relation, distance) => {
-      (match_relation, (distance / maxDistance))
+      (match_relation, (distance / max_distance))
     }
     }
   }
@@ -37,7 +46,7 @@ object ScoreNormalizationFunctions {
    * @param relations
    * @return
    */
-  def normalizeByGaussianScaling(dimensions: Int, relations: Iterable[(MatchRelation, Double)]): Iterable[(MatchRelation, Double)] = {
+  def normalizeByGaussianScaling(dimensions: Int, max_min_by_dim:Map[String, (Double, Double)], relations: Iterable[(MatchRelation, Double)]): Iterable[(MatchRelation, Double)] = {
 
     val values = relations.unzip._2.toArray
 
@@ -56,7 +65,7 @@ object ScoreNormalizationFunctions {
   }
 
 
-  def normalizeByGammaScaling(dimensions: Int, relations: Iterable[(MatchRelation, Double)]): Iterable[(MatchRelation, Double)] = {
+  def normalizeByGammaScaling(dimensions: Int, max_min_by_dim:Map[String, (Double, Double)], relations: Iterable[(MatchRelation, Double)]): Iterable[(MatchRelation, Double)] = {
 
     def cdfGamma(k:Double,theta:Double) (param:Double):Double = {
       Gamma.regularizedGammaP(k,param/theta)
@@ -84,17 +93,24 @@ object ScoreNormalizationFunctions {
     }
     }
   }
-  def normalizeByZScore(dimensions: Int, relations: Iterable[(MatchRelation, Double)]): Iterable[(MatchRelation, Double)] = {
+  def normalizeByZScore(dimensions: Int, max_min_by_dim:Map[String, (Double, Double)], relations: Iterable[(MatchRelation, Double)]): Iterable[(MatchRelation, Double)] = {
     val values = relations.unzip._2.toArray
 
     val stdev = stdev_computer.evaluate(values)
     val mean = mean_computer.evaluate(values)
 
-    relations.view.map { case (match_relation, distance) => {
+    val z_scaled = relations.view.map { case (match_relation, distance) => {
 
       val scaled = Math.max(0,(distance - mean) / (stdev))
 
       (match_relation, scaled)
+    }
+    }
+
+    val max_z:Double = z_scaled.maxBy(tuple => tuple._2)._2
+
+    z_scaled.map { case (match_relation, distance) => {
+      (match_relation, distance/max_z)
     }
     }
   }
@@ -102,7 +118,7 @@ object ScoreNormalizationFunctions {
 
 
 
-  def noNormalization(dimensions: Int, relations: Iterable[(MatchRelation, Double)]): Iterable[(MatchRelation, Double)] = {
+  def noNormalization(dimensions: Int, max_min_by_dim:Map[String, (Double, Double)], relations: Iterable[(MatchRelation, Double)]): Iterable[(MatchRelation, Double)] = {
     relations
   }
 

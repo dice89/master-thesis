@@ -10,8 +10,6 @@ import org.semanticweb.owlapi.model.{OWLOntologyManager, IRI, OWLOntology}
  */
 object OntologyLoader {
 
-
-
   def load(onto_file:File):OWLOntology = {
     val manager: OWLOntologyManager = OWLManager.createOWLOntologyManager()
 
