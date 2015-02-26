@@ -2,7 +2,6 @@ ontologymatcher/target
 ontologymatcher/.idea
 ontologymatcher/project/
 tudarmstadtmatcher
-ontologymatcher/matchings
 *.log
 
 ontologymatcher/runtime.log
