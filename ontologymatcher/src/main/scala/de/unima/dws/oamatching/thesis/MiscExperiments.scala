@@ -196,23 +196,6 @@ object MiscExperiments extends App {
       real_vector
     }).toVector.filter(vector => vector.size > 1).zipWithIndex.par;
 
-    /*val distances =  for((vector_a,index_a)<-file_as_vector;
-         (vector_b,index_b)<-file_as_vector)yield {
-       val euclidean_distance = computeEuclideanDistance(vector_a,vector_b)
-       euclidean_distance
-     }
-
-     val mean = distances.reduceLeft(_+_)/distances.length
-
-     //println(mean)
-
-     val variance = distances.map(distance => Math.pow(distance -mean,2.0)).reduceLeft(_ + _)/distances.length
-
-     //println(variance)
-
-     val stdev = Math.sqrt(variance)
- */
-    //println(stdev)
 
     (file_as_vector.size, file_as_vector.head._1.size, 0.0, 0.0, 0.0)
     //(file_as_vector.size,file_as_vector.head._1.size,mean,variance,stdev)

@@ -103,11 +103,22 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   val matching_pairs: List[(File, File)] = MiscExperiments.getListOfMatchingRefPairs
 
 
-  runAllNonSeparated("cblof_regular_x_means","thesisexperiments/outliereval",matching_pairs, select_fct)
+  def runAllNonSeparatedForAllAlgos(base_folder:String, matching_pairs: List[(File, File)] , select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double]): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
+    val results = IMPLEMENTED_OUTLIER_METHODS_BY_NAME.map{case(name,files)=> {
+      runAllNonSeparated("cblof_regular_x_means","thesisexperiments/outliereval",matching_pairs, select_fct)
+    }}
+
+    val best_result: (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) =  results.maxBy(_._2._2.best_result._2.best_result._2._2.macro_eval_res.f1Measure)
+    HistogramChartFactory.createExecutionSummaryReport(base_folder,"best_result",best_result)
+
+    best_result
+  }
+
+
 
   def runAllNonSeparated(outlier_method: String, base_folder:String, matching_pairs: List[(File, File)] , select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double]): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
 
-    val processes: OutlierEvaluationProcessesBySepartation = parseOutlierEvaluationProcesses("/Users/mueller/Documents/master-thesis/RapidminerRepo/OutlierEvaluationV2", IMPLEMENTED_OUTLIER_METHODS_BY_NAME.get(outlier_method).get)
+    val processes: OutlierEvaluationProcessesBySepartation = parseOutlierEvaluationProcesses("../RapidminerRepo/OutlierEvaluationV2", IMPLEMENTED_OUTLIER_METHODS_BY_NAME.get(outlier_method).get)
 
     //check if folder exists
     val base_folder_name: String =  base_folder+"/"+ outlier_method

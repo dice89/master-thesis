@@ -22,8 +22,6 @@ oaMatcherCode/output.csv
 
 ontologymatcher/test_result.csv
 
-ontologymatcher/thesisexperiments
-
 ontologymatcher/vectortest_train.csv
 
 oaMatcherCode/matching_matcher_result.csv
@@ -31,3 +29,5 @@ oaMatcherCode/matching_matcher_result.csv
 ontologymatcher/output.csv
 
 *.xlsx
+
+ontologymatcher/thesisexperiments/outliereval
