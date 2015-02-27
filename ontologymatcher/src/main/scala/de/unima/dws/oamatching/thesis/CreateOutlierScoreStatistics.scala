@@ -81,7 +81,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
   def runAllNonSeparatedForAllAlgos(base_folder:String, matching_pairs: List[(File, File)] , select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double]): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
     val results = IMPLEMENTED_OUTLIER_METHODS_BY_NAME.map{case(name,files)=> {
-      runAllNonSeparated("cblof_regular_x_means",base_folder,matching_pairs, select_fct)
+      runAllNonSeparated(name,base_folder,matching_pairs, select_fct)
     }}
 
     val best_result: (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) =  results.maxBy(_._2._2.best_result._2.best_result._2._2.macro_eval_res.f1Measure)
