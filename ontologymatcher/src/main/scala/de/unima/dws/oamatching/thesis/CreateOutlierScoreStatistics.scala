@@ -31,15 +31,15 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
 
   val IMPLEMENTED_OUTLIER_METHODS_BY_NAME = Map("cblof_regular_db" -> "oacode_cblof_unweighted_regular_db_scan.rmp",
-    "cblof_regular_x_means" -> "oacode_cblof_unweighted_regular_x_means.rmp",
-    "cblof_x_means" -> "oacode_cblof_unweighted_x_means.rmp",
     "knn" -> "oacode_knn.rmp",
     "ldcof_regular_x_means" -> "oacode_ldcof_regular_x_means.rmp",
     "ldcof_regular_db_scan" -> "oacode_ldcof_regular_db_scan.rmp",
     "lcdof_x_means" -> "oacode_ldcof_x_means.rmp",
     "lof_regular" -> "oacode_lof_regular.rmp",
     "lof" -> "oacode_lof.rmp",
-    "loop" -> "oacode_loop.rmp")
+    "loop" -> "oacode_loop.rmp",
+    "cblof_regular_x_means" -> "oacode_cblof_unweighted_regular_x_means.rmp",
+    "cblof_x_means" -> "oacode_cblof_unweighted_x_means.rmp")
 
   val IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS: Map[String, String] = IMPLEMENTED_OUTLIER_METHODS_BY_NAME.map(tuple => (tuple._2, tuple._1))
 
