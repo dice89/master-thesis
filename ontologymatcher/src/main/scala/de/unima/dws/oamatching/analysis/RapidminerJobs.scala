@@ -489,6 +489,8 @@ object RapidminerJobs {
 
   def configurePrePro(parameters: Map[String, Map[String, Double]], pre_pro_key: String, process: RProcess, pca_operator_name: String, remove_useless_name: String, remove_correlated_name: String) {
 
+
+    println(pre_pro_key)
     val pre_pro_params = parameters.get(pre_pro_key).get
     // Handle pre_pro_config
     if (pre_pro_key.equals("pca_fixed")) {
