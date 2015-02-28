@@ -12,7 +12,7 @@ libraryDependencies += "net.sourceforge.owlapi" % "owlapi-distribution" % "4.0.1
 
 libraryDependencies += "org.apache.jena" % "jena-core" % "2.12.1"
 
-libraryDependencies += "edu.cmu.lti" % "ws4j" % "1.0.1"
+//gilibraryDependencies += "edu.cmu.lti" % "ws4j" % "1.0.1"
 
 libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.1.1"
 
@@ -22,15 +22,15 @@ libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.7.8"
 
 libraryDependencies += "secondstring" % "secondstring" % "20120620"
 
-libraryDependencies += "net.sf.jwordnet" % "jwnl" % "1.4_rc3"
+//libraryDependencies += "net.sf.jwordnet" % "jwnl" % "1.4_rc3"
 
-libraryDependencies += "fr.inrialpes.exmo" % "ontosim" % "2.4"
+//libraryDependencies += "fr.inrialpes.exmo" % "ontosim" % "2.4"
 
 libraryDependencies += "org.apache.lucene" % "lucene-analyzers-common" % "4.10.3"
 
 libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.7.8"
 
-libraryDependencies += "de.unima.alex" % "owlsimflood" % "1.0"
+//libraryDependencies += "de.unima.alex" % "owlsimflood" % "1.0"
 
 libraryDependencies +=  "org.scalaj" %% "scalaj-http" % "1.1.1"
 

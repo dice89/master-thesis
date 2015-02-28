@@ -75,7 +75,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     "cblof_regular_x_means" -> "oacode_cblof_unweighted_regular_x_means.rmp",
     "cblof_x_means" -> "oacode_cblof_unweighted_x_means.rmp"
   )
-  
+
   //    "lof_regular" -> "oacode_lof_regular.rmp",
  // "cblof_x_means" -> "oacode_cblof_unweighted_x_means.rmp"
 
