@@ -108,10 +108,6 @@ object RapidminerJobs {
 
     var process: RProcess = new RProcess(file);
 
-
-    println("KEY" + pre_pro_key)
-    println(parameters)
-
     val pca_operator_name = "PCA"
     val remove_useless_name = "REMOVE_USELESS"
     val remove_correlated_name = "REMOVE_CORRELATED"

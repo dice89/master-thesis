@@ -118,7 +118,7 @@
                 <parameter key="invert_selection" value="false"/>
                 <parameter key="include_special_attributes" value="true"/>
               </operator>
-              <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" height="94" name="Preprocess Remove Corr" width="90" x="450" y="30">
+              <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" height="94" name="Preprocess Remove Corr" width="90" x="380" y="120">
                 <parameter key="parallelize_nested_chain" value="false"/>
                 <process expanded="true">
                   <operator activated="true" class="replace_missing_values" compatibility="5.3.013" expanded="true" name="Replace Missing Values (4)">
@@ -254,8 +254,8 @@
                   <portSpacing port="sink_out 3" spacing="0"/>
                 </process>
               </operator>
-              <operator activated="true" class="anomalydetection:Replicator Neural Network (RNN)" compatibility="2.3.000" expanded="true" height="76" name="Replicator Neural Network (RNN)" width="90" x="581" y="30"/>
-              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (3)" width="90" x="648" y="120">
+              <operator activated="true" class="anomalydetection:Replicator Neural Network (RNN)" compatibility="2.3.000" expanded="true" height="76" name="Replicator Neural Network (RNN)" width="90" x="581" y="75"/>
+              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (3)" width="90" x="648" y="300">
                 <parameter key="remove_double_attributes" value="true"/>
                 <parameter key="join_type" value="inner"/>
                 <parameter key="use_id_attribute_as_key" value="true"/>
@@ -296,8 +296,8 @@
               <connect from_op="Select Attributes (3)" from_port="original" to_op="Select Attributes (5)" to_port="example set input"/>
               <connect from_op="Select Attributes (5)" from_port="example set output" to_op="Join (4)" to_port="left"/>
               <connect from_op="Preprocess Remove Corr" from_port="out 1" to_op="Replicator Neural Network (RNN)" to_port="example set"/>
-              <connect from_op="Preprocess Remove Corr" from_port="out 2" to_op="Join (3)" to_port="left"/>
-              <connect from_op="Replicator Neural Network (RNN)" from_port="example set" to_op="Join (3)" to_port="right"/>
+              <connect from_op="Preprocess Remove Corr" from_port="out 2" to_op="Join (3)" to_port="right"/>
+              <connect from_op="Replicator Neural Network (RNN)" from_port="example set" to_op="Join (3)" to_port="left"/>
               <connect from_op="Join (3)" from_port="join" to_op="Only Positive (2)" to_port="example set input"/>
               <connect from_op="Only Positive (2)" from_port="example set output" to_op="Join (4)" to_port="right"/>
               <connect from_op="Join (4)" from_port="join" to_op="Select Attributes (12)" to_port="example set input"/>

@@ -75,11 +75,9 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     "cblof_regular_x_means" -> "oacode_cblof_unweighted_regular_x_means.rmp",
     "cblof_x_means" -> "oacode_cblof_unweighted_x_means.rmp"
   )
-
-  /*val IMPLEMENTED_OUTLIER_METHODS_BY_NAME = Map(
-    "lof_regular" -> "oacode_lof_regular.rmp",
-    "cblof_x_means" -> "oacode_cblof_unweighted_x_means.rmp"
-  )*/
+  
+  //    "lof_regular" -> "oacode_lof_regular.rmp",
+ // "cblof_x_means" -> "oacode_cblof_unweighted_x_means.rmp"
 
   val IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS: Map[String, String] = IMPLEMENTED_OUTLIER_METHODS_BY_NAME.map(tuple => (tuple._2, tuple._1))
 
@@ -160,13 +158,15 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   RapidminerJobs.quit()
 
   def runAllForAllAlgosForAllSltcFunctions(base_folder: String, matching_pairs: List[(File, File)], parallel: Boolean, path_to_ontos_folder: String): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
-    val separated_folder = base_folder +"/separated"
-    createFolder(separated_folder)
-    val separated_best = runAllForAlgosForAllSlctFunctions(separated_folder, matching_pairs, parallel, path_to_ontos_folder, true)
 
     val non_separated_folder = base_folder +"/non_separated"
     createFolder(non_separated_folder)
     val non_separated_best = runAllForAlgosForAllSlctFunctions(non_separated_folder, matching_pairs, parallel, path_to_ontos_folder, false)
+
+
+    val separated_folder = base_folder +"/separated"
+    createFolder(separated_folder)
+    val separated_best = runAllForAlgosForAllSlctFunctions(separated_folder, matching_pairs, parallel, path_to_ontos_folder, true)
 
     val best_result =  if (separated_best._2._2.overall_agg_best.macro_eval_res.f1Measure > non_separated_best._2._2.overall_agg_best.macro_eval_res.f1Measure ) {
       println("separated is best")
@@ -357,8 +357,8 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
         Option((parameter_config, results))
       }
       catch {
-        case _:Throwable => {
-          println("FAIL")
+        case e:Throwable => {
+          e.printStackTrace()
           Option.empty
         }
       }
@@ -510,7 +510,6 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
       (technique, matchings_for_technique)
     }).toMap
 
-    results_by_techniques.foreach(elem => println(elem._2.size))
 
     //optimize for each matching technique and find global optimum
     val global_results: Map[String, Seq[(Double, AggregatedEvaluationResult)]] = results_by_techniques.map { case (name, list_of_matchings) => {

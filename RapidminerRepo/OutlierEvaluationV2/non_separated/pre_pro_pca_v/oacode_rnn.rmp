@@ -86,11 +86,11 @@
           <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" height="76" name="LOF Subprocess" width="90" x="112" y="30">
             <parameter key="parallelize_nested_chain" value="false"/>
             <process expanded="true">
-              <operator activated="true" class="generate_id" compatibility="5.3.013" expanded="true" name="Generate ID (2)">
+              <operator activated="true" class="generate_id" compatibility="5.3.013" expanded="true" height="76" name="Generate ID (2)" width="90" x="45" y="30">
                 <parameter key="create_nominal_ids" value="false"/>
                 <parameter key="offset" value="0"/>
               </operator>
-              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" name="Select Attributes (3)">
+              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (3)" width="90" x="180" y="30">
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
                 <parameter key="attributes" value="left|relation|right|owl_type"/>
@@ -104,7 +104,7 @@
                 <parameter key="invert_selection" value="true"/>
                 <parameter key="include_special_attributes" value="true"/>
               </operator>
-              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" name="Select Attributes (5)">
+              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (5)" width="90" x="315" y="30">
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
                 <parameter key="attributes" value="id|left|relation|right|owl_type"/>
@@ -118,7 +118,7 @@
                 <parameter key="invert_selection" value="false"/>
                 <parameter key="include_special_attributes" value="true"/>
               </operator>
-              <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" name="Preprocess PCA 6 (2)">
+              <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" height="94" name="Preprocess PCA 6 (2)" width="90" x="450" y="30">
                 <parameter key="parallelize_nested_chain" value="false"/>
                 <process expanded="true">
                   <operator activated="true" class="replace_missing_values" compatibility="5.3.013" expanded="true" name="Replace Missing Values (3)">
@@ -244,20 +244,20 @@
                   <portSpacing port="sink_out 3" spacing="0"/>
                 </process>
               </operator>
-              <operator activated="true" class="anomalydetection:Replicator Neural Network (RNN)" compatibility="2.3.000" expanded="true" name="Replicator Neural Network (RNN)"/>
-              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" name="Join (3)">
+              <operator activated="true" class="anomalydetection:Replicator Neural Network (RNN)" compatibility="2.3.000" expanded="true" height="76" name="Replicator Neural Network (RNN)" width="90" x="581" y="30"/>
+              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (3)" width="90" x="720" y="30">
                 <parameter key="remove_double_attributes" value="true"/>
                 <parameter key="join_type" value="inner"/>
                 <parameter key="use_id_attribute_as_key" value="true"/>
                 <list key="key_attributes"/>
                 <parameter key="keep_both_join_attributes" value="false"/>
               </operator>
-              <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" name="Only Positive (2)">
+              <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Only Positive (2)" width="90" x="45" y="120">
                 <parameter key="condition_class" value="attribute_value_filter"/>
                 <parameter key="parameter_string" value="sum &gt;0"/>
                 <parameter key="invert_filter" value="false"/>
               </operator>
-              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" name="Join (4)">
+              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (4)" width="90" x="180" y="120">
                 <parameter key="remove_double_attributes" value="true"/>
                 <parameter key="join_type" value="inner"/>
                 <parameter key="use_id_attribute_as_key" value="false"/>
@@ -266,7 +266,7 @@
                 </list>
                 <parameter key="keep_both_join_attributes" value="false"/>
               </operator>
-              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" name="Select Attributes (12)">
+              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (12)" width="90" x="447" y="525">
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
                 <parameter key="attributes" value="id|sum|cluster"/>
