@@ -78,7 +78,7 @@ object MatchingSelector {
   }
 
 
-  def greedyRankSelectorSimple(raw_matchings: Map[MatchRelation, Double], threshold: Double): Map[MatchRelation, Double] = {
+  def greedyRankSelectorSimpleDelta (fuzzy:Double) (raw_matchings: Map[MatchRelation, Double], threshold: Double): Map[MatchRelation, Double] = {
     val matchings: Map[MatchRelation, Double] = raw_matchings.filter(tuple => tuple._2 >= threshold)
 
     val sorted_matchings = matchings.toList.sortWith(_._2 > _._2)
@@ -103,9 +103,8 @@ object MatchingSelector {
 
     selected_matchings_raw.filter(_.isDefined).map(_.get).toMap
   }
-
-
-
+  def greedyRankSelectorSimple = greedyRankSelectorSimpleDelta(1.0)_
+  def greedyRankSelectorSimpleExp: (Double) => (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double] = greedyRankSelectorSimpleDelta _
   def fuzzyGreedyRankSelectorRatio: (Double) => (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double] = fuzzyGreedyRankSelector(selectFuzzySingleRatio)_
   def fuzzyGreedyRankSelectorDelta: (Double) => (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double] = fuzzyGreedyRankSelector(selectFuzzySingleDelta)_
 

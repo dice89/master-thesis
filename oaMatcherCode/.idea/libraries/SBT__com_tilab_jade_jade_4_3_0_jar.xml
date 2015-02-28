@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="SBT: com.tilab.jade:jade:4.3.0:jar">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/tilab/jade/jade/4.3.0/jade-4.3.0.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

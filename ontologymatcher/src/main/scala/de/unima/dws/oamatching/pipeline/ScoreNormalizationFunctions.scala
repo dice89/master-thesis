@@ -30,7 +30,7 @@ object ScoreNormalizationFunctions {
     //calc max distance by min max difference
 
     val squared =  max_min_by_dim.map(tuple => Math.pow((tuple._2._1-tuple._2._2),2.0))
-    val squared_sum = squared.reduceLeft(_+_)
+    val squared_sum = if(squared.size>0){squared.reduceLeft(_+_)}else {0.0}
     val max_distance = Math.sqrt(squared_sum)
 
     println("MAX Distance "+ max_distance)
@@ -107,7 +107,11 @@ object ScoreNormalizationFunctions {
     }
     }
 
-    val max_z:Double = z_scaled.maxBy(tuple => tuple._2)._2
+    val max_z:Double = if(z_scaled.size > 0) {
+      z_scaled.maxBy(tuple => tuple._2)._2
+    }else {
+      0.0
+    }
 
     z_scaled.map { case (match_relation, distance) => {
       (match_relation, distance/max_z)

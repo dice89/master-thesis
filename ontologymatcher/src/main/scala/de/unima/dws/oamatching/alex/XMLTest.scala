@@ -34,7 +34,7 @@ object XMLTest {
   println(transformXMLProcess(xml_file, Option.empty[FeatureVector]))
   */
 
-  def transformXMLProcess(path_to_file:String, vector:  Map[String,Int]): String = {
+  def transformXMLProcess(path_to_file:String, vector:  Map[String,Int], filename:String): String = {
 
     val xml_file: Elem = scala.xml.XML.loadFile(path_to_file)
 
@@ -113,9 +113,9 @@ object XMLTest {
     object process_transformer extends RuleTransformer(transform_process_elem)
 
     val file_to_save = process_transformer(xml_file)
-    val file_name = "test.rmp"
-    scala.xml.XML.save(file_name, file_to_save, "UTF-8", true, null)
-    file_name
+
+    scala.xml.XML.save("tmpprocesses/"+filename, file_to_save, "UTF-8", true, null)
+    "tmpprocesses/"+filename
   }
 
 }

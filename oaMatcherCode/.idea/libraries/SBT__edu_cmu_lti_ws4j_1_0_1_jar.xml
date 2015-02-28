@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="SBT: edu.cmu.lti:ws4j:1.0.1:jar">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/edu/cmu/lti/ws4j/1.0.1/ws4j-1.0.1.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

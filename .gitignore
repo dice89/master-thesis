@@ -4,16 +4,15 @@ ontologymatcher/project/
 tudarmstadtmatcher
 *.log
 
+ontologymatcher/tmpprocesses
 ontologymatcher/runtime.log
-
 ontologymatcher/project/target
 ontologymatcher/test.rmp
-
 ontologymatcher/matching_matcher_result.csv
 
 ontologymatcher/meta_matcher_result.csv
 
-oaMatcherCode/test_result.csv
+oaMatcherCode
 
 oaMatcherCode/result.csv
 
@@ -26,6 +25,8 @@ ontologymatcher/vectortest_train.csv
 oaMatcherCode/matching_matcher_result.csv
 
 ontologymatcher/output.csv
+
+ontologymatcher/thesisexperiments/outliermatchings/
 
 *.xlsx
 

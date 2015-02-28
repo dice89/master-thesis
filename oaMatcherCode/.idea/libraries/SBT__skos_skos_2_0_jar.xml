@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="SBT: skos:skos:2.0:jar">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/skos/skos/2.0/skos-2.0.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

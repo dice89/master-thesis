@@ -59,17 +59,40 @@ object HistogramChartFactory{
     table.addCell(new Phrase("Process: "))
     table.addCell(new Phrase(best_result_res._2.best_result._1))
 
-    table.addCell(new Phrase("Norm Technique: "))
-    table.addCell(new Phrase( best_result_res._2.best_result._2.best_result._1))
+    table.addCell(new Phrase("Separated? "))
+    table.addCell(new Phrase(best_result_res._2.separated.toString))
 
-    table.addCell(new Phrase("Threshold: "))
-    table.addCell(new Phrase(best_result_res._2.best_result._2.best_result._2._1.toString))
+
+    if(best_result_res._2.separated){
+
+      table.addCell(new Phrase("Norm Technique: "))
+      table.addCell(new Phrase( best_result_res._2.best_result._2.best_separated_result._1))
+
+      table.addCell(new Phrase("class threshold: "))
+      table.addCell(new Phrase( best_result_res._2.best_result._2.best_separated_result._2.c_threshold.toString))
+
+      table.addCell(new Phrase("dp threshold: "))
+      table.addCell(new Phrase( best_result_res._2.best_result._2.best_separated_result._2.dp_threshold.toString))
+
+      table.addCell(new Phrase("op threshold: "))
+      table.addCell(new Phrase( best_result_res._2.best_result._2.best_separated_result._2.op_threshold.toString))
+
+    }else {
+
+      table.addCell(new Phrase("Norm Technique: "))
+      table.addCell(new Phrase( best_result_res._2.best_result._2.best_result._1))
+
+      table.addCell(new Phrase("Threshold: "))
+      table.addCell(new Phrase(best_result_res._2.best_result._2.best_result._2._1.toString))
+
+    }
+
 
     table.addCell(new Phrase("Result (Macro)"))
-    table.addCell(new Phrase(best_result_res._2.best_result._2.best_result._2._2.macro_eval_res.toString))
+    table.addCell(new Phrase(best_result_res._2.overall_agg_best.macro_eval_res.toString))
 
     table.addCell(new Phrase("Result (Micro)"))
-    table.addCell(new Phrase(best_result_res._2.best_result._2.best_result._2._2.micro_eval_res.toString))
+    table.addCell(new Phrase(best_result_res._2.overall_agg_best.micro_eval_res.toString))
 
     section1.add(table)
     val para_config = best_result_res._1
@@ -125,31 +148,90 @@ object HistogramChartFactory{
     results.results.foreach{case(name,result)=>{
         val anchor = new Anchor("Outlier Analysis process technique " + name);
         val chapter = new Chapter(new Paragraph(anchor), i);
-        //print best global result
-        printBestResult(name,result.best_result,chapter)
-        chapter.newPage()
-        //print global thresholds
-        printGlobalThresholdsPage(name,result.local_global_threshold.best_global_results, chapter)
-        chapter.newPage()
+        if(result.separated){
 
-        //print local thresholds
-        printLocalThresholdsPage(name,result.local_global_threshold.agg_local_optimum,result.local_global_threshold.local_optima_per_ds, chapter)
-        chapter.newPage()
+          printBestResultSeparated(name,result.best_separated_result._1,result.best_separated_result._2,chapter)
+          chapter.newPage()
+          printGlobalThresholdsPageSeparated(name, result.best_separated_results,chapter)
+          chapter.newPage()
 
-        //print top results pages
-        printPDFTopNEvaluatedPage(result.top_n_results, chapter)
-        chapter.newPage()
-        val title = new Paragraph("Precision Recall Curves for " +name)
-        val section = chapter.addSection(title)
-        document.add(chapter)
-        document.newPage()
-        printPrecisionRecallChart(result.local_global_threshold.global_results_per_threshold, cb,chart_width,chart_height,document)
+        }else {
+          //print best global result
+          printBestResult(name,result.best_result,chapter)
+          chapter.newPage()
+          //print global thresholds
+          printGlobalThresholdsPage(name,result.local_global_threshold.best_global_results, chapter)
+          chapter.newPage()
+
+          //print local thresholds
+          printLocalThresholdsPage(name,result.local_global_threshold.agg_local_optimum,result.local_global_threshold.local_optima_per_ds, chapter)
+          chapter.newPage()
+
+          //print top results pages
+          printPDFTopNEvaluatedPage(result.top_n_results, chapter)
+          chapter.newPage()
+          val title = new Paragraph("Precision Recall Curves for " +name)
+          val section = chapter.addSection(title)
+          document.add(chapter)
+          document.newPage()
+          printPrecisionRecallChart(result.local_global_threshold.global_results_per_threshold, cb,chart_width,chart_height,document)
+
+        }
+
 
         i = i+1
     }}
 
     document.close()
 
+
+  }
+
+  def printBestResultSeparated(name:String, norm_technique:String, result:SeparatedResult, chapter:Chapter):Unit ={
+    val title = new Paragraph("Best Result for  " + name);
+
+    val section = chapter.addSection(title)
+    // Second parameter is the number of the chapter
+
+    val table: PdfPTable = new PdfPTable(2);
+
+    val c1: PdfPCell = new PdfPCell(new Phrase("Field"));
+    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c1);
+
+    val c2: PdfPCell = new PdfPCell(new Phrase("Value"));
+    c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c2);
+
+    table.addCell(new Phrase("Norm Technique"))
+    table.addCell(new Phrase(norm_technique))
+
+    table.addCell(new Phrase("class threshold"))
+    table.addCell(new Phrase(result.c_threshold.toString))
+
+    table.addCell(new Phrase("dp threshold"))
+    table.addCell(new Phrase(result.dp_threshold.toString))
+
+    table.addCell(new Phrase("op threshold"))
+    table.addCell(new Phrase(result.op_threshold.toString))
+
+    table.addCell(new Phrase("F1 Measure (Macro)"))
+    table.addCell(new Phrase(result.result.macro_eval_res.f1Measure.toString))
+
+    table.addCell(new Phrase("Precision (Macro)"))
+    table.addCell(new Phrase(result.result.macro_eval_res.precision.toString))
+
+    table.addCell(new Phrase("Recall (Macro)"))
+    table.addCell(new Phrase(result.result.macro_eval_res.recall.toString))
+
+    table.addCell(new Phrase("F1 Measure (Micro)"))
+    table.addCell(new Phrase(result.result.micro_eval_res.f1Measure.toString))
+
+    table.addCell(new Phrase("Precision (Micro)"))
+    table.addCell(new Phrase(result.result.micro_eval_res.precision.toString))
+
+    table.addCell(new Phrase("Recall (Micro)"))
+    table.addCell(new Phrase(result.result.micro_eval_res.recall.toString))
 
   }
 
@@ -226,29 +308,41 @@ object HistogramChartFactory{
     table.addCell(new Phrase("Process"))
     table.addCell(new Phrase(results.best_result._1))
 
-    table.addCell(new Phrase("Norm Technique"))
-    table.addCell(new Phrase(best_result._1))
 
-    table.addCell(new Phrase("threshold"))
-    table.addCell(new Phrase(best_result._2._1.toString))
+    table.addCell(new Phrase("C/DP/OP separated?"))
+    table.addCell(new Phrase(results.separated.toString))
+
+    if(!results.separated){
+      table.addCell(new Phrase("Norm Technique"))
+      table.addCell(new Phrase(best_result._1))
+
+      table.addCell(new Phrase("threshold"))
+      table.addCell(new Phrase(best_result._2._1.toString))
+    }else {
+      table.addCell(new Phrase("Norm Technique"))
+      table.addCell(new Phrase(results.best_result._2.best_separated_result._1))
+
+      table.addCell(new Phrase("Thresholds"))
+      table.addCell(new Phrase(results.best_result._2.best_separated_result._2.toString))
+    }
 
     table.addCell(new Phrase("F1 Measure (Macro)"))
-    table.addCell(new Phrase(best_result._2._2.macro_eval_res.f1Measure.toString))
+    table.addCell(new Phrase(results.overall_agg_best.macro_eval_res.f1Measure.toString))
 
     table.addCell(new Phrase("Precision (Macro)"))
-    table.addCell(new Phrase(best_result._2._2.macro_eval_res.precision.toString))
+    table.addCell(new Phrase(results.overall_agg_best.macro_eval_res.precision.toString))
 
     table.addCell(new Phrase("Recall (Macro)"))
-    table.addCell(new Phrase(best_result._2._2.macro_eval_res.recall.toString))
+    table.addCell(new Phrase(results.overall_agg_best.macro_eval_res.recall.toString))
 
     table.addCell(new Phrase("F1 Measure (Micro)"))
-    table.addCell(new Phrase(best_result._2._2.micro_eval_res.f1Measure.toString))
+    table.addCell(new Phrase(results.overall_agg_best.micro_eval_res.f1Measure.toString))
 
     table.addCell(new Phrase("Precision (Micro)"))
-    table.addCell(new Phrase(best_result._2._2.micro_eval_res.precision.toString))
+    table.addCell(new Phrase(results.overall_agg_best.micro_eval_res.precision.toString))
 
     table.addCell(new Phrase("Recall (Micro)"))
-    table.addCell(new Phrase(best_result._2._2.micro_eval_res.recall.toString))
+    table.addCell(new Phrase(results.overall_agg_best.micro_eval_res.recall.toString))
 
 
     section1.add(table)
@@ -454,6 +548,53 @@ object HistogramChartFactory{
 
     catPart
   }
+
+  def printGlobalThresholdsPageSeparated(process_name:String,best_thresholds: Map[String,SeparatedResult], chapter: Chapter) = {
+    val title = new Paragraph("Global Threshold optimization results" + process_name)
+    val section = chapter.addSection(title)
+
+    val table: PdfPTable = new PdfPTable(6);
+
+    val c1: PdfPCell = new PdfPCell(new Phrase("Norm Technique"));
+    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c1);
+
+    val c2: PdfPCell = new PdfPCell(new Phrase("c threshold"));
+    c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c2);
+
+    val c5: PdfPCell = new PdfPCell(new Phrase("dp threshold"));
+    c5.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c5);
+
+    val c6: PdfPCell = new PdfPCell(new Phrase("op threshold"));
+    c6.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c6);
+
+
+
+    val c3: PdfPCell = new PdfPCell(new Phrase("F1 Macro"));
+    c3.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c3);
+
+    val c4: PdfPCell = new PdfPCell(new Phrase("F1 Micro"));
+    c4.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c4);
+
+    best_thresholds.foreach(tuple => {
+      table.addCell(tuple._1)
+      table.addCell(tuple._2.c_threshold.toString)
+      table.addCell(tuple._2.dp_threshold.toString)
+      table.addCell(tuple._2.op_threshold.toString)
+      table.addCell(tuple._2.result.macro_eval_res.f1Measure.toString)
+      table.addCell(tuple._2.result.micro_eval_res.f1Measure.toString)
+    })
+
+
+    section.add(table)
+
+  }
+
 
 
   def printGlobalThresholdsPage(process_name:String,best_thresholds: Map[String, (Double, AggregatedEvaluationResult)], chapter: Chapter) = {
