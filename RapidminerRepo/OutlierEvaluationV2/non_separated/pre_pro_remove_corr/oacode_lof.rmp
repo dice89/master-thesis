@@ -117,7 +117,7 @@
           <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" height="94" name="Preprocess Remove Corr" width="90" x="380" y="30">
             <parameter key="parallelize_nested_chain" value="false"/>
             <process expanded="true">
-              <operator activated="true" class="replace_missing_values" compatibility="5.3.013" expanded="true" name="Replace Missing Values (4)">
+              <operator activated="true" class="replace_missing_values" compatibility="5.3.013" expanded="true" height="94" name="Replace Missing Values (4)" width="90" x="45" y="30">
                 <parameter key="return_preprocessing_model" value="false"/>
                 <parameter key="create_view" value="false"/>
                 <parameter key="attribute_filter_type" value="all"/>
@@ -135,7 +135,7 @@
                 <parameter key="default" value="zero"/>
                 <list key="columns"/>
               </operator>
-              <operator activated="true" class="normalize" compatibility="5.3.013" expanded="true" name="Normalize (4)">
+              <operator activated="true" class="normalize" compatibility="5.3.013" expanded="true" height="94" name="Normalize (4)" width="90" x="180" y="30">
                 <parameter key="return_preprocessing_model" value="false"/>
                 <parameter key="create_view" value="false"/>
                 <parameter key="attribute_filter_type" value="all"/>
@@ -154,7 +154,7 @@
                 <parameter key="min" value="0.0"/>
                 <parameter key="max" value="1.0"/>
               </operator>
-              <operator activated="true" class="generate_aggregation" compatibility="5.3.013" expanded="true" name="Generate Aggregation (4)">
+              <operator activated="true" class="generate_aggregation" compatibility="5.3.013" expanded="true" height="76" name="Generate Aggregation (4)" width="90" x="315" y="30">
                 <parameter key="attribute_name" value="sum"/>
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
@@ -172,7 +172,7 @@
                 <parameter key="keep_all" value="true"/>
                 <parameter key="ignore_missings" value="true"/>
               </operator>
-              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" name="Select Attributes (11)">
+              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (11)" width="90" x="574" y="39">
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
                 <parameter key="attributes" value="id||sum"/>
@@ -186,7 +186,7 @@
                 <parameter key="invert_selection" value="false"/>
                 <parameter key="include_special_attributes" value="false"/>
               </operator>
-              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" name="Select Attributes (13)">
+              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (13)" width="90" x="585" y="30">
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
                 <parameter key="attributes" value="sum|"/>
@@ -200,7 +200,7 @@
                 <parameter key="invert_selection" value="true"/>
                 <parameter key="include_special_attributes" value="false"/>
               </operator>
-              <operator activated="true" class="normalize" compatibility="5.3.013" expanded="true" name="Normalize (6)">
+              <operator activated="true" class="normalize" compatibility="5.3.013" expanded="true" height="94" name="Normalize (6)" width="90" x="720" y="30">
                 <parameter key="return_preprocessing_model" value="false"/>
                 <parameter key="create_view" value="false"/>
                 <parameter key="attribute_filter_type" value="all"/>
@@ -219,13 +219,13 @@
                 <parameter key="min" value="-1.0"/>
                 <parameter key="max" value="1.0"/>
               </operator>
-              <operator activated="true" class="remove_useless_attributes" compatibility="5.3.013" expanded="true" name="REMOVE_USELESS">
+              <operator activated="true" class="remove_useless_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_USELESS" width="90" x="45" y="120">
                 <parameter key="numerical_min_deviation" value="0.0"/>
                 <parameter key="nominal_useless_above" value="1.0"/>
                 <parameter key="nominal_remove_id_like" value="false"/>
                 <parameter key="nominal_useless_below" value="0.0"/>
               </operator>
-              <operator activated="true" class="remove_correlated_attributes" compatibility="5.3.013" expanded="true" name="REMOVE_CORRELATED">
+              <operator activated="true" class="remove_correlated_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_CORRELATED" width="90" x="439" y="75">
                 <parameter key="correlation" value="0.95"/>
                 <parameter key="filter_relation" value="greater"/>
                 <parameter key="attribute_order" value="original"/>

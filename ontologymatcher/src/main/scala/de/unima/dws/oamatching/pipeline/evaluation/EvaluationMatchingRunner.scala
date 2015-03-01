@@ -20,7 +20,7 @@ case class EvaluationMatchingTaskWithParameters(matching_problem: MatchingProble
 case class EvaluationMatchingTask(matching_problem: MatchingProblem, reference: Alignment)
 
 
-object EvaluationMatchingRunner {
+object EvaluationMatchingRunner extends EvaluationDataSetParser {
 
 
   def matchAndEvaluateConference(path_to_conf:String,config:RunConfiguration):Unit = {
@@ -28,11 +28,11 @@ object EvaluationMatchingRunner {
   }
 
   def matchAndEvaluate(matchingTasks:Seq[EvaluationMatchingTask], config: RunConfiguration, run_name:String) = {
-      val matching_tasks_with_parameters = matchingTasks.map(task => EvaluationMatchingTaskWithParameters(task.matching_problem,config, task.reference))
+    val matching_tasks_with_parameters = matchingTasks.map(task => EvaluationMatchingTaskWithParameters(task.matching_problem,config, task.reference))
 
-     val matching_task_results =matching_tasks_with_parameters.map(task => {
-        matchAndEvaluateSingle(task)
-      })
+    val matching_task_results =matching_tasks_with_parameters.map(task => {
+      matchAndEvaluateSingle(task)
+    })
 
     //may not efficient way but prepare each single datastructure
     val base_matcher_results: Seq[Map[String, EvaluationResult]] = matching_task_results.map(result => result.baseMatcherResults)
@@ -127,50 +127,6 @@ object EvaluationMatchingRunner {
     val aggregated_result_per_matcher: Map[String, AggregatedEvaluationResult] = result_per_matcher.map { case (matcher_name, eval_results) => (matcher_name, EvaluationResultAggregator.aggregateEvaluationResultsOption(eval_results))}.toMap
 
     aggregated_result_per_matcher
-  }
-
-  /**
-   * Parses the conference dataset from OAEI challenge
-   * @param path_to_folder
-   * @return
-   */
-  def parseConference(path_to_folder: String): Seq[EvaluationMatchingTask] = {
-    val folder: File = new File(path_to_folder + File.separator + "reference-alignment/")
-
-    val problems = for (ref_align_file <- folder.listFiles(new RdfFileFilter)) yield {
-
-      val ontos: List[String] = ref_align_file.getName().split("-").toList
-      val name_onto1: String = path_to_folder + File.separator + ontos(0).replaceAll("-", "") + ".owl"
-      val name_onto2: String = path_to_folder + File.separator + ontos(1).replaceAll("-", "").replaceAll(".rdf", "") + ".owl"
-
-
-      val onto1 = OntologyLoader.load(name_onto1)
-      val onto2 = OntologyLoader.load(name_onto2)
-      //parse alignments
-      val reference: Alignment =  AlignmentParser.parseRDF(ref_align_file.getAbsolutePath())
-
-      val name: String = ref_align_file.getName().dropRight(4)
-
-      val matching_problem = MatchingProblem(onto1, onto2, name)
-
-      EvaluationMatchingTask(matching_problem,reference)
-    }
-
-    problems
-  }
-
-
-  def parseSingle(f_onto1:String,f_onto2:String,f_reference:String):EvaluationMatchingTask = {
-
-    //name of the problem is the name of the rdf file alignment without .rdf extension
-    val name: String = f_reference.dropRight(4)
-    val onto1 = OntologyLoader.load(f_onto1)
-    val onto2 = OntologyLoader.load(f_onto2)
-    val reference: Alignment =  AlignmentParser.parseRDF(f_reference)
-
-    val matching_problem = MatchingProblem(onto1, onto2, name)
-
-    EvaluationMatchingTask(matching_problem,reference)
   }
 
 }

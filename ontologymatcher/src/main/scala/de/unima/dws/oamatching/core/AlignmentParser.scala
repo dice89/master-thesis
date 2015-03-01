@@ -4,6 +4,7 @@ import java.io.{File, InputStream}
 import java.net.URI
 
 import com.hp.hpl.jena.rdf.model._
+import com.hp.hpl.jena.rdf.model.impl.{LiteralImpl, ResourceImpl}
 import com.hp.hpl.jena.util.FileManager
 import org.semanticweb.owlapi.model.OWLOntology
 
@@ -47,32 +48,58 @@ object AlignmentParser {
     val alignment_parent: Resource = iter.nextStatement().getSubject
     //get onto1
     val alignment_onto1_query = model.createProperty(namespace + "onto1")
-    val onto1_namespace = alignment_parent.getProperty(alignment_onto1_query).getResource.getURI
+
+    val onto1_namespace_prop =  alignment_parent.getProperty(alignment_onto1_query)
+    val onto1_namespace =  if(onto1_namespace_prop.isInstanceOf[Literal]){
+      alignment_parent.getProperty(alignment_onto1_query).getString
+    }else {
+      alignment_parent.getProperty(alignment_onto1_query).getResource.getURI.toString
+    }
 
     //get onto2
     val alignment_onto2_query = model.createProperty(namespace + "onto2")
-    val onto2_namespace = alignment_parent.getProperty(alignment_onto2_query).getResource.getURI
 
+
+    val onto2_namespace_prop =  alignment_parent.getProperty(alignment_onto2_query)
+    val onto2_namespace =  if(onto1_namespace_prop.isInstanceOf[Literal]){
+      alignment_parent.getProperty(alignment_onto2_query).getString
+    }else {
+      alignment_parent.getProperty(alignment_onto2_query).getResource.getURI.toString
+    }
 
     val alignment_cell_query = model.createProperty(namespace + "map")
     //wrap and map to RDFResource
-    val alignment_cells: List[Resource] = JIteratorWrapper(alignment_parent.listProperties(alignment_cell_query)).toList.map(cell => cell.getResource)
+    val alignment_cells: List[RDFNode] = JIteratorWrapper(alignment_parent.listProperties(alignment_cell_query)).toList.map(cell => cell.getObject)
 
 
     //map to cells
     val correspondences = alignment_cells.map(cell => {
-      val relation: String = cell.getProperty(model.createProperty(namespace + "relation")).getString
+      if(cell.isResource){
+           val test = cell.asInstanceOf[ResourceImpl]
+      val relation: String = test.getProperty(model.createProperty(namespace + "relation")).getString
 
-      val measure: Double = cell.getProperty(model.createProperty(namespace + "measure")).getLiteral.getLexicalForm.toDouble
+      val measure: Double = test.getProperty(model.createProperty(namespace + "measure")).getLiteral.getLexicalForm.toDouble
 
-      val entity1: URI = new URI(cell.getProperty(model.createProperty(namespace + "entity1")).getResource.getURI)
-      val entity2: URI = new URI(cell.getProperty(model.createProperty(namespace + "entity2")).getResource.getURI)
+      val entity1: URI = new URI(test.getProperty(model.createProperty(namespace + "entity1")).getResource.getURI)
+      val entity2: URI = new URI(test.getProperty(model.createProperty(namespace + "entity2")).getResource.getURI)
 
-      new Cell(entity1, entity2, measure, relation, Cell.TYPE_UNKOWN)
+      Option(new Cell(entity1, entity2, measure, relation, Cell.TYPE_UNKOWN))
+
+
+      }else {
+        //means that in the alignment is an empty mapping in the form
+        // <map>
+        //
+        // </map>
+        // so ignore it
+        Option.empty
+      }
     }).toList
 
 
-    new Alignment(onto1_namespace, onto2_namespace, correspondences)
+    val cleaned_correspondences = correspondences.filter(_.isDefined).map(_.get)
+
+    new Alignment(onto1_namespace, onto2_namespace, cleaned_correspondences)
   }
 
   /**
@@ -120,45 +147,80 @@ object AlignmentParser {
     val alignment_parent: Resource = iter.nextStatement().getSubject
     //get onto1
     val alignment_onto1_query = model.createProperty(namespace + "onto1")
-    val onto1_namespace = alignment_parent.getProperty(alignment_onto1_query).getResource.getURI
+
+    val onto1_namespace_prop =  alignment_parent.getProperty(alignment_onto1_query)
+    val onto1_namespace =  if(onto1_namespace_prop.isInstanceOf[LiteralImpl]){
+      alignment_parent.getProperty(alignment_onto1_query).getString
+    }else {
+      try{
+        alignment_parent.getProperty(alignment_onto1_query).getResource.getURI.toString
+      }catch{
+        case _:Throwable =>  alignment_parent.getProperty(alignment_onto1_query).getString
+      }
+
+    }
 
     //get onto2
     val alignment_onto2_query = model.createProperty(namespace + "onto2")
-    val onto2_namespace = alignment_parent.getProperty(alignment_onto2_query).getResource.getURI
 
+
+    val onto2_namespace_prop =  alignment_parent.getProperty(alignment_onto2_query)
+    val onto2_namespace =  if(onto1_namespace_prop.isInstanceOf[LiteralImpl]){
+      alignment_parent.getProperty(alignment_onto2_query).getString
+    }else {
+      try{
+        alignment_parent.getProperty(alignment_onto2_query).getResource.getURI.toString
+      }catch{
+        case _:Throwable =>  alignment_parent.getProperty(alignment_onto2_query).getString
+      }
+    }
 
     val alignment_cell_query = model.createProperty(namespace + "map")
     //wrap and map to RDFResource
-    val alignment_cells: List[Resource] = JIteratorWrapper(alignment_parent.listProperties(alignment_cell_query)).toList.map(cell => cell.getResource)
+    val alignment_cells: List[RDFNode] = JIteratorWrapper(alignment_parent.listProperties(alignment_cell_query)).toList.map(cell => cell.getObject)
 
 
-    //map to cells
+
+
     val correspondences = alignment_cells.map(cell => {
-      val relation: String = cell.getProperty(model.createProperty(namespace + "relation")).getString
+      if(cell.isResource){
+        val cell_casted = cell.asInstanceOf[ResourceImpl]
+        val relation: String = cell_casted.getProperty(model.createProperty(namespace + "relation")).getString
 
-      val measure: Double = cell.getProperty(model.createProperty(namespace + "measure")).getLiteral.getLexicalForm.toDouble
+        val measure: Double = cell_casted.getProperty(model.createProperty(namespace + "measure")).getLiteral.getLexicalForm.toDouble
 
-      val entity1: URI = new URI(cell.getProperty(model.createProperty(namespace + "entity1")).getResource.getURI)
-      val entity2: URI = new URI(cell.getProperty(model.createProperty(namespace + "entity2")).getResource.getURI)
+        val entity1: URI = new URI(cell_casted.getProperty(model.createProperty(namespace + "entity1")).getResource.getURI)
+        val entity2: URI = new URI(cell_casted.getProperty(model.createProperty(namespace + "entity2")).getResource.getURI)
 
-      // add type of relation with ontos
-      val cell_type = if(onto1_classes.contains(entity1.toString) && onto2_classes.contains(entity2.toString)){
-        Cell.TYPE_CLASS
-      }else if(onto1_obj_properties.contains(entity1.toString) && onto2_obj_properties.contains(entity2.toString))  {
-        Cell.TYPE_OBJECT_PROPERTY
-      }else if(onto1_data_properties.contains(entity1.toString) && onto2_data_properties.contains(entity2.toString))  {
-        Cell.TYPE_OBJECT_PROPERTY
+        // add type of relation with ontos
+        val cell_type = if(onto1_classes.contains(entity1.toString) && onto2_classes.contains(entity2.toString)){
+          Cell.TYPE_CLASS
+        }else if(onto1_obj_properties.contains(entity1.toString) && onto2_obj_properties.contains(entity2.toString))  {
+          Cell.TYPE_OBJECT_PROPERTY
+        }else if(onto1_data_properties.contains(entity1.toString) && onto2_data_properties.contains(entity2.toString))  {
+          Cell.TYPE_OBJECT_PROPERTY
+        }else {
+          // individuals
+          println("TODO Individuals")
+          Cell.TYPE_UNKOWN
+        }
+
+        Option(new Cell(entity1, entity2, measure, relation, cell_type))
       }else {
-        // if alignment is sound this should never happen
-        println("CONFLICT!!!!!")
-        Cell.TYPE_UNKOWN
+        //means that in the alignment is an empty mapping in the form
+        // <map>
+        //
+        // </map>
+        // so ignore it
+        Option.empty
       }
-
-      new Cell(entity1, entity2, measure, relation, cell_type)
     }).toList
 
 
-    new Alignment(onto1_namespace, onto2_namespace, correspondences)
+    val cleaned_correspondences = correspondences.filter(_.isDefined).map(_.get)
+
+
+    new Alignment(onto1_namespace, onto2_namespace, cleaned_correspondences)
   }
 
   /**

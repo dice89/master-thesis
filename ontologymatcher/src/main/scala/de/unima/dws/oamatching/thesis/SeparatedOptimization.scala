@@ -4,7 +4,7 @@ import java.io.File
 import de.unima.dws.oamatching.analysis.{RapidminerJobs, SeparatedResults}
 import de.unima.dws.oamatching.core._
 import de.unima.dws.oamatching.pipeline.{ScoreNormalizationFunctions, MatchingSelector}
-import de.unima.dws.oamatching.pipeline.evaluation.EvaluationMatchingRunner
+import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingTask, EvaluationMatchingRunner}
 import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
 
 import scala.collection.immutable.Map
@@ -15,7 +15,7 @@ import scala.collection.immutable.Map
 trait SeparatedOptimization {
 
 
-  def executeProcessSeparated(run_number:Int,selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double],ref_matching_pairs: List[(File, File)], path_to_onto_folder: String, rapidminer_file: String, pre_pro_key: String,parameters: Map[String, Map[String, Double]], processes:Map[String, String]): ProcessEvalExecutionResultNonSeparated = {
+  def executeProcessSeparated(run_number:Int,selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double],ref_matching_pairs: List[(EvaluationMatchingTask, File)], rapidminer_file: String, pre_pro_key: String,parameters: Map[String, Map[String, Double]], processes:Map[String, String]): ProcessEvalExecutionResultNonSeparated = {
 
     val process_name = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.lastIndexOf("."));
     val process_name_with_ending = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.size);
@@ -25,14 +25,9 @@ trait SeparatedOptimization {
 
     val normalized_per_category = ref_matching_pairs.map { case (ref_file, matching_file) => {
 
-      //get ontos
-      val ontos: List[String] = ref_file.getName().split("-").toList
-      val name_onto1: String = path_to_onto_folder + File.separator + ontos(0).replaceAll("-", "") + ".owl"
-      val name_onto2: String = path_to_onto_folder + File.separator + ontos(1).replaceAll("-", "").replaceAll(".rdf", "") + ".owl"
 
-      val ref_alignment = AlignmentParser.parseRDFWithOntos(ref_file.getAbsolutePath(), name_onto1, name_onto2)
-
-      println(ref_file)
+      println(ref_file.matching_problem.name)
+      val ref_alignment: Alignment =ref_file.reference
 
       //build different reference alignments out of original one for different classes
       val classes_alignment = new Alignment(null, null, ref_alignment.correspondences.filter(_.owl_type.equals(Cell.TYPE_CLASS)).toList)
