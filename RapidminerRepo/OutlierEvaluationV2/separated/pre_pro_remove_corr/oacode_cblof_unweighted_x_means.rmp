@@ -6,7 +6,8 @@
     <macros/>
   </context>
   <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
-    <parameter key="logverbosity" value="init"/>
+    <parameter key="logverbosity" value="off"/>
+    <parameter key="logfile" value="/Users/mueller/Documents/master-thesis/ontologymatcher/test_rapidminer.log"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
     <parameter key="notification_email" value=""/>

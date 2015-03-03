@@ -7,6 +7,12 @@ import com.wcohen.ss.tokens.SimpleTokenizer
  * Created by mueller on 21/01/15.
  */
 object StringMeasures {
+  val jaccard: Jaccard = new Jaccard(new SimpleTokenizer(true, false))
+  val jaro = new Jaro()
+  val jarow = new JaroWinkler()
+  val mongeElkan: MongeElkan = new MongeElkan()
+  //scale result from 0-1
+  mongeElkan.setScaling(true)
 
       def measureEquality(a:String,b:String) :Double = {
         if(a.equals(b)) {
@@ -96,7 +102,6 @@ object StringMeasures {
    * @return
    */
   def computeJaccard(a: String, b: String): Double = {
-    val jaccard: Jaccard = new Jaccard(new SimpleTokenizer(true, false))
 
     val res = jaccard.score(jaccard.prepare(a.toLowerCase), jaccard.prepare(b.toLowerCase))
 
@@ -111,9 +116,7 @@ object StringMeasures {
    */
   def computeMongeElkan(a: String, b: String): Double = {
 
-    val mongeElkan: MongeElkan = new MongeElkan()
-    //scale result from 0-1
-    mongeElkan.setScaling(true)
+
     //perform score
     mongeElkan.score(a.toLowerCase, b.toLowerCase)
   }
@@ -125,13 +128,11 @@ object StringMeasures {
    * @return
    */
   def computeJaroWinkler(a:String,b:String):Double = {
-    val jarow = new JaroWinkler()
 
     jarow.score(a.toLowerCase,b.toLowerCase)
   }
 
   def computeJaro(a:String,b:String):Double = {
-    val jaro = new Jaro()
 
     jaro.score(a.toLowerCase,b.toLowerCase)
 

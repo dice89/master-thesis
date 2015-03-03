@@ -61,6 +61,9 @@ object RapidminerJobs {
     val file = new File(process_file);
 
     var process: RProcess = new RProcess(file);
+    process.getOperator("Process").setParameter("logverbosity","error")
+
+
 
     process.getOperator("ReadVector").setParameter("csv_file", input_csv.getAbsolutePath)
     process.getOperator("Output").setParameter("csv_file", output_csv.getAbsolutePath)
@@ -99,7 +102,7 @@ object RapidminerJobs {
     val meta_data_fields:List[String] = List("left","relation","right","owl_type")
     val matcher_name_to_index: Map[String, Int] = header_line.split(",").filterNot(field => meta_data_fields.contains(field)).zipWithIndex.toMap
 
-    val output_csv: File = new File("thesisexperiments/outliermatchings"+File.separator+process_type+s"_$run_number"+System.currentTimeMillis()+matching_file.getName);
+    val output_csv: File = new File("thesisexperiments/outliermatchings"+File.separator+process_type+s"_$run_number"+"_"+System.currentTimeMillis()+matching_file.getName);
 
     val file_name = pre_pro_key+process_type+System.currentTimeMillis().toString+".rmp"
     val process_file = XMLTest.transformXMLProcess(rapidminer_file, matcher_name_to_index,file_name)
@@ -107,6 +110,9 @@ object RapidminerJobs {
     val file = new File(process_file);
 
     var process: RProcess = new RProcess(file);
+
+    process.getOperator("Process").setParameter("logverbosity","error")
+
 
     val pca_operator_name = "PCA"
     val remove_useless_name = "REMOVE_USELESS"
@@ -212,19 +218,20 @@ object RapidminerJobs {
     val matcher_name_to_index: Map[String, Int] = header_line.split(",").filterNot(field => meta_data_fields.contains(field)).zipWithIndex.toMap
 
 
-    val output_csv_classes: File = new File("thesisexperiments/outliermatchings"+File.separator+process_type+s"classes_$run_number"+System.currentTimeMillis()+matching_file.getName);
-    val output_csv_dp: File = new File("thesisexperiments/outliermatchings"+File.separator+process_type+s"dp_$run_number"+System.currentTimeMillis()+matching_file.getName);
-    val output_csv_op: File = new File("thesisexperiments/outliermatchings"+File.separator+process_type+s"op_$run_number"+System.currentTimeMillis()+matching_file.getName);
+    val output_csv_classes: File = new File("thesisexperiments/outliermatchings"+File.separator+process_type+s"classes_$run_number"+"_"+System.currentTimeMillis()+matching_file.getName);
+    val output_csv_dp: File = new File("thesisexperiments/outliermatchings"+File.separator+process_type+s"dp_$run_number"+"_"+System.currentTimeMillis()+matching_file.getName);
+    val output_csv_op: File = new File("thesisexperiments/outliermatchings"+File.separator+process_type+s"op_$run_number"+"_"+System.currentTimeMillis()+matching_file.getName);
 
 
     val file_name = pre_pro_key+process_type+System.currentTimeMillis().toString+".rmp"
 
     val process_file = XMLTest.transformXMLProcess(rapidminer_file, matcher_name_to_index,file_name)
+
     val file = new File(process_file);
 
     println(process_file)
     var process: RProcess = new RProcess(file);
-
+    process.getOperator("Process").setParameter("logverbosity","error")
 
     configurePrePro(parameters, pre_pro_key, process, "PCA_C", "REMOVE_USELESS_C", "REMOVE_CORRELATED_C")
     configurePrePro(parameters, pre_pro_key, process, "PCA_DP", "REMOVE_USELESS_DP", "REMOVE_CORRELATED_DP")

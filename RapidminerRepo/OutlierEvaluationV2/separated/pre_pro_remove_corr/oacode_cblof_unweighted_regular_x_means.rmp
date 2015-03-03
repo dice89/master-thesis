@@ -6,7 +6,7 @@
     <macros/>
   </context>
   <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
-    <parameter key="logverbosity" value="init"/>
+    <parameter key="logverbosity" value="off"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
     <parameter key="notification_email" value=""/>
@@ -15,7 +15,7 @@
     <parameter key="parallelize_main_process" value="true"/>
     <process expanded="true">
       <operator activated="true" class="read_csv" compatibility="5.3.013" expanded="true" height="60" name="ReadVector" width="90" x="45" y="210">
-        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/ontologymatcher/matchings/cmt-confOf_raw_matchings.csv"/>
+        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/ontologymatcher/matchings/benchmarks/matchings/101-240_raw_matchings.csv"/>
         <parameter key="column_separators" value=","/>
         <parameter key="trim_lines" value="true"/>
         <parameter key="use_quotes" value="true"/>
@@ -39,42 +39,40 @@
           <parameter key="0" value="left.true.polynominal.attribute"/>
           <parameter key="1" value="relation.true.binominal.attribute"/>
           <parameter key="2" value="right.true.polynominal.attribute"/>
-          <parameter key="3" value="owl_type.true.polynominal.attribute"/>
+          <parameter key="3" value="owl_type.true.binominal.attribute"/>
           <parameter key="4" value="ngramDistance.true.real.attribute"/>
           <parameter key="5" value="wuPalmer.true.real.attribute"/>
           <parameter key="6" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelSimilarityFloodingMatcher.true.real.attribute"/>
           <parameter key="7" value="path.true.real.attribute"/>
           <parameter key="8" value="lin.true.real.attribute"/>
-          <parameter key="9" value="level2_jara_winklerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="10" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="11" value="jaroWinklerMeasure.true.real.attribute"/>
-          <parameter key="12" value="word2Vec.true.real.attribute"/>
-          <parameter key="13" value="level2_jara_winkler.true.real.attribute"/>
-          <parameter key="14" value="prefix.true.real.attribute"/>
-          <parameter key="15" value="level2_jara_winklerdeunimadwsoamatchingmatcherstructurallevelSimilarityFloodingMatcher.true.real.attribute"/>
-          <parameter key="16" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="17" value="word2VecStemmed.true.real.attribute"/>
-          <parameter key="18" value="jaccard.true.real.attribute"/>
-          <parameter key="19" value="level2_monge_elkan.true.real.attribute"/>
-          <parameter key="20" value="suffix.true.real.attribute"/>
-          <parameter key="21" value="esaSim.true.real.attribute"/>
-          <parameter key="22" value="level2_jaro.true.real.attribute"/>
-          <parameter key="23" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="24" value="smoaDistance.true.real.attribute"/>
-          <parameter key="25" value="jiangConrath.true.real.attribute"/>
-          <parameter key="26" value="needlemanWunsch2Distance.true.real.attribute"/>
-          <parameter key="27" value="umbcSim.true.real.attribute"/>
-          <parameter key="28" value="soft_tfidf_jaro.true.real.attribute"/>
-          <parameter key="29" value="mongeElkan.true.real.attribute"/>
-          <parameter key="30" value="simple_tfidf.true.real.attribute"/>
-          <parameter key="31" value="jaro_winkler_tfidf.true.real.attribute"/>
-          <parameter key="32" value="levenshteinDistance.true.real.attribute"/>
-          <parameter key="33" value="hammingDistance.true.real.attribute"/>
-          <parameter key="34" value="equalDistance.true.real.attribute"/>
-          <parameter key="35" value="subStringDistance.true.real.attribute"/>
-          <parameter key="36" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelSimilarityFloodingMatcher.true.real.attribute"/>
-          <parameter key="37" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelSimilarityFloodingMatcher.true.real.attribute"/>
-          <parameter key="38" value="jaroMeasure.true.real.attribute"/>
+          <parameter key="9" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
+          <parameter key="10" value="jaroWinklerMeasure.true.real.attribute"/>
+          <parameter key="11" value="word2Vec.true.real.attribute"/>
+          <parameter key="12" value="level2_jara_winkler.true.real.attribute"/>
+          <parameter key="13" value="prefix.true.real.attribute"/>
+          <parameter key="14" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
+          <parameter key="15" value="word2VecStemmed.true.real.attribute"/>
+          <parameter key="16" value="jaccard.true.real.attribute"/>
+          <parameter key="17" value="level2_monge_elkan.true.real.attribute"/>
+          <parameter key="18" value="suffix.true.real.attribute"/>
+          <parameter key="19" value="esaSim.true.real.attribute"/>
+          <parameter key="20" value="level2_jaro.true.real.attribute"/>
+          <parameter key="21" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
+          <parameter key="22" value="smoaDistance.true.real.attribute"/>
+          <parameter key="23" value="jiangConrath.true.real.attribute"/>
+          <parameter key="24" value="needlemanWunsch2Distance.true.real.attribute"/>
+          <parameter key="25" value="umbcSim.true.real.attribute"/>
+          <parameter key="26" value="soft_tfidf_jaro.true.real.attribute"/>
+          <parameter key="27" value="mongeElkan.true.real.attribute"/>
+          <parameter key="28" value="simple_tfidf.true.real.attribute"/>
+          <parameter key="29" value="jaro_winkler_tfidf.true.real.attribute"/>
+          <parameter key="30" value="levenshteinDistance.true.real.attribute"/>
+          <parameter key="31" value="hammingDistance.true.real.attribute"/>
+          <parameter key="32" value="equalDistance.true.real.attribute"/>
+          <parameter key="33" value="subStringDistance.true.real.attribute"/>
+          <parameter key="34" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelSimilarityFloodingMatcher.true.real.attribute"/>
+          <parameter key="35" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelSimilarityFloodingMatcher.true.real.attribute"/>
+          <parameter key="36" value="jaroMeasure.true.real.attribute"/>
         </list>
         <parameter key="read_not_matching_values_as_missings" value="true"/>
         <parameter key="datamanagement" value="double_array"/>
@@ -262,7 +260,7 @@
                     <parameter key="nominal_useless_below" value="0.0"/>
                   </operator>
                   <operator activated="true" class="remove_correlated_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_CORRELATED_OP" width="90" x="447" y="345">
-                    <parameter key="correlation" value="0.95"/>
+                    <parameter key="correlation" value="0.85"/>
                     <parameter key="filter_relation" value="greater"/>
                     <parameter key="attribute_order" value="original"/>
                     <parameter key="use_absolute_correlation" value="true"/>
@@ -406,8 +404,16 @@
               <portSpacing port="sink_out 2" spacing="0"/>
             </process>
           </operator>
+          <operator activated="true" class="generate_attributes" compatibility="5.3.013" expanded="true" height="76" name="Regular (3)" width="90" x="313" y="120">
+            <list key="function_descriptions">
+              <parameter key="outlier" value="max(0,outlier-1.0)"/>
+            </list>
+            <parameter key="use_standard_constants" value="true"/>
+            <parameter key="keep_all" value="true"/>
+          </operator>
           <connect from_port="in 1" to_op="DB CBLOF Regular (3)" to_port="in 1"/>
-          <connect from_op="DB CBLOF Regular (3)" from_port="out 1" to_port="out 1"/>
+          <connect from_op="DB CBLOF Regular (3)" from_port="out 1" to_op="Regular (3)" to_port="example set input"/>
+          <connect from_op="Regular (3)" from_port="example set output" to_port="out 1"/>
           <portSpacing port="source_in 1" spacing="0"/>
           <portSpacing port="source_in 2" spacing="0"/>
           <portSpacing port="sink_out 1" spacing="0"/>
@@ -425,7 +431,7 @@
         <parameter key="parallelize_try" value="false"/>
         <parameter key="parallelize_catch" value="false"/>
         <process expanded="true">
-          <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" height="76" name="DB CBLOF Regular (2)" width="90" x="313" y="165">
+          <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" height="76" name="DB CBLOF Regular (2)" width="90" x="179" y="165">
             <parameter key="parallelize_nested_chain" value="false"/>
             <process expanded="true">
               <operator activated="true" class="generate_id" compatibility="5.3.013" expanded="true" height="76" name="Generate ID (3)" width="90" x="45" y="30">
@@ -571,8 +577,8 @@
                     <parameter key="nominal_remove_id_like" value="false"/>
                     <parameter key="nominal_useless_below" value="0.0"/>
                   </operator>
-                  <operator activated="true" class="remove_correlated_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_CORRELATED_DP" width="90" x="482" y="75">
-                    <parameter key="correlation" value="0.95"/>
+                  <operator activated="true" class="remove_correlated_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_CORRELATED_DP" width="90" x="447" y="300">
+                    <parameter key="correlation" value="0.85"/>
                     <parameter key="filter_relation" value="greater"/>
                     <parameter key="attribute_order" value="original"/>
                     <parameter key="use_absolute_correlation" value="true"/>
@@ -716,8 +722,16 @@
               <portSpacing port="sink_out 2" spacing="0"/>
             </process>
           </operator>
+          <operator activated="true" class="generate_attributes" compatibility="5.3.013" expanded="true" height="76" name="Regular (2)" width="90" x="313" y="120">
+            <list key="function_descriptions">
+              <parameter key="outlier" value="max(0,outlier-1.0)"/>
+            </list>
+            <parameter key="use_standard_constants" value="true"/>
+            <parameter key="keep_all" value="true"/>
+          </operator>
           <connect from_port="in 1" to_op="DB CBLOF Regular (2)" to_port="in 1"/>
-          <connect from_op="DB CBLOF Regular (2)" from_port="out 1" to_port="out 1"/>
+          <connect from_op="DB CBLOF Regular (2)" from_port="out 1" to_op="Regular (2)" to_port="example set input"/>
+          <connect from_op="Regular (2)" from_port="example set output" to_port="out 1"/>
           <portSpacing port="source_in 1" spacing="0"/>
           <portSpacing port="source_in 2" spacing="0"/>
           <portSpacing port="sink_out 1" spacing="0"/>
@@ -734,13 +748,6 @@
           <portSpacing port="sink_out 1" spacing="0"/>
           <portSpacing port="sink_out 2" spacing="0"/>
         </process>
-      </operator>
-      <operator activated="true" class="generate_attributes" compatibility="5.3.013" expanded="true" height="76" name="Regular (2)" width="90" x="447" y="255">
-        <list key="function_descriptions">
-          <parameter key="outlier" value="max(0,outlier-0.5)"/>
-        </list>
-        <parameter key="use_standard_constants" value="true"/>
-        <parameter key="keep_all" value="true"/>
       </operator>
       <operator activated="true" class="print_to_console" compatibility="5.3.013" expanded="true" height="76" name="Print to Console (2)" width="90" x="581" y="255">
         <parameter key="log_value" value="Done with dp"/>
@@ -905,7 +912,7 @@
                     <parameter key="nominal_useless_below" value="0.0"/>
                   </operator>
                   <operator activated="true" class="remove_correlated_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_CORRELATED_C" width="90" x="447" y="300">
-                    <parameter key="correlation" value="0.95"/>
+                    <parameter key="correlation" value="0.85"/>
                     <parameter key="filter_relation" value="greater"/>
                     <parameter key="attribute_order" value="original"/>
                     <parameter key="use_absolute_correlation" value="true"/>
@@ -1049,8 +1056,16 @@
               <portSpacing port="sink_out 2" spacing="0"/>
             </process>
           </operator>
+          <operator activated="true" class="generate_attributes" compatibility="5.3.013" expanded="true" height="76" name="Regular" width="90" x="313" y="75">
+            <list key="function_descriptions">
+              <parameter key="outlier" value="max(0,outlier-1.0)"/>
+            </list>
+            <parameter key="use_standard_constants" value="true"/>
+            <parameter key="keep_all" value="true"/>
+          </operator>
           <connect from_port="in 1" to_op="DB CBLOF Regular" to_port="in 1"/>
-          <connect from_op="DB CBLOF Regular" from_port="out 1" to_port="out 1"/>
+          <connect from_op="DB CBLOF Regular" from_port="out 1" to_op="Regular" to_port="example set input"/>
+          <connect from_op="Regular" from_port="example set output" to_port="out 1"/>
           <portSpacing port="source_in 1" spacing="0"/>
           <portSpacing port="source_in 2" spacing="0"/>
           <portSpacing port="sink_out 1" spacing="0"/>
@@ -1064,13 +1079,6 @@
           <portSpacing port="sink_out 2" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="generate_attributes" compatibility="5.3.013" expanded="true" height="76" name="Regular" width="90" x="447" y="75">
-        <list key="function_descriptions">
-          <parameter key="outlier" value="max(0,outlier-0.5)"/>
-        </list>
-        <parameter key="use_standard_constants" value="true"/>
-        <parameter key="keep_all" value="true"/>
-      </operator>
       <operator activated="true" class="print_to_console" compatibility="5.3.013" expanded="true" height="76" name="Print to Console" width="90" x="581" y="75">
         <parameter key="log_value" value="Done with classes"/>
       </operator>
@@ -1082,13 +1090,6 @@
         <parameter key="format_date_attributes" value="true"/>
         <parameter key="append_to_file" value="false"/>
         <parameter key="encoding" value="SYSTEM"/>
-      </operator>
-      <operator activated="true" class="generate_attributes" compatibility="5.3.013" expanded="true" height="76" name="Regular (3)" width="90" x="447" y="390">
-        <list key="function_descriptions">
-          <parameter key="outlier" value="max(0,outlier-0.5)"/>
-        </list>
-        <parameter key="use_standard_constants" value="true"/>
-        <parameter key="keep_all" value="true"/>
       </operator>
       <operator activated="true" class="print_to_console" compatibility="5.3.013" expanded="true" height="76" name="Print to Console (3)" width="90" x="581" y="390">
         <parameter key="log_value" value="Done with op"/>
@@ -1106,16 +1107,13 @@
       <connect from_op="Split Data" from_port="out 1" to_op="Handle Exception (3)" to_port="in 1"/>
       <connect from_op="Split Data" from_port="out 2" to_op="Handle Exception" to_port="in 1"/>
       <connect from_op="Split Data" from_port="out 3" to_op="Handle Exception (2)" to_port="in 1"/>
-      <connect from_op="Handle Exception (2)" from_port="out 1" to_op="Regular (3)" to_port="example set input"/>
-      <connect from_op="Handle Exception" from_port="out 1" to_op="Regular (2)" to_port="example set input"/>
-      <connect from_op="Regular (2)" from_port="example set output" to_op="Print to Console (2)" to_port="through 1"/>
+      <connect from_op="Handle Exception (2)" from_port="out 1" to_op="Print to Console (3)" to_port="through 1"/>
+      <connect from_op="Handle Exception" from_port="out 1" to_op="Print to Console (2)" to_port="through 1"/>
       <connect from_op="Print to Console (2)" from_port="through 1" to_op="Output_DP" to_port="input"/>
       <connect from_op="Output_DP" from_port="through" to_port="result 2"/>
-      <connect from_op="Handle Exception (3)" from_port="out 1" to_op="Regular" to_port="example set input"/>
-      <connect from_op="Regular" from_port="example set output" to_op="Print to Console" to_port="through 1"/>
+      <connect from_op="Handle Exception (3)" from_port="out 1" to_op="Print to Console" to_port="through 1"/>
       <connect from_op="Print to Console" from_port="through 1" to_op="Output_C" to_port="input"/>
       <connect from_op="Output_C" from_port="through" to_port="result 1"/>
-      <connect from_op="Regular (3)" from_port="example set output" to_op="Print to Console (3)" to_port="through 1"/>
       <connect from_op="Print to Console (3)" from_port="through 1" to_op="Output_OP" to_port="input"/>
       <connect from_op="Output_OP" from_port="through" to_port="result 3"/>
       <portSpacing port="source_input 1" spacing="0"/>

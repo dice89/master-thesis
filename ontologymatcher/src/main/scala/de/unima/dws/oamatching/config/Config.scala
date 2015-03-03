@@ -32,6 +32,9 @@ object Config {
 
   parseConfig()
 
+  val USE_FRAGMENT = false
+  val USE_LABEL = true
+
 
   def parseConfig() = {
 

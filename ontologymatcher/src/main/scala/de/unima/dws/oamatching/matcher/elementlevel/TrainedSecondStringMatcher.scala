@@ -29,10 +29,10 @@ class TrainedSecondStringMatcher(override val similarity:Boolean,
    */
   override def init(ontology1: OWLOntology, ontology2: OWLOntology, classes1: List[OWLEntity], classes2: List[OWLEntity], props1: List[OWLEntity], props2: List[OWLEntity]): Unit = {
 
-    val labels: List[StringWrapper] = classes1.map(entity => distance.prepare( preprocess_function(getFragmentOfEntity(entity)).toLowerCase)) :::
-      classes2.map(entity => distance.prepare( preprocess_function(getFragmentOfEntity(entity)).toLowerCase)) :::
-      props1.map(entity => distance.prepare( preprocess_function(getFragmentOfEntity(entity)).toLowerCase)) :::
-      props2.map(entity => distance.prepare(preprocess_function(getFragmentOfEntity(entity)).toLowerCase))
+    val labels: List[StringWrapper] = classes1.map(entity => distance.prepare( preprocess_function(getFragmentOfEntity(entity,ontology1)).toLowerCase)) :::
+      classes2.map(entity => distance.prepare( preprocess_function(getFragmentOfEntity(entity,ontology2)).toLowerCase)) :::
+      props1.map(entity => distance.prepare( preprocess_function(getFragmentOfEntity(entity,ontology1)).toLowerCase)) :::
+      props2.map(entity => distance.prepare(preprocess_function(getFragmentOfEntity(entity,ontology2)).toLowerCase))
 
     // transform to java
     val j_iter: java.util.Iterator[StringWrapper] = labels.iterator

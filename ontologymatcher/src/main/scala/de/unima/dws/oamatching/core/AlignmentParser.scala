@@ -149,31 +149,31 @@ object AlignmentParser {
     val alignment_onto1_query = model.createProperty(namespace + "onto1")
 
     val onto1_namespace_prop =  alignment_parent.getProperty(alignment_onto1_query)
-    val onto1_namespace =  if(onto1_namespace_prop.isInstanceOf[LiteralImpl]){
-      alignment_parent.getProperty(alignment_onto1_query).getString
-    }else {
+    val onto1_namespace = if(alignment_parent.hasProperty(alignment_onto1_query)){
+
       try{
         alignment_parent.getProperty(alignment_onto1_query).getResource.getURI.toString
       }catch{
         case _:Throwable =>  alignment_parent.getProperty(alignment_onto1_query).getString
       }
-
+    }else {
+      "onto2"
     }
 
     //get onto2
     val alignment_onto2_query = model.createProperty(namespace + "onto2")
-
-
     val onto2_namespace_prop =  alignment_parent.getProperty(alignment_onto2_query)
-    val onto2_namespace =  if(onto1_namespace_prop.isInstanceOf[LiteralImpl]){
-      alignment_parent.getProperty(alignment_onto2_query).getString
-    }else {
+    val onto2_namespace = if(alignment_parent.hasProperty(alignment_onto2_query)){
+
       try{
         alignment_parent.getProperty(alignment_onto2_query).getResource.getURI.toString
       }catch{
         case _:Throwable =>  alignment_parent.getProperty(alignment_onto2_query).getString
       }
+    }else {
+      "onto2"
     }
+
 
     val alignment_cell_query = model.createProperty(namespace + "map")
     //wrap and map to RDFResource
@@ -201,7 +201,7 @@ object AlignmentParser {
           Cell.TYPE_OBJECT_PROPERTY
         }else {
           // individuals
-          println("TODO Individuals")
+
           Cell.TYPE_UNKOWN
         }
 

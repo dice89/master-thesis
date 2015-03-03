@@ -12,9 +12,9 @@ import scala.collection.mutable
 case class MatchRelation(left: String, relation: String, right: String,owl_type:String)
 
 class Alignment(val onto1:String, val onto2:String) {
-
+  val test:mutable.Set[Cell] = new mutable.HashSet[Cell]()
+  val test2:mutable.TreeSet[(String,String,Double,String,String)] = new mutable.TreeSet[(String,String,Double,String,String)]()
   var correspondences: Set[Cell] =Set.empty[Cell]
-
   /**
    * Copy constructor
    * @param alignment_to_Copy Alingment to Copy
@@ -68,6 +68,10 @@ class Alignment(val onto1:String, val onto2:String) {
       }
     })
     this.correspondences++=(corresp)
+  }
+
+  def addTest(cell:Cell):Unit = {
+    test.add(cell)
   }
 
 

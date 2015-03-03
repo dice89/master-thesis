@@ -4,9 +4,10 @@ import java.io.File
 
 import de.unima.dws.oamatching.analysis.RapidminerJobs
 import de.unima.dws.oamatching.core._
+import de.unima.dws.oamatching.matcher.MatcherRegistry
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingTask, EvaluationDataSetParser, EvaluationMatchingRunner}
 import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
-import de.unima.dws.oamatching.pipeline.{MatchingSelector, ScoreNormalizationFunctions}
+import de.unima.dws.oamatching.pipeline.{MatchingPipelineCore, MatchingSelector, ScoreNormalizationFunctions}
 import org.apache.commons.math.stat.descriptive.moment.Mean
 import org.apache.commons.math.stat.inference.ChiSquareTestImpl
 import org.apache.commons.math3.distribution.NormalDistribution
@@ -57,7 +58,7 @@ case class ProcessEvalExecutionResultsNonSeparated(separated: Boolean, overall_a
 
 object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessParser with SeparatedOptimization with EvaluationDataSetParser with NonSeparatedOptimization {
   RapidminerJobs.init()
-
+  MatcherRegistry.initLargeScale()
   /*########################################################################
                          Algorithms
     ########################################################################*/
@@ -65,14 +66,13 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     "knn" -> "oacode_knn.rmp",
     "rll_m5p" -> "oacode_rll_m5p.rmp",
     "rll_iso" -> "oacode_rll_iso.rmp",
-    "rnn" -> "oacode_rnn.rmp",
     "cblof_regular_db" -> "oacode_cblof_unweighted_regular_db_scan.rmp",
     "ldcof_regular_x_means" -> "oacode_ldcof_regular_x_means.rmp",
     "ldcof_regular_db_scan" -> "oacode_ldcof_regular_db_scan.rmp",
     "lcdof_x_means" -> "oacode_ldcof_x_means.rmp",
     "lof_regular" -> "oacode_lof_regular.rmp",
     "lof" -> "oacode_lof.rmp",
-    "loop" -> "oacode_loop.rmp",
+    "loop" -> "oacode_loop.rEmp",
     "cblof_regular_x_means" -> "oacode_cblof_unweighted_regular_x_means.rmp",
     "cblof_x_means" -> "oacode_cblof_unweighted_x_means.rmp"
   )
@@ -126,16 +126,16 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   val FUZZY_DELTA_SELECTION = List(Map("fuzzy" -> 0.001), Map("fuzzy" -> 0.1), Map("fuzzy" -> 0.01))
   val FUZZY_RATIO_SELECTION = List(Map("fuzzy" -> 1.01), Map("fuzzy" -> 1.02), Map("fuzzy" -> 1.10))
   val GREEDY_SELECTION = List(Map("fuzzy" -> 1.0))
-  //val SELECTION_CONFIG = Map("greedy_rank" -> GREEDY_SELECTION, "greedy_rank_fuzzy_delta" -> FUZZY_DELTA_SELECTION, "greedy_rank_fuzzy_ratio" -> FUZZY_RATIO_SELECTION)
-  val SELECTION_CONFIG = Map("greedy_rank" -> GREEDY_SELECTION)
-
-
+  val SELECTION_CONFIG = Map("greedy_rank" -> GREEDY_SELECTION, "greedy_rank_fuzzy_delta" -> FUZZY_DELTA_SELECTION, "greedy_rank_fuzzy_ratio" -> FUZZY_RATIO_SELECTION)
+  //val SELECTION_CONFIG = Map("greedy_rank" -> GREEDY_SELECTION)
 
   val SELECTION_METHODS_BY_NAME: Map[String, (Double) => (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double]] = Map("greedy_rank"->MatchingSelector.greedyRankSelectorSimpleExp, "greedy_rank_fuzzy_delta" -> MatchingSelector.fuzzyGreedyRankSelectorDelta, "greedy_rank_fuzzy_ratio" -> MatchingSelector.fuzzyGreedyRankSelectorDelta)
 
-  val select_fct = MatchingSelector.fuzzyGreedyRankSelectorDelta(delta_fuzzy_selection)
-  val select_fct_Test: (Double) => (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double] = MatchingSelector.fuzzyGreedyRankSelectorDelta
+  /*########################################################################
+                       Data Set Config
+   ########################################################################*/
 
+  val DS_LOCATION_BY_NAME = Map("benchmarks"->"ontos/2014/benchmarks","conference"->"ontos/2014/conference","anatomy"->"ontos/2014/anatomy")
 
   val mean_computer = new Mean()
   val stdev_computer = new StandardDeviation()
@@ -143,34 +143,64 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   val delta_fuzzy_selection = 0.001
 
 
-  val matching_pairs: List[(File, File)] = MiscExperiments.getListOfMatchingRefPairs
+  //val matching_pairs: List[(File, File)] = MiscExperiments.getListOfMatchingRefPairs
 
 
-  val conf = parseConference("ontos/2014/conference")
-  parseBenchmarks("ontos/2014/benchmarks")
-
-  val new_matching_pairs: List[(EvaluationMatchingTask, File)] = getListofProblemMatchingTasks(conf, "matchings")
+  //val conf = parseConference("ontos/2014/conference")
 
   /*########################################################################
                         Test Area
   ########################################################################*/
 
+  val select_fct_test = MatchingSelector.fuzzyGreedyRankSelectorDelta(delta_fuzzy_selection)
+  val bench = parseBenchmarks("ontos/2014/benchmarks")
+  val new_matching_pairs: List[(EvaluationMatchingTask, File)] = getListofProblemMatchingTasks(bench, "matchings/benchmarks/matchings")
+  //runAllPreproOneMethod("cblof_regular_x_means","thesisexperiments/outliereval/test",GREEDY_SELECTION.head, new_matching_pairs, select_fct_test,true)
+
 
   //runAllNonSeparatedForAllAlgos("thesisexperiments/outliereval", matching_pairs, select_fct )
   //runAllNonSeparated("rnn","thesisexperiments/outliereval", matching_pairs, select_fct)
   //runAllForAllAlgos("thesisexperiments/outliereval/separated", matching_pairs, select_fct,false,"ontos/2014/conference",true )
-  //runAllPreproOneMethod("cblof_regular_x_means","thesisexperiments/outliereval/",GREEDY_SELECTION.head, matching_pairs, select_fct,"ontos/2014/conference",true)
   //val processes: OutlierEvaluationProcessesBySepartation = parseOutlierEvaluationProcesses("../RapidminerRepo/OutlierEvaluationV2","oacode_cblof_unweighted_regular_db_scan.rmp")
   //executeProcessSeparated(select_fct,matching_pairs,"ontos/2014/conference",processes.separated.pca_fixed.head,PCA_FIXED_FOLDER,IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS)
+  //runAllForAllAlgosForAllSltcFunctions("thesisexperiments/outliereval", new_matching_pairs,false)
 
 
-  runAllForAllAlgosForAllSltcFunctions("thesisexperiments/outliereval", new_matching_pairs,false)
+  startOptimizationForGivenDataset("thesisexperiments/outliereval","anatomy")
+
 
 
   RapidminerJobs.quit()
 
-  def runAllForAllAlgosForAllSltcFunctions(base_folder: String, matching_pairs:List[(EvaluationMatchingTask, File)], parallel: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
+  def startOptimizationForGivenDataset(base_folder:String,ds_name:String):Unit = {
 
+    val ds_location = DS_LOCATION_BY_NAME.get(ds_name).getOrElse("ontos/2014/conference")
+    println(ds_location)
+    val problems = parseProblems(ds_name,ds_location)
+    val base_matchings_folder = "matchings"+File.separator+ds_name
+    val base_folder_file = new File(base_matchings_folder)
+
+    if(!base_folder_file.exists()){
+
+      base_folder_file.mkdir()
+      createFolder(base_matchings_folder+"/matchings")
+      problems.foreach(task => {
+        val feature_vector = MatchingPipelineCore.createFeatureVector(task.matching_problem,0.5,true)
+        RapidminerJobs.writeCSV(task.matching_problem.name,base_matchings_folder)(feature_vector)
+      })
+    }
+
+    val eval_folder_name =base_folder+File.separator+ds_name
+    createFolder(eval_folder_name)
+    val data_set = parseProblems(ds_name,"ontos/2014/"+ds_name)
+    val matching_pairs: List[(EvaluationMatchingTask, File)] = getListofProblemMatchingTasks(data_set, "matchings"+ds_name)
+
+    runAllForAllAlgosForAllSltcFunctions(eval_folder_name,matching_pairs,true)
+  }
+
+
+
+  def runAllForAllAlgosForAllSltcFunctions(base_folder: String, matching_pairs:List[(EvaluationMatchingTask, File)], parallel: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
 
     createFolder(base_folder)
     val non_separated_folder = base_folder +"/non_separated"
@@ -247,7 +277,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   def runAllForAllAlgos(base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], config: Map[String, Double], select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double], parallel: Boolean, separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
 
     //createFolder(base_folder)
-    val results = IMPLEMENTED_OUTLIER_METHODS_BY_NAME.map { case (name, files) => {
+    val results = IMPLEMENTED_OUTLIER_METHODS_BY_NAME.par.map { case (name, files) => {
 
       runAllPreproOneMethod(name, base_folder, config, matching_pairs, select_fct, separated)
     }
@@ -291,14 +321,11 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
       best_result
     }}
 
-
     val best_result: (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = results.maxBy(_._2._2.overall_agg_best.macro_eval_res.f1Measure)
 
     HistogramChartFactory.createExecutionSummaryReport(base_folder_name, outlier_method + "_best", best_result)
 
     best_result
-
-
   }
 
   /**
@@ -360,7 +387,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     val pre_pro_param_config: List[Map[String, Double]] = PARAM_CONFIGS_PRE_PRO.get(name).get
 
 
-    val results: ParSeq[Option[(Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)]] = pre_pro_param_config.zipWithIndex.par.map(config => {
+    val results: Seq[Option[(Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)]] = pre_pro_param_config.zipWithIndex.map(config => {
       try {
         val parameter_config: Map[String, Map[String, Double]] = parameters.+(name -> config._1)
 
@@ -393,7 +420,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
 
       if (separated) {
-        process_file -> executeProcessSeparated(run_number,select_fct, ref_matching_pairs, process_file, name, parameters, IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS)
+        process_file -> executeProcessSeparated(run_number,selection_function, ref_matching_pairs, process_file, name, parameters, IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS)
       } else {
         process_file -> executeProcessNonSeparated(run_number,selection_function, ref_matching_pairs, process_file, parameters, top_n, name)
       }

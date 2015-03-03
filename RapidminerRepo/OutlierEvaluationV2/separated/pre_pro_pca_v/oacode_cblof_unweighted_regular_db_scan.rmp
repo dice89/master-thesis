@@ -390,8 +390,16 @@
               <portSpacing port="sink_out 2" spacing="0"/>
             </process>
           </operator>
+          <operator activated="true" class="generate_attributes" compatibility="5.3.013" expanded="true" height="76" name="Regular (3)" width="90" x="313" y="120">
+            <list key="function_descriptions">
+              <parameter key="outlier" value="max(0,outlier-1.0)"/>
+            </list>
+            <parameter key="use_standard_constants" value="true"/>
+            <parameter key="keep_all" value="true"/>
+          </operator>
           <connect from_port="in 1" to_op="DB CBLOF Regular (3)" to_port="in 1"/>
-          <connect from_op="DB CBLOF Regular (3)" from_port="out 1" to_port="out 1"/>
+          <connect from_op="DB CBLOF Regular (3)" from_port="out 1" to_op="Regular (3)" to_port="example set input"/>
+          <connect from_op="Regular (3)" from_port="example set output" to_port="out 1"/>
           <portSpacing port="source_in 1" spacing="0"/>
           <portSpacing port="source_in 2" spacing="0"/>
           <portSpacing port="sink_out 1" spacing="0"/>
@@ -421,7 +429,7 @@
         <parameter key="parallelize_try" value="false"/>
         <parameter key="parallelize_catch" value="false"/>
         <process expanded="true">
-          <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" height="76" name="DB CBLOF Regular (2)" width="90" x="313" y="165">
+          <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" height="76" name="DB CBLOF Regular (2)" width="90" x="179" y="165">
             <parameter key="parallelize_nested_chain" value="false"/>
             <process expanded="true">
               <operator activated="true" class="generate_id" compatibility="5.3.013" expanded="true" height="76" name="Generate ID (3)" width="90" x="45" y="30">
@@ -696,8 +704,16 @@
               <portSpacing port="sink_out 2" spacing="0"/>
             </process>
           </operator>
+          <operator activated="true" class="generate_attributes" compatibility="5.3.013" expanded="true" height="76" name="Regular (2)" width="90" x="313" y="120">
+            <list key="function_descriptions">
+              <parameter key="outlier" value="max(0,outlier-1.0)"/>
+            </list>
+            <parameter key="use_standard_constants" value="true"/>
+            <parameter key="keep_all" value="true"/>
+          </operator>
           <connect from_port="in 1" to_op="DB CBLOF Regular (2)" to_port="in 1"/>
-          <connect from_op="DB CBLOF Regular (2)" from_port="out 1" to_port="out 1"/>
+          <connect from_op="DB CBLOF Regular (2)" from_port="out 1" to_op="Regular (2)" to_port="example set input"/>
+          <connect from_op="Regular (2)" from_port="example set output" to_port="out 1"/>
           <portSpacing port="source_in 1" spacing="0"/>
           <portSpacing port="source_in 2" spacing="0"/>
           <portSpacing port="sink_out 1" spacing="0"/>
@@ -1006,8 +1022,16 @@
               <portSpacing port="sink_out 2" spacing="0"/>
             </process>
           </operator>
+          <operator activated="true" class="generate_attributes" compatibility="5.3.013" expanded="true" height="76" name="Regular (4)" width="90" x="313" y="75">
+            <list key="function_descriptions">
+              <parameter key="outlier" value="max(0,outlier-1.0)"/>
+            </list>
+            <parameter key="use_standard_constants" value="true"/>
+            <parameter key="keep_all" value="true"/>
+          </operator>
           <connect from_port="in 1" to_op="DB CBLOF Regular" to_port="in 1"/>
-          <connect from_op="DB CBLOF Regular" from_port="out 1" to_port="out 1"/>
+          <connect from_op="DB CBLOF Regular" from_port="out 1" to_op="Regular (4)" to_port="example set input"/>
+          <connect from_op="Regular (4)" from_port="example set output" to_port="out 1"/>
           <portSpacing port="source_in 1" spacing="0"/>
           <portSpacing port="source_in 2" spacing="0"/>
           <portSpacing port="sink_out 1" spacing="0"/>

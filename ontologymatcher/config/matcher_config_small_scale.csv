@@ -1,7 +1,2 @@
 name,type,sim_type,tokenized,normalized,stopfilter
-word2Vec,E,sim,true,none,true
-word2VecStemmed,E,sim,true,stemmed,true
-umbcSim,E,sim,true,none,true
-esaSim,E,sim,true,none,true
-graphBasedUsedPropMatcher,S
-graphBasedUsedClassMatcher,S
+equalDistance,E,dis,false,none,false

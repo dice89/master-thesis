@@ -19,7 +19,6 @@ trait NonSeparatedOptimization {
    * Runs one none separated outlier method for one algo config and one prepro config
    * @param selection_function
    * @param ref_matching_pairs
-   * @param path_to_onto_folder
    * @param rapidminer_file
    * @param parameters
    * @param top_n

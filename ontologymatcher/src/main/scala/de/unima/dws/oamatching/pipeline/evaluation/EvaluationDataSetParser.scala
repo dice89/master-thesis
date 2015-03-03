@@ -1,8 +1,8 @@
 package de.unima.dws.oamatching.pipeline.evaluation
+
 import java.io.File
 
-import de.unima.dws.oamatching.alex.XMLTest
-import de.unima.dws.oamatching.core.{AlignmentParser, Alignment, OntologyLoader}
+import de.unima.dws.oamatching.core.{Alignment, AlignmentParser, OntologyLoader}
 import de.unima.dws.oamatching.pipeline.MatchingProblem
 
 /**
@@ -11,6 +11,47 @@ import de.unima.dws.oamatching.pipeline.MatchingProblem
  * Created by mueller on 01/03/15.
  */
 trait EvaluationDataSetParser {
+
+  /**
+   * Parses the problem by its name in a given folder
+   * @param name
+   * @param path_to_folder
+   * @return
+   */
+  def parseProblems(name: String, path_to_folder: String): Seq[EvaluationMatchingTask] = {
+    name match {
+      case "benchmarks" => parseBenchmarks(path_to_folder)
+      case "conference" => parseConference(path_to_folder)
+      case "anatomy" =>  parseAnatomy(path_to_folder)
+      case other => parseConference(path_to_folder)
+    }
+  }
+
+  def parseAnatomy(path_to_folder:String):Seq[EvaluationMatchingTask] = {
+
+    val human_onto_name = path_to_folder +File.separator+"human.owl"
+    val mouse_onto_name = path_to_folder +File.separator+"mouse.owl"
+
+    val ref = path_to_folder +File.separator+"reference.rdf"
+
+    val onto1 = OntologyLoader.load(human_onto_name)
+    val onto2 = OntologyLoader.load(mouse_onto_name)
+
+
+
+    println("Size of class human "+onto1.getClassesInSignature().size())
+    println("Size of classes mouse "+onto2.getClassesInSignature().size())
+
+    println("Total Size human: "+onto1.getSignature().size())
+
+    println("Total Size mouse: "+onto2.getSignature().size())
+    val name: String = "human-mouse"
+    val matching_problem = MatchingProblem(onto1, onto2, name)
+
+    val reference: Alignment = AlignmentParser.parseRDFWithOntos(ref, human_onto_name, mouse_onto_name)
+
+    Seq(EvaluationMatchingTask(matching_problem, reference))
+  }
 
   /**
    * Parses the conference dataset from OAEI challenge
@@ -31,7 +72,7 @@ trait EvaluationDataSetParser {
       val onto2 = OntologyLoader.load(name_onto2)
 
       //parse alignments
-      val reference: Alignment = AlignmentParser.parseRDFWithOntos(ref_align_file.getAbsolutePath(),name_onto1,name_onto2)
+      val reference: Alignment = AlignmentParser.parseRDFWithOntos(ref_align_file.getAbsolutePath(), name_onto1, name_onto2)
       val name: String = ref_align_file.getName().dropRight(4)
       val matching_problem = MatchingProblem(onto1, onto2, name)
 
@@ -42,26 +83,26 @@ trait EvaluationDataSetParser {
   }
 
 
-  def parseBenchmarks(path_to_folder:String):Seq[EvaluationMatchingTask] = {
+  def parseBenchmarks(path_to_folder: String): Seq[EvaluationMatchingTask] = {
 
-    val left_name:String = "101"
-    val onto_left_file:File = new File(path_to_folder +File.separator + left_name + File.separator +"onto.rdf")
+    val left_name: String = "101"
+    val onto_left_file: File = new File(path_to_folder + File.separator + left_name + File.separator + "onto.rdf")
     val onto_left = OntologyLoader.load(onto_left_file)
 
     val folder: File = new File(path_to_folder)
 
-    val problems: Array[EvaluationMatchingTask] = for(benchmark_folders <- folder.listFiles(new FolderFilter)) yield {
-      val onto_right_path:String =  benchmark_folders.getAbsolutePath + File.separator +"onto.rdf"
-      val onto_right = OntologyLoader.load(onto_left_file)
+    val problems: Array[EvaluationMatchingTask] = for (benchmark_folders <- folder.listFiles(new FolderFilter)) yield {
+      val onto_right_path: String = benchmark_folders.getAbsolutePath + File.separator + "onto.rdf"
+      val onto_right = OntologyLoader.load(onto_right_path)
 
-      val right_name:String = benchmark_folders.getName
+      val right_name: String = benchmark_folders.getName
 
-      val ref_align_path:String =  benchmark_folders.getAbsolutePath + File.separator +"refalign.rdf"
+      val ref_align_path: String = benchmark_folders.getAbsolutePath + File.separator + "refalign.rdf"
 
-      val reference_alignment:Alignment =  AlignmentParser.parseRDFWithOntos(ref_align_path,onto_left_file.getAbsolutePath,onto_right_path)
+      val reference_alignment: Alignment = AlignmentParser.parseRDFWithOntos(ref_align_path, onto_left_file.getAbsolutePath, onto_right_path)
 
 
-      val name:String = left_name+"_"+right_name
+      val name: String = left_name + "-" + right_name
 
       val matching_problem = MatchingProblem(onto_left, onto_right, name)
 
@@ -85,22 +126,22 @@ trait EvaluationDataSetParser {
   }
 
 
-  def getListofProblemMatchingTasks(problems:Seq[EvaluationMatchingTask], path_to_matchings:String): List[(EvaluationMatchingTask, File)] = {
+  def getListofProblemMatchingTasks(problems: Seq[EvaluationMatchingTask], path_to_matchings: String): List[(EvaluationMatchingTask, File)] = {
 
     //read matchings folder
     val file: File = new File(path_to_matchings)
     val list_of_raw_matchings = file.listFiles().toList
 
     //build pairs of matchings to reference alignment
-    val problem_matching_pairs =  problems.map(problem =>{
+    val problem_matching_pairs = problems.map(problem => {
       val name = problem.matching_problem.name
 
       list_of_raw_matchings.map(raw_file => {
         val id_part = raw_file.getName.split("_")(0)
 
-        if(id_part.equals(name)){
-          Option(problem,raw_file)
-        }else {
+        if (id_part.equals(name)) {
+          Option(problem, raw_file)
+        } else {
           Option.empty
         }
       }).filter(_.isDefined).head.get
@@ -108,7 +149,6 @@ trait EvaluationDataSetParser {
 
     problem_matching_pairs.toList
   }
-
 
 
 }
