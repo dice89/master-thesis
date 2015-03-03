@@ -58,7 +58,7 @@ case class ProcessEvalExecutionResultsNonSeparated(separated: Boolean, overall_a
 
 object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessParser with SeparatedOptimization with EvaluationDataSetParser with NonSeparatedOptimization {
   RapidminerJobs.init()
-  MatcherRegistry.initLargeScale()
+  //MatcherRegistry.initLargeScale()
   /*########################################################################
                          Algorithms
     ########################################################################*/
@@ -72,9 +72,10 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     "lcdof_x_means" -> "oacode_ldcof_x_means.rmp",
     "lof_regular" -> "oacode_lof_regular.rmp",
     "lof" -> "oacode_lof.rmp",
-    "loop" -> "oacode_loop.rEmp",
+    "loop" -> "oacode_loop.rmp",
     "cblof_regular_x_means" -> "oacode_cblof_unweighted_regular_x_means.rmp",
     "cblof_x_means" -> "oacode_cblof_unweighted_x_means.rmp"
+    //"rnn"->"oacode_rnn.rmp"
   )
 
   /*val IMPLEMENTED_OUTLIER_METHODS_BY_NAME = Map(
@@ -126,7 +127,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   val FUZZY_DELTA_SELECTION = List(Map("fuzzy" -> 0.001), Map("fuzzy" -> 0.1), Map("fuzzy" -> 0.01))
   val FUZZY_RATIO_SELECTION = List(Map("fuzzy" -> 1.01), Map("fuzzy" -> 1.02), Map("fuzzy" -> 1.10))
   val GREEDY_SELECTION = List(Map("fuzzy" -> 1.0))
-  val SELECTION_CONFIG = Map("greedy_rank" -> GREEDY_SELECTION, "greedy_rank_fuzzy_delta" -> FUZZY_DELTA_SELECTION, "greedy_rank_fuzzy_ratio" -> FUZZY_RATIO_SELECTION)
+  val SELECTION_CONFIG = Map("greedy_rank_fuzzy_delta" -> FUZZY_DELTA_SELECTION, "greedy_rank_fuzzy_ratio" -> FUZZY_RATIO_SELECTION,"greedy_rank" -> GREEDY_SELECTION)
   //val SELECTION_CONFIG = Map("greedy_rank" -> GREEDY_SELECTION)
 
   val SELECTION_METHODS_BY_NAME: Map[String, (Double) => (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double]] = Map("greedy_rank"->MatchingSelector.greedyRankSelectorSimpleExp, "greedy_rank_fuzzy_delta" -> MatchingSelector.fuzzyGreedyRankSelectorDelta, "greedy_rank_fuzzy_ratio" -> MatchingSelector.fuzzyGreedyRankSelectorDelta)
@@ -152,9 +153,9 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
                         Test Area
   ########################################################################*/
 
-  val select_fct_test = MatchingSelector.fuzzyGreedyRankSelectorDelta(delta_fuzzy_selection)
-  val bench = parseBenchmarks("ontos/2014/benchmarks")
-  val new_matching_pairs: List[(EvaluationMatchingTask, File)] = getListofProblemMatchingTasks(bench, "matchings/benchmarks/matchings")
+  //val select_fct_test = MatchingSelector.fuzzyGreedyRankSelectorDelta(delta_fuzzy_selection)
+ // val bench = parseBenchmarks("ontos/2014/benchmarks")
+  //val new_matching_pairs: List[(EvaluationMatchingTask, File)] = getListofProblemMatchingTasks(bench, "matchings/benchmarks/matchings")
   //runAllPreproOneMethod("cblof_regular_x_means","thesisexperiments/outliereval/test",GREEDY_SELECTION.head, new_matching_pairs, select_fct_test,true)
 
 
@@ -166,7 +167,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   //runAllForAllAlgosForAllSltcFunctions("thesisexperiments/outliereval", new_matching_pairs,false)
 
 
-  startOptimizationForGivenDataset("thesisexperiments/outliereval","anatomy")
+  startOptimizationForGivenDataset("thesisexperiments/outliereval","conference")
 
 
 
@@ -193,7 +194,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     val eval_folder_name =base_folder+File.separator+ds_name
     createFolder(eval_folder_name)
     val data_set = parseProblems(ds_name,"ontos/2014/"+ds_name)
-    val matching_pairs: List[(EvaluationMatchingTask, File)] = getListofProblemMatchingTasks(data_set, "matchings"+ds_name)
+    val matching_pairs: List[(EvaluationMatchingTask, File)] = getListofProblemMatchingTasks(data_set, base_matchings_folder+File.separator+"matchings")
 
     runAllForAllAlgosForAllSltcFunctions(eval_folder_name,matching_pairs,true)
   }
@@ -228,6 +229,8 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
   def runAllForAlgosForAllSlctFunctions(base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], parallel: Boolean, separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
     val results = SELECTION_CONFIG.map { case (name, fuzzy_values) => {
+
+      println("Start " +name)
       val fuzzy_base_folder = base_folder + "/" + name
       createFolder(fuzzy_base_folder)
       val selct_fct = SELECTION_METHODS_BY_NAME.get(name).get
@@ -277,7 +280,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   def runAllForAllAlgos(base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], config: Map[String, Double], select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double], parallel: Boolean, separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
 
     //createFolder(base_folder)
-    val results = IMPLEMENTED_OUTLIER_METHODS_BY_NAME.par.map { case (name, files) => {
+    val results = IMPLEMENTED_OUTLIER_METHODS_BY_NAME.map { case (name, files) => {
 
       runAllPreproOneMethod(name, base_folder, config, matching_pairs, select_fct, separated)
     }
@@ -343,7 +346,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     val results = PRE_PRO_TECHNIQUES.map(pre_pro_name => {
       //distinguish between different parts
 
-
+      println(pre_pro_name)
       val result: Option[(String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = if (pre_pro_name.equals(PCA_VARIANT_FOLDER)) {
         val folder_name = base_folder_name + "/" + PCA_VARIANT_FOLDER
         createFolder(folder_name)
@@ -361,6 +364,8 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
           Option((pre_pro_name, runNonSeparated(run_number,folder_name, select_fct, pre_pro_name, processes.separated.pca_fixed, param, 9, matching_pairs, separated)))
         }
       } else if (pre_pro_name.equals(REMOVE_CORR_FOLDER)) {
+
+
         val folder_name = base_folder_name + "/" + REMOVE_CORR_FOLDER
         createFolder(folder_name)
         if (!separated) {
@@ -418,7 +423,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
     val results: Map[String, ProcessEvalExecutionResultNonSeparated] = process_files.map(process_file => {
 
-
+      println("separated ? " +separated)
       if (separated) {
         process_file -> executeProcessSeparated(run_number,selection_function, ref_matching_pairs, process_file, name, parameters, IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS)
       } else {

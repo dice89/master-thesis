@@ -1,11 +1,14 @@
 package de.unima.dws.oamatching.thesis.scalabilityTests
 
-import de.unima.dws.oamatching.core.{Alignment, Cell}
+import de.unima.dws.oamatching.core.{MatchingCell, Alignment, Cell}
 import de.unima.dws.oamatching.measures.StringMeasures
 
 /**
  * Created by mueller on 02/03/15.
  */
+
+
+case class Tester(left:String,right:String, relation:String, measure:Double, owl_type:String)
 object Test extends App{
 
 
@@ -87,7 +90,8 @@ object Test extends App{
      entity2 = test2_indexed_seq(n)
       val measure = StringMeasures.computeJaccard(entity1,entity2)
       if(measure > 0.1){
-        alignment0.test2.add(entity1,entity2,measure,"=","")
+        //alignment0.test3.add(entity1,entity2,measure,"=","")
+        alignment0.correspondences.add(MatchingCell(entity1,entity2,measure,"=",""))
       }
 
       n = n+1
@@ -95,7 +99,7 @@ object Test extends App{
     i = i+1
   }
 
-  println("done0 in "+(System.currentTimeMillis()-startime0) + "total size "+ alignment0.test2.size)
+  //println("done0 in "+(System.currentTimeMillis()-startime0) + "total size "+ alignment0.test2.size)
   //TODO try it without iterator and random access an vector
 
 

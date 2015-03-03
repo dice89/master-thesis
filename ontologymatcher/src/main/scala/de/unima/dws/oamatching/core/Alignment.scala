@@ -2,6 +2,7 @@ package de.unima.dws.oamatching.core
 
 import java.net.URI
 
+import de.unima.dws.oamatching.thesis.scalabilityTests.Tester
 import org.semanticweb.owlapi.model.OWLOntology
 
 import scala.collection.mutable
@@ -11,24 +12,56 @@ import scala.collection.mutable
  */
 case class MatchRelation(left: String, relation: String, right: String,owl_type:String)
 
+/**
+ *  Case class for a correspondance
+ * @param entity1
+ * @param entity2
+ * @param measure
+ * @param relation
+ * @param owl_type
+ */
+case class MatchingCell(entity1:String,entity2:String,measure: Double,  relation:String,owl_type:String){
+  def canEqual(other: Any): Boolean = other.isInstanceOf[Cell]
+  override def equals(other: Any): Boolean = other match {
+    case that: Cell =>{
+      (that canEqual this) &&
+        (this.entity1.toString.equals(that.entity1.toString) || this.entity1.toString.equals(that.entity2.toString)  ) &&
+        (this.entity2.toString.equals(that.entity2.toString) || this.entity2.toString.equals(that.entity1.toString)  ) &&
+        relation.equals(that.relation)
+    }
+    case _ => {
+      true
+    }
+
+  }
+  override def toString:String = {
+    "[ entity1: " + entity1.toString + " ,entity2: " + entity2.toString +" ,relation: "+relation +" ]"
+  }
+
+  override def hashCode(): Int = {
+    val state = Seq(entity1, entity2, relation)
+    state.map(_.hashCode()).foldLeft(0)((a, b) => 31 * a + b)
+  }
+}
+
+
 class Alignment(val onto1:String, val onto2:String) {
-  val test:mutable.Set[Cell] = new mutable.HashSet[Cell]()
-  val test2:mutable.TreeSet[(String,String,Double,String,String)] = new mutable.TreeSet[(String,String,Double,String,String)]()
-  var correspondences: Set[Cell] =Set.empty[Cell]
+
+  var correspondences: mutable.Set[MatchingCell] =new mutable.HashSet[MatchingCell]
   /**
    * Copy constructor
    * @param alignment_to_Copy Alingment to Copy
    */
   def this(alignment_to_Copy: Alignment) = {
     this(alignment_to_Copy.onto1,alignment_to_Copy.onto2)
-    this.correspondences = alignment_to_Copy.correspondences.map(cell => new Cell(cell))
+    this.correspondences = alignment_to_Copy.correspondences.map(cell => MatchingCell(cell.entity1,cell.entity2,cell.measure,cell.relation,cell.owl_type ))
   }
 
 
-  def this ( onto1:String,  onto2:String, correspondences:List[Cell]){
+  def this ( onto1:String,  onto2:String, correspondences:List[MatchingCell]){
     this(onto1,onto2)
 
-   this.correspondences =  this.correspondences++(correspondences)
+   this.correspondences =  this.correspondences.++(correspondences)
   }
 
   /**
@@ -40,15 +73,15 @@ class Alignment(val onto1:String, val onto2:String) {
    */
   def this (onto1:String, onto2:String,threshold:Double, matchings:Map[MatchRelation,Double]){
     this(onto1,onto2)
-    val corresp = matchings.filter(tuple => tuple._2 >= threshold).map({
+     matchings.filter(tuple => tuple._2 >= threshold).foreach({
       case(matchrelation, similiarity) => {
-        val test = new Cell(matchrelation.left,matchrelation.right,similiarity,matchrelation.relation,matchrelation.owl_type)
+        val test = MatchingCell(matchrelation.left,matchrelation.right,similiarity,matchrelation.relation,matchrelation.owl_type)
 
-
+        this.correspondences.add(test)
         test
       }
     })
-    this.correspondences++=(corresp)
+
   }
 
   /**
@@ -59,38 +92,33 @@ class Alignment(val onto1:String, val onto2:String) {
    */
   def this (onto1:String, onto2:String, matchings:Map[MatchRelation,Double]){
     this(onto1,onto2)
-    val corresp = matchings.map({
+    val corresp = matchings.foreach({
       case(matchrelation, similiarity) => {
-        val test = new Cell(matchrelation.left,matchrelation.right,similiarity,matchrelation.relation,matchrelation.owl_type)
-
+        val test = MatchingCell(matchrelation.left,matchrelation.right,similiarity,matchrelation.relation,matchrelation.owl_type)
+        this.correspondences.add(test)
         test
 
       }
     })
-    this.correspondences++=(corresp)
+
   }
 
-  def addTest(cell:Cell):Unit = {
-    test.add(cell)
+  def addToCorrespondences(cell:MatchingCell): Unit = {
+
+    correspondences.add(cell)
   }
 
+  def addAllCorrespondeces(cells:Set[MatchingCell]): Unit = {
 
-  def addToCorrespondences(cell:Cell): Unit = {
+    correspondences =    mutable.HashSet(cells.toSeq:_*) ++correspondences
 
-    correspondences.+=(cell)
   }
 
-  def addAllCorrespondeces(cells:Set[Cell]): Unit = {
-
+  def addAllCorrespondeces(cells:mutable.Set[MatchingCell]): Unit = {
     correspondences=  cells ++ correspondences
   }
 
-  def addAllCorrespondeces(cells:mutable.Set[Cell]): Unit = {
-    val immutable_cells:Set[Cell] = Set(cells.toSeq:_*)
-    correspondences=  immutable_cells ++ correspondences
-  }
-
-  def removeCorrespondence(cell_to_remove:Cell):Unit = {
+  def removeCorrespondence(cell_to_remove:MatchingCell):Unit = {
     correspondences = correspondences.filterNot(cell => {
       cell.entity1.eq(cell_to_remove.entity1) && cell.entity2.eq(cell_to_remove.entity2) && cell.relation.eq(cell_to_remove.relation)
     })
@@ -112,7 +140,8 @@ class Alignment(val onto1:String, val onto2:String) {
   def evaluate(reference:Alignment) :EvaluationResult = {
 
     //
-    val tp =  if(reference.correspondences.size ==0 ){0}else  {
+    val tp =  if(reference.correspondences.size ==0 ){0} else  {
+
       correspondences.filter(cell => reference.correspondences.contains(cell)).size
     }
     //val tp =  correspondences.count(cell => reference.correspondences.contains(cell))

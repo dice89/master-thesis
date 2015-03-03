@@ -1,6 +1,6 @@
 package de.unima.dws.oamatching.core.matcher
 
-import de.unima.dws.oamatching.core.{Alignment, Cell}
+import de.unima.dws.oamatching.core.{MatchingCell, Alignment, Cell}
 import org.semanticweb.owlapi.model.{OWLClass, OWLEntity, OWLOntology, OWLProperty}
 
 import scala.collection.JavaConversions._
@@ -36,20 +36,20 @@ abstract class ElementLevelMatcher(val similarity:Boolean) extends Matcher {
           val similarity: Double = getSimilarity(alignClass(entity1.asOWLClass(),onto1, entity2.asOWLClass(),onto2))
 
           if(similarity >= threshold) {
-            alignment.addToCorrespondences( new Cell(entity1.getIRI.toURI,entity2.getIRI.toURI, similarity, "=", Cell.TYPE_CLASS))
+            alignment.addToCorrespondences( MatchingCell(entity1.toStringID,entity2.toStringID, similarity, "=", Cell.TYPE_CLASS))
           }
         }
 
         if(entity1.isOWLDataProperty && entity2.isOWLDataProperty){
           val similarity: Double = getSimilarity(alignDatatypeProperty(entity1.asOWLDataProperty(),onto1,entity2.asOWLDataProperty(),onto2))
           if(similarity >= threshold) {
-            alignment.addToCorrespondences( new Cell(entity1.getIRI.toURI,entity2.getIRI.toURI, similarity, "=",Cell.TYPE_DT_PROPERTY))
+            alignment.addToCorrespondences( MatchingCell(entity1.toStringID,entity2.toStringID, similarity, "=",Cell.TYPE_DT_PROPERTY))
           }
         }
         if(entity1.isOWLObjectProperty && entity2.isOWLObjectProperty) {
           val similarity = getSimilarity(alignObjectProperty(entity1.asOWLObjectProperty(),onto1, entity2.asOWLObjectProperty(),onto2))
           if(similarity >= threshold) {
-            alignment.addToCorrespondences( new Cell(entity1.getIRI.toURI,entity2.getIRI.toURI, similarity, "=", Cell.TYPE_OBJECT_PROPERTY))
+            alignment.addToCorrespondences(MatchingCell(entity1.toStringID,entity2.toStringID, similarity, "=", Cell.TYPE_OBJECT_PROPERTY))
           }
         }
         n = n+1

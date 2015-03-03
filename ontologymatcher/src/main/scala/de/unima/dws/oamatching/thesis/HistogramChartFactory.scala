@@ -810,7 +810,7 @@ object HistogramChartFactory{
       table.addCell(relation.toString)
       table.addCell(score.toString)
 
-      val cell = new Cell(relation.left, relation.right, score, relation.relation, relation.owl_type)
+      val cell = MatchingCell(relation.left, relation.right, score, relation.relation, relation.owl_type)
 
       if (ref_alignment.correspondences.contains(cell)) {
         table.addCell("X")

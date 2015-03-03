@@ -4,7 +4,7 @@ import java.io.{File, PrintWriter}
 
 import com.github.tototoshi.csv.CSVWriter
 import de.unima.dws.oamatching.analysis.RapidminerJobs
-import de.unima.dws.oamatching.core.{AlignmentParser, Cell}
+import de.unima.dws.oamatching.core.{MatchingCell, AlignmentParser, Cell}
 import de.unima.dws.oamatching.matcher.MatcherRegistry
 import de.unima.dws.oamatching.pipeline.Runner
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingRunner, RdfFileFilter}
@@ -108,7 +108,7 @@ object MiscExperiments extends App {
 
         val new_line = if (!left.equals("left")) {
           //not first row
-          val cell = new Cell(left, right, 1.0, relation, "nn")
+          val cell = MatchingCell(left, right, 1.0, relation, "nn")
           if (alignment.correspondences.contains(cell)) {
             line + ",1"
           } else {

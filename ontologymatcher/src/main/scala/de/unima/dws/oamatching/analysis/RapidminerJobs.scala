@@ -111,7 +111,7 @@ object RapidminerJobs {
 
     var process: RProcess = new RProcess(file);
 
-    process.getOperator("Process").setParameter("logverbosity","error")
+    //process.getOperator("Process").setParameter("logverbosity","error")
 
 
     val pca_operator_name = "PCA"
@@ -231,7 +231,7 @@ object RapidminerJobs {
 
     println(process_file)
     var process: RProcess = new RProcess(file);
-    process.getOperator("Process").setParameter("logverbosity","error")
+   // process.getOperator("Process").setParameter("logverbosity","error")
 
     configurePrePro(parameters, pre_pro_key, process, "PCA_C", "REMOVE_USELESS_C", "REMOVE_CORRELATED_C")
     configurePrePro(parameters, pre_pro_key, process, "PCA_DP", "REMOVE_USELESS_DP", "REMOVE_CORRELATED_DP")

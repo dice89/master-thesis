@@ -1,7 +1,7 @@
 package de.unima.dws.oamatching.matcher.structurallevel
 
 import de.unima.dws.oamatching.core.matcher.StructuralLevelMatcher
-import de.unima.dws.oamatching.core.{Alignment, Cell, MatchRelation}
+import de.unima.dws.oamatching.core.{MatchingCell, Alignment, Cell, MatchRelation}
 import org.semanticweb.owlapi.model.{OWLClass, OWLOntology}
 
 import scala.collection.JavaConversions._
@@ -29,7 +29,7 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
     //loop over alignment and build map for class access
     //build map
     val starttime = System.currentTimeMillis()
-    val match_partner_map: Map[String, Set[(String, Double)]] = buildMap(initial_Alignment, onto1, onto2)
+    val match_partner_map: Map[String, mutable.Set[(String, Double)]] = buildMap(initial_Alignment, onto1, onto2)
 
     val step1time =System.currentTimeMillis();
     //loop over object properties in onto1
@@ -51,8 +51,8 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
         val domain_class = domain.head.getClassesInSignature().head
         val range_class = range.head.getClassesInSignature().head
         //check if domain and range have corresponding match in onto2
-        val domain_match: Option[Set[(String, Double)]] = match_partner_map.get(domain_class.toStringID)
-        val range_match: Option[Set[(String, Double)]] = match_partner_map.get(range_class.toStringID)
+        val domain_match: Option[mutable.Set[(String, Double)]] = match_partner_map.get(domain_class.toStringID)
+        val range_match: Option[mutable.Set[(String, Double)]] = match_partner_map.get(range_class.toStringID)
 
         if (domain_match.isDefined && range_match.isDefined) {
           //if yes add as candidate in a map by domain
@@ -125,7 +125,7 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
 
     val copied_alignment = new Alignment(initial_Alignment)
 
-    val cells_to_add = filtered_matchings.map { case (relation, measure) => new Cell(relation.left, relation.right, measure, relation.relation, relation.owl_type)}
+    val cells_to_add = filtered_matchings.map { case (relation, measure) => MatchingCell(relation.left, relation.right, measure, relation.relation, relation.owl_type)}
     //check if the correspondences are already there
 
     copied_alignment.addAllCorrespondeces(cells_to_add.toSet)
@@ -140,17 +140,17 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
     copied_alignment
   }
 
-  def buildMap(alignment: Alignment, onto1: OWLOntology, onto2: OWLOntology): Map[String, Set[(String, Double)]] = {
-    val fromMap: Map[String, Set[(String, Double)]] = onto1.getClassesInSignature().view.map(owl_class => {
+  def buildMap(alignment: Alignment, onto1: OWLOntology, onto2: OWLOntology): Map[String, mutable.Set[(String, Double)]] = {
+    val fromMap: Map[String, mutable.Set[(String, Double)]] = onto1.getClassesInSignature().view.map(owl_class => {
       findAlignFromMap(owl_class, alignment)
     }).toMap
 
     fromMap
   }
 
-  def findAlignFromMap(owlClass: OWLClass, alignment: Alignment): (String, Set[(String, Double)]) = {
+  def findAlignFromMap(owlClass: OWLClass, alignment: Alignment): (String, mutable.Set[(String, Double)]) = {
 
-    val from_alignments: Set[Cell] = alignment.correspondences.filter(cell => cell.entity1.toString.equals(owlClass.toStringID))
+    val from_alignments: mutable.Set[MatchingCell] = alignment.correspondences.filter(cell => cell.entity1.toString.equals(owlClass.toStringID))
 
     (owlClass.toStringID, from_alignments.map(cell => (cell.entity2.toString, cell.measure)))
   }

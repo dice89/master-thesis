@@ -23,7 +23,7 @@ trait SeparatedOptimization {
     val process_type: String = processes.get(process_name_with_ending).get
 
 
-    val normalized_per_category = ref_matching_pairs.map { case (ref_file, matching_file) => {
+    val normalized_per_category = ref_matching_pairs.par.map { case (ref_file, matching_file) => {
 
 
       println(ref_file.matching_problem.name)

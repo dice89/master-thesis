@@ -5,7 +5,7 @@ import java.util
 import com.interdataworking.mm.alg.{MapPair, Match}
 import de.unima.dws.alex.onto2graph.{Matcher, TestMatch}
 import de.unima.dws.oamatching.core.matcher.StructuralLevelMatcher
-import de.unima.dws.oamatching.core.{Alignment, Cell}
+import de.unima.dws.oamatching.core.{MatchingCell, Alignment, Cell}
 import org.semanticweb.owlapi.model.{IRI, OWLOntology}
 
 import scala.collection.JavaConversions._
@@ -48,7 +48,7 @@ class SimilarityFloodingMatcher  extends  StructuralLevelMatcher{
       //get owl datatype
       val owl_data_type = if (entity_left.isOWLClass) {Cell.TYPE_CLASS} else if(entity_left.isOWLDataProperty) {Cell.TYPE_DT_PROPERTY} else if(entity_left.isOWLObjectProperty){Cell.TYPE_OBJECT_PROPERTY} else {Cell.TYPE_UNKOWN}
 
-      new Cell(pair.getLeft.toString,pair.getRight.toString,pair.sim,"=",owl_data_type)
+     MatchingCell(pair.getLeft.toString,pair.getRight.toString,pair.sim,"=",owl_data_type)
     }).toList.filter(cell=> cell.measure >= threshold)
 
     new Alignment(null,null,cells)

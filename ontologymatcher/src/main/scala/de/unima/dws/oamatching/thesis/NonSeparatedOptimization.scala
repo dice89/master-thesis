@@ -8,6 +8,7 @@ import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingTask, Eval
 import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
 
 import scala.collection.immutable.Map
+import scala.collection.parallel.immutable.ParSeq
 
 /**
  * Created by mueller on 01/03/15.
@@ -35,7 +36,7 @@ trait NonSeparatedOptimization {
     println(IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS)
     val process_type: String = IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS.get(process_name_with_ending).get
 
-    val matching_results_intermediate: List[(Map[String, (Map[MatchRelation, Double], Alignment)], (String, Map[String, Seq[(MatchRelation, Double, Boolean)]]), OutlierEvalStatisticsObject)] = ref_matching_pairs.map { case (ref_file, matching_file) => {
+    val matching_results_intermediate: ParSeq[(Map[String, (Map[MatchRelation, Double], Alignment)], (String, Map[String, Seq[(MatchRelation, Double, Boolean)]]), OutlierEvalStatisticsObject)] = ref_matching_pairs.par.map { case (ref_file, matching_file) => {
       val name = matching_file.getName.slice(0, matching_file.getName.lastIndexOf("."));
 
       val result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) = RapidminerJobs.rapidminerOutlierDetectionExperiments(run_number, rapidminer_file, matching_file, parameters, pre_pro_key, process_type)
@@ -66,14 +67,16 @@ trait NonSeparatedOptimization {
     }
     }
 
-    val matching_results: List[Map[String, (Map[MatchRelation, Double], Alignment)]] = matching_results_intermediate.map(_._1)
+
+    val matching_results_seq = matching_results_intermediate.seq.toList
+    val matching_results: List[Map[String, (Map[MatchRelation, Double], Alignment)]] = matching_results_seq.map(_._1)
     val optimization_grid = ParameterOptimizer.getDoubleGrid(0.001, 0.9999999999, 500)
 
 
     val threshold_optimized_values: ThresholdOptResult = findOptimalThresholds(selection_function, matching_results, optimization_grid)
 
-    val statistics: List[OutlierEvalStatisticsObject] = matching_results_intermediate.unzip3._3
-    val top_n_results: Map[String, Map[String, Seq[(MatchRelation, Double, Boolean)]]] = matching_results_intermediate.unzip3._2.toMap
+    val statistics: List[OutlierEvalStatisticsObject] = matching_results_seq.unzip3._3
+    val top_n_results: Map[String, Map[String, Seq[(MatchRelation, Double, Boolean)]]] = matching_results_seq.unzip3._2.toMap
 
     //get best normalization technique by max macro f1 measure
     val best_result: (String, (Double, AggregatedEvaluationResult)) = threshold_optimized_values.best_global_results.maxBy(_._2._2.macro_eval_res.f1Measure)
@@ -88,7 +91,7 @@ trait NonSeparatedOptimization {
 
     val result_tp: Seq[(MatchRelation, Double, Boolean)] = top.map { case (relation, score) => {
 
-      val cell = new Cell(relation.left, relation.right, score, relation.relation, relation.owl_type)
+      val cell = MatchingCell(relation.left, relation.right, score, relation.relation, relation.owl_type)
 
       if (ref_alignment.correspondences.contains(cell)) {
         (relation, score, true)

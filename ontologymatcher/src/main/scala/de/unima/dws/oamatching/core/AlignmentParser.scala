@@ -83,7 +83,7 @@ object AlignmentParser {
       val entity1: URI = new URI(test.getProperty(model.createProperty(namespace + "entity1")).getResource.getURI)
       val entity2: URI = new URI(test.getProperty(model.createProperty(namespace + "entity2")).getResource.getURI)
 
-      Option(new Cell(entity1, entity2, measure, relation, Cell.TYPE_UNKOWN))
+      Option(MatchingCell(entity1.toString, entity2.toString, measure, relation, Cell.TYPE_UNKOWN))
 
 
       }else {
@@ -205,7 +205,7 @@ object AlignmentParser {
           Cell.TYPE_UNKOWN
         }
 
-        Option(new Cell(entity1, entity2, measure, relation, cell_type))
+        Option(MatchingCell(entity1.toString, entity2.toString, measure, relation, cell_type))
       }else {
         //means that in the alignment is an empty mapping in the form
         // <map>
