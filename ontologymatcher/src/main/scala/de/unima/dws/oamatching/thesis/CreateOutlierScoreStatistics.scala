@@ -75,7 +75,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     "loop" -> "oacode_loop.rmp",
     "cblof_regular_x_means" -> "oacode_cblof_unweighted_regular_x_means.rmp",
     "cblof_x_means" -> "oacode_cblof_unweighted_x_means.rmp",
-    "rnn"->"oacode_rnn.rmp"
+    //"rnn"->"oacode_rnn.rmp"
   )
 
   /*val IMPLEMENTED_OUTLIER_METHODS_BY_NAME = Map(
