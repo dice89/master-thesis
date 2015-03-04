@@ -6,16 +6,17 @@ import de.unima.dws.oamatching.core._
 import de.unima.dws.oamatching.pipeline.{ScoreNormalizationFunctions, MatchingSelector}
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingTask, EvaluationMatchingRunner}
 import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
+import play.api.libs.json
 
 import scala.collection.immutable.Map
 
 /**
  * Created by mueller on 27/02/15.
  */
-trait SeparatedOptimization {
+trait SeparatedOptimization extends ResultServerHandling{
 
 
-  def executeProcessSeparated(run_number:Int,selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double],ref_matching_pairs: List[(EvaluationMatchingTask, File)], rapidminer_file: String, pre_pro_key: String,parameters: Map[String, Map[String, Double]], processes:Map[String, String]): ProcessEvalExecutionResultNonSeparated = {
+  def executeProcessSeparated(ds_name:String,run_number:Int,selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double],ref_matching_pairs: List[(EvaluationMatchingTask, File)], rapidminer_file: String, pre_pro_key: String,parameters: Map[String, Map[String, Double]], processes:Map[String, String]): ProcessEvalExecutionResultNonSeparated = {
 
     val process_name = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.lastIndexOf("."));
     val process_name_with_ending = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.size);
@@ -84,6 +85,13 @@ trait SeparatedOptimization {
    // best_results.foreach(norm_map => println(norm_map._1 + " " + norm_map._2.result.macro_eval_res.f1Measure))
 
 
+
+
+    val json_result = createJSONResultString(ds_name,process_type,pre_pro_key,true, best_result._2.result,parameters,createJSONThresholdStringSeparated(best_result._2))
+
+    println(json_result)
+    sendResultToServer(json_result)
+
     ProcessEvalExecutionResultNonSeparated(true,best_result._2.result,null,null,null,null,best_result, best_results)
 
   }
@@ -115,7 +123,7 @@ trait SeparatedOptimization {
   def findOptimalThresholdGlobalOnly(selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double],scores_by_norm_technique: List[Map[String, (Map[MatchRelation, Double], Alignment)]], threshold_grid: List[Double]):ThresholdOptResult = {
     val unique_techniques = scores_by_norm_technique.head.keys.toVector
 
-    val results_by_techniques: Map[String, List[(Map[MatchRelation, Double], Alignment)]] = unique_techniques.map(technique => {
+    val results_by_techniques = unique_techniques.par.map(technique => {
       //get results for a techniques
       val matchings_for_technique: List[(Map[MatchRelation, Double], Alignment)] = scores_by_norm_technique.map(elem => elem.get(technique).get)
 
@@ -123,7 +131,7 @@ trait SeparatedOptimization {
     }).toMap
 
     //optimize for each matching technique and find global optimum
-    val global_results: Map[String, Seq[(Double, AggregatedEvaluationResult)]] = results_by_techniques.map { case (name, list_of_matchings) => {
+    val global_results = results_by_techniques.map { case (name, list_of_matchings) => {
 
       //try for all thresholds
       val results_by_threshold: List[(Double, AggregatedEvaluationResult)] = threshold_grid.map(threshold => {
@@ -142,7 +150,7 @@ trait SeparatedOptimization {
     }
     }.toMap
 
-    val best_global_results: Map[String, (Double, AggregatedEvaluationResult)] = global_results.map { case (name, list_of_results) => {
+    val best_global_results = global_results.map { case (name, list_of_results) => {
       val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.macro_eval_res.precision)
 
 
@@ -157,7 +165,7 @@ trait SeparatedOptimization {
     }
 
 
-    ThresholdOptResult(global_results,best_global_results,null,null)
+    ThresholdOptResult(global_results.seq,best_global_results.seq,null,null)
   }
 
 

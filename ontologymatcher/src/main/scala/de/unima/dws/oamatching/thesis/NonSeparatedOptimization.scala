@@ -13,7 +13,7 @@ import scala.collection.parallel.immutable.ParSeq
 /**
  * Created by mueller on 01/03/15.
  */
-trait NonSeparatedOptimization {
+trait NonSeparatedOptimization extends ResultServerHandling{
   this: CreateOutlierScoreStatistics.type =>
 
   /**
@@ -26,7 +26,7 @@ trait NonSeparatedOptimization {
    * @param pre_pro_key
    * @return
    */
-  def executeProcessNonSeparated(run_number: Int, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], ref_matching_pairs:List[(EvaluationMatchingTask, File)], rapidminer_file: String, parameters: Map[String, Map[String, Double]], top_n: Int, pre_pro_key: String): ProcessEvalExecutionResultNonSeparated = {
+  def executeProcessNonSeparated(ds_name:String,run_number: Int, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], ref_matching_pairs:List[(EvaluationMatchingTask, File)], rapidminer_file: String, parameters: Map[String, Map[String, Double]], top_n: Int, pre_pro_key: String): ProcessEvalExecutionResultNonSeparated = {
 
     val process_name = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.lastIndexOf("."));
     val process_name_with_ending = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.size);
@@ -80,6 +80,11 @@ trait NonSeparatedOptimization {
 
     //get best normalization technique by max macro f1 measure
     val best_result: (String, (Double, AggregatedEvaluationResult)) = threshold_optimized_values.best_global_results.maxBy(_._2._2.macro_eval_res.f1Measure)
+
+
+
+
+
 
     ProcessEvalExecutionResultNonSeparated(false, best_result._2._2, threshold_optimized_values, statistics, top_n_results, best_result, null, null)
   }

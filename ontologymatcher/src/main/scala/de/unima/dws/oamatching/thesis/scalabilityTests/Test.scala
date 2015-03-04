@@ -1,18 +1,23 @@
 package de.unima.dws.oamatching.thesis.scalabilityTests
 
-import de.unima.dws.oamatching.core.{MatchingCell, Alignment, Cell}
-import de.unima.dws.oamatching.measures.StringMeasures
+import de.unima.dws.oamatching.core.AggregatedEvaluationResult
+import de.unima.dws.oamatching.thesis.{ResultServerHandling, SeparatedResult}
+import play.api.libs.json.Json
+
+import scala.collection.immutable.HashMap
+import scalaj.http.{Http, HttpResponse}
 
 /**
  * Created by mueller on 02/03/15.
  */
 
 
-case class Tester(left:String,right:String, relation:String, measure:Double, owl_type:String)
-object Test extends App{
+case class Tester(left: String, right: String, relation: String, measure: Double, owl_type: String)
+
+object Test extends App with ResultServerHandling {
 
 
-  val size:Int = 3000
+  val size: Int = 3000
   val test_data1 = generatedData(size)
   val test_data2 = generatedData(size)
 
@@ -77,7 +82,20 @@ object Test extends App{
 
   */
 
-  val alignment0:Alignment =  new Alignment(null,null)
+  val test = "{\n    \"ds_name\":\"conference\",\n    \"outlier_name\":\"loop\",\n    \"pre_pro_name\":\"remove_corr\",\n    \"separated\":true,\n    \"macro_result\": {\n        \"precision\":0.6,\n        \"recall\":0.6,\n        \"fmeasure\":0.6},\n    \"micro_result\": {\n        \"precision\":0.6,\n        \"recall\":0.6,\n        \"fmeasure\":0.6},\n    \"tp\":10,\n    \"fp\":10,\n    \"fn\":10,\n    \"parameters\":{\"alpha\":0.0,\"test\":0.1,\"fuzyy\":0.3},\n    \"threshold\":{\"classes\":0.1,\"dp\":0.3,\"op\":0.3}\n}"
+
+
+  //val response: HttpResponse[String] = Http("http://localhost:3000/api/experiments").postData(test).header("content-type", "application/json").asString
+
+  //println(test)
+
+
+  val testmap = Map("test"->"0.6","test2"->"0.7")
+
+  println(Json.prettyPrint(Json.toJson(testmap.seq)))
+
+  println(Json.toJson(testmap))
+  /*val alignment0:Alignment =  new Alignment(null,null)
   val startime0 = System.currentTimeMillis()
   var i = 0
   var n = 0
@@ -97,21 +115,17 @@ object Test extends App{
       n = n+1
     }
     i = i+1
-  }
+  }*/
 
   //println("done0 in "+(System.currentTimeMillis()-startime0) + "total size "+ alignment0.test2.size)
   //TODO try it without iterator and random access an vector
 
 
-
-
-  def generatedData(size:Int): Array[String] = {
+  def generatedData(size: Int): Array[String] = {
     val test_set = new Array[String](size)
 
-    test_set.zipWithIndex.map(value => "test_value_"+value._2)
+    test_set.zipWithIndex.map(value => "test_value_" + value._2)
   }
-
-
 
 
 }

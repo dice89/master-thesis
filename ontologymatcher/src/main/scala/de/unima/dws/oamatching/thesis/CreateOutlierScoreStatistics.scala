@@ -196,22 +196,25 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     val data_set = parseProblems(ds_name,"ontos/2014/"+ds_name)
     val matching_pairs: List[(EvaluationMatchingTask, File)] = getListofProblemMatchingTasks(data_set, base_matchings_folder+File.separator+"matchings")
 
-    runAllForAllAlgosForAllSltcFunctions(eval_folder_name,matching_pairs,true)
+    runAllForAllAlgosForAllSltcFunctions(ds_name,eval_folder_name,matching_pairs,true)
   }
 
 
 
-  def runAllForAllAlgosForAllSltcFunctions(base_folder: String, matching_pairs:List[(EvaluationMatchingTask, File)], parallel: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
+  def runAllForAllAlgosForAllSltcFunctions(ds_name:String,base_folder: String, matching_pairs:List[(EvaluationMatchingTask, File)], parallel: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
 
     createFolder(base_folder)
-    val non_separated_folder = base_folder +"/non_separated"
-    createFolder(non_separated_folder)
-    val non_separated_best = runAllForAlgosForAllSlctFunctions(non_separated_folder, matching_pairs, parallel, false)
 
 
     val separated_folder = base_folder +"/separated"
     createFolder(separated_folder)
-    val separated_best = runAllForAlgosForAllSlctFunctions(separated_folder, matching_pairs, parallel,  true)
+    val separated_best = runAllForAlgosForAllSlctFunctions(ds_name,separated_folder, matching_pairs, parallel,  true)
+
+
+    val non_separated_folder = base_folder +"/non_separated"
+    createFolder(non_separated_folder)
+    val non_separated_best = runAllForAlgosForAllSlctFunctions(ds_name,non_separated_folder, matching_pairs, parallel, false)
+
 
     val best_result =  if (separated_best._2._2.overall_agg_best.macro_eval_res.f1Measure > non_separated_best._2._2.overall_agg_best.macro_eval_res.f1Measure ) {
       println("separated is best")
@@ -227,14 +230,14 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   }
 
 
-  def runAllForAlgosForAllSlctFunctions(base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], parallel: Boolean, separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
+  def runAllForAlgosForAllSlctFunctions(ds_name:String,base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], parallel: Boolean, separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
     val results = SELECTION_CONFIG.map { case (name, fuzzy_values) => {
 
       println("Start " +name)
       val fuzzy_base_folder = base_folder + "/" + name
       createFolder(fuzzy_base_folder)
       val selct_fct = SELECTION_METHODS_BY_NAME.get(name).get
-      runAllForAlgosForOneFuzzySelectFct(name, fuzzy_values, selct_fct, fuzzy_base_folder, matching_pairs, parallel, separated)
+      runAllForAlgosForOneFuzzySelectFct(ds_name,name, fuzzy_values, selct_fct, fuzzy_base_folder, matching_pairs, parallel, separated)
     }
     }
 
@@ -245,7 +248,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   }
 
 
-  def runAllForAlgosForOneFuzzySelectFct(method: String, fuzzy_values: List[Map[String, Double]], slct_fct: (Double) => (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double], base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], parallel: Boolean, separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
+  def runAllForAlgosForOneFuzzySelectFct(ds_name:String,method: String, fuzzy_values: List[Map[String, Double]], slct_fct: (Double) => (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double], base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], parallel: Boolean, separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
 
 
     val results = fuzzy_values.zipWithIndex.map(fuzzy_config => {
@@ -256,7 +259,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
       val name_to_config = Map(method -> 1.0)
       val final_config = fuzzy_config._1 ++ name_to_config
 
-      val result = runAllForAllAlgos(fuzzy_base_folder, matching_pairs, final_config, init_slct_fct, parallel, separated)
+      val result = runAllForAllAlgos(ds_name,fuzzy_base_folder, matching_pairs, final_config, init_slct_fct, parallel, separated)
 
 
       result
@@ -277,12 +280,12 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
    * @param parallel Execute in parallel (-> only for multicore machines)
    * @return
    */
-  def runAllForAllAlgos(base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], config: Map[String, Double], select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double], parallel: Boolean, separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
+  def runAllForAllAlgos(ds_name:String,base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], config: Map[String, Double], select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double], parallel: Boolean, separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
 
     //createFolder(base_folder)
     val results = IMPLEMENTED_OUTLIER_METHODS_BY_NAME.map { case (name, files) => {
 
-      runAllPreproOneMethod(name, base_folder, config, matching_pairs, select_fct, separated)
+      runAllPreproOneMethod(ds_name, name, base_folder, config, matching_pairs, select_fct, separated)
     }
     }
 
@@ -301,7 +304,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
    * @param select_fct
    * @return
    */
-  def runAllPreproOneMethod(outlier_method: String, base_folder: String, select_config: Map[String, Double], matching_pairs: List[(EvaluationMatchingTask, File)], select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double],  separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
+  def runAllPreproOneMethod(ds_name:String,outlier_method: String, base_folder: String, select_config: Map[String, Double], matching_pairs: List[(EvaluationMatchingTask, File)], select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double],  separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
     createFolder(base_folder)
     val processes: OutlierEvaluationProcessesBySepartation = parseOutlierEvaluationProcesses("../RapidminerRepo/OutlierEvaluationV2", IMPLEMENTED_OUTLIER_METHODS_BY_NAME.get(outlier_method).get)
 
@@ -317,7 +320,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
       createFolder(base_folder_config)
       //just for reporting purposes
       val total_config = config ++ select_config
-      val best_result: (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = runAlgorithmSingleNonSeparated(index,processes, matching_pairs, select_fct, base_folder_config, total_config, separated)
+      val best_result: (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = runAlgorithmSingleNonSeparated(ds_name,index,processes, matching_pairs, select_fct, base_folder_config, total_config, separated)
 
       //print this result to pdf
       HistogramChartFactory.createExecutionSummaryReport(base_folder_config, outlier_method, best_result)
@@ -340,7 +343,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
    * @param config
    * @return
    */
-  def runAlgorithmSingleNonSeparated(run_number:Int,processes: OutlierEvaluationProcessesBySepartation, matching_pairs: List[(EvaluationMatchingTask, File)], select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double], base_folder_name: String, config: Map[String, Double], separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
+  def runAlgorithmSingleNonSeparated(ds_name:String,run_number:Int,processes: OutlierEvaluationProcessesBySepartation, matching_pairs: List[(EvaluationMatchingTask, File)], select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double], base_folder_name: String, config: Map[String, Double], separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
     val param = Map("mining" -> config)
 
     val results = PRE_PRO_TECHNIQUES.map(pre_pro_name => {
@@ -351,17 +354,17 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
         val folder_name = base_folder_name + "/" + PCA_VARIANT_FOLDER
         createFolder(folder_name)
         if (!separated) {
-          Option((pre_pro_name, runNonSeparated(run_number,folder_name, select_fct, pre_pro_name, processes.non_separated.pca_variance, param, 9, matching_pairs, separated)))
+          Option((pre_pro_name, runNonSeparated(ds_name,run_number,folder_name, select_fct, pre_pro_name, processes.non_separated.pca_variance, param, 9, matching_pairs, separated)))
         } else {
-          Option((pre_pro_name, runNonSeparated(run_number,folder_name, select_fct, pre_pro_name, processes.separated.pca_variance, param,  9, matching_pairs, separated)))
+          Option((pre_pro_name, runNonSeparated(ds_name,run_number,folder_name, select_fct, pre_pro_name, processes.separated.pca_variance, param,  9, matching_pairs, separated)))
         }
       } else if (pre_pro_name.equals(PCA_FIXED_FOLDER)) {
         val folder_name = base_folder_name + "/" + PCA_FIXED_FOLDER
         createFolder(folder_name)
         if (!separated) {
-          Option((pre_pro_name, runNonSeparated(run_number,folder_name, select_fct, pre_pro_name, processes.non_separated.pca_fixed, param, 9, matching_pairs, separated)))
+          Option((pre_pro_name, runNonSeparated(ds_name,run_number,folder_name, select_fct, pre_pro_name, processes.non_separated.pca_fixed, param, 9, matching_pairs, separated)))
         } else {
-          Option((pre_pro_name, runNonSeparated(run_number,folder_name, select_fct, pre_pro_name, processes.separated.pca_fixed, param, 9, matching_pairs, separated)))
+          Option((pre_pro_name, runNonSeparated(ds_name,run_number,folder_name, select_fct, pre_pro_name, processes.separated.pca_fixed, param, 9, matching_pairs, separated)))
         }
       } else if (pre_pro_name.equals(REMOVE_CORR_FOLDER)) {
 
@@ -369,9 +372,9 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
         val folder_name = base_folder_name + "/" + REMOVE_CORR_FOLDER
         createFolder(folder_name)
         if (!separated) {
-          Option((pre_pro_name, runNonSeparated(run_number,folder_name, select_fct, pre_pro_name, processes.non_separated.remove_correlated, param,  9, matching_pairs, separated)))
+          Option((pre_pro_name, runNonSeparated(ds_name,run_number,folder_name, select_fct, pre_pro_name, processes.non_separated.remove_correlated, param,  9, matching_pairs, separated)))
         } else {
-          Option((pre_pro_name, runNonSeparated(run_number,folder_name, select_fct, pre_pro_name, processes.separated.remove_correlated, param,  9, matching_pairs, separated)))
+          Option((pre_pro_name, runNonSeparated(ds_name,run_number,folder_name, select_fct, pre_pro_name, processes.separated.remove_correlated, param,  9, matching_pairs, separated)))
         }
       } else {
         Option.empty
@@ -386,7 +389,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     best_result
   }
 
-  def runNonSeparated(run_number:Int,folder: String, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], name: String, process_files: List[String], parameters: Map[String, Map[String, Double]], top_n: Int, ref_matching_pairs:List[(EvaluationMatchingTask, File)], separated: Boolean): (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated) = {
+  def runNonSeparated(ds_name:String,run_number:Int,folder: String, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], name: String, process_files: List[String], parameters: Map[String, Map[String, Double]], top_n: Int, ref_matching_pairs:List[(EvaluationMatchingTask, File)], separated: Boolean): (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated) = {
 
     //Get Parameters
     val pre_pro_param_config: List[Map[String, Double]] = PARAM_CONFIGS_PRE_PRO.get(name).get
@@ -396,7 +399,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
       try {
         val parameter_config: Map[String, Map[String, Double]] = parameters.+(name -> config._1)
 
-        val results = executeListOfNonSeparatedProcesses(config._2, selection_function, name, process_files, parameter_config,top_n, ref_matching_pairs, separated)
+        val results = executeListOfNonSeparatedProcesses(ds_name,config._2, selection_function, name, process_files, parameter_config,top_n, ref_matching_pairs, separated)
         println("finshed round " + config._2)
         HistogramChartFactory.createReportForExecutionRun(folder, name+"_run_"+config._2, results, parameter_config)
         Option((parameter_config, results))
@@ -418,16 +421,16 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     best_result
   }
 
-  def executeListOfNonSeparatedProcesses(run_number:Int, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], name: String, process_files: List[String], parameters: Map[String, Map[String, Double]], top_n: Int, ref_matching_pairs:List[(EvaluationMatchingTask, File)], separated: Boolean): ProcessEvalExecutionResultsNonSeparated = {
+  def executeListOfNonSeparatedProcesses(ds_name:String,run_number:Int, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], name: String, process_files: List[String], parameters: Map[String, Map[String, Double]], top_n: Int, ref_matching_pairs:List[(EvaluationMatchingTask, File)], separated: Boolean): ProcessEvalExecutionResultsNonSeparated = {
 
 
     val results: Map[String, ProcessEvalExecutionResultNonSeparated] = process_files.map(process_file => {
 
       println("separated ? " +separated)
       if (separated) {
-        process_file -> executeProcessSeparated(run_number,selection_function, ref_matching_pairs, process_file, name, parameters, IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS)
+        process_file -> executeProcessSeparated(ds_name,run_number,selection_function, ref_matching_pairs, process_file, name, parameters, IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS)
       } else {
-        process_file -> executeProcessNonSeparated(run_number,selection_function, ref_matching_pairs, process_file, parameters, top_n, name)
+        process_file -> executeProcessNonSeparated(ds_name,run_number,selection_function, ref_matching_pairs, process_file, parameters, top_n, name)
       }
 
     }).toMap

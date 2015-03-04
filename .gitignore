@@ -31,3 +31,9 @@ ontologymatcher/thesisexperiments/outliermatchings/
 *.xlsx
 
 ontologymatcher/thesisexperiments/outliereval
+
+ontologymatcher/test_rapidminer.log.3
+
+ontologymatcher/test_rapidminer.log.1
+
+ontologymatcher/test_rapidminer.log.2
