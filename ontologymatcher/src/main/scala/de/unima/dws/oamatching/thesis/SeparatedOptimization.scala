@@ -89,7 +89,6 @@ trait SeparatedOptimization extends ResultServerHandling{
 
     val json_result = createJSONResultString(ds_name,process_type,pre_pro_key,true, best_result._2.result,parameters,createJSONThresholdStringSeparated(best_result._2))
 
-    println(json_result)
     sendResultToServer(json_result)
 
     ProcessEvalExecutionResultNonSeparated(true,best_result._2.result,null,null,null,null,best_result, best_results)
