@@ -54,9 +54,18 @@ object EvaluationResultAggregator {
     val no_of_result = evaluation_results.size
     val sum = EvaluationResult.tupled(tupled_eval_res.reduceLeft[(Double, Double, Double, Int, Int, Int)] { case (previous, tuples) => EvaluationResult.unapply(EvaluationResult(previous._1 + tuples._1, previous._2 + tuples._2, previous._3 + tuples._3, previous._4 + tuples._4, previous._5 + tuples._5, previous._6 + tuples._6)).get})
 
+
+    val macro_precision = sum.precision / no_of_result.toDouble
+    val macro_recall = sum.recall / no_of_result.toDouble
+    val macro_fMeasure: Double = if((macro_precision + macro_precision) > 0){
+      (2 * ((macro_precision * macro_recall) / (macro_precision + macro_recall)))
+    }else {
+      0.0
+    }
+
     val macro_average = EvaluationResult(sum.precision / no_of_result.toDouble,
       sum.recall / no_of_result.toDouble,
-      sum.f1Measure / no_of_result.toDouble,
+      macro_fMeasure,
       sum.truePositives,
       sum.falsePositives,
       sum.FalseNegatives)
