@@ -82,19 +82,30 @@ object Test extends App with ResultServerHandling {
 
   */
 
-  val test = "{\n    \"ds_name\":\"conference\",\n    \"outlier_name\":\"loop\",\n    \"pre_pro_name\":\"remove_corr\",\n    \"separated\":true,\n    \"macro_result\": {\n        \"precision\":0.6,\n        \"recall\":0.6,\n        \"fmeasure\":0.6},\n    \"micro_result\": {\n        \"precision\":0.6,\n        \"recall\":0.6,\n        \"fmeasure\":0.6},\n    \"tp\":10,\n    \"fp\":10,\n    \"fn\":10,\n    \"parameters\":{\"alpha\":0.0,\"test\":0.1,\"fuzyy\":0.3},\n    \"threshold\":{\"classes\":0.1,\"dp\":0.3,\"op\":0.3}\n}"
 
 
-  //val response: HttpResponse[String] = Http("http://localhost:3000/api/experiments").postData(test).header("content-type", "application/json").asString
-
-  //println(test)
+  val response: HttpResponse[String] = Http("http://localhost:3000/api/experiments").postData(test).header("content-type", "application/json").asString
 
 
-  val testmap = Map("test"->"0.6","test2"->"0.7")
+  if (response.isError) {
+    println("fuck you")
 
-  println(Json.prettyPrint(Json.toJson(testmap.seq)))
+  } else {
 
-  println(Json.toJson(testmap))
+    println(response)
+  }
+  val response2: HttpResponse[String] = Http("http://localhost:3000/api/experiments").proxy("proxy.wdf.sap.corp", 8080).postData(test).header("content-type", "application/json").asString
+
+  if (response2.isError) {
+    println("fuck you")
+
+  } else {
+
+    println(response2)
+  }
+
+
+
   /*val alignment0:Alignment =  new Alignment(null,null)
   val startime0 = System.currentTimeMillis()
   var i = 0
