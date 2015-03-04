@@ -70,19 +70,41 @@ trait ResultServerHandling {
 
   def sendResultToServer(json_string:String):Unit = {
 
-    try{
-      val response: HttpResponse[String] = Http("http://128.199.50.209:3000/api/experiments").postData(json_string).header("content-type", "application/json").asString
+    val proxy_host_setting = System.getenv("proxy_host")
+    val proxy_port_setting = System.getenv("proxy_port")
 
-      if(response.is4xx){
-        println(response.body)
+    if(proxy_host_setting!= null &&proxy_port_setting != null ){
+      try{
+        val response: HttpResponse[String] = Http("http://128.199.50.209:3000/api/experiments").postData(json_string).header("content-type", "application/json").asString
+
+        if(response.is4xx){
+          println(response.body)
+        }
+
+      }catch {
+        case exception:Throwable =>{
+          println("Result Server not online")
+          exception.printStackTrace()
+        }
       }
+    }else {
+      try{
+        val response: HttpResponse[String] = Http("http://128.199.50.209:3000/api/experiments").proxy(proxy_host_setting, proxy_port_setting.toInt).postData(json_string).header("content-type", "application/json").asString
 
-    }catch {
-      case exception:Throwable =>{
-        println("Result Server not online")
-        exception.printStackTrace()
+        if(response.is4xx){
+          println(response.body)
+        }
+
+      }catch {
+        case exception:Throwable =>{
+          println("Result Server not online")
+          exception.printStackTrace()
+        }
       }
     }
+
+
+
 
   }
 }
