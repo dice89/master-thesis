@@ -73,7 +73,7 @@ trait ResultServerHandling {
     val proxy_host_setting = System.getenv("proxy_host")
     val proxy_port_setting = System.getenv("proxy_port")
 
-    if(proxy_host_setting!= null &&proxy_port_setting != null ){
+    if(proxy_host_setting== null &&proxy_port_setting == null ){
       try{
         val response: HttpResponse[String] = Http("http://128.199.50.209:3000/api/experiments").postData(json_string).header("content-type", "application/json").asString
 
