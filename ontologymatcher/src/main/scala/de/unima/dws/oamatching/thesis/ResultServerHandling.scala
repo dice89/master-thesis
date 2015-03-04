@@ -45,7 +45,7 @@ trait ResultServerHandling {
       "      \"precision\":"+micro_precision+",\n  " +
       "      \"recall\":"+micro_recall+",\n   " +
       "     \"fmeasure\":"+micro_f_measure+"},\n " +
-      "   \"tp\":"+fn+",\n " +
+      "   \"tp\":"+tp+",\n " +
       "   \"fp\":"+fp+",\n " +
       "   \"fn\":"+fn+",\n  " +
       "  \"parameters\":"+json_parameters+",\n " +
