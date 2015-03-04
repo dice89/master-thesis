@@ -86,13 +86,13 @@ object Test extends App with ResultServerHandling {
 
 
   try{
-    val response: HttpResponse[String] = Http("http://localhost:3000/api/experiments").postData(test).header("content-type", "application/json").asString
+    val response: HttpResponse[String] = Http("http://128.199.50.209:3000/api/experiments").postData(test).header("content-type", "application/json").asString
     if (response.isError) {
       println("fuck you")
 
     } else {
 
-      println(response)
+      println("yeah")
     }
   }catch {
     case exception: Throwable => exception.printStackTrace()
@@ -102,14 +102,14 @@ object Test extends App with ResultServerHandling {
   try{
     val proxy_host_setting = System.getenv("proxy_host")
     val proxy_port_setting = System.getenv("proxy_port")
-  val response2: HttpResponse[String] = Http("http://localhost:3000/api/experiments").proxy(proxy_host_setting, proxy_port_setting.toInt).postData(test).header("content-type", "application/json").asString
+  val response2: HttpResponse[String] = Http("http://128.199.50.209:3000/api/experiments").proxy(proxy_host_setting, proxy_port_setting.toInt).postData(test).header("content-type", "application/json").asString
 
   if (response2.isError) {
     println("fuck you")
 
   } else {
 
-    println(response2)
+    println("yeah")
   }
   }catch {
     case exception: Throwable => exception.printStackTrace()
