@@ -23,6 +23,8 @@ abstract class ElementLevelMatcher(val similarity:Boolean) extends Matcher {
     val alignment:Alignment =  new Alignment(null,null)
 
 
+    println(entities1.size)
+    println(entities2.size)
     var i = 0
     var n = 0
     var entity1:OWLEntity= null

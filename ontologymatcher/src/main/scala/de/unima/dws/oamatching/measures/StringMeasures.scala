@@ -29,9 +29,17 @@ object StringMeasures {
    * @return
    */
   def computePrefixBiDirectional(a: String, b: String): Double = {
-    val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.startsWith)(a, b)
-    val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.startsWith)(b, a)
-    Math.max(res_a_b, res_b_a)
+    try {
+      val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.startsWith)(a, b)
+      val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.startsWith)(b, a)
+      Math.max(res_a_b, res_b_a)
+    }
+    catch {
+      case e:Throwable => {
+        e.printStackTrace()
+        0.0
+      }
+    }
   }
 
   /**
@@ -41,9 +49,18 @@ object StringMeasures {
    * @return
    */
   def computeSuffixBiDirectional(a: String, b: String): Double = {
-    val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.endsWith)(a, b)
-    val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.endsWith)(b, a)
-    Math.max(res_a_b, res_b_a)
+
+    try {
+      val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.endsWith)(a, b)
+      val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.endsWith)(b, a)
+      Math.max(res_a_b, res_b_a)
+    }
+    catch {
+      case e:Throwable => {
+        e.printStackTrace()
+        0.0
+      }
+    }
   }
 
   /**

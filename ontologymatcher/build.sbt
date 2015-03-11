@@ -46,6 +46,7 @@ libraryDependencies += "org.jfree" % "jfreechart" % "1.0.19"
 
 libraryDependencies += "com.itextpdf" % "itextpdf" % "5.0.6"
 
+libraryDependencies += "com.typesafe" % "config" % "1.2.1"
 
 
 resolvers += "Local Maven Repository" at "file:///Users/mueller/.m2/repository/"

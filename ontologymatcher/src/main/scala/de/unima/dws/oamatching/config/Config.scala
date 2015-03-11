@@ -1,6 +1,8 @@
 package de.unima.dws.oamatching.config
 
 import scala.io.Source
+import com.typesafe.config.ConfigFactory
+
 
 object Config {
 
@@ -32,7 +34,7 @@ object Config {
 
   parseConfig()
 
-  val USE_FRAGMENT = false
+  val USE_FRAGMENT = true
   val USE_LABEL = true
 
 
@@ -53,6 +55,9 @@ object Config {
     })
 
   }
+
+  val loaded_config = ConfigFactory.load()
+
 
 
 }

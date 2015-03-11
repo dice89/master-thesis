@@ -4,6 +4,7 @@ import java.io.File
 
 import com.github.tototoshi.csv.{CSVReader, CSVWriter}
 import de.unima.dws.oamatching.alex.XMLTest
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.MatchRelation
 import de.unima.dws.oamatching.matcher.MatcherRegistry
 import de.unima.dws.oamatching.pipeline.FeatureVector
@@ -184,7 +185,17 @@ object RapidminerJobs {
     process.getOperator("ReadVector").setParameter("csv_file", matching_file.getAbsolutePath)
     process.getOperator("Output").setParameter("csv_file", output_csv.getAbsolutePath)
 
-    process.run()
+
+
+    try {
+      process.run()
+    }
+    catch {
+      case e:Throwable => {
+        println(matching_file.getAbsolutePath)
+        e.printStackTrace()
+      }
+    }
 
     //trigger garbage collection
 
@@ -419,13 +430,19 @@ object RapidminerJobs {
 
     reader.close()
 
+    if(Config.loaded_config.getBoolean("rapidminerconfig.cleanup")){
+      file.delete()
+    }
+
     println("parsed dimension" +dim_size);
     //normalize Values
     val finalmap = mapped_values.map(A => A._1 -> A._2 )
     (dim_size,max_min_by_dim,finalmap)
   }
 
-
+  /*########################################################################
+                          Set Configuration
+    ########################################################################*/
 
   def configure_knn(data_set_size: Int, process: RProcess, mining_params: Map[String, Double], knn_name:String) {
     val k_value = Math.ceil(data_set_size.toDouble * mining_params.get("k").get).toInt
