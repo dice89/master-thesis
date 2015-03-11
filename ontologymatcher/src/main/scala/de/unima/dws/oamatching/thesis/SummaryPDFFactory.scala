@@ -23,7 +23,7 @@ import scala.collection.immutable.Map
  * Singleton to create some vizualizations of the data sets
  * Created by mueller on 18/02/15.
  */
-object HistogramChartFactory{
+object SummaryPDFFactory{
 
   def createExecutionSummaryReport(folder:String,name:String,best_result: (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))):Unit = {
     val document: Document = new Document();
@@ -521,7 +521,12 @@ object HistogramChartFactory{
     // Second parameter is the number of the chapter
     val catPart = new Paragraph(s"Local threshold optimization results for $norm_technique")
 
-    val table: PdfPTable = new PdfPTable(2);
+    val table: PdfPTable = new PdfPTable(3);
+
+    val c1: PdfPCell = new PdfPCell(new Phrase("Problem"));
+    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(c1);
+
 
     val c3: PdfPCell = new PdfPCell(new Phrase("F1 Macro"));
     c3.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -532,6 +537,7 @@ object HistogramChartFactory{
     table.addCell(c4);
 
     thresholds.foreach { case (threshold, eval_res) => {
+      table.addCell(eval_res.problem)
       table.addCell(eval_res.f1Measure.toString)
       table.addCell(threshold.toString)
     }
