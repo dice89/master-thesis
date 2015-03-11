@@ -66,8 +66,8 @@ object MatchingPipelineCore{
   def createFeatureVector(problem: MatchingProblem, remove_correlated_threshold: Double, name_space_filter:Boolean): FeatureVector = {
 
     println("Start element Level Matching")
-    val onto1_namespace = problem.ontology1.getOntologyID.getOntologyIRI.get().toString
-    val onto2_namespace = problem.ontology2.getOntologyID.getOntologyIRI.get().toString
+    val onto1_namespace = problem.ontology1.getOntologyID.getOntologyIRI.get().getNamespace().toString
+    val onto2_namespace = problem.ontology2.getOntologyID.getOntologyIRI.get().getNamespace().toString
     println(onto1_namespace)
     println(onto2_namespace)
     val allowed_namespaces = List(onto1_namespace, onto2_namespace)
@@ -81,8 +81,10 @@ object MatchingPipelineCore{
     val outlier_analysis_vector: FeatureVector = if (structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results, structural_matcher_results.get), problem.name).get else individual_matcher_results
 
    if(name_space_filter){
+     println("Filter size")
+     println(outlier_analysis_vector.vector.size)
      val filtered_outlier_analysis_vector: FeatureVector = MatchingPruner.featureVectorNameSpaceFilter(outlier_analysis_vector, allowed_namespaces)
-
+     println(filtered_outlier_analysis_vector.vector.size)
      filtered_outlier_analysis_vector
    }else{
      outlier_analysis_vector
@@ -139,7 +141,7 @@ object MatchingPipelineCore{
         matchIndividualMatcher(matcher, problem)
       }catch {
         case _:Throwable => {
-          println("FAiled to match")
+          println("FAiled to match" + name)
           null
         }
       }

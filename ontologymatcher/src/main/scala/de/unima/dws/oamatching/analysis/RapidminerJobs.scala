@@ -103,7 +103,7 @@ object RapidminerJobs {
     val meta_data_fields:List[String] = List("left","relation","right","owl_type")
     val matcher_name_to_index: Map[String, Int] = header_line.split(",").filterNot(field => meta_data_fields.contains(field)).zipWithIndex.toMap
 
-    val output_csv: File = new File("thesisexperiments/outliermatchings"+File.separator+process_type+s"_$run_number"+"_"+System.currentTimeMillis()+matching_file.getName);
+    val output_csv: File = new File("thesisexperiments/outliermatchings"+File.separator+process_type+s"_$run_number"+"_"+System.nanoTime()+"_"+pre_pro_key+"_"+matching_file.getName);
 
     val file_name = pre_pro_key+process_type+System.currentTimeMillis().toString+".rmp"
     val process_file = XMLTest.transformXMLProcess(rapidminer_file, matcher_name_to_index,file_name)

@@ -3,6 +3,7 @@ package de.unima.dws.oamatching.thesis
 import java.io.File
 
 import de.unima.dws.oamatching.analysis.RapidminerJobs
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core._
 import de.unima.dws.oamatching.matcher.MatcherRegistry
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingTask, EvaluationDataSetParser, EvaluationMatchingRunner}
@@ -15,8 +16,9 @@ import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation
 import org.apache.commons.math3.stat.inference.KolmogorovSmirnovTest
 
 import scala.collection.immutable.Map
+import scala.collection.mutable
 import scala.collection.parallel.immutable.ParSeq
-
+import scala.collection.JavaConversions._
 /**
  * Created by mueller on 18/02/15.
  */
@@ -78,14 +80,6 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     "rnn"->"oacode_rnn.rmp"
   )
 
-  /*val IMPLEMENTED_OUTLIER_METHODS_BY_NAME = Map(
-   "lcdof_x_means" -> "oacode_ldcof_x_means.rmp"
- )*/
-
-
-  //    "lof_regular" -> "oacode_lof_regular.rmp",
-  // "cblof_x_means" -> "oacode_cblof_unweighted_x_means.rmp"
-
   val IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS: Map[String, String] = IMPLEMENTED_OUTLIER_METHODS_BY_NAME.map(tuple => (tuple._2, tuple._1))
 
   /*########################################################################
@@ -127,9 +121,11 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   val FUZZY_DELTA_SELECTION = List(Map("fuzzy" -> 0.001), Map("fuzzy" -> 0.1), Map("fuzzy" -> 0.01))
   val FUZZY_RATIO_SELECTION = List(Map("fuzzy" -> 1.01), Map("fuzzy" -> 1.02), Map("fuzzy" -> 1.10))
   val GREEDY_SELECTION = List(Map("fuzzy" -> 1.0))
+
   val SELECTION_CONFIG = Map("greedy_rank_fuzzy_delta" -> FUZZY_DELTA_SELECTION, "greedy_rank_fuzzy_ratio" -> FUZZY_RATIO_SELECTION,"greedy_rank" -> GREEDY_SELECTION)
   //val SELECTION_CONFIG = Map("greedy_rank" -> GREEDY_SELECTION)
 
+  println(Config.loaded_config.getStringList("optimization.selection"))
   val SELECTION_METHODS_BY_NAME: Map[String, (Double) => (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double]] = Map("greedy_rank"->MatchingSelector.greedyRankSelectorSimpleExp, "greedy_rank_fuzzy_delta" -> MatchingSelector.fuzzyGreedyRankSelectorDelta, "greedy_rank_fuzzy_ratio" -> MatchingSelector.fuzzyGreedyRankSelectorDelta)
 
   /*########################################################################
@@ -138,16 +134,25 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
   val DS_LOCATION_BY_NAME = Map("benchmarks"->"ontos/2014/benchmarks","conference"->"ontos/2014/conference","anatomy"->"ontos/2014/anatomy")
 
+
+  /*########################################################################
+                    Init stuff
+ ########################################################################*/
+
   val mean_computer = new Mean()
   val stdev_computer = new StandardDeviation()
-  val ratio_fuzzy_selection = 1.20
-  val delta_fuzzy_selection = 0.001
 
 
-  //val matching_pairs: List[(File, File)] = MiscExperiments.getListOfMatchingRefPairs
+  /*########################################################################
+                     Build run configurations ---> e.g. choose which selection method to use and so on
+ ########################################################################*/
 
+  val configured_selection_strategies = createSelectionBasedOnConfig()
 
-  //val conf = parseConference("ontos/2014/conference")
+  val configured_algorithms_to_run = createOutlierAlgoBasedOnConfig()
+
+  val dataset= Config.loaded_config.getString("optimization.dataset")
+
 
   /*########################################################################
                         Test Area
@@ -167,7 +172,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   //runAllForAllAlgosForAllSltcFunctions("thesisexperiments/outliereval", new_matching_pairs,false)
 
 
-  startOptimizationForGivenDataset("thesisexperiments/outliereval","conference")
+  startOptimizationForGivenDataset("thesisexperiments/outliereval",dataset)
 
 
 
@@ -187,6 +192,8 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
       createFolder(base_matchings_folder+"/matchings")
       problems.foreach(task => {
         val feature_vector = MatchingPipelineCore.createFeatureVector(task.matching_problem,0.5,true)
+
+        println("Create Vector Size"+ feature_vector.transposed_vector.size)
         RapidminerJobs.writeCSV(task.matching_problem.name,base_matchings_folder)(feature_vector)
       })
     }
@@ -205,9 +212,6 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
     createFolder(base_folder)
 
-
-
-
     val non_separated_folder = base_folder +"/non_separated"
     createFolder(non_separated_folder)
     val non_separated_best = runAllForAlgosForAllSlctFunctions(ds_name,non_separated_folder, matching_pairs, parallel, false)
@@ -215,6 +219,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     val separated_folder = base_folder +"/separated"
     createFolder(separated_folder)
     val separated_best = runAllForAlgosForAllSlctFunctions(ds_name,separated_folder, matching_pairs, parallel,  true)
+
 
     val best_result =  if (separated_best._2._2.overall_agg_best.macro_eval_res.f1Measure > non_separated_best._2._2.overall_agg_best.macro_eval_res.f1Measure ) {
       println("separated is best")
@@ -224,14 +229,14 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
       non_separated_best
     }
 
-    HistogramChartFactory.createExecutionSummaryReport(base_folder, "overall_best_result", best_result)
+    SummaryPDFFactory.createExecutionSummaryReport(base_folder, "overall_best_result", best_result)
 
     best_result
   }
 
 
   def runAllForAlgosForAllSlctFunctions(ds_name:String,base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], parallel: Boolean, separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
-    val results = SELECTION_CONFIG.par.map { case (name, fuzzy_values) => {
+    val results = configured_selection_strategies.par.map { case (name, fuzzy_values) => {
 
       println("Start " +name)
       val fuzzy_base_folder = base_folder + "/" + name
@@ -242,7 +247,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     }
 
     val best_result: (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = results.maxBy(_._2._2.overall_agg_best.macro_eval_res.f1Measure)
-    HistogramChartFactory.createExecutionSummaryReport(base_folder, "best_result", best_result)
+    SummaryPDFFactory.createExecutionSummaryReport(base_folder, "best_result", best_result)
 
     best_result
   }
@@ -267,7 +272,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
 
     val best_result: (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) =   results.maxBy(_._2._2.overall_agg_best.macro_eval_res.f1Measure)
-    HistogramChartFactory.createExecutionSummaryReport(base_folder, "best_result", best_result)
+    SummaryPDFFactory.createExecutionSummaryReport(base_folder, "best_result", best_result)
 
     best_result
   }
@@ -283,14 +288,14 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   def runAllForAllAlgos(ds_name:String,base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], config: Map[String, Double], select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double], parallel: Boolean, separated: Boolean): (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = {
 
     //createFolder(base_folder)
-    val results = IMPLEMENTED_OUTLIER_METHODS_BY_NAME.map { case (name, files) => {
+    val results = configured_algorithms_to_run.map { case (name, files) => {
 
       runAllPreproOneMethod(ds_name, name, base_folder, config, matching_pairs, select_fct, separated)
     }
     }
 
     val best_result: (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) =  results.maxBy(_._2._2.overall_agg_best.macro_eval_res.f1Measure)
-    HistogramChartFactory.createExecutionSummaryReport(base_folder, "best_result", best_result)
+    SummaryPDFFactory.createExecutionSummaryReport(base_folder, "best_result", best_result)
 
     best_result
   }
@@ -323,13 +328,13 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
       val best_result: (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = runAlgorithmSingleNonSeparated(ds_name,index,processes, matching_pairs, select_fct, base_folder_config, total_config, separated)
 
       //print this result to pdf
-      HistogramChartFactory.createExecutionSummaryReport(base_folder_config, outlier_method, best_result)
+      SummaryPDFFactory.createExecutionSummaryReport(base_folder_config, outlier_method, best_result)
       best_result
     }}
 
     val best_result: (String, (Map[String, Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)) = results.maxBy(_._2._2.overall_agg_best.macro_eval_res.f1Measure)
 
-    HistogramChartFactory.createExecutionSummaryReport(base_folder_name, outlier_method + "_best", best_result)
+    SummaryPDFFactory.createExecutionSummaryReport(base_folder_name, outlier_method + "_best", best_result)
 
     best_result
   }
@@ -401,7 +406,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
         val results = executeListOfNonSeparatedProcesses(ds_name,config._2, selection_function, name, process_files, parameter_config,top_n, ref_matching_pairs, separated)
         println("finshed round " + config._2)
-        HistogramChartFactory.createReportForExecutionRun(folder, name+"_run_"+config._2, results, parameter_config)
+        SummaryPDFFactory.createReportForExecutionRun(folder, name+"_run_"+config._2, results, parameter_config)
         Option((parameter_config, results))
       }
       catch {
@@ -479,6 +484,42 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
     OutlierEvalStatisticsObject(name, stdev, mean, p_value, values_sorted.head._1, min_value, top_values.unzip._1)
   }
+
+
+  /*########################################################################
+                     Custom Config builders
+ ########################################################################*/
+
+  /**
+   * Create selection method list
+   * @return
+   */
+  def createSelectionBasedOnConfig():Map[String, List[Map[String, Double]]]= {
+    val methods =  Config.loaded_config.getStringList("optimization.selection")
+
+    val configs= methods.map(method => {
+      method->SELECTION_CONFIG.get(method)
+    }).toList
+
+    val processed_config: Map[String, List[Map[String, Double]]] = configs.filter(_._2.isDefined).map(tuple => tuple._1 -> tuple._2.get).toMap
+    processed_config
+  }
+
+  /**
+   * Creates a Algorithm selection based on the config in application conf
+   * @return
+   */
+  def createOutlierAlgoBasedOnConfig():Map[String, List[Map[String, Double]]]  ={
+    val outlier_algo = Config.loaded_config.getStringList("optimization.processes")
+
+    val algo_configs: Map[String, List[Map[String, Double]]] = outlier_algo.map(algo => {
+      algo->CONFIG_BY_OUTLIER_METHOD.get(algo)
+    }).toList.filter(_._2.isDefined).map(tuple => tuple._1 -> tuple._2.get).toMap
+
+    algo_configs
+  }
+
+
 
 
 }

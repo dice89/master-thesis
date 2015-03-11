@@ -155,7 +155,9 @@ class Alignment(val onto1:String, val onto2:String) {
       reference.correspondences.filterNot(cell => correspondences.contains(cell)).size
     }
 
-    EvaluationResultAggregator.createEvaluationResult(tp,fp,fn)
+
+    val name = reference.onto1 +"-"+ reference.onto2
+    EvaluationResultAggregator.createEvaluationResult(tp,fp,fn,name)
 
   }
 }

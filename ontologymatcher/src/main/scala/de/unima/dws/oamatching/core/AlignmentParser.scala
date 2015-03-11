@@ -145,35 +145,30 @@ object AlignmentParser {
       println("fail")
     }
     val alignment_parent: Resource = iter.nextStatement().getSubject
+
+
+    val alignment_onto1_uri_query = model.createProperty(namespace + "uri1")
+    val onto1_uri: String = getOntoProperty(alignment_parent, alignment_onto1_uri_query)
+
     //get onto1
     val alignment_onto1_query = model.createProperty(namespace + "onto1")
-
-    val onto1_namespace_prop =  alignment_parent.getProperty(alignment_onto1_query)
-    val onto1_namespace = if(alignment_parent.hasProperty(alignment_onto1_query)){
-
-      try{
-        alignment_parent.getProperty(alignment_onto1_query).getResource.getURI.toString
-      }catch{
-        case _:Throwable =>  alignment_parent.getProperty(alignment_onto1_query).getString
-      }
+    val onto1_namespace: String = if(onto1_uri.equals("nn")) {
+      getOntoProperty(alignment_parent, alignment_onto1_query)
     }else {
-      "onto2"
+      onto1_uri
     }
+
+
+    val alignment_onto2_uri_query = model.createProperty(namespace + "uri2")
+    val onto2_uri: String = getOntoProperty(alignment_parent, alignment_onto2_uri_query)
 
     //get onto2
     val alignment_onto2_query = model.createProperty(namespace + "onto2")
-    val onto2_namespace_prop =  alignment_parent.getProperty(alignment_onto2_query)
-    val onto2_namespace = if(alignment_parent.hasProperty(alignment_onto2_query)){
-
-      try{
-        alignment_parent.getProperty(alignment_onto2_query).getResource.getURI.toString
-      }catch{
-        case _:Throwable =>  alignment_parent.getProperty(alignment_onto2_query).getString
-      }
+    val onto2_namespace: String = if(onto2_uri.equals("nn")) {
+      getOntoProperty(alignment_parent, alignment_onto2_query)
     }else {
-      "onto2"
+      onto2_uri
     }
-
 
     val alignment_cell_query = model.createProperty(namespace + "map")
     //wrap and map to RDFResource
@@ -221,6 +216,21 @@ object AlignmentParser {
 
 
     new Alignment(onto1_namespace, onto2_namespace, cleaned_correspondences)
+  }
+
+  def getOntoProperty(alignment_parent: Resource, alignment_onto2_query: Property): String = {
+    val onto2_namespace_prop = alignment_parent.getProperty(alignment_onto2_query)
+    val onto2_namespace = if (alignment_parent.hasProperty(alignment_onto2_query)) {
+
+      try {
+        alignment_parent.getProperty(alignment_onto2_query).getResource.getURI.toString
+      } catch {
+        case _: Throwable => alignment_parent.getProperty(alignment_onto2_query).getString
+      }
+    } else {
+      "nn"
+    }
+    onto2_namespace
   }
 
   /**

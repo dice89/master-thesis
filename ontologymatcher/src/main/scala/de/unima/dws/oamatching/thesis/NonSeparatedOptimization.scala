@@ -84,7 +84,7 @@ trait NonSeparatedOptimization extends ResultServerHandling{
 
 
 
-    val json_result = createJSONResultString(ds_name,process_type,pre_pro_key,true, best_result._2._2,parameters,createJSONThresholdStringNonSeparated(best_result._2._1))
+    val json_result = createJSONResultString(ds_name,process_type,pre_pro_key,false, best_result._2._2,parameters,createJSONThresholdStringNonSeparated(best_result._2._1))
 
     sendResultToServer(json_result)
 
