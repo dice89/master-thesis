@@ -1,36 +1,16 @@
 ontologymatcher/target
 ontologymatcher/.idea
 ontologymatcher/project/
-tudarmstadtmatcher
 *.log
+ontologymatcher/tmp
 
-ontologymatcher/tmpprocesses
-ontologymatcher/runtime.log
+ontologymatcher/thesisexperiments/outliereval
+
 ontologymatcher/project/target
-ontologymatcher/test.rmp
+
 ontologymatcher/matching_matcher_result.csv
 
 ontologymatcher/meta_matcher_result.csv
-
-oaMatcherCode
-
-oaMatcherCode/result.csv
-
-oaMatcherCode/output.csv
-
-ontologymatcher/test_result.csv
-
-ontologymatcher/vectortest_train.csv
-
-oaMatcherCode/matching_matcher_result.csv
-
-ontologymatcher/output.csv
-
-ontologymatcher/thesisexperiments/outliermatchings/
-
-*.xlsx
-
-ontologymatcher/thesisexperiments/outliereval
 
 ontologymatcher/test_rapidminer.log.3
 
