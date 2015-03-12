@@ -35,8 +35,6 @@ object RapidminerJobs extends LazyLogging {
     val tmp_processes = new File(tmp_processes_loc)
     val tmp_matchings = new File(tmp_matchings_loc)
 
-
-
     if (!tmp_processes.exists()) {
       tmp_processes.mkdirs()
     }
