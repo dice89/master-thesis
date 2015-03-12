@@ -67,7 +67,7 @@ object SemanticMeasures {
       }
     }
     catch {
-      case _ => 0.0
+      case e:Throwable => 0.0
     }
 
   }

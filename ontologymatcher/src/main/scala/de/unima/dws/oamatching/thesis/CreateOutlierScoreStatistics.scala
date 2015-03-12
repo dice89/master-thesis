@@ -6,6 +6,7 @@ import com.typesafe.scalalogging.slf4j.LazyLogging
 import de.unima.dws.oamatching.analysis.RapidminerJobs
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core._
+import de.unima.dws.oamatching.matcher.MatcherRegistry
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationDataSetParser, EvaluationMatchingTask}
 import de.unima.dws.oamatching.pipeline.{MatchingPipelineCore, MatchingSelector}
 import org.apache.commons.math.stat.descriptive.moment.Mean
@@ -56,7 +57,10 @@ case class ProcessEvalExecutionResultsNonSeparated(separated: Boolean, overall_a
  */
 object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessParser with SeparatedOptimization with EvaluationDataSetParser with NonSeparatedOptimization with LazyLogging {
   RapidminerJobs.init()
-  //MatcherRegistry.initLargeScale()
+
+  if(Config.loaded_config.getBoolean("optimization.init_base_matcher")){
+    MatcherRegistry.initLargeScale()
+  }
   /*########################################################################
                          Algorithms
     ########################################################################*/

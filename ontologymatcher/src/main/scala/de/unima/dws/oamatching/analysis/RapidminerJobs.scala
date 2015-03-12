@@ -116,7 +116,7 @@ object RapidminerJobs extends LazyLogging {
 
   def rapidminerOutlierFromExistentFile(readFunction: File => (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]))(rapidminer_file: String)(run_number: Int, matching_file: File, parameters: Map[String, Map[String, Double]], pre_pro_key: String, process_type: String): (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) = {
     //get list of matchers in file
-    val matching_lines = Source.fromFile(matching_file).getLines()
+    val matching_lines = Source.fromFile(matching_file,"utf-8").getLines()
     val header_line = matching_lines.next()
     val data_set_size = matching_lines.size - 1; //minus 1 for header lines
     //split by comma
@@ -216,7 +216,7 @@ object RapidminerJobs extends LazyLogging {
    */
   def rapidminerOutlierFromExistentFileSeparated(readFunction: File => (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]))(rapidminer_file: String)(run_number: Int, matching_file: File, parameters: Map[String, Map[String, Double]], pre_pro_key: String, process_type: String): SeparatedResults = {
     //get list of matchers in file
-    val matching_lines = Source.fromFile(matching_file).getLines()
+    val matching_lines = Source.fromFile(matching_file, "utf-8").getLines()
     val header_line = matching_lines.next()
     val data_set_size = matching_lines.size - 1;
     //minus 1 for header lines
