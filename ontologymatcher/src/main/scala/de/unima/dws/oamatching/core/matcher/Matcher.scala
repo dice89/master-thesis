@@ -17,8 +17,7 @@ abstract class Matcher {
     align(problem.ontology1,problem.ontology2,threshold)
   }
 
-  def getFragmentOfEntity(oWLEntity: OWLEntity, ontology: OWLOntology):String = {
-
+  def getLabelAndFragmentOfEntity(oWLEntity: OWLEntity, ontology: OWLOntology):String = {
 
     val fragment = if (Config.USE_FRAGMENT){
       Option(oWLEntity.getIRI.getShortForm)

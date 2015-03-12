@@ -12,7 +12,7 @@ abstract class PreProcessedMatcher(override val similarity:Boolean, val preproce
   def score(entity1:String, entity2:String):Double
 
    def score(owlEntity1: OWLEntity,onto1:OWLOntology,  owlEntity2: OWLEntity,onto2:OWLOntology ):Double = {
-     score(preprocess_function(getFragmentOfEntity(owlEntity1,onto1)), preprocess_function(getFragmentOfEntity(owlEntity2,onto2)))
+     score(preprocess_function(getLabelAndFragmentOfEntity(owlEntity1,onto1)), preprocess_function(getLabelAndFragmentOfEntity(owlEntity2,onto2)))
    }
 
   override def alignClass(owlClass1: OWLClass,onto1:OWLOntology, owlClass2: OWLClass,onto2:OWLOntology ): Double = {

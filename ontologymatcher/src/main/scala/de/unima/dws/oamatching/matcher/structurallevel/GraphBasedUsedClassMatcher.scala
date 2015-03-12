@@ -140,7 +140,7 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
     copied_alignment
   }
 
-  def buildMap(alignment: Alignment, onto1: OWLOntology, onto2: OWLOntology): Map[String, mutable.Set[(String, Double)]] = {
+  private def buildMap(alignment: Alignment, onto1: OWLOntology, onto2: OWLOntology): Map[String, mutable.Set[(String, Double)]] = {
     val fromMap: Map[String, mutable.Set[(String, Double)]] = onto1.getClassesInSignature().view.map(owl_class => {
       findAlignFromMap(owl_class, alignment)
     }).toMap
@@ -148,7 +148,7 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
     fromMap
   }
 
-  def findAlignFromMap(owlClass: OWLClass, alignment: Alignment): (String, mutable.Set[(String, Double)]) = {
+  private def findAlignFromMap(owlClass: OWLClass, alignment: Alignment): (String, mutable.Set[(String, Double)]) = {
 
     val from_alignments: mutable.Set[MatchingCell] = alignment.correspondences.filter(cell => cell.entity1.toString.equals(owlClass.toStringID))
 

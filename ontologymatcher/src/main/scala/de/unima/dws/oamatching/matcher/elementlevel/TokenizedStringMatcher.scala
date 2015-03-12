@@ -11,10 +11,15 @@ class TokenizedStringMatcher(override val similarity:Boolean,
 
   override def score(a: String, b: String): Double = {
 
+    scoreTokenized( tokenizer(a),tokenizer(b))
+
+  }
+
+  protected def scoreTokenized(tokens_a:List[String], tokens_b:List[String]):Double = {
     var summed_score:Double  =0.0
     var counter:Int = 0
 
-    for (term_a <- tokenizer(a); term_b <- tokenizer(b)) {
+    for (term_a <- tokens_a; term_b <- tokens_b) {
       counter= counter +1
 
       summed_score = summed_score + stringmatching_fct(term_a, term_b)

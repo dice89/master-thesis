@@ -10,15 +10,15 @@ class SimpleStringFunctionMatcher(override val  similarity:Boolean, val matching
 
 
   override def alignClass(owlClass1: OWLClass, onto1:OWLOntology, owlClass2: OWLClass, onto2:OWLOntology ): Double = {
-    matching_function(getFragmentOfEntity(owlClass1,onto1),getFragmentOfEntity(owlClass2,onto2))
+    matching_function(getLabelAndFragmentOfEntity(owlClass1,onto1),getLabelAndFragmentOfEntity(owlClass2,onto2))
   }
 
   override def alignObjectProperty(owlProperty1: OWLProperty, onto1:OWLOntology, owlProperty2: OWLProperty, onto2:OWLOntology ): Double = {
-    matching_function(getFragmentOfEntity(owlProperty1,onto1),getFragmentOfEntity(owlProperty2,onto2))
+    matching_function(getLabelAndFragmentOfEntity(owlProperty1,onto1),getLabelAndFragmentOfEntity(owlProperty2,onto2))
   }
 
   override def alignDatatypeProperty(owlProperty1: OWLProperty, onto1:OWLOntology, owlProperty2: OWLProperty,onto2:OWLOntology ): Double = {
-    matching_function(getFragmentOfEntity(owlProperty1,onto1),getFragmentOfEntity(owlProperty2,onto2))
+    matching_function(getLabelAndFragmentOfEntity(owlProperty1,onto1),getLabelAndFragmentOfEntity(owlProperty2,onto2))
   }
 
 
