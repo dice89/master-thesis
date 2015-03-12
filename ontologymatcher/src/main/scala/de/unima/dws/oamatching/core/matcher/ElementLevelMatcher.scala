@@ -1,5 +1,6 @@
 package de.unima.dws.oamatching.core.matcher
 
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.{MatchingCell, Alignment, Cell}
 import org.semanticweb.owlapi.model.{OWLClass, OWLEntity, OWLOntology, OWLProperty}
 
@@ -7,7 +8,7 @@ import scala.collection.JavaConversions._
 /**
  * Created by mueller on 21/01/15.
  */
-abstract class ElementLevelMatcher(val similarity:Boolean) extends Matcher {
+abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolean, val useFragment: Boolean, val useComment: Boolean) extends Matcher {
   /**
    * Implements element-wise ontology matcher
    * @param onto1
@@ -177,6 +178,47 @@ abstract class ElementLevelMatcher(val similarity:Boolean) extends Matcher {
     }else {
       1-value
     }
+  }
+
+  def getLabelAndFragmentOfEntity(oWLEntity: OWLEntity, ontology: OWLOntology):String = {
+
+    val fragment = if (useFragment){
+      Option(oWLEntity.getIRI.getShortForm)
+    }else {
+      Option.empty
+    }
+    //get rdfs label
+    val label: Option[String] = if (useLabel){
+      val rdfs_labels = ontology.getAnnotationAssertionAxioms(oWLEntity.getIRI).filter(_.getProperty().isLabel)
+
+      if(rdfs_labels.size > 0){
+        Option(rdfs_labels.head.getValue.asLiteral().get().getLiteral)
+      }else {
+        Option.empty
+      }
+
+    } else {
+      Option.empty
+    }
+
+    val comment: Option[String] = if (useComment){
+      val rdfs_comments = ontology.getAnnotationAssertionAxioms(oWLEntity.getIRI).filter(_.getProperty().isComment)
+
+      if(rdfs_comments.size > 0){
+
+        //println("Comment: " +rdfs_comments.head.getValue.asLiteral().get().getLiteral)
+        Option(rdfs_comments.head.getValue.asLiteral().get().getLiteral)
+      }else {
+        Option.empty
+      }
+
+    } else {
+      Option.empty
+    }
+
+    val final_label = fragment.getOrElse("") + " " + label.getOrElse("") + " " + comment.getOrElse(" ")
+
+    final_label.replace("  "," ").trim
   }
 
 

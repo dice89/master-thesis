@@ -6,7 +6,11 @@ import org.semanticweb.owlapi.model.{OWLOntology, OWLEntity, OWLClass, OWLProper
 /**
  * Created by mueller on 22/01/15.
  */
-abstract class PreProcessedMatcher(override val similarity:Boolean, val preprocess_function:(String) => String ) extends ElementLevelMatcher(similarity){
+abstract class PreProcessedMatcher(override val similarity:Boolean,
+                                   override val useLabel: Boolean,
+                                   override val useFragment: Boolean,
+                                   override val useComment: Boolean,
+                                   val preprocess_function:(String) => String ) extends ElementLevelMatcher(similarity, useLabel,useFragment,useComment){
 
 
   def score(entity1:String, entity2:String):Double

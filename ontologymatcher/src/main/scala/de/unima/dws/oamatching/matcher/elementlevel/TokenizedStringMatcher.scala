@@ -4,10 +4,11 @@ package de.unima.dws.oamatching.matcher.elementlevel
  * Created by mueller on 22/01/15.
  */
 class TokenizedStringMatcher(override val similarity:Boolean,
+                             override val useLabel: Boolean,override val useFragment: Boolean,override val useComment: Boolean,
                              override val preprocess_function:(String) => String,
                              val tokenizer: String => List[String],
                              override val stringmatching_fct:(String,String) => Double
-                             ) extends  PreProcessedStringMatcher(similarity, preprocess_function,stringmatching_fct){
+                             ) extends  PreProcessedStringMatcher(similarity,useLabel,useFragment,useComment, preprocess_function,stringmatching_fct){
 
   override def score(a: String, b: String): Double = {
 

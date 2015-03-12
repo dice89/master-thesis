@@ -17,29 +17,4 @@ abstract class Matcher {
     align(problem.ontology1,problem.ontology2,threshold)
   }
 
-  def getLabelAndFragmentOfEntity(oWLEntity: OWLEntity, ontology: OWLOntology):String = {
-
-    val fragment = if (Config.USE_FRAGMENT){
-      Option(oWLEntity.getIRI.getShortForm)
-    }else {
-      Option.empty
-    }
-    //get rdfs comment
-    val comment: Option[String] = if (Config.USE_LABEL){
-      val rdfs_comments = ontology.getAnnotationAssertionAxioms(oWLEntity.getIRI).filter(_.getProperty().isLabel)
-      // ontology.getAnnotationAssertionAxioms(oWLEntity.getIRI).filter(_.getProperty.isLabel).foreach(println(_))
-     if(rdfs_comments.size > 0){
-        Option(rdfs_comments.head.getValue.asLiteral().get().getLiteral)
-      }else {
-        Option.empty
-      }
-
-    } else {
-      Option.empty
-    }
-    val final_label = fragment.getOrElse("") + " " + comment.getOrElse("")
-
-    final_label.trim
-  }
-
 }

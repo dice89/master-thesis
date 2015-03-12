@@ -8,7 +8,7 @@ import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.matcher.{Matcher, StructuralLevelMatcher}
 import de.unima.dws.oamatching.matcher.elementlevel.{PreProcessedStringMatcher, SimpleStringFunctionMatcher, TokenizedStringMatcher, TrainedSecondStringMatcher}
 import de.unima.dws.oamatching.matcher.structurallevel.{GraphBasedUsedClassMatcher, GraphBasedUsedPropertyMatcher, SimilarityFloodingMatcher}
-import de.unima.dws.oamatching.measures.{StringMeasureHelper, SemanticMeasures, StringMeasures}
+import de.unima.dws.oamatching.measures.{SemanticMeasures, StringMeasureHelper, StringMeasures}
 import fr.inrialpes.exmo.ontosim.string.StringDistances
 
 import scala.collection.mutable.{Map => MutableMap}
@@ -55,7 +55,12 @@ object MatcherRegistry {
       val tokenized = row.get("tokenized").getOrElse("false").toBoolean
       val string_norm = row.get("normalized").getOrElse("none")
       val stop_filter = row.get("stopfilter").getOrElse("false").toBoolean
-      val matcher = initMatcher(matcher_name, matcher_type, sim_dis, tokenized, string_norm,stop_filter)
+
+      val use_label = row.get("use_label").getOrElse("false").toBoolean
+      val use_fragment= row.get("use_fragment").getOrElse("false").toBoolean
+      val use_comment = row.get("use_comment").getOrElse("false").toBoolean
+
+      val matcher = initMatcher(matcher_name, matcher_type, sim_dis, tokenized, string_norm, stop_filter,use_label,use_fragment, use_comment)
 
       if (matcher.isDefined) {
         if (matcher_type.equals(KEY_STRUCT)) {
@@ -66,7 +71,7 @@ object MatcherRegistry {
       }
     })
 
-    println("Initialized: "+ (matcher_by_name.size + structural_matcher_by_name.size))
+    println("Initialized: " + (matcher_by_name.size + structural_matcher_by_name.size))
   }
 
   def initSmallScale() = {
@@ -78,19 +83,19 @@ object MatcherRegistry {
     initFromConfigFile(Config.PATH_TO_LARGE_SCALE_CONFIG)
   }
 
-  def initMatcher(matcher_name: String, matcher_type: String, sim_dis: String, tokenized: Boolean, string_norm: String,stop_filter:Boolean): Option[Matcher] = {
+  def initMatcher(matcher_name: String, matcher_type: String, sim_dis: String, tokenized: Boolean, string_norm: String, stop_filter: Boolean, use_label: Boolean, use_fragment: Boolean, use_comment: Boolean): Option[Matcher] = {
 
     val matcher = matcher_type match {
-      case "E" => Option(initElementLevelMatcher(matcher_name, sim_dis, tokenized, string_norm,stop_filter))
+      case "E" => Option(initElementLevelMatcher(matcher_name, sim_dis, tokenized, string_norm, stop_filter, use_label,use_fragment,use_comment))
       case "S" => Option(initStructuralMatcher(matcher_name))
-      case "T" => Option(initTrainedMatcher(matcher_name))
-      case "P" => Option(initPreprocessedMatcher(matcher_name, sim_dis, tokenized, string_norm,stop_filter))
+      case "T" => Option(initTrainedMatcher(matcher_name,use_label,use_fragment,use_comment))
+      case "P" => Option(initPreprocessedMatcher(matcher_name, sim_dis, tokenized, string_norm, stop_filter,use_label,use_fragment,use_comment))
       case _ => Option.empty
     }
     matcher
   }
 
-  def initPreprocessedMatcher(matcher_name: String, sim_dis: String, tokenized: Boolean, string_norm: String, stop_filter:Boolean):Matcher = {
+  def initPreprocessedMatcher(matcher_name: String, sim_dis: String, tokenized: Boolean, string_norm: String, stop_filter: Boolean, use_label: Boolean, use_fragment: Boolean, use_comment: Boolean): Matcher = {
 
 
     def measure_fct = get_string_matching_function(matcher_name)
@@ -101,12 +106,12 @@ object MatcherRegistry {
 
     if (tokenized) {
 
-      preprocess = tokens_to_string compose StringMeasureHelper.stemMultiple _ compose  tokenizer  compose StringMeasureHelper.minimalPreprocess
+      preprocess = tokens_to_string compose StringMeasureHelper.stemMultiple _ compose tokenizer compose StringMeasureHelper.minimalPreprocess
     } else {
       preprocess = StringMeasureHelper.minimalPreprocess
     }
 
-    new PreProcessedStringMatcher(true, preprocess, measure_fct)
+    new PreProcessedStringMatcher(true, use_label, use_fragment, use_comment, preprocess, measure_fct)
 
   }
 
@@ -118,7 +123,7 @@ object MatcherRegistry {
    * @param string_norm
    * @return Matcher initialized
    */
-  def initElementLevelMatcher(matcher_name: String, sim_dis: String, tokenized: Boolean, string_norm: String, stop_filter:Boolean): Matcher = {
+  def initElementLevelMatcher(matcher_name: String, sim_dis: String, tokenized: Boolean, string_norm: String, stop_filter: Boolean, use_label: Boolean, use_fragment: Boolean, use_comment: Boolean): Matcher = {
     val is_similarity = sim_dis match {
       case KEY_DIS => false
       case KEY_SIM => true
@@ -126,7 +131,7 @@ object MatcherRegistry {
     }
     val tokenizer: (String) => List[String] = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
 
-    val stemmed_tokenizer: (String) => List[String] =  StringMeasureHelper.stemMultiple _ compose tokenizer
+    val stemmed_tokenizer: (String) => List[String] = StringMeasureHelper.stemMultiple _ compose tokenizer
     val stop_filtered_tokenizer = StringMeasureHelper.stopWordFilter _ compose tokenizer
     val stop_filtered_stemmed_tokenizer = StringMeasureHelper.stemMultiple _ compose stop_filtered_tokenizer
 
@@ -142,16 +147,16 @@ object MatcherRegistry {
     val measure_fct: (String, String) => Double = get_string_matching_function(matcher_name)
 
     tokenized match {
-      case false => new SimpleStringFunctionMatcher(is_similarity, measure_fct)
+      case false => new SimpleStringFunctionMatcher(is_similarity, use_label, use_fragment, use_comment, measure_fct)
       case true => {
         stop_filter match {
           case true => string_norm match {
-            case KEY_STEMMED => new TokenizedStringMatcher(is_similarity, StringMeasureHelper.minimalPreprocess, stop_filtered_stemmed_tokenizer, measure_fct)
-            case _ => new TokenizedStringMatcher(is_similarity, StringMeasureHelper.minimalPreprocess, stop_filtered_tokenizer, measure_fct)
+            case KEY_STEMMED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, stop_filtered_stemmed_tokenizer, measure_fct)
+            case _ => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, stop_filtered_tokenizer, measure_fct)
           }
-          case false =>  string_norm match {
-            case KEY_STEMMED => new TokenizedStringMatcher(is_similarity, StringMeasureHelper.minimalPreprocess, stemmed_tokenizer, measure_fct)
-            case _ => new TokenizedStringMatcher(is_similarity, StringMeasureHelper.minimalPreprocess, tokenizer, measure_fct)
+          case false => string_norm match {
+            case KEY_STEMMED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, stemmed_tokenizer, measure_fct)
+            case _ => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, tokenizer, measure_fct)
           }
         }
       }
@@ -177,15 +182,14 @@ object MatcherRegistry {
    * @param matcher_name
    * @return
    */
-  def initTrainedMatcher(matcher_name: String): Matcher = {
+  def initTrainedMatcher(matcher_name: String, use_label: Boolean, use_fragment: Boolean, use_comment: Boolean): Matcher = {
     val tokenizer = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
     val tokens_to_string = StringMeasureHelper.token_list_to_String _
     val simple_preprocessing = StringMeasureHelper.to_lower_case_single _ compose tokens_to_string compose tokenizer compose StringMeasureHelper.porter_stem compose StringMeasureHelper.minimalPreprocess
 
     val kernel_second_string_fct = getSecondTrainingFunction(matcher_name)
-    new TrainedSecondStringMatcher(true, simple_preprocessing, kernel_second_string_fct)
+    new TrainedSecondStringMatcher(true,use_label, use_fragment, use_comment, simple_preprocessing, kernel_second_string_fct )
   }
-
 
 
   /**

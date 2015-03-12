@@ -6,7 +6,11 @@ import org.semanticweb.owlapi.model.{OWLOntology, OWLClass, OWLProperty}
 /**
  * Created by mueller on 21/01/15.
  */
-class SimpleStringFunctionMatcher(override val  similarity:Boolean, val matching_function:(String,String) => Double)  extends ElementLevelMatcher(similarity) {
+class SimpleStringFunctionMatcher(override val similarity:Boolean,
+                                  override val useLabel: Boolean,
+                                  override val useFragment: Boolean,
+                                  override val useComment: Boolean,
+                                  val matching_function:(String,String) => Double)  extends ElementLevelMatcher(similarity,useLabel,useFragment,useComment) {
 
 
   override def alignClass(owlClass1: OWLClass, onto1:OWLOntology, owlClass2: OWLClass, onto2:OWLOntology ): Double = {

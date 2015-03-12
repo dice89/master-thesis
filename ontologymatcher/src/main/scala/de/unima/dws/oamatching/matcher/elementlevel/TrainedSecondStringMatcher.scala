@@ -14,8 +14,11 @@ import scala.collection.JavaConversions._
  *
  */
 class TrainedSecondStringMatcher(override val similarity:Boolean,
+                                 override val useLabel: Boolean,
+                                 override val useFragment: Boolean,
+                                 override val useComment: Boolean,
                                  override val preprocess_function:(String) => String,
-                                 val distance: AbstractTokenizedStringDistance) extends TrainedMatcher(similarity,preprocess_function){
+                                 val distance: AbstractTokenizedStringDistance) extends TrainedMatcher(similarity,useLabel, useFragment, useComment,preprocess_function){
 
 
   /**
