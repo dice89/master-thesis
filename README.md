@@ -1,29 +1,23 @@
 Master-Thesis Alexander Mueller
 =============
-This is a private repository rontaining all information regarding my masters thesis
-
+This repository contains a Matching System implemented during my masters this
 The structure is as follows:
 
-## Paper
-The paper I read during the research regarding my masters thesis. Including a bibtext file.
+## ontologymatcher
+The systems code
 
-## Thesis (TBD)
-The actual working directory for writing the thesis
+## RapidminerRepo
+Mining Processes
 
-## oaMatcherCode
-Code with which I facilitated my experiments
 
 #### How to 
-- Install typesafe activator and then 
+- Incomplete
+- Install sbt and then 
 
-`activator run`
+`sbt run`
 
 
 ## Organizational Stuff
 - [Project Plan](https://www.tomsplanner.com/public/alexmasterthesis) PW: master
 
 - [Kanban Board](https://trello.com/b/sDwohQfL/master-thesis) (To monitor progress)
-
-
-
- 
