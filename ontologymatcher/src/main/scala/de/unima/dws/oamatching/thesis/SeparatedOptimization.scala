@@ -1,6 +1,7 @@
 package de.unima.dws.oamatching.thesis
 import java.io.File
 
+import com.typesafe.scalalogging.slf4j.LazyLogging
 import de.unima.dws.oamatching.analysis.{RapidminerJobs, SeparatedResults}
 import de.unima.dws.oamatching.core._
 import de.unima.dws.oamatching.pipeline.{ScoreNormalizationFunctions, MatchingSelector}
@@ -13,7 +14,7 @@ import scala.collection.immutable.Map
 /**
  * Created by mueller on 27/02/15.
  */
-trait SeparatedOptimization extends ResultServerHandling{
+trait SeparatedOptimization extends ResultServerHandling with LazyLogging{
 
 
   def executeProcessSeparated(ds_name:String,run_number:Int,selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double],ref_matching_pairs: List[(EvaluationMatchingTask, File)], rapidminer_file: String, pre_pro_key: String,parameters: Map[String, Map[String, Double]], processes:Map[String, String]): ProcessEvalExecutionResultNonSeparated = {
@@ -26,8 +27,6 @@ trait SeparatedOptimization extends ResultServerHandling{
 
     val normalized_per_category = ref_matching_pairs.par.map { case (ref_file, matching_file) => {
 
-
-      println(ref_file.matching_problem.name)
       val ref_alignment: Alignment =ref_file.reference
 
       //build different reference alignments out of original one for different classes
@@ -47,6 +46,7 @@ trait SeparatedOptimization extends ResultServerHandling{
 
     val tuple_wise: (List[Map[String, (Map[MatchRelation, Double], Alignment)]], List[Map[String, (Map[MatchRelation, Double], Alignment)]], List[Map[String, (Map[MatchRelation, Double], Alignment)]]) = normalized_per_category.unzip._1.unzip3
 
+    logger.info(s"Start threshold optimization for $ds_name and $process_name in run $run_number")
 
     val optimization_grid = ParameterOptimizer.getDoubleGrid(0.001, 0.9999999999, 1000)
     //globally normalize each tuple
@@ -75,22 +75,18 @@ trait SeparatedOptimization extends ResultServerHandling{
       }.toList
 
       val agg_res = EvaluationMatchingRunner.computeAggregatedResults(results)
-      println(agg_res)
+
       norm_technique -> SeparatedResult(class_threshold,dp_threshold,op_threshold,agg_res)
 
     }).toMap
 
 
     val best_result=best_results.maxBy(res_by_norm => res_by_norm._2.result.macro_eval_res.f1Measure)
-   // best_results.foreach(norm_map => println(norm_map._1 + " " + norm_map._2.result.macro_eval_res.f1Measure))
-
-
-
 
     val json_result = createJSONResultString(ds_name,process_type,pre_pro_key,true, best_result._2.result,parameters,createJSONThresholdStringSeparated(best_result._2))
 
     sendResultToServer(json_result)
-
+    logger.info(s"Done with threshold optimization for $ds_name and $process_name in run $run_number")
     ProcessEvalExecutionResultNonSeparated(true,best_result._2.result,null,null,null,null,best_result, best_results)
 
   }

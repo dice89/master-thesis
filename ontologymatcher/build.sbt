@@ -4,9 +4,9 @@ version := "1.0"
 
 scalaVersion := "2.10.4"
 
-libraryDependencies += "org.apache.spark" %% "spark-core" % "1.2.0"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "1.2.1"
 
-libraryDependencies += "org.apache.spark" %% "spark-mllib" % "1.2.0"
+libraryDependencies += "org.apache.spark" %% "spark-mllib" % "1.2.1"
 
 libraryDependencies += "net.sourceforge.owlapi" % "owlapi-distribution" % "4.0.1"
 
@@ -47,6 +47,10 @@ libraryDependencies += "org.jfree" % "jfreechart" % "1.0.19"
 libraryDependencies += "com.itextpdf" % "itextpdf" % "5.0.6"
 
 libraryDependencies += "com.typesafe" % "config" % "1.2.1"
+
+libraryDependencies += "com.typesafe.scala-logging" % "scala-logging_2.11" % "3.1.0"
+
+ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) }
 
 
 resolvers += "Local Maven Repository" at "file:///Users/mueller/.m2/repository/"

@@ -6,6 +6,9 @@ import de.unima.dws.oamatching.core._
 import de.unima.dws.oamatching.pipeline.ScoreNormalizationFunctions
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingTask, EvaluationMatchingRunner}
 import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
+import org.apache.commons.math.stat.inference.ChiSquareTestImpl
+import org.apache.commons.math3.distribution.NormalDistribution
+import org.apache.commons.math3.stat.inference.KolmogorovSmirnovTest
 
 import scala.collection.immutable.Map
 import scala.collection.parallel.immutable.ParSeq
@@ -31,9 +34,7 @@ trait NonSeparatedOptimization extends ResultServerHandling{
     val process_name = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.lastIndexOf("."));
     val process_name_with_ending = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.size);
 
-    println(process_name_with_ending)
 
-    println(IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS)
     val process_type: String = IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS.get(process_name_with_ending).get
 
     val matching_results_intermediate: ParSeq[(Map[String, (Map[MatchRelation, Double], Alignment)], (String, Map[String, Seq[(MatchRelation, Double, Boolean)]]), OutlierEvalStatisticsObject)] = ref_matching_pairs.par.map { case (ref_file, matching_file) => {
@@ -67,6 +68,7 @@ trait NonSeparatedOptimization extends ResultServerHandling{
     }
     }
 
+    logger.info(s"Start threshold optimization for $ds_name and $process_name in run $run_number")
 
     val matching_results_seq = matching_results_intermediate.seq.toList
     val matching_results: List[Map[String, (Map[MatchRelation, Double], Alignment)]] = matching_results_seq.map(_._1)
@@ -81,12 +83,11 @@ trait NonSeparatedOptimization extends ResultServerHandling{
     //get best normalization technique by max macro f1 measure
     val best_result: (String, (Double, AggregatedEvaluationResult)) = threshold_optimized_values.best_global_results.maxBy(_._2._2.macro_eval_res.f1Measure)
 
-
-
-
     val json_result = createJSONResultString(ds_name,process_type,pre_pro_key,false, best_result._2._2,parameters,createJSONThresholdStringNonSeparated(best_result._2._1))
 
     sendResultToServer(json_result)
+
+    logger.info(s"Done with threshold optimization for $ds_name and $process_name in run $run_number")
 
     ProcessEvalExecutionResultNonSeparated(false, best_result._2._2, threshold_optimized_values, statistics, top_n_results, best_result, null, null)
   }
@@ -179,5 +180,24 @@ trait NonSeparatedOptimization extends ResultServerHandling{
     }
     }
     ThresholdOptResult(global_results, best_global_results, best_local_results, results_local_optima)
+  }
+
+  /**
+   * Computes basic statistics over the  outlier scores
+   * @param values
+   * @param name
+   */
+  def computeBaseStatisticsOverOutlierScores(values: Array[Double], name: String): OutlierEvalStatisticsObject = {
+    val stdev = stdev_computer.evaluate(values)
+    val mean = mean_computer.evaluate(values)
+    val values_sorted = values.sortWith(_ > _).zipWithIndex
+    val top_values = values_sorted.filter(tuple => tuple._2 <= 10).toList
+    val min_value = values.minBy(value => value)
+    val null_hypothesis = new NormalDistribution(mean, stdev)
+    val hypo_test = new KolmogorovSmirnovTest()
+    val p_value = hypo_test.kolmogorovSmirnovTest(null_hypothesis, values, false) / 2
+    val chi_square_test = new ChiSquareTestImpl()
+
+    OutlierEvalStatisticsObject(name, stdev, mean, p_value, values_sorted.head._1, min_value, top_values.unzip._1)
   }
 }

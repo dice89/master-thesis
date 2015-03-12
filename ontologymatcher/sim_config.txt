@@ -1,5 +1,0 @@
-MODEL_C_WEBBASE=/Users/mueller/Coding/umbc_models/webbase_concept
-MODEL_R_WEBBASE=/Users/mueller/Coding/umbc_models/webbase_relation
-MODEL_C_GIGA=/Users/mueller/Coding/umbc_models/Gigawords_concept
-MODEL_R_GIGA=/Users/mueller/Coding/umbc_models/Gigawords_relation
-MODEL_POS=/Users/mueller/Coding/umbc_models/wsj-left3words/wsj-0-18-left3words-distsim.tagger

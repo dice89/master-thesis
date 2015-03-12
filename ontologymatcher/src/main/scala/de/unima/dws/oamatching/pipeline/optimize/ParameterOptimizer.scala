@@ -142,10 +142,9 @@ object ParameterOptimizer {
   def getDoubleGrid(val_from: Double, val_to: Double, size: Int): List[Double] = {
     val step_size: Double = (val_to - val_from) / size.toDouble
 
-    val test = val_from to val_to by step_size
-    //val test: Exclusive[Double] = NumericRange[Double](val_from, val_to,step_size)
-    println(test)
-    test.toList
+    val grid = val_from to val_to by step_size
+
+    grid.toList
   }
 
 

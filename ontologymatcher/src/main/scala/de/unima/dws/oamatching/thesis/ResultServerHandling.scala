@@ -1,4 +1,6 @@
 package de.unima.dws.oamatching.thesis
+
+import com.typesafe.scalalogging.slf4j.LazyLogging
 import de.unima.dws.oamatching.core.AggregatedEvaluationResult
 import play.api.libs.json.Json
 
@@ -9,7 +11,7 @@ import scalaj.http.{Http, HttpResponse}
 /**
  * Created by mueller on 04/03/15.
  */
-trait ResultServerHandling {
+trait ResultServerHandling extends LazyLogging {
 
   def createJSONResultString(ds_name: String, outlier_method: String, pre_pro_method: String, separated: Boolean, result: AggregatedEvaluationResult, parameters:Map[String, Map[String, Double]], thresholds: String): String = {
 
@@ -78,13 +80,12 @@ trait ResultServerHandling {
         val response: HttpResponse[String] = Http("http://128.199.50.209:3000/api/experiments").postData(json_string).header("content-type", "application/json").asString
 
         if(response.is4xx){
-          println(response.body)
+          logger.error("Problem with webservice")
         }
 
       }catch {
         case exception:Throwable =>{
-          println("Result Server not online")
-          exception.printStackTrace()
+          logger.error("Problem with webservice", exception)
         }
       }
     }else {
@@ -92,19 +93,14 @@ trait ResultServerHandling {
         val response: HttpResponse[String] = Http("http://128.199.50.209:3000/api/experiments").proxy(proxy_host_setting, proxy_port_setting.toInt).postData(json_string).header("content-type", "application/json").asString
 
         if(response.is4xx){
-          println(response.body)
+          logger.error("Problem with webservice")
         }
 
       }catch {
         case exception:Throwable =>{
-          println("Result Server not online")
-          exception.printStackTrace()
+          logger.error("Problem with webservice", exception)
         }
       }
     }
-
-
-
-
   }
 }

@@ -1,7 +1,10 @@
 package de.unima.dws.oamatching.thesis.scalabilityTests
 
+import com.typesafe.scalalogging.Logging
+import com.typesafe.scalalogging.slf4j.{LazyLogging, Logger}
 import de.unima.dws.oamatching.core.AggregatedEvaluationResult
 import de.unima.dws.oamatching.thesis.{ResultServerHandling, SeparatedResult}
+import org.slf4j.LoggerFactory
 import play.api.libs.json.Json
 
 import scala.collection.immutable.HashMap
@@ -14,8 +17,10 @@ import scalaj.http.{Http, HttpResponse}
 
 case class Tester(left: String, right: String, relation: String, measure: Double, owl_type: String)
 
-object Test extends App with ResultServerHandling {
+object Test extends App with ResultServerHandling with LazyLogging {
 
+
+  logger.info("Scala Version" + util.Properties.versionNumberString)
 
   val size: Int = 3000
   val test_data1 = generatedData(size)
@@ -82,9 +87,9 @@ object Test extends App with ResultServerHandling {
 
   */
 
-  val test = "{\n    \"ds_name\":\"conference\",\n    \"outlier_name\":\"loop\",\n    \"pre_pro_name\":\"remove_corr\",\n    \"separated\":true,\n    \"macro_result\": {\n        \"precision\":0.6,\n        \"recall\":0.6,\n        \"fmeasure\":0.6},\n    \"micro_result\": {\n        \"precision\":0.6,\n        \"recall\":0.6,\n        \"fmeasure\":0.6},\n    \"tp\":10,\n    \"fp\":10,\n    \"fn\":10,\n    \"parameters\":{\"alpha\":0.0,\"test\":0.1,\"fuzyy\":0.3},\n    \"threshold\":{\"classes\":0.1,\"dp\":0.3,\"op\":0.3}\n}"
-  val proxy_host_setting = System.getenv("proxy_host")
-  println(proxy_host_setting)
+ // val test = "{\n    \"ds_name\":\"conference\",\n    \"outlier_name\":\"loop\",\n    \"pre_pro_name\":\"remove_corr\",\n    \"separated\":true,\n    \"macro_result\": {\n        \"precision\":0.6,\n        \"recall\":0.6,\n        \"fmeasure\":0.6},\n    \"micro_result\": {\n        \"precision\":0.6,\n        \"recall\":0.6,\n        \"fmeasure\":0.6},\n    \"tp\":10,\n    \"fp\":10,\n    \"fn\":10,\n    \"parameters\":{\"alpha\":0.0,\"test\":0.1,\"fuzyy\":0.3},\n    \"threshold\":{\"classes\":0.1,\"dp\":0.3,\"op\":0.3}\n}"
+  //val proxy_host_setting = System.getenv("proxy_host")
+  //println(proxy_host_setting)
 /*
   try{
     val response: HttpResponse[String] = Http("http://128.199.50.209:3000/api/experiments").postData(test).header("content-type", "application/json").asString

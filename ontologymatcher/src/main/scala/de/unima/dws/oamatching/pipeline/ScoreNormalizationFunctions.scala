@@ -33,7 +33,6 @@ object ScoreNormalizationFunctions {
     val squared_sum = if(squared.size>0){squared.reduceLeft(_+_)}else {0.0}
     val max_distance = Math.sqrt(squared_sum)
 
-    println("MAX Distance "+ max_distance)
     relations.view.map { case (match_relation, distance) => {
       (match_relation, (distance / max_distance))
     }

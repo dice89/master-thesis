@@ -1,5 +1,8 @@
 package de.unima.dws.oamatching.alex
 
+import java.io.File
+
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.pipeline.FeatureVector
 
 import scala.collection.immutable.Iterable
@@ -113,9 +116,11 @@ object XMLTest {
     object process_transformer extends RuleTransformer(transform_process_elem)
 
     val file_to_save = process_transformer(xml_file)
+    val base_folder = Config.loaded_config.getString("rapidminerconfig.tmp_process_location")
 
-    scala.xml.XML.save("tmpprocesses/"+filename, file_to_save, "UTF-8", true, null)
-    "tmpprocesses/"+filename
+    scala.xml.XML.save(base_folder+File.separator+filename, file_to_save, "UTF-8", true, null)
+
+    base_folder+File.separator+filename
   }
 
 }
