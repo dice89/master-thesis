@@ -70,14 +70,11 @@ object SparkJobs{
     }
     })
 
-    //TODO print pair wise correlation
-
     //get those attributes with the a too high correlation, keep row attribute, remove column attribute
     val to_be_removed_parameters = row_column_value_correlMatrix.filter({ case (row, column, correlation) => (column > row) && correlation >= threshold}).map(triple => triple._2).toSet
 
     //rebuild feature vector
 
-    //TODO
 
     val filtered_vector = feature_vector.vector.filterKeys(matcher_name => {
       val matcher_index = feature_vector.matcher_name_to_index(matcher_name)

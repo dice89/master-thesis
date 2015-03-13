@@ -39,7 +39,12 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
           val similarity: Double = getSimilarity(alignClass(entity1.asOWLClass(),onto1, entity2.asOWLClass(),onto2))
 
           if(similarity >= threshold) {
-            alignment.addToCorrespondences( MatchingCell(entity1.toStringID,entity2.toStringID, similarity, "=", Cell.TYPE_CLASS))
+            val test = MatchingCell(entity1.toStringID,entity2.toStringID, similarity, "=", Cell.TYPE_CLASS)
+            alignment.addToCorrespondences( test)
+
+            if(!alignment.correspondences.contains(test)){
+              println(test)
+            }
           }
         }
 

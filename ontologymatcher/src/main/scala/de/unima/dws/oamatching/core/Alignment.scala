@@ -21,12 +21,12 @@ case class MatchRelation(left: String, relation: String, right: String,owl_type:
  * @param owl_type
  */
 case class MatchingCell(entity1:String,entity2:String,measure: Double,  relation:String,owl_type:String){
-  def canEqual(other: Any): Boolean = other.isInstanceOf[Cell]
+  def canEqual(other: Any): Boolean = other.isInstanceOf[MatchingCell]
   override def equals(other: Any): Boolean = other match {
-    case that: Cell =>{
+    case that: MatchingCell =>{
       (that canEqual this) &&
-        (this.entity1.toString.equals(that.entity1.toString) || this.entity1.toString.equals(that.entity2.toString)  ) &&
-        (this.entity2.toString.equals(that.entity2.toString) || this.entity2.toString.equals(that.entity1.toString)  ) &&
+        (this.entity1.equals(that.entity1) || this.entity1.equals(that.entity2)  ) &&
+        (this.entity2.equals(that.entity2) || this.entity2.equals(that.entity1)  ) &&
         relation.equals(that.relation)
     }
     case _ => {

@@ -218,10 +218,10 @@ object MatcherRegistry {
       case "mongeElkan" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeMongeElkan)
       case "prefix" => StringMeasureHelper.distance_lower_cased(StringMeasures.computePrefixBiDirectional)
       case "suffix" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeSuffixBiDirectional)
-      case "lin" => StringMeasures.computeLin _
-      case "path" => StringMeasures.computePath _
-      case "jiangConrath" => StringMeasures.computeJiangConrath _
-      case "wuPalmer" => StringMeasures.computeWuPalmer _
+      case "lin" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeLin)
+      case "path" => StringMeasureHelper.distance_lower_cased(StringMeasures.computePath)
+      case "jiangConrath" =>  StringMeasureHelper.distance_lower_cased(StringMeasures.computeJiangConrath)
+      case "wuPalmer" =>  StringMeasureHelper.distance_lower_cased(StringMeasures.computeWuPalmer)
       case _ => StringMeasureHelper.distance_lower_cased(StringDistances.equalDistance) //default is equal distance
 
     }

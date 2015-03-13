@@ -3,11 +3,13 @@ package de.unima.dws.oamatching.pipeline
 import java.io.File
 
 import de.unima.dws.oamatching.analysis.{SparkJobs, RapidminerJobs}
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.matcher.{StructuralLevelMatcher, Matcher}
 import de.unima.dws.oamatching.core.{MatchRelation, Alignment, AlignmentParser, OntologyLoader}
 import de.unima.dws.oamatching.matcher.MatcherRegistry
 import org.semanticweb.owlapi.model.OWLOntology
 
+import scala.Predef
 import scala.collection.immutable.Map
 import scala.collection.parallel.immutable.ParMap
 
@@ -66,8 +68,8 @@ object MatchingPipelineCore{
   def createFeatureVector(problem: MatchingProblem, remove_correlated_threshold: Double, name_space_filter:Boolean): FeatureVector = {
 
     println("Start element Level Matching")
-    val onto1_namespace = problem.ontology1.getOntologyID.getOntologyIRI.get().getNamespace().toString
-    val onto2_namespace = problem.ontology2.getOntologyID.getOntologyIRI.get().getNamespace().toString
+    val onto1_namespace = problem.ontology1.getOntologyID.getOntologyIRI.get().toString
+    val onto2_namespace = problem.ontology2.getOntologyID.getOntologyIRI.get().toString
     println(onto1_namespace)
     println(onto2_namespace)
     val allowed_namespaces = List(onto1_namespace, onto2_namespace)
@@ -78,9 +80,16 @@ object MatchingPipelineCore{
     val uncorrelated_matcher_results: FeatureVector = removeCorrelatedMatchers(individual_matcher_results, remove_correlated_threshold)
     println("Remove correlated done")
     val structural_matcher_results: Option[FeatureVector] = matchAllStructuralMatchers(problem, uncorrelated_matcher_results)
+
+    RapidminerJobs.writeCSV("elem_test123","tmp")(individual_matcher_results)
+    RapidminerJobs.writeCSV("struct_test123","tmp")(structural_matcher_results.get)
+
     val outlier_analysis_vector: FeatureVector = if (structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results, structural_matcher_results.get), problem.name).get else individual_matcher_results
 
-   if(name_space_filter){
+    RapidminerJobs.writeCSV("combined_test123","tmp")(outlier_analysis_vector)
+
+
+    if(name_space_filter){
      println("Filter size")
      println(outlier_analysis_vector.vector.size)
      val filtered_outlier_analysis_vector: FeatureVector = MatchingPruner.featureVectorNameSpaceFilter(outlier_analysis_vector, allowed_namespaces)
@@ -89,6 +98,8 @@ object MatchingPipelineCore{
    }else{
      outlier_analysis_vector
    }
+    /*val filtered_outlier_analysis_vector: FeatureVector = MatchingPruner.featureVectorNameSpaceFilter(individual_matcher_results, allowed_namespaces)
+    filtered_outlier_analysis_vector*/
   }
 
   /**
@@ -118,11 +129,9 @@ object MatchingPipelineCore{
    * @return
    */
   def matchIndividualMatcher(matcher:Matcher, problem: MatchingProblem):  Map[MatchRelation, Double] = {
+    val threshold = Config.loaded_config.getInt("general.base_threshold")
 
-
-    matcher.align(problem,0.2).asMatchRelationMap()
-
-
+    matcher.align(problem,threshold).asMatchRelationMap()
   }
 
   /**
@@ -133,7 +142,6 @@ object MatchingPipelineCore{
   def matchAllIndividualMatchers(problem:MatchingProblem):FeatureVector = {
     val vector: ParMap[String, Map[MatchRelation, Double]] = MatcherRegistry.matcher_by_name.par.map({case (name,matcher) => {
 
-
       val starttime =System.currentTimeMillis()
       println(s"start $name")
 
@@ -141,7 +149,7 @@ object MatchingPipelineCore{
         matchIndividualMatcher(matcher, problem)
       }catch {
         case _:Throwable => {
-          println("FAiled to match" + name)
+          println("Failed to match" + name)
           null
         }
       }
@@ -202,10 +210,11 @@ object MatchingPipelineCore{
   def matchStructuralMatcherWithAlignment(matcher:StructuralLevelMatcher, problem:MatchingProblem,correspondences:Map[MatchRelation,Double]): Map[MatchRelation, Double] ={
     //create alignment frm correspondences
     val starttime = System.currentTimeMillis()
+
     val initial_alignment = new Alignment(null,null,0.0, correspondences)
 
     val res =  matcher.align(problem,initial_alignment,0.0).asMatchRelationMap()
-    //println(matcher.getClass.getSimpleName + " took "+ (System.currentTimeMillis()-starttime) +" ms")
+
     res
   }
 
