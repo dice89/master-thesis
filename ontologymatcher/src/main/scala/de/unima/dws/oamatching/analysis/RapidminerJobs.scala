@@ -305,11 +305,11 @@ object RapidminerJobs extends LazyLogging {
 
 
     process.getOperator("ReadVector").setParameter("csv_file", matching_file.getAbsolutePath)
+
     process.getOperator("Output_C").setParameter("csv_file", output_csv_classes.getAbsolutePath)
     process.getOperator("Output_DP").setParameter("csv_file", output_csv_dp.getAbsolutePath)
-
-
     process.getOperator("Output_OP").setParameter("csv_file", output_csv_op.getAbsolutePath)
+
     try {
       process.run()
     }
