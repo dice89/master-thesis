@@ -207,13 +207,14 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
     createFolder(base_folder)
 
+    val separated_folder = base_folder + "/separated"
+    createFolder(separated_folder)
+    val separated_best: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = runAllForAlgosForAllSlctFunctions(ds_name, separated_folder, matching_pairs, parallel, true)
+
     val non_separated_folder = base_folder + "/non_separated"
     createFolder(non_separated_folder)
     val non_separated_best: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = runAllForAlgosForAllSlctFunctions(ds_name, non_separated_folder, matching_pairs, parallel, false)
 
-    val separated_folder = base_folder + "/separated"
-    createFolder(separated_folder)
-    val separated_best: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = runAllForAlgosForAllSlctFunctions(ds_name, separated_folder, matching_pairs, parallel, true)
 
     val best_result: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = if (separated_best.isDefined && non_separated_best.isDefined) {
       val result = if (separated_best.get._2._2.overall_agg_best.macro_eval_res.f1Measure > non_separated_best.get._2._2.overall_agg_best.macro_eval_res.f1Measure) {
