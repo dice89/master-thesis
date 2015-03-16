@@ -180,6 +180,7 @@ trait NonSeparatedOptimization extends ResultServerHandling{
 
       val list_of_matchings = results_by_techniques.get(name).get
 
+
       val eval_res_single_list: List[EvaluationResult] = list_of_matchings.map(single_matchings=> {
         val selected = selection_function(single_matchings._1, threshold)
         val alignment = new Alignment(single_matchings._2.onto1, single_matchings._2.onto2,single_matchings._2.onto1_reference,single_matchings._2.onto2_reference,selected)
@@ -198,6 +199,10 @@ trait NonSeparatedOptimization extends ResultServerHandling{
         }else {
           println("fucked " + improvement)
         }
+
+        val problem_name = single_matchings._2.onto1+"-"+single_matchings._2.onto2
+
+        AlignmentParser.writeFalseNegativesToCSV(debugged,single_matchings._2,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+name)
         eval_res_debugged
       })
 

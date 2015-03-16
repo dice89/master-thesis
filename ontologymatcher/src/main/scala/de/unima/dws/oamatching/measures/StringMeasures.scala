@@ -29,15 +29,19 @@ object StringMeasures {
    * @return
    */
   def computePrefixBiDirectional(a: String, b: String): Double = {
-    try {
-      val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.startsWith)(a, b)
-      val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.startsWith)(b, a)
-      Math.max(res_a_b, res_b_a)
-    }
-    catch {
-      case e:Throwable => {
 
-        0.0
+    if(a.length>30|| b.length > 30){
+      0.0
+    }else {
+      try {
+        val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.startsWith)(a.toLowerCase(), b.toLowerCase())
+        val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.startsWith)(b.toLowerCase(), a.toLowerCase())
+        Math.max(res_a_b, res_b_a)
+      }
+      catch {
+        case e: Throwable => {
+          0.0
+        }
       }
     }
   }
@@ -50,20 +54,26 @@ object StringMeasures {
    */
   def computeSuffixBiDirectional(a: String, b: String): Double = {
 
-    try {
-      val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.endsWith)(a, b)
-      val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.endsWith)(b, a)
 
-      val test = Math.max(res_a_b, res_b_a)
+    if(a.length>30|| b.length > 30){
+      0.0
+    }else {
+      try {
+        val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.endsWith)(a.toLowerCase(), b.toLowerCase())
+        val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.endsWith)(b.toLowerCase(), a.toLowerCase())
 
-      test
-    }
-    catch {
-      case e:Throwable => {
-        //e.printStackTrace()
-        0.0
+        val test = Math.max(res_a_b, res_b_a)
+
+        test
+      }
+      catch {
+        case e:Throwable => {
+          //e.printStackTrace()
+          0.0
+        }
       }
     }
+
   }
 
   /**

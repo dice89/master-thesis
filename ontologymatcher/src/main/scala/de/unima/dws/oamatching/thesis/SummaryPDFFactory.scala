@@ -167,6 +167,8 @@ object SummaryPDFFactory{
           printLocalThresholdsPage(name,result.local_global_threshold.agg_local_optimum,result.local_global_threshold.local_optima_per_ds, chapter)
           chapter.newPage()
 
+
+
           //print top results pages
           printPDFTopNEvaluatedPage(result.top_n_results, chapter)
           chapter.newPage()

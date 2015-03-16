@@ -2,7 +2,9 @@ package de.unima.dws.oamatching.thesis.scalabilityTests
 
 import com.typesafe.scalalogging.Logging
 import com.typesafe.scalalogging.slf4j.{LazyLogging, Logger}
+import de.unima.dws.alex.simservice.SimService
 import de.unima.dws.oamatching.core.{AlignmentParser, AggregatedEvaluationResult}
+import de.unima.dws.oamatching.measures.{SemanticMeasures, StringMeasureHelper, StringMeasures}
 import de.unima.dws.oamatching.pipeline.MatchingPruner
 import de.unima.dws.oamatching.thesis.{ResultServerHandling, SeparatedResult}
 import org.slf4j.LoggerFactory
@@ -20,23 +22,53 @@ case class Tester(left: String, right: String, relation: String, measure: Double
 
 object Test extends App with ResultServerHandling with LazyLogging {
 
-
-  logger.info("test")
-
-  val ref_file= "ontos/2014/conference/reference-alignment/cmt-edas.rdf"
-  val onto1= "ontos/2014/conference/cmt.owl"
-  val onto2= "ontos/2014/conference/edas.owl"
-
-  val ref = AlignmentParser.parseRDFWithOntos(ref_file,onto1,onto2)
-  println("parse_created")
+  def test = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
 
 
-  val created = AlignmentParser.parseRDFWithOntos("cmt-edas-best.rdf",onto1,onto2)
+ /* println(StringMeasures.computeSuffixBiDirectional("Document","Conference_document"))
+  println(StringMeasures.computeSuffixBiDirectional("Co-Author","Contribution_co-author"))
+  println(StringMeasures.computeSuffixBiDirectional("Conference_volume","Conference"))
+  println(StringMeasures.computePrefixBiDirectional("Conference_volume","Conference"))
 
-  println(created.evaluate(ref))
+  println(StringMeasures.computeLin("programm","programm"))
 
-  val debugged = MatchingPruner.debugAlignment(created)
+  println(StringMeasures.computeLin("subject","topic"))
+  println(StringMeasures.computePath("subject","topic"))*/
 
-  println(debugged.evaluate(ref))
+
+   def scoreTokenized(tokens_a:List[String], tokens_b:List[String]):Double = {
+    var summed_score:Double  =0.0
+    var counter:Int = 0
+
+    for (term_a <- tokens_a; term_b <- tokens_b) {
+      counter= counter +1
+
+
+
+
+      val a = StringMeasureHelper.porter_stem(term_a.toLowerCase())
+      val b =  StringMeasureHelper.porter_stem(term_b.toLowerCase())
+
+      println(a +"--"+b)
+      val score = if(a.equals(b)) 1.0 else 0.0
+      summed_score = summed_score + score
+    }
+
+    val res:Double =summed_score / Math.min(tokens_a.length,tokens_b.length)
+
+    res
+  }
+
+
+  val tokens_a = test.apply("fee")
+  val tokens_b = test.apply("fees")
+
+
+
+
+
+  println(scoreTokenized(tokens_a,tokens_b))
+
+
 
 }

@@ -73,7 +73,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging{
 
         val alignment = new Alignment(null, null, all_matchings_list)
 
-        AlignmentParser.writeRDF(alignment,"tmp/alignments/"+System.nanoTime()+".rdf")
+
 
         alignment.evaluate(ref_align)
       }

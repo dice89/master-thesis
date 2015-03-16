@@ -149,6 +149,22 @@ class Alignment(val onto1:String, val onto2:String, val onto1_reference:OWLOntol
   def addAllCorrespondeces(cells:Set[MatchingCell]): Unit = {
     correspondences =    mutable.HashSet(cells.toSeq:_*) ++correspondences
   }
+  def addAllCorrespondecesKeepHigher(cells:Set[MatchingCell]): Unit = {
+    correspondences =    mutable.HashSet(cells.toSeq:_*) ++correspondences
+
+    cells.foreach(cell=> {
+      //very inefficient
+      //TODO make more efficient
+      if(correspondences.contains(cell)){
+        val existing_cell =  correspondences.filter(_.equals(cell)).head
+
+        if(existing_cell.measure < cell.measure){
+          println("higher")
+          correspondences.add(cell)
+        }
+      }
+    })
+  }
 
   def addAllCorrespondeces(cells:mutable.Set[MatchingCell]): Unit = {
     correspondences=  cells ++ correspondences
@@ -195,6 +211,23 @@ class Alignment(val onto1:String, val onto2:String, val onto1_reference:OWLOntol
     val name = reference.onto1 +"-"+ reference.onto2
     EvaluationResultAggregator.createEvaluationResult(tp,fp,fn,name)
 
+  }
+
+
+  def getNewAlignmentWithMatchType(match_type:String):Alignment = {
+    val new_alignment = new Alignment(this)
+
+    new_alignment.correspondences = new_alignment.correspondences.filter(_.match_type.equals(match_type))
+
+    new_alignment
+  }
+
+  def getPresentMatchTypesinAlignment():Set[String] = {
+     val test = this.correspondences.groupBy(_.match_type).map(_._2.head.match_type).toSet
+
+    println(test)
+
+    test
   }
 }
 

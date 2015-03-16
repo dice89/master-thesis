@@ -164,7 +164,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
     val entity1_fields = getLabelAndFragmentOfEntity(owlEntity1, onto1)
     val entity2_fields = getLabelAndFragmentOfEntity(owlEntity2, onto2)
     //match fields combined
-    if(Config.loaded_config.getBoolean("genaral.names_separated")){
+    if(Config.loaded_config.getBoolean("general.names_separated")){
       matchFieldsSeparated(owlEntity1, owlEntity2, threshold, owlType, entity1_fields, entity2_fields)
     }else{
       matchFieldsCombined(owlEntity1, owlEntity2, threshold, owlType, entity1_fields, entity2_fields)
@@ -172,14 +172,20 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
   }
 
   def matchFieldsCombined(owlEntity1: OWLEntity, owlEntity2: OWLEntity, threshold: Double, owlType: String, entity1_fields: ExtractedFields, entity2_fields: ExtractedFields): List[MatchingCell] = {
-    val entity1_combined = {
-      entity1_fields.comment.getOrElse("") + " " + entity1_fields.fragment.getOrElse("") + " " + entity1_fields.label.getOrElse("")
-    }.replaceAll("  ", " ").trim
-    val entity2_combined = entity2_fields.comment.getOrElse("") + " " + entity2_fields.fragment.getOrElse("") + " " + entity2_fields.label.getOrElse("").replaceAll("  ", " ").trim
+    val entity1_combined =(entity1_fields.comment.getOrElse("") + " " + entity1_fields.fragment.getOrElse("") + " " + entity1_fields.label.getOrElse("")).replaceAll("  ", " ").trim
+    val entity2_combined = (entity2_fields.comment.getOrElse("") + " " + entity2_fields.fragment.getOrElse("") + " " + entity2_fields.label.getOrElse("")).replaceAll("  ", " ").trim
 
-    val value = score(entity1_combined, entity2_combined)
-    val cell = createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_NONE, value).get
-    List(cell)
+    val value: Double = try {
+        score(entity1_combined, entity2_combined)
+      }catch {
+        case e:Throwable =>{
+          e.printStackTrace()
+          0.0
+      }}
+
+      val cell = createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_NONE, value)
+      List(cell).filter(_.isDefined).map(_.get)
+
   }
 
   def matchFieldsSeparated(owlEntity1: OWLEntity, owlEntity2: OWLEntity, threshold: Double, owlType: String, entity1_fields: ExtractedFields, entity2_fields: ExtractedFields): List[MatchingCell] = {

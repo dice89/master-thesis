@@ -9,6 +9,7 @@ import de.unima.dws.oamatching.core.{MatchingCell, Alignment, Cell}
 import org.semanticweb.owlapi.model.{IRI, OWLOntology}
 
 import scala.collection.JavaConversions._
+import scala.collection.mutable
 
 /**
  * Created by mueller on 26/01/15.
@@ -17,14 +18,22 @@ class SimilarityFloodingMatcher  extends  StructuralLevelMatcher{
 
   override protected def align(onto1: OWLOntology, onto2: OWLOntology, initial_Alignment: Alignment, threshold: Double): Alignment = {
 
-
+    val produced_correspondences: Set[mutable.Set[MatchingCell]] = initial_Alignment.getPresentMatchTypesinAlignment().map(match_type =>{
+      val filtered_alignment = initial_Alignment.getNewAlignmentWithMatchType(match_type)
+      val alignment: util.List[MapPair] = convertAlignmentToMapPair(filtered_alignment)
+      val result:Array[MapPair] =  Matcher.structMatch(onto1,onto2,alignment,Match.FORMULA_TFF,Match.FG_PRODUCT)
+      val result_alingment = convertMapPairToAlignment(result,threshold,onto1,onto2,match_type)
+      result_alingment.correspondences
+    })
     //if no alignment available create initial alignment with jaro Winkler
-    val alignment: util.List[MapPair] = if(initial_Alignment==null) TestMatch.createInitialStringMappingJaroWinkler(onto1,onto2)
-    else convertAlignmentToMapPair(initial_Alignment)
 
-    val result:Array[MapPair] =  Matcher.structMatch(onto1,onto2,alignment,Match.FORMULA_TFF,Match.FG_PRODUCT)
+    val correspondences = produced_correspondences.flatten.toSet
 
-    convertMapPairToAlignment(result,threshold,onto1,onto2)
+
+    val copied_alignment = new Alignment(initial_Alignment)
+    copied_alignment.addAllCorrespondeces(produced_correspondences.flatten.toSet)
+
+    copied_alignment
   }
 
   protected def convertAlignmentToMapPair(alignment:Alignment):java.util.List[MapPair] ={
@@ -35,7 +44,7 @@ class SimilarityFloodingMatcher  extends  StructuralLevelMatcher{
     initMap.toList
   }
 
-  protected def convertMapPairToAlignment(mapPairs:Array[MapPair],threshold:Double,onto1: OWLOntology, onto2: OWLOntology):Alignment = {
+  protected def convertMapPairToAlignment(mapPairs:Array[MapPair],threshold:Double,onto1: OWLOntology, onto2: OWLOntology,match_type:String):Alignment = {
 
     val cells = mapPairs.map(pair=> {
 
@@ -48,7 +57,7 @@ class SimilarityFloodingMatcher  extends  StructuralLevelMatcher{
       //get owl datatype
       val owl_data_type = if (entity_left.isOWLClass) {Cell.TYPE_CLASS} else if(entity_left.isOWLDataProperty) {Cell.TYPE_DT_PROPERTY} else if(entity_left.isOWLObjectProperty){Cell.TYPE_OBJECT_PROPERTY} else {Cell.TYPE_UNKOWN}
 
-     MatchingCell(pair.getLeft.toString,pair.getRight.toString,pair.sim,"=",owl_data_type,Alignment.TYPE_NONE)
+     MatchingCell(pair.getLeft.toString,pair.getRight.toString,pair.sim,"=",owl_data_type,match_type)
     }).toList.filter(cell=> cell.measure >= threshold)
 
     new Alignment(null,null,cells)

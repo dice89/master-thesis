@@ -87,8 +87,9 @@ object StringMeasureHelper {
     stemmer.setCurrent(a)
     if (stemmer.stem()) {
       stemmer.getCurrent
+    }else {
+      a
     }
-    a
   }
 
 
