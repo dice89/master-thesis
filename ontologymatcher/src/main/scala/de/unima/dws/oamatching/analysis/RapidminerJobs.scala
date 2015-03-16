@@ -122,7 +122,7 @@ object RapidminerJobs extends LazyLogging {
     //split by comma
 
     //left,relation,right,owl_type, <--- filter out those fields
-    val meta_data_fields: List[String] = List("left", "relation", "right", "owl_type")
+    val meta_data_fields: List[String] = List("left", "relation", "right", "owl_type","match_type")
     val matcher_name_to_index: Map[String, Int] = header_line.split(",").filterNot(field => meta_data_fields.contains(field)).zipWithIndex.toMap
 
 
@@ -228,7 +228,7 @@ object RapidminerJobs extends LazyLogging {
 
     //println(size_by_owl_type)
     //left,relation,right,owl_type, <--- filter out those fields
-    val meta_data_fields: List[String] = List("left", "relation", "right", "owl_type")
+    val meta_data_fields: List[String] = List("left", "relation", "right", "owl_type", "match_type")
     val matcher_name_to_index: Map[String, Int] = header_line.split(",").filterNot(field => meta_data_fields.contains(field)).zipWithIndex.toMap
 
 
@@ -357,23 +357,24 @@ object RapidminerJobs extends LazyLogging {
     val writer = CSVWriter.open(csv_file)
 
     //print Headline
-    val header: List[String] = List[String]("left", "relation", "right", "owl_type") ::: matcher_name_to_index.values.toList.sorted.map(A => matcher_index_to_name.get(A).get)
+    val header: List[String] = List[String]("left", "relation", "right", "owl_type","match_type") ::: matcher_name_to_index.values.toList.sorted.map(A => matcher_index_to_name.get(A).get)
 
     //convert to java UTIL List
     writer.writeRow(header)
 
     for (line <- result.transposed_vector) {
       //matcher name
-      var records = new Array[String](matcher_name_to_index.size + 4)
+      var records = new Array[String](matcher_name_to_index.size + 5)
       //matching name
       records(0) = line._1.left
       records(1) = line._1.relation
       records(2) = line._1.right
       records(3) = line._1.owl_type
+      records(4) = line._1.match_type
       //get rows
       for (elm <- line._2) {
         //index shift because first element is match name
-        records(matcher_name_to_index(elm._1) + 4) = elm._2 + ""
+        records(matcher_name_to_index(elm._1) + 5) = elm._2 + ""
       }
 
       writer.writeRow(records)
@@ -393,7 +394,7 @@ object RapidminerJobs extends LazyLogging {
     logger.info("Read input from " + file.getName)
 
     // get dim names
-    val metaDataFields = List("left", "relation", "right", "owl_type", "outlier")
+    val metaDataFields = List("left", "relation", "right", "owl_type","match_type", "outlier")
     val reader_head = CSVReader.open(file)
     val dim_names = reader_head.all().head.filterNot(name => metaDataFields.contains(name))
     reader_head.close()
@@ -407,7 +408,7 @@ object RapidminerJobs extends LazyLogging {
       dim_size = tuple.size - 5
       //get max score by dimensions
 
-      MatchRelation(left = tuple.get("left").get, relation = tuple.get("relation").get, right = tuple.get("right").get, owl_type = tuple.get("owl_type").get) -> tuple.get("outlier").getOrElse("0.0").toDouble
+      MatchRelation(left = tuple.get("left").get, relation = tuple.get("relation").get, right = tuple.get("right").get, owl_type = tuple.get("owl_type").get,match_type = tuple.get("match_type").get) -> tuple.get("outlier").getOrElse("0.0").toDouble
     }) toMap
 
     reader.close()

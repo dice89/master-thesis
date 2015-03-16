@@ -70,6 +70,8 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging{
 
         val alignment = new Alignment(null, null, all_matchings_list)
 
+        AlignmentParser.writeRDF(alignment,"tmp/alignments/"+System.nanoTime()+".rdf")
+
         alignment.evaluate(ref_align)
       }
       }.toList
@@ -79,6 +81,8 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging{
       norm_technique -> SeparatedResult(class_threshold,dp_threshold,op_threshold,agg_res)
 
     }).toMap
+
+
 
 
     val best_result=best_results.maxBy(res_by_norm => res_by_norm._2.result.macro_eval_res.f1Measure)

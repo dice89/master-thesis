@@ -2,9 +2,14 @@ package de.unima.dws.oamatching.core.matcher
 
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.{MatchingCell, Alignment, Cell}
-import org.semanticweb.owlapi.model.{OWLClass, OWLEntity, OWLOntology, OWLProperty}
+import org.semanticweb.owlapi.model._
 
 import scala.collection.JavaConversions._
+
+
+case class ExtractedFields(val fragment:Option[String], val label: Option[String], val comment: Option[String])
+
+//case class MatchingResults(val fragment_fragment:Option[MatchingCell], val label_label: Option[MatchingCell],val label_fragment: Option[MatchingCell],val fragment_label: Option[MatchingCell], val comment_comment: Option[MatchingCell])
 /**
  * Created by mueller on 21/01/15.
  */
@@ -21,7 +26,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
     val entities1 = onto1.getSignature.toVector
     val entities2 = onto2.getSignature.toVector
 
-    val alignment:Alignment =  new Alignment(null,null)
+    val alignment:Alignment =  new Alignment(null,null,onto1,onto2)
 
 
     println(entities1.size)
@@ -36,29 +41,15 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
       while(n < entities2.size){
         entity2 = entities2(n)
         if(entity1.isOWLClass && entity2.isOWLClass){
-          val similarity: Double = getSimilarity(alignClass(entity1.asOWLClass(),onto1, entity2.asOWLClass(),onto2))
-
-          if(similarity >= threshold) {
-            val test = MatchingCell(entity1.toStringID,entity2.toStringID, similarity, "=", Cell.TYPE_CLASS)
-            alignment.addToCorrespondences( test)
-
-            if(!alignment.correspondences.contains(test)){
-              println(test)
-            }
-          }
+          alignment.correspondences.addAll(alignClass(entity1.asOWLClass(),onto1, entity2.asOWLClass(),onto2,threshold))
         }
 
         if(entity1.isOWLDataProperty && entity2.isOWLDataProperty){
-          val similarity: Double = getSimilarity(alignDatatypeProperty(entity1.asOWLDataProperty(),onto1,entity2.asOWLDataProperty(),onto2))
-          if(similarity >= threshold) {
-            alignment.addToCorrespondences( MatchingCell(entity1.toStringID,entity2.toStringID, similarity, "=",Cell.TYPE_DT_PROPERTY))
-          }
+          alignment.correspondences.addAll( alignDatatypeProperty(entity1.asOWLDataProperty(),onto1,entity2.asOWLDataProperty(),onto2,threshold))
         }
+
         if(entity1.isOWLObjectProperty && entity2.isOWLObjectProperty) {
-          val similarity = getSimilarity(alignObjectProperty(entity1.asOWLObjectProperty(),onto1, entity2.asOWLObjectProperty(),onto2))
-          if(similarity >= threshold) {
-            alignment.addToCorrespondences(MatchingCell(entity1.toStringID,entity2.toStringID, similarity, "=", Cell.TYPE_OBJECT_PROPERTY))
-          }
+          alignment.correspondences.addAll(alignObjectProperty(entity1.asOWLObjectProperty(),onto1, entity2.asOWLObjectProperty(),onto2,threshold))
         }
         n = n+1
       }
@@ -165,11 +156,87 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
     alignment
   }
 
-  def alignClass(owlClass1: OWLClass, onto1:OWLOntology, owlClass2: OWLClass, onto2:OWLOntology ):Double
 
-  def alignDatatypeProperty(owlProperty1: OWLProperty, onto1:OWLOntology, owlProperty2: OWLProperty, onto2:OWLOntology ):Double
+  def score(entity1: String, entity2: String): Double
 
-  def alignObjectProperty(owlProperty1: OWLProperty, onto1:OWLOntology, owlProperty2: OWLProperty,onto2:OWLOntology ):Double
+  def score(owlEntity1: OWLEntity, onto1: OWLOntology, owlEntity2: OWLEntity, onto2: OWLOntology, threshold: Double, owlType: String): List[MatchingCell] = {
+
+    val entity1_fields = getLabelAndFragmentOfEntity(owlEntity1, onto1)
+    val entity2_fields = getLabelAndFragmentOfEntity(owlEntity2, onto2)
+
+    //fragments matchings
+    val fragment_score = if (entity1_fields.fragment.isDefined && entity2_fields.fragment.isDefined && useFragment) {
+      val value = getSimilarity(score(entity1_fields.fragment.get, entity2_fields.fragment.get))
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_FRAGMENT_FRAGMENT, value)
+    }else{
+      Option.empty
+    }
+
+    //label matchings
+    val label_score = if (entity1_fields.label.isDefined && entity2_fields.label.isDefined && useLabel) {
+      println("label matched")
+      val value = score(entity1_fields.label.get, entity2_fields.label.get)
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_LABEL_LABEL, value)
+    }else{
+      Option.empty
+    }
+
+    //fragment label matching
+    val fragment_label_score = if (entity1_fields.fragment.isDefined && entity2_fields.label.isDefined && useFragment && useLabel) {
+      println("fragment label matched")
+      val value = score(entity1_fields.fragment.get, entity2_fields.label.get)
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_FRAGMENT_LABEL, value)
+    }else{
+      Option.empty
+    }
+    //label fragment matching
+    val label_fragment_score = if (entity1_fields.label.isDefined && entity2_fields.fragment.isDefined && useFragment && useLabel) {
+      println("label fragment matched")
+      val value = score(entity1_fields.label.get, entity2_fields.fragment.get)
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_LABEL_FRAGMENT, value)
+    }else{
+      Option.empty
+    }
+
+    val comment_comment_score = if (entity1_fields.comment.isDefined && entity2_fields.comment.isDefined && useComment) {
+      //println("comment matched")
+      val value = score(entity1_fields.comment.get, entity2_fields.comment.get)
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_COMMENT_COMMENT, value)
+    }else{
+      Option.empty
+    }
+
+    val fragment_comment_score = if (entity1_fields.fragment.isDefined && entity2_fields.comment.isDefined && useFragment && useComment) {
+      println("comment matched")
+      val value = score(entity1_fields.fragment.get, entity2_fields.comment.get)
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_FRAGMENT_COMMENT, value)
+    }else{
+      Option.empty
+    }
+
+    val comment_fragment_score = if (entity1_fields.comment.isDefined && entity2_fields.fragment.isDefined && useFragment && useComment) {
+      //println("comment matched")
+      val value = score(entity1_fields.comment.get, entity2_fields.fragment.get)
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_COMMENT_FRAGMENT, value)
+    }else{
+      Option.empty
+    }
+
+    //get results
+    List(fragment_score,label_score,fragment_label_score,label_fragment_score,comment_comment_score,fragment_comment_score,comment_fragment_score).filter(_.isDefined).map(_.get)
+  }
+
+  protected def alignClass(owlClass1: OWLClass, onto1: OWLOntology, owlClass2: OWLClass, onto2: OWLOntology, threshold: Double): List[MatchingCell] = {
+    score(owlClass1, onto1, owlClass2, onto2,threshold,Cell.TYPE_CLASS)
+  }
+
+  protected def alignDatatypeProperty(owlProperty1:  OWLDataProperty, onto1: OWLOntology, owlProperty2: OWLDataProperty, onto2: OWLOntology,threshold: Double): List[MatchingCell] = {
+    score(owlProperty1, onto1, owlProperty2, onto2,threshold, Cell.TYPE_DT_PROPERTY)
+  }
+
+  protected def alignObjectProperty(owlProperty1:  OWLObjectProperty, onto1: OWLOntology, owlProperty2:  OWLObjectProperty, onto2: OWLOntology,threshold: Double): List[MatchingCell] = {
+    score(owlProperty1, onto1, owlProperty2, onto2,threshold, Cell.TYPE_OBJECT_PROPERTY)
+  }
 
 
   /**
@@ -177,7 +244,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
    * @param value
    * @return
    */
-  private def getSimilarity(value:Double): Double = {
+  protected def getSimilarity(value:Double): Double = {
     if(similarity){
       value
     }else {
@@ -185,10 +252,24 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
     }
   }
 
-  def getLabelAndFragmentOfEntity(oWLEntity: OWLEntity, ontology: OWLOntology):String = {
+
+  protected def createMatchingCellOptional(owlEntity1: OWLEntity, owlEntity2: OWLEntity, threshold: Double, owlType: String,matching_type:String, value: Double): Option[MatchingCell] = {
+    if (value > threshold) {
+      Option(createMatchingCell(owlEntity1, owlEntity2, value, owlType,matching_type))
+    } else {
+      Option.empty
+    }
+  }
+
+  protected  def createMatchingCell(owlEntity1: OWLEntity, owlEntity2: OWLEntity, score: Double, owlType: String, matching_type:String): MatchingCell = {
+    MatchingCell(owlEntity1.getIRI.toString, owlEntity2.getIRI.toString, score, "=", owlType,matching_type)
+  }
+
+
+  def getLabelAndFragmentOfEntity(oWLEntity: OWLEntity, ontology: OWLOntology):ExtractedFields = {
 
     val fragment = if (useFragment){
-      Option(oWLEntity.getIRI.getShortForm)
+      Option(oWLEntity.getIRI.getFragment)
     }else {
       Option.empty
     }
@@ -197,7 +278,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
       val rdfs_labels = ontology.getAnnotationAssertionAxioms(oWLEntity.getIRI).filter(_.getProperty().isLabel)
 
       if(rdfs_labels.size > 0){
-        Option(rdfs_labels.head.getValue.asLiteral().get().getLiteral)
+        Option(rdfs_labels.head.getValue().toString)
       }else {
         Option.empty
       }
@@ -211,8 +292,9 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
 
       if(rdfs_comments.size > 0){
 
+
         //println("Comment: " +rdfs_comments.head.getValue.asLiteral().get().getLiteral)
-        Option(rdfs_comments.head.getValue.asLiteral().get().getLiteral)
+        Option( rdfs_comments.head.getValue().toString)
       }else {
         Option.empty
       }
@@ -221,9 +303,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
       Option.empty
     }
 
-    val final_label = fragment.getOrElse("") + " " + label.getOrElse("") + " " + comment.getOrElse(" ")
-
-    final_label.replace("  "," ").trim
+    ExtractedFields(fragment,label,comment)
   }
 
 

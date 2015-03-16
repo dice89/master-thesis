@@ -15,7 +15,7 @@
     <parameter key="parallelize_main_process" value="false"/>
     <process expanded="true">
       <operator activated="true" class="read_csv" compatibility="5.3.013" expanded="true" height="60" name="ReadVector" width="90" x="45" y="30">
-        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/ontologymatcher/matchings/benchmarks/matchings/101-250_raw_matchings.csv"/>
+        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/ontologymatcher/matchings/conference/matchings/cmt-edas_raw_matchings.csv"/>
         <parameter key="column_separators" value=","/>
         <parameter key="trim_lines" value="true"/>
         <parameter key="use_quotes" value="true"/>
@@ -39,40 +39,33 @@
           <parameter key="0" value="left.true.polynominal.attribute"/>
           <parameter key="1" value="relation.true.binominal.attribute"/>
           <parameter key="2" value="right.true.polynominal.attribute"/>
-          <parameter key="3" value="owl_type.true.binominal.attribute"/>
-          <parameter key="4" value="ngramDistance.true.real.attribute"/>
-          <parameter key="5" value="wuPalmer.true.real.attribute"/>
-          <parameter key="6" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelSimilarityFloodingMatcher.true.real.attribute"/>
+          <parameter key="3" value="owl_type.true.polynominal.attribute"/>
+          <parameter key="4" value="match_type.true.polynominal.attribute"/>
+          <parameter key="5" value="ngramDistance.true.real.attribute"/>
+          <parameter key="6" value="wuPalmer.true.real.attribute"/>
           <parameter key="7" value="path.true.real.attribute"/>
           <parameter key="8" value="lin.true.real.attribute"/>
-          <parameter key="9" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="10" value="jaroWinklerMeasure.true.real.attribute"/>
-          <parameter key="11" value="word2Vec.true.real.attribute"/>
-          <parameter key="12" value="level2_jara_winkler.true.real.attribute"/>
-          <parameter key="13" value="prefix.true.real.attribute"/>
-          <parameter key="14" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="15" value="word2VecStemmed.true.real.attribute"/>
-          <parameter key="16" value="jaccard.true.real.attribute"/>
-          <parameter key="17" value="level2_monge_elkan.true.real.attribute"/>
-          <parameter key="18" value="suffix.true.real.attribute"/>
-          <parameter key="19" value="esaSim.true.real.attribute"/>
-          <parameter key="20" value="level2_jaro.true.real.attribute"/>
-          <parameter key="21" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="22" value="smoaDistance.true.real.attribute"/>
-          <parameter key="23" value="jiangConrath.true.real.attribute"/>
-          <parameter key="24" value="needlemanWunsch2Distance.true.real.attribute"/>
-          <parameter key="25" value="umbcSim.true.real.attribute"/>
-          <parameter key="26" value="soft_tfidf_jaro.true.real.attribute"/>
-          <parameter key="27" value="mongeElkan.true.real.attribute"/>
-          <parameter key="28" value="simple_tfidf.true.real.attribute"/>
-          <parameter key="29" value="jaro_winkler_tfidf.true.real.attribute"/>
-          <parameter key="30" value="levenshteinDistance.true.real.attribute"/>
-          <parameter key="31" value="hammingDistance.true.real.attribute"/>
-          <parameter key="32" value="equalDistance.true.real.attribute"/>
-          <parameter key="33" value="subStringDistance.true.real.attribute"/>
-          <parameter key="34" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelSimilarityFloodingMatcher.true.real.attribute"/>
-          <parameter key="35" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelSimilarityFloodingMatcher.true.real.attribute"/>
-          <parameter key="36" value="jaroMeasure.true.real.attribute"/>
+          <parameter key="9" value="jaroWinklerMeasure.true.real.attribute"/>
+          <parameter key="10" value="level2_jara_winkler.true.real.attribute"/>
+          <parameter key="11" value="prefix.true.real.attribute"/>
+          <parameter key="12" value="jaccard.true.real.attribute"/>
+          <parameter key="13" value="level2_monge_elkan.true.real.attribute"/>
+          <parameter key="14" value="suffix.true.real.attribute"/>
+          <parameter key="15" value="esaSim.true.real.attribute"/>
+          <parameter key="16" value="level2_jaro.true.real.attribute"/>
+          <parameter key="17" value="smoaDistance.true.real.attribute"/>
+          <parameter key="18" value="jiangConrath.true.real.attribute"/>
+          <parameter key="19" value="needlemanWunsch2Distance.true.real.attribute"/>
+          <parameter key="20" value="umbcSim.true.real.attribute"/>
+          <parameter key="21" value="soft_tfidf_jaro.true.real.attribute"/>
+          <parameter key="22" value="mongeElkan.true.real.attribute"/>
+          <parameter key="23" value="simple_tfidf.true.real.attribute"/>
+          <parameter key="24" value="jaro_winkler_tfidf.true.real.attribute"/>
+          <parameter key="25" value="levenshteinDistance.true.real.attribute"/>
+          <parameter key="26" value="hammingDistance.true.real.attribute"/>
+          <parameter key="27" value="equalDistance.true.real.attribute"/>
+          <parameter key="28" value="subStringDistance.true.real.attribute"/>
+          <parameter key="29" value="jaroMeasure.true.real.attribute"/>
         </list>
         <parameter key="read_not_matching_values_as_missings" value="true"/>
         <parameter key="datamanagement" value="double_array"/>
@@ -87,7 +80,7 @@
           <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (3)" width="90" x="180" y="30">
             <parameter key="attribute_filter_type" value="subset"/>
             <parameter key="attribute" value=""/>
-            <parameter key="attributes" value="left|relation|right|owl_type"/>
+            <parameter key="attributes" value="left|owl_type|relation|right|match_type"/>
             <parameter key="use_except_expression" value="false"/>
             <parameter key="value_type" value="attribute_value"/>
             <parameter key="use_value_type_exception" value="false"/>
@@ -101,7 +94,7 @@
           <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (5)" width="90" x="313" y="120">
             <parameter key="attribute_filter_type" value="subset"/>
             <parameter key="attribute" value=""/>
-            <parameter key="attributes" value="id|left|relation|right|owl_type"/>
+            <parameter key="attributes" value="id|left|owl_type|relation|right|match_type"/>
             <parameter key="use_except_expression" value="false"/>
             <parameter key="value_type" value="attribute_value"/>
             <parameter key="use_value_type_exception" value="false"/>
@@ -329,7 +322,7 @@
         <parameter key="keep_all" value="true"/>
       </operator>
       <operator activated="true" class="write_csv" compatibility="5.3.013" expanded="true" height="76" name="Output" width="90" x="581" y="30">
-        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/oaMatcherCode/result2.csv"/>
+        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/result2.csv"/>
         <parameter key="column_separator" value=","/>
         <parameter key="write_attribute_names" value="true"/>
         <parameter key="quote_nominal_values" value="true"/>

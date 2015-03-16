@@ -35,7 +35,6 @@ object AlignmentParser {
     // read the RDF/XML file
     model.read(in, null)
 
-
     val namespace: String = "http://knowledgeweb.semanticweb.org/heterogeneity/alignment"
     val alignment_node: Resource = model.createResource(namespace + "Alignment")
 
@@ -83,7 +82,7 @@ object AlignmentParser {
       val entity1: URI = new URI(test.getProperty(model.createProperty(namespace + "entity1")).getResource.getURI)
       val entity2: URI = new URI(test.getProperty(model.createProperty(namespace + "entity2")).getResource.getURI)
 
-      Option(MatchingCell(entity1.toString, entity2.toString, measure, relation, Cell.TYPE_UNKOWN))
+      Option(MatchingCell(entity1.toString, entity2.toString, measure, relation, Cell.TYPE_UNKOWN,Alignment.TYPE_NONE))
 
 
       }else {
@@ -102,25 +101,16 @@ object AlignmentParser {
     new Alignment(onto1_namespace, onto2_namespace, cleaned_correspondences)
   }
 
-  /**
-   * Add the relation owl type to the ontologies
-   * @param path_to_alignment
-   * @param path_to_onto1
-   * @param path_to_onto2
-   * @return
-   */
-  def parseRDFWithOntos(path_to_alignment: String, path_to_onto1:String, path_to_onto2:String): Alignment = {
+
+  def parseRDFWithOntos(path_to_alignment: String, onto1:OWLOntology, onto2:OWLOntology): Alignment = {
+
     val model: Model = ModelFactory.createDefaultModel()
+
     val in: InputStream = FileManager.get().open(path_to_alignment)
 
     if (in == null) {
       //TODO ERROR handling
     }
-
-    //parse ontos and make the IRIs of the classes and properties random access available
-    val onto1: OWLOntology = OntologyLoader.load(path_to_onto1)
-    val onto2: OWLOntology = OntologyLoader.load(path_to_onto2)
-
     val onto1_obj_properties:Vector[String] = onto1.getObjectPropertiesInSignature().toVector.map(property => property.getIRI.toString).toVector
     val onto2_obj_properties:Vector[String] = onto2.getObjectPropertiesInSignature().toVector.map(property => property.getIRI.toString).toVector
 
@@ -200,7 +190,7 @@ object AlignmentParser {
           Cell.TYPE_UNKOWN
         }
 
-        Option(MatchingCell(entity1.toString, entity2.toString, measure, relation, cell_type))
+        Option(MatchingCell(entity1.toString, entity2.toString, measure, relation, cell_type,Alignment.TYPE_NONE))
       }else {
         //means that in the alignment is an empty mapping in the form
         // <map>
@@ -215,7 +205,23 @@ object AlignmentParser {
     val cleaned_correspondences = correspondences.filter(_.isDefined).map(_.get)
 
 
-    new Alignment(onto1_namespace, onto2_namespace, cleaned_correspondences)
+    new Alignment(onto1_namespace, onto2_namespace,onto1,onto2, cleaned_correspondences)
+  }
+  /**
+   * Add the relation owl type to the ontologies
+   * @param path_to_alignment
+   * @param path_to_onto1
+   * @param path_to_onto2
+   * @return
+   */
+  def parseRDFWithOntos(path_to_alignment: String, path_to_onto1:String, path_to_onto2:String): Alignment = {
+
+    //parse ontos and make the IRIs of the classes and properties random access available
+    val onto1: OWLOntology = OntologyLoader.load(path_to_onto1)
+    val onto2: OWLOntology = OntologyLoader.load(path_to_onto2)
+
+    parseRDFWithOntos(path_to_alignment,onto1,onto2)
+
   }
 
   def getOntoProperty(alignment_parent: Resource, alignment_onto2_query: Property): String = {
@@ -225,7 +231,7 @@ object AlignmentParser {
       try {
         alignment_parent.getProperty(alignment_onto2_query).getResource.getURI.toString
       } catch {
-        case _: Throwable => alignment_parent.getProperty(alignment_onto2_query).getString
+        case _: Throwable =>"nn"
       }
     } else {
       "nn"
@@ -247,20 +253,13 @@ object AlignmentParser {
 
     def getCell(id: Int, entity1: String, entity2: String, measure: Double, relation: String): Elem = {
       <map>
-        <Cell cid={id+""}>
+        <Cell>
           <entity1 rdf:resource={entity1}/>
           <entity2 rdf:resource={entity2}/>
-          <measure rdf:datatype='xsd:float'>
-            {measure}
-          </measure>
-          <relation>
-            {relation}
-          </relation>
+          <measure rdf:datatype='xsd:float'>{measure}</measure>
+          <relation>{relation}</relation>
         </Cell>
       </map>
-
-
-
     }
 
     def getRDFDoc(content: Elem): Elem = <rdf:RDF xmlns='http://knowledgeweb.semanticweb.org/heterogeneity/alignment'
@@ -274,12 +273,8 @@ object AlignmentParser {
         <xml>yes</xml>
         <level>0</level>
         <type>??</type>
-        <onto1>
-          {onto1}
-        </onto1>
-        <onto2>
-          {onto2}
-        </onto2>
+        <onto1>{onto1}</onto1>
+        <onto2>{onto2}</onto2>
         {cells}
       </Alignment>
     }
@@ -290,10 +285,6 @@ object AlignmentParser {
             {location}
             </location>
           </Ontology>
-
-
-
-
     val cells = alignment.correspondences.toList.zipWithIndex.map { case (cell, index) =>
       getCell(index + 1, cell.entity1.toString, cell.entity2.toString, cell.measure, cell.relation)
     }

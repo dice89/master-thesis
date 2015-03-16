@@ -102,7 +102,8 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
             if (candidate._2.equals(range_class.toStringID)) {
               // yes = add alignment
               //we got a real matching
-              Option(MatchRelation(candidate._1, "=", prop_onto2.toStringID, Cell.TYPE_OBJECT_PROPERTY) -> candidate._3)
+
+              Option(MatchRelation(candidate._1, "=", prop_onto2.toStringID, Cell.TYPE_OBJECT_PROPERTY,Alignment.TYPE_NONE ) -> candidate._3)
             } else {
               // no = do nothing
               Option.empty
@@ -125,7 +126,7 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
 
     val copied_alignment = new Alignment(initial_Alignment)
 
-    val cells_to_add = filtered_matchings.map { case (relation, measure) => MatchingCell(relation.left, relation.right, measure, relation.relation, relation.owl_type)}
+    val cells_to_add = filtered_matchings.map { case (relation, measure) => MatchingCell(relation.left, relation.right, measure, relation.relation, relation.owl_type,relation.match_type)}
     //check if the correspondences are already there
 
     copied_alignment.addAllCorrespondeces(cells_to_add.toSet)
@@ -149,9 +150,9 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
   }
 
   private def findAlignFromMap(owlClass: OWLClass, alignment: Alignment): (String, mutable.Set[(String, Double)]) = {
-
     val from_alignments: mutable.Set[MatchingCell] = alignment.correspondences.filter(cell => cell.entity1.toString.equals(owlClass.toStringID))
 
-    (owlClass.toStringID, from_alignments.map(cell => (cell.entity2.toString, cell.measure)))
+   (owlClass.toStringID, from_alignments.map(cell => (cell.entity2.toString, cell.measure)))
+
   }
 }

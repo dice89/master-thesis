@@ -10,6 +10,7 @@ class TokenizedStringMatcher(override val similarity:Boolean,
                              override val stringmatching_fct:(String,String) => Double
                              ) extends  PreProcessedStringMatcher(similarity,useLabel,useFragment,useComment, preprocess_function,stringmatching_fct){
 
+
   override def score(a: String, b: String): Double = {
     val res  = scoreTokenized( tokenizer(a),tokenizer(b))
 
@@ -28,7 +29,7 @@ class TokenizedStringMatcher(override val similarity:Boolean,
     for (term_a <- tokens_a; term_b <- tokens_b) {
       counter= counter +1
 
-      summed_score = summed_score + stringmatching_fct(term_a, term_b)
+      summed_score = summed_score + pre_processed_score(term_a, term_b)
     }
 
     val res:Double =    summed_score/counter

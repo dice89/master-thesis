@@ -8,7 +8,7 @@ libraryDependencies += "org.apache.spark" %% "spark-core" % "1.2.1"
 
 libraryDependencies += "org.apache.spark" %% "spark-mllib" % "1.2.1"
 
-libraryDependencies += "net.sourceforge.owlapi" % "owlapi-distribution" % "4.0.1"
+libraryDependencies += "net.sourceforge.owlapi" % "owlapi-distribution" % "3.5.2"
 
 libraryDependencies += "org.apache.jena" % "jena-core" % "2.12.1"
 
@@ -48,9 +48,9 @@ libraryDependencies += "com.itextpdf" % "itextpdf" % "5.0.6"
 
 libraryDependencies += "com.typesafe" % "config" % "1.2.1"
 
-libraryDependencies += "com.typesafe.scala-logging" % "scala-logging_2.11" % "3.1.0"
+libraryDependencies += "com.typesafe.scala-logging" % "scala-logging-slf4j_2.10" % "2.1.2"
 
-ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) }
+libraryDependencies += "de.unima.dws" % "alcomo" % "1.01"
 
 
 resolvers += "Local Maven Repository" at "file:///Users/mueller/.m2/repository/"

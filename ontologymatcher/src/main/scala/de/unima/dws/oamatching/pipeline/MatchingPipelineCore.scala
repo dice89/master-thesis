@@ -68,8 +68,8 @@ object MatchingPipelineCore{
   def createFeatureVector(problem: MatchingProblem, remove_correlated_threshold: Double, name_space_filter:Boolean): FeatureVector = {
 
     println("Start element Level Matching")
-    val onto1_namespace = problem.ontology1.getOntologyID.getOntologyIRI.get().toString
-    val onto2_namespace = problem.ontology2.getOntologyID.getOntologyIRI.get().toString
+    val onto1_namespace = problem.ontology1.getOntologyID.getOntologyIRI.toString
+    val onto2_namespace = problem.ontology2.getOntologyID.getOntologyIRI.toString
     println(onto1_namespace)
     println(onto2_namespace)
     val allowed_namespaces = List(onto1_namespace, onto2_namespace)
@@ -77,21 +77,20 @@ object MatchingPipelineCore{
     val individual_matcher_results: FeatureVector = matchAllIndividualMatchers(problem)
     println("Element Level Matching Done")
     println("Start remove correlated")
-    val uncorrelated_matcher_results: FeatureVector = removeCorrelatedMatchers(individual_matcher_results, remove_correlated_threshold)
+    //val uncorrelated_matcher_results: FeatureVector = removeCorrelatedMatchers(individual_matcher_results, remove_correlated_threshold)
     println("Remove correlated done")
-    val structural_matcher_results: Option[FeatureVector] = matchAllStructuralMatchers(problem, uncorrelated_matcher_results)
+   // val structural_matcher_results: Option[FeatureVector] = matchAllStructuralMatchers(problem, uncorrelated_matcher_results)
 
     RapidminerJobs.writeCSV("elem_test123","tmp")(individual_matcher_results)
-    RapidminerJobs.writeCSV("struct_test123","tmp")(structural_matcher_results.get)
-
-    val outlier_analysis_vector: FeatureVector = if (structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results, structural_matcher_results.get), problem.name).get else individual_matcher_results
-
-    RapidminerJobs.writeCSV("combined_test123","tmp")(outlier_analysis_vector)
+   // RapidminerJobs.writeCSV("struct_test123","tmp")(structural_matcher_results.get)
+    //val outlier_analysis_vector: FeatureVector = if (structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results, structural_matcher_results.get), problem.name).get else individual_matcher_results
+    val outlier_analysis_vector: FeatureVector = individual_matcher_results
+   // RapidminerJobs.writeCSV("combined_test123","tmp")(outlier_analysis_vector)
 
 
     if(name_space_filter){
      println("Filter size")
-     println(outlier_analysis_vector.vector.size)
+     //println(outlier_analysis_vector.vector.size)
      val filtered_outlier_analysis_vector: FeatureVector = MatchingPruner.featureVectorNameSpaceFilter(outlier_analysis_vector, allowed_namespaces)
      println(filtered_outlier_analysis_vector.vector.size)
      filtered_outlier_analysis_vector

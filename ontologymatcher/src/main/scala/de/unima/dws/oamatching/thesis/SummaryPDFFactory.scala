@@ -816,7 +816,7 @@ object SummaryPDFFactory{
       table.addCell(relation.toString)
       table.addCell(score.toString)
 
-      val cell = MatchingCell(relation.left, relation.right, score, relation.relation, relation.owl_type)
+      val cell = MatchingCell(relation.left, relation.right, score, relation.relation, relation.owl_type,relation.match_type)
 
       if (ref_alignment.correspondences.contains(cell)) {
         table.addCell("X")

@@ -108,7 +108,7 @@ object MiscExperiments extends App {
 
         val new_line = if (!left.equals("left")) {
           //not first row
-          val cell = MatchingCell(left, right, 1.0, relation, "nn")
+          val cell = MatchingCell(left, right, 1.0, relation, "nn","NN")
           if (alignment.correspondences.contains(cell)) {
             line + ",1"
           } else {

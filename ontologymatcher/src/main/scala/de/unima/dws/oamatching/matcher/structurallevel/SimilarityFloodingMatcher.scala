@@ -48,7 +48,7 @@ class SimilarityFloodingMatcher  extends  StructuralLevelMatcher{
       //get owl datatype
       val owl_data_type = if (entity_left.isOWLClass) {Cell.TYPE_CLASS} else if(entity_left.isOWLDataProperty) {Cell.TYPE_DT_PROPERTY} else if(entity_left.isOWLObjectProperty){Cell.TYPE_OBJECT_PROPERTY} else {Cell.TYPE_UNKOWN}
 
-     MatchingCell(pair.getLeft.toString,pair.getRight.toString,pair.sim,"=",owl_data_type)
+     MatchingCell(pair.getLeft.toString,pair.getRight.toString,pair.sim,"=",owl_data_type,Alignment.TYPE_NONE)
     }).toList.filter(cell=> cell.measure >= threshold)
 
     new Alignment(null,null,cells)
