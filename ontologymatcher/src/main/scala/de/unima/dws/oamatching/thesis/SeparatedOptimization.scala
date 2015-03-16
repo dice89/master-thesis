@@ -3,6 +3,7 @@ import java.io.File
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import de.unima.dws.oamatching.analysis.{RapidminerJobs, SeparatedResults}
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core._
 import de.unima.dws.oamatching.pipeline.{ScoreNormalizationFunctions, MatchingSelector}
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingTask, EvaluationMatchingRunner}
@@ -47,6 +48,8 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging{
     val tuple_wise: (List[Map[String, (Map[MatchRelation, Double], Alignment)]], List[Map[String, (Map[MatchRelation, Double], Alignment)]], List[Map[String, (Map[MatchRelation, Double], Alignment)]]) = normalized_per_category.unzip._1.unzip3
 
     logger.info(s"Start threshold optimization for $ds_name and $process_name in run $run_number")
+
+
 
     val optimization_grid = ParameterOptimizer.getDoubleGrid(0.001, 0.9999999999, 1000)
     //globally normalize each tuple

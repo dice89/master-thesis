@@ -2,6 +2,7 @@ package de.unima.dws.oamatching.thesis
 import java.io.File
 
 import de.unima.dws.oamatching.analysis.RapidminerJobs
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core._
 import de.unima.dws.oamatching.pipeline.{MatchingPruner, ScoreNormalizationFunctions}
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingTask, EvaluationMatchingRunner}
@@ -75,8 +76,12 @@ trait NonSeparatedOptimization extends ResultServerHandling{
 
     val matching_results_seq = matching_results_intermediate.seq.toList
     val matching_results: List[Map[String, (Map[MatchRelation, Double], Alignment)]] = matching_results_seq.map(_._1)
-    val optimization_grid = ParameterOptimizer.getDoubleGrid(0.35, 0.70, 2)
 
+    val grid_size = Config.loaded_config.getInt("optimization.threshold_opt.grid_size")
+    val start = Config.loaded_config.getDouble("optimization.threshold_opt.start")
+    val end = Config.loaded_config.getDouble("optimization.threshold_opt.end")
+
+    val optimization_grid = ParameterOptimizer.getDoubleGrid(start, end, grid_size)
 
     val threshold_optimized_values: ThresholdOptResult = findOptimalThresholds(selection_function, matching_results, optimization_grid)
 
@@ -150,16 +155,18 @@ trait NonSeparatedOptimization extends ResultServerHandling{
 
           val debugged = MatchingPruner.debugAlignment(alignment)
 
-          val eval_res_norm = alignment.evaluate(single_matchings._2)
+          //val eval_res_norm = alignment.evaluate(single_matchings._2)
 
           val eval_res_debugged = debugged.evaluate(single_matchings._2)
 
-          if(eval_res_debugged.f1Measure >= eval_res_norm.f1Measure){
+          /*if(eval_res_debugged.f1Measure >= eval_res_norm.f1Measure){
             println("YEEAAH")
           }else {
             println("NOOO")
-          }
+          }*/
           val totaltime = System.currentTimeMillis()-starttime
+
+          System.gc()
 
           println(s"Needed $totaltime to debug alignment of size "+alignment.correspondences.size)
           eval_res_debugged

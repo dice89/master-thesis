@@ -249,7 +249,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
    * @return
    */
   def runAllForAlgosForAllSlctFunctions(ds_name: String, base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], parallel: Boolean, separated: Boolean): Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = {
-    val results = configured_selection_strategies.par.map { case (name, fuzzy_values) => {
+    val results = configured_selection_strategies.map { case (name, fuzzy_values) => {
       logger.info(s"Start Outlier Analysis for selection strategy $name")
       val fuzzy_base_folder = base_folder + "/" + name
       createFolder(fuzzy_base_folder)
