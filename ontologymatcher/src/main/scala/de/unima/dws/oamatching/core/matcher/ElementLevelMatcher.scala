@@ -163,12 +163,31 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
 
     val entity1_fields = getLabelAndFragmentOfEntity(owlEntity1, onto1)
     val entity2_fields = getLabelAndFragmentOfEntity(owlEntity2, onto2)
+    //match fields combined
+    if(Config.loaded_config.getBoolean("genaral.names_separated")){
+      matchFieldsSeparated(owlEntity1, owlEntity2, threshold, owlType, entity1_fields, entity2_fields)
+    }else{
+      matchFieldsCombined(owlEntity1, owlEntity2, threshold, owlType, entity1_fields, entity2_fields)
+    }
+  }
 
+  def matchFieldsCombined(owlEntity1: OWLEntity, owlEntity2: OWLEntity, threshold: Double, owlType: String, entity1_fields: ExtractedFields, entity2_fields: ExtractedFields): List[MatchingCell] = {
+    val entity1_combined = {
+      entity1_fields.comment.getOrElse("") + " " + entity1_fields.fragment.getOrElse("") + " " + entity1_fields.label.getOrElse("")
+    }.replaceAll("  ", " ").trim
+    val entity2_combined = entity2_fields.comment.getOrElse("") + " " + entity2_fields.fragment.getOrElse("") + " " + entity2_fields.label.getOrElse("").replaceAll("  ", " ").trim
+
+    val value = score(entity1_combined, entity2_combined)
+    val cell = createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_NONE, value).get
+    List(cell)
+  }
+
+  def matchFieldsSeparated(owlEntity1: OWLEntity, owlEntity2: OWLEntity, threshold: Double, owlType: String, entity1_fields: ExtractedFields, entity2_fields: ExtractedFields): List[MatchingCell] = {
     //fragments matchings
     val fragment_score = if (entity1_fields.fragment.isDefined && entity2_fields.fragment.isDefined && useFragment) {
       val value = getSimilarity(score(entity1_fields.fragment.get, entity2_fields.fragment.get))
-      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_FRAGMENT_FRAGMENT, value)
-    }else{
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_FRAGMENT_FRAGMENT, value)
+    } else {
       Option.empty
     }
 
@@ -176,8 +195,8 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
     val label_score = if (entity1_fields.label.isDefined && entity2_fields.label.isDefined && useLabel) {
       println("label matched")
       val value = score(entity1_fields.label.get, entity2_fields.label.get)
-      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_LABEL_LABEL, value)
-    }else{
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_LABEL_LABEL, value)
+    } else {
       Option.empty
     }
 
@@ -185,45 +204,45 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
     val fragment_label_score = if (entity1_fields.fragment.isDefined && entity2_fields.label.isDefined && useFragment && useLabel) {
       println("fragment label matched")
       val value = score(entity1_fields.fragment.get, entity2_fields.label.get)
-      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_FRAGMENT_LABEL, value)
-    }else{
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_FRAGMENT_LABEL, value)
+    } else {
       Option.empty
     }
     //label fragment matching
     val label_fragment_score = if (entity1_fields.label.isDefined && entity2_fields.fragment.isDefined && useFragment && useLabel) {
       println("label fragment matched")
       val value = score(entity1_fields.label.get, entity2_fields.fragment.get)
-      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_LABEL_FRAGMENT, value)
-    }else{
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_LABEL_FRAGMENT, value)
+    } else {
       Option.empty
     }
 
     val comment_comment_score = if (entity1_fields.comment.isDefined && entity2_fields.comment.isDefined && useComment) {
       //println("comment matched")
       val value = score(entity1_fields.comment.get, entity2_fields.comment.get)
-      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_COMMENT_COMMENT, value)
-    }else{
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_COMMENT_COMMENT, value)
+    } else {
       Option.empty
     }
 
     val fragment_comment_score = if (entity1_fields.fragment.isDefined && entity2_fields.comment.isDefined && useFragment && useComment) {
       println("comment matched")
       val value = score(entity1_fields.fragment.get, entity2_fields.comment.get)
-      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_FRAGMENT_COMMENT, value)
-    }else{
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_FRAGMENT_COMMENT, value)
+    } else {
       Option.empty
     }
 
     val comment_fragment_score = if (entity1_fields.comment.isDefined && entity2_fields.fragment.isDefined && useFragment && useComment) {
       //println("comment matched")
       val value = score(entity1_fields.comment.get, entity2_fields.fragment.get)
-      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType,Alignment.TYPE_COMMENT_FRAGMENT, value)
-    }else{
+      createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_COMMENT_FRAGMENT, value)
+    } else {
       Option.empty
     }
 
     //get results
-    List(fragment_score,label_score,fragment_label_score,label_fragment_score,comment_comment_score,fragment_comment_score,comment_fragment_score).filter(_.isDefined).map(_.get)
+    List(fragment_score, label_score, fragment_label_score, label_fragment_score, comment_comment_score, fragment_comment_score, comment_fragment_score).filter(_.isDefined).map(_.get)
   }
 
   protected def alignClass(owlClass1: OWLClass, onto1: OWLOntology, owlClass2: OWLClass, onto2: OWLOntology, threshold: Double): List[MatchingCell] = {
