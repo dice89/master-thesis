@@ -168,13 +168,13 @@ trait NonSeparatedOptimization extends ResultServerHandling{
 
     //get best result
     val best_global_results_pre_debug: Map[String, (Double, AggregatedEvaluationResult)] = global_results.map { case (name, list_of_results) => {
-      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.micro_eval_res.f1measure)
+      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.micro_eval_res.f1Measure)
       (name, best_result)
     }
     }
 
     val best_global_results: Map[String, (Double, AggregatedEvaluationResult)] = global_results.map { case (name, list_of_results) => {
-      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.micro_eval_res.f1measure)
+      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.micro_eval_res.f1Measure)
 
       val threshold = best_result._1
 
