@@ -105,7 +105,11 @@ object MatchingPruner extends LazyLogging{
 
     }
     catch {
-      case _:Throwable  =>alignment
+      case _:Throwable  =>{
+
+        println("error")
+        alignment
+      }
     };
 
     println("New session, total memory = %s, max memory = %s, free memory = %s".format(totalMemory/1024, maxMemory/1024, freeMemory/1024))

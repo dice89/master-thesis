@@ -20,7 +20,7 @@ case class Tester(left: String, right: String, relation: String, measure: Double
 
 object Test extends App with ResultServerHandling with LazyLogging {
 
-/*
+
   logger.info("test")
 
   val ref_file= "ontos/2014/conference/reference-alignment/cmt-edas.rdf"
@@ -35,8 +35,8 @@ object Test extends App with ResultServerHandling with LazyLogging {
 
   println(created.evaluate(ref))
 
-  //val debugged = MatchingPruner.debugAlignment(created,ref.onto1_reference,ref.onto2_reference)
+  val debugged = MatchingPruner.debugAlignment(created)
 
-  println(debugged.evaluate(ref))*/
+  println(debugged.evaluate(ref))
 
 }

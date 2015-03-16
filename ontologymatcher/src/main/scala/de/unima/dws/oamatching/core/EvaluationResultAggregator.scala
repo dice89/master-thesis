@@ -4,7 +4,7 @@ package de.unima.dws.oamatching.core
  * Created by mueller on 22/01/15.
  */
 
-case class EvaluationResult(precision: Double, recall: Double, f1Measure: Double, truePositives: Int, falsePositives: Int, FalseNegatives: Int, problem:String);
+case class EvaluationResult(precision: Double, recall: Double, f1Measure: Double, truePositives: Int, falsePositives: Int, FalseNegatives: Int, problem:String, f2measure:Double);
 
 case class AggregatedEvaluationResult(micro_eval_res: EvaluationResult, macro_eval_res: EvaluationResult)
 
@@ -38,7 +38,15 @@ object EvaluationResultAggregator {
     }
 
 
-    EvaluationResult(precision, recall, fMeasure, truePositives, falsePositives, falseNegatives,problem)
+
+    val f2Measure: Double = if (precision + recall > 0.0) {
+      (5 * ((precision * recall) / (4*precision + recall)))
+    } else {
+      0.0
+    }
+
+
+    EvaluationResult(precision, recall, fMeasure, truePositives, falsePositives, falseNegatives,problem,f2Measure)
   }
 
   /**
@@ -52,7 +60,7 @@ object EvaluationResultAggregator {
       evaluation_results.map(eval_res => EvaluationResult.unapply(eval_res).get)
     }
     val no_of_result = evaluation_results.size
-    val sum = EvaluationResult.tupled(tupled_eval_res.reduceLeft[(Double, Double, Double, Int, Int, Int,String)] { case (previous, tuples) => EvaluationResult.unapply(EvaluationResult(previous._1 + tuples._1, previous._2 + tuples._2, previous._3 + tuples._3, previous._4 + tuples._4, previous._5 + tuples._5, previous._6 + tuples._6,"agg")).get})
+    val sum = EvaluationResult.tupled(tupled_eval_res.reduceLeft[(Double, Double, Double, Int, Int, Int,String,Double)] { case (previous, tuples) => EvaluationResult.unapply(EvaluationResult(previous._1 + tuples._1, previous._2 + tuples._2, previous._3 + tuples._3, previous._4 + tuples._4, previous._5 + tuples._5, previous._6 + tuples._6,"agg",previous._8+tuples._8)).get})
 
 
     val macro_precision = sum.precision / no_of_result.toDouble
@@ -63,12 +71,18 @@ object EvaluationResultAggregator {
       0.0
     }
 
+    val macro_f2Measure: Double = if((macro_precision + macro_precision) > 0){
+      (5 * ((macro_precision * macro_recall) / (4*macro_precision + macro_recall)))
+    }else {
+      0.0
+    }
+
     val macro_average = EvaluationResult(sum.precision / no_of_result.toDouble,
       sum.recall / no_of_result.toDouble,
       macro_fMeasure,
       sum.truePositives,
       sum.falsePositives,
-      sum.FalseNegatives,"agg")
+      sum.FalseNegatives,"agg",macro_f2Measure)
 
     //micro avg calc
     //calculate with check for 0 in denominator
@@ -93,7 +107,15 @@ object EvaluationResultAggregator {
     }
 
 
-    val micro_avg = EvaluationResult(precision, recall, fMeasure, sum.truePositives, sum.falsePositives, sum.FalseNegatives,"agg")
+    val f2Measure: Double = if (precision + recall > 0.0) {
+      (5 * ((precision * recall) / (4*precision + recall)))
+    } else {
+      0.0
+    }
+
+
+
+    val micro_avg = EvaluationResult(precision, recall, fMeasure, sum.truePositives, sum.falsePositives, sum.FalseNegatives,"agg",f2Measure)
 
     AggregatedEvaluationResult(micro_avg, macro_average)
 

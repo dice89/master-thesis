@@ -151,21 +151,13 @@ trait NonSeparatedOptimization extends ResultServerHandling{
           //TODO add alignment debugging
           val alignment = new Alignment(single_matchings._2.onto1, single_matchings._2.onto2,single_matchings._2.onto1_reference,single_matchings._2.onto2_reference,selected)
 
-          val debugged = MatchingPruner.debugAlignment(alignment)
+          val eval_res_norm = alignment.evaluate(single_matchings._2)
 
-          //val eval_res_norm = alignment.evaluate(single_matchings._2)
-
-          val eval_res_debugged = debugged.evaluate(single_matchings._2)
-
-          /*if(eval_res_debugged.f1Measure >= eval_res_norm.f1Measure){
-            println("YEEAAH")
-          }else {
-            println("NOOO")
-          }*/
+          // val eval_res_debugged = debugged.evaluate(single_matchings._2)
           val totaltime = System.currentTimeMillis()-starttime
 
-          println(s"Needed $totaltime to debug alignment of size "+alignment.correspondences.size)
-          eval_res_debugged
+          //println(s"Needed $totaltime to debug alignment of size "+alignment.correspondences.size)
+          eval_res_norm
         })
         val agg_res = EvaluationMatchingRunner.computeAggregatedResults(eval_res_single_list.toList)
         (threshold, agg_res)
@@ -175,14 +167,48 @@ trait NonSeparatedOptimization extends ResultServerHandling{
     }.toMap
 
     //get best result
-    val best_global_results: Map[String, (Double, AggregatedEvaluationResult)] = global_results.map { case (name, list_of_results) => {
-      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.macro_eval_res.f1Measure)
+    val best_global_results_pre_debug: Map[String, (Double, AggregatedEvaluationResult)] = global_results.map { case (name, list_of_results) => {
+      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.micro_eval_res.f1measure)
       (name, best_result)
     }
     }
 
+    val best_global_results: Map[String, (Double, AggregatedEvaluationResult)] = global_results.map { case (name, list_of_results) => {
+      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.micro_eval_res.f1measure)
 
-    //write alignments back
+      val threshold = best_result._1
+
+      val list_of_matchings = results_by_techniques.get(name).get
+
+      val eval_res_single_list: List[EvaluationResult] = list_of_matchings.map(single_matchings=> {
+        val selected = selection_function(single_matchings._1, threshold)
+        val alignment = new Alignment(single_matchings._2.onto1, single_matchings._2.onto2,single_matchings._2.onto1_reference,single_matchings._2.onto2_reference,selected)
+
+        val debugged = MatchingPruner.debugAlignment(alignment)
+
+
+        val eval_res_debugged = debugged.evaluate(single_matchings._2)
+
+        val eval_res_normal = alignment.evaluate(single_matchings._2)
+
+
+        val improvement = eval_res_debugged.f1Measure-eval_res_normal.f1Measure
+        if(eval_res_debugged.f1Measure >= eval_res_normal.f1Measure){
+          println("improved " + improvement)
+        }else {
+          println("fucked " + improvement)
+        }
+        eval_res_debugged
+      })
+
+      val agg_res = EvaluationMatchingRunner.computeAggregatedResults(eval_res_single_list)
+      name->(threshold, agg_res)
+
+    }}
+
+
+
+      //write alignments back
     /*println(best_global_results.size)
     println(best_global_results.head._2._1)
     val best_global_threshold =best_global_results.head._2._1
