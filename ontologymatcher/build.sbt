@@ -52,6 +52,7 @@ libraryDependencies += "com.typesafe.scala-logging" % "scala-logging-slf4j_2.10"
 
 libraryDependencies += "de.unima.dws" % "alcomo" % "1.01"
 
+libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % "test"
 
 resolvers += "Local Maven Repository" at "file:///Users/mueller/.m2/repository/"
 

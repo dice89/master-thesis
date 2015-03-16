@@ -146,10 +146,8 @@ trait NonSeparatedOptimization extends ResultServerHandling{
       //try for all thresholds
       val results_by_threshold = threshold_grid.map(threshold => {
         val eval_res_single_list: Seq[EvaluationResult] = list_of_matchings.map(single_matchings => {
-          val selected = selection_function(single_matchings._1, threshold)
-
-
           val starttime = System.currentTimeMillis()
+          val selected = selection_function(single_matchings._1, threshold)
           //TODO add alignment debugging
           val alignment = new Alignment(single_matchings._2.onto1, single_matchings._2.onto2,single_matchings._2.onto1_reference,single_matchings._2.onto2_reference,selected)
 
@@ -165,8 +163,6 @@ trait NonSeparatedOptimization extends ResultServerHandling{
             println("NOOO")
           }*/
           val totaltime = System.currentTimeMillis()-starttime
-
-          System.gc()
 
           println(s"Needed $totaltime to debug alignment of size "+alignment.correspondences.size)
           eval_res_debugged
