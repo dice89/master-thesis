@@ -2,12 +2,13 @@ package de.unima.dws.oamatching.measures
 
 import com.wcohen.ss._
 import com.wcohen.ss.tokens.SimpleTokenizer
+import fr.inrialpes.exmo.ontosim.string.StringDistances
 
 /**
  * Created by mueller on 21/01/15.
  */
 object StringMeasures {
-  val jaccard: Jaccard = new Jaccard(new SimpleTokenizer(true, false))
+  val jaccard: Jaccard = new Jaccard(new SimpleTokenizer(true, true))
   val jaro = new Jaro()
   val jarow = new JaroWinkler()
   val mongeElkan: MongeElkan = new MongeElkan()
@@ -125,6 +126,22 @@ object StringMeasures {
 
     a_b_score.getOrElse(0.0)
   }
+
+  /**
+   *
+   * @param a
+   * @param b
+   * @return
+   */
+  def computeEquality(a:String,b:String):Double = {
+    if(a.equals(b)){
+      1.0
+    }else {
+      0.0
+    }
+  }
+
+
   /**
    * Simple wrapper function for second string jaccard distance, when calling it, make sure you use a stemmer before
    * @param a
@@ -230,6 +247,10 @@ object StringMeasures {
       res = 1.0
     }
     res
+  }
+
+  def computeLevenShteinSim(a:String,b:String):Double ={
+    1- StringDistances.levenshteinDistance(a,b)
   }
 
 }

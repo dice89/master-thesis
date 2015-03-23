@@ -405,7 +405,7 @@ object RapidminerJobs extends LazyLogging {
     val lines = reader.allWithHeaders
     val mapped_values = lines.map(tuple => {
       //remove non numercial fields from count
-      dim_size = tuple.size - 5
+      dim_size = tuple.size - 6
       //get max score by dimensions
 
       MatchRelation(left = tuple.get("left").get, relation = tuple.get("relation").get, right = tuple.get("right").get, owl_type = tuple.get("owl_type").get,match_type = tuple.get("match_type").get) -> tuple.get("outlier").getOrElse("0.0").toDouble
@@ -465,6 +465,9 @@ object RapidminerJobs extends LazyLogging {
 
   def configure_knn(data_set_size: Int, process: RProcess, mining_params: Map[String, Double], knn_name: String) {
     val k_value = Math.ceil(data_set_size.toDouble * mining_params.get("k").get).toInt
+
+    println(data_set_size)
+    println(k_value)
     process.getOperator(knn_name).setParameter("k", k_value.toString)
   }
 

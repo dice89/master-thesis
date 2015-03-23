@@ -38,7 +38,14 @@ object StringMeasureHelper {
     a.toLowerCase
   }
 
+
+  def remove_punctuation(a:String,b:String):(String,String) = {
+    (a.replaceAll("[^a-zA-Z ]", "").toLowerCase(),b.replaceAll("[^a-zA-Z ]", "").toLowerCase())
+  }
+
   def distance_lower_cased = distance_normalized(to_lower_case) _
+
+  def distance_ignored_punctuation_lower_cased = distance_normalized(remove_punctuation) _
 
   def preprocess_porter_stemmed = stem_term(porter_stem)_
 
@@ -92,9 +99,24 @@ object StringMeasureHelper {
     }
   }
 
+  /**
+   * Porter stemmer call
+   * @param a
+   * @return
+   */
+  def wordnet_lemmatize(a: String): String = {
+
+    a
+  }
+
 
   def stemMultiple(terms :List[String]):List[String] = {
       terms.map(term => porter_stem(term))
+  }
+
+
+  def lemmatizeMultiple(terms :List[String]):List[String] = {
+      terms.map(term => wordnet_lemmatize(term))
   }
 
   def stopWordFilter(terms:List[String]):List[String] = {

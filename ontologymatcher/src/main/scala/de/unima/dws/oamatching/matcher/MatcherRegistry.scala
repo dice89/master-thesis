@@ -26,6 +26,7 @@ object MatcherRegistry {
   val KEY_TRAINED = "T" //key for second string matcher
 
   val KEY_STEMMED = "stemmed"
+  val KEY_LEMMATIZED = "lemma"
 
   //element level matcher
   var matcher_by_name: Map[String, Matcher] = Map[String, Matcher]()
@@ -34,11 +35,6 @@ object MatcherRegistry {
   //structural level matcher
   var structural_matcher_by_name: Map[String, StructuralLevelMatcher] = Map[String, StructuralLevelMatcher]()
 
-  def initStructuralMatcher() = {
-    structural_matcher_by_name += (("simFloodMatcher", new SimilarityFloodingMatcher()))
-    structural_matcher_by_name += (("graphBasedUsedPropMatcher", new GraphBasedUsedPropertyMatcher()))
-    structural_matcher_by_name += (("graphBasedUsedClassMatcher", new GraphBasedUsedClassMatcher()))
-  }
 
   /**
    * Init the available matcher from a config file
@@ -50,6 +46,7 @@ object MatcherRegistry {
 
     val mapped_values = reader.allWithHeaders.foreach(row => {
       val matcher_name = row.get("name").get
+      val matcher_technique = row.get("technique").get
       val matcher_type = row.get("type").get
       val sim_dis = row.get("sim_type").getOrElse("sim")
       val tokenized = row.get("tokenized").getOrElse("false").toBoolean
@@ -60,7 +57,7 @@ object MatcherRegistry {
       val use_fragment= row.get("use_fragment").getOrElse("false").toBoolean
       val use_comment = row.get("use_comment").getOrElse("false").toBoolean
 
-      val matcher = initMatcher(matcher_name, matcher_type, sim_dis, tokenized, string_norm, stop_filter,use_label,use_fragment, use_comment)
+      val matcher = initMatcher(matcher_technique, matcher_type, sim_dis, tokenized, string_norm, stop_filter,use_label,use_fragment, use_comment)
 
       if (matcher.isDefined) {
         if (matcher_type.equals(KEY_STRUCT)) {
@@ -135,6 +132,9 @@ object MatcherRegistry {
     val stop_filtered_tokenizer = StringMeasureHelper.stopWordFilter _ compose tokenizer
     val stop_filtered_stemmed_tokenizer = StringMeasureHelper.stemMultiple _ compose stop_filtered_tokenizer
 
+    val lemmatized_tokenizer: (String) => List[String] = StringMeasureHelper.lemmatizeMultiple _ compose tokenizer
+    val stop_filtered_lemmatized_tokenizer = StringMeasureHelper.lemmatizeMultiple _ compose stop_filtered_tokenizer
+
 
     /*
         string_norm match {
@@ -152,10 +152,12 @@ object MatcherRegistry {
         stop_filter match {
           case true => string_norm match {
             case KEY_STEMMED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, stop_filtered_stemmed_tokenizer, measure_fct)
+            case KEY_LEMMATIZED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, stop_filtered_stemmed_tokenizer, measure_fct)
             case _ => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, stop_filtered_tokenizer, measure_fct)
           }
           case false => string_norm match {
             case KEY_STEMMED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, stemmed_tokenizer, measure_fct)
+            case KEY_LEMMATIZED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, stemmed_tokenizer, measure_fct)
             case _ => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, tokenizer, measure_fct)
           }
         }
@@ -199,15 +201,16 @@ object MatcherRegistry {
   def get_string_matching_function(measure: String): (String, String) => Double = {
 
     measure match {
-      case "hammingDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.hammingDistance)
+      case "hammingDistance" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringDistances.hammingDistance)
       case "jaroWinklerMeasure" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeJaroWinkler)
       case "jaroMeasure" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeJaro)
-      case "levenshteinDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.levenshteinDistance)
+      case "levenshteinDistance" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringDistances.levenshteinDistance)
       case "needlemanWunsch2Distance" => StringMeasureHelper.distance_lower_cased(StringDistances.needlemanWunsch2Distance)
-      case "ngramDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.ngramDistance)
-      case "smoaDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.smoaDistance)
-      case "subStringDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.subStringDistance)
-      case "equalDistance" => StringMeasureHelper.distance_lower_cased(StringDistances.equalDistance)
+      case "ngramDistance" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringDistances.ngramDistance)
+      case "smoaDistance" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringDistances.smoaDistance)
+      case "subStringDistance" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringDistances.subStringDistance)
+      case "equalDistance" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringDistances.equalDistance)
+      case "equalSimilarity" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringMeasures.computeEquality)
       case "word2Vec" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.word2VecSimilarityMeasure)
       case "word2VecStemmed" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.word2VecSimilarityMeasureStemmed)
       case "esaSim" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.esaSim)
@@ -216,8 +219,8 @@ object MatcherRegistry {
       case "umbcstssim" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.callSTSServiceUMBC)
       case "jaccard" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeJaccard)
       case "mongeElkan" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeMongeElkan)
-      case "prefix" => StringMeasureHelper.distance_lower_cased(StringMeasures.computePrefixBiDirectional)
-      case "suffix" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeSuffixBiDirectional)
+      case "prefix" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringMeasures.computePrefixBiDirectional)
+      case "suffix" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringMeasures.computeSuffixBiDirectional)
       case "lin" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeLin)
       case "path" => StringMeasureHelper.distance_lower_cased(StringMeasures.computePath)
       case "jiangConrath" =>  StringMeasureHelper.distance_lower_cased(StringMeasures.computeJiangConrath)

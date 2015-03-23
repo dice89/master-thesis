@@ -304,7 +304,7 @@ object AlignmentParser {
 
 
   def writeFalseNegativesToCSV (alignment: Alignment, reference: Alignment, name: String): Unit = {
-    /*val falseNegatives = reference.correspondences.filterNot(cell => alignment.correspondences.contains(cell))
+    val falseNegatives = reference.correspondences.filterNot(cell => alignment.correspondences.contains(cell))
 
     val csv_file = new File("tmp/falsenegatives" + File.separator +name+"_fn.csv")
 
@@ -325,8 +325,61 @@ object AlignmentParser {
     })
 
     writer.flush()
-    writer.close()*/
+    writer.close()
   }
+
+  def writeFalsePositivesToCSV (alignment: Alignment, reference: Alignment, name: String): Unit = {
+    val falsePositives = alignment.correspondences.filterNot(cell => reference.correspondences.contains(cell))
+
+    val csv_file = new File("tmp/falsenegatives" + File.separator +name+"_fp.csv")
+
+    println(csv_file.getAbsolutePath)
+    if (!csv_file.exists()) {
+      csv_file.createNewFile()
+    }
+    val writer = CSVWriter.open(csv_file)
+
+    //print Headline
+    val header: List[String] = List[String]("left", "relation", "right", "owl_type","measure")
+
+
+    writer.writeRow(header)
+    falsePositives.foreach(cell =>{
+      val row = List(cell.entity1,cell.relation,cell.entity2,cell.owl_type,cell.measure.toString)
+      writer.writeRow(row)
+    })
+
+    writer.flush()
+    writer.close()
+  }
+
+  def writeTruePositivesToCSV (alignment: Alignment, reference: Alignment, name: String): Unit = {
+    val truePositives = alignment.correspondences.filter(cell => reference.correspondences.contains(cell))
+
+    val csv_file = new File("tmp/falsenegatives" + File.separator +name+"_tp.csv")
+
+    println(csv_file.getAbsolutePath)
+    if (!csv_file.exists()) {
+      csv_file.createNewFile()
+    }
+    val writer = CSVWriter.open(csv_file)
+
+    //print Headline
+    val header: List[String] = List[String]("left", "relation", "right", "owl_type","measure")
+
+
+    writer.writeRow(header)
+    truePositives.foreach(cell =>{
+      val row = List(cell.entity1,cell.relation,cell.entity2,cell.owl_type,cell.measure.toString)
+      writer.writeRow(row)
+    })
+
+    writer.flush()
+    writer.close()
+  }
+
+
+
 
 
 }

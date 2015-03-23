@@ -50,16 +50,6 @@ class TrainedSecondStringMatcher(override val similarity: Boolean,
     flattened.replace("  ", " ").trim
   }
 
-  /**
-   * Scores two entities based on their labels
-   * @param entity1
-   * @param entity2
-   * @return
-   */
-  override def score(entity1: String, entity2: String): Double = {
-    val score = distance.score(entity1, entity2)
-    score
-  }
 
 
   override def pre_processed_score(entity1: String, entity2: String): Double = {

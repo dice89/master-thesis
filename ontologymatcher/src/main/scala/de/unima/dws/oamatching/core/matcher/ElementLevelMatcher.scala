@@ -5,6 +5,7 @@ import de.unima.dws.oamatching.core.{MatchingCell, Alignment, Cell}
 import org.semanticweb.owlapi.model._
 
 import scala.collection.JavaConversions._
+import scala.collection.mutable
 
 
 case class ExtractedFields(val fragment:Option[String], val label: Option[String], val comment: Option[String])
@@ -14,6 +15,8 @@ case class ExtractedFields(val fragment:Option[String], val label: Option[String
  * Created by mueller on 21/01/15.
  */
 abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolean, val useFragment: Boolean, val useComment: Boolean) extends Matcher {
+
+  val cache = mutable.HashMap[String,Double]()
   /**
    * Implements element-wise ontology matcher
    * @param onto1
@@ -159,6 +162,24 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
 
   def score(entity1: String, entity2: String): Double
 
+  def score_cached(entity1: String, entity2: String, cached:Boolean): Double = {
+
+    if(cached){
+      val cached_score = cache.get(entity1+"##"+entity2)
+      if(cached_score.isDefined){
+        //println("from cache")
+        cached_score.get
+      }else {
+        val score:Double = this.score(entity1,entity2)
+        cache.put(entity1+"##"+entity2, score)
+        score
+      }
+
+    } else {
+      score(entity1,entity2)
+    }
+  }
+
   def score(owlEntity1: OWLEntity, onto1: OWLOntology, owlEntity2: OWLEntity, onto2: OWLOntology, threshold: Double, owlType: String): List[MatchingCell] = {
 
     val entity1_fields = getLabelAndFragmentOfEntity(owlEntity1, onto1)
@@ -191,7 +212,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
   def matchFieldsSeparated(owlEntity1: OWLEntity, owlEntity2: OWLEntity, threshold: Double, owlType: String, entity1_fields: ExtractedFields, entity2_fields: ExtractedFields): List[MatchingCell] = {
     //fragments matchings
     val fragment_score = if (entity1_fields.fragment.isDefined && entity2_fields.fragment.isDefined && useFragment) {
-      val value = getSimilarity(score(entity1_fields.fragment.get, entity2_fields.fragment.get))
+      val value = getSimilarity(score_cached(entity1_fields.fragment.get, entity2_fields.fragment.get,true))
       createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_FRAGMENT_FRAGMENT, value)
     } else {
       Option.empty
@@ -200,7 +221,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
     //label matchings
     val label_score = if (entity1_fields.label.isDefined && entity2_fields.label.isDefined && useLabel) {
       println("label matched")
-      val value = score(entity1_fields.label.get, entity2_fields.label.get)
+      val value =getSimilarity(score_cached(entity1_fields.label.get, entity2_fields.label.get,true))
       createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_LABEL_LABEL, value)
     } else {
       Option.empty
@@ -209,7 +230,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
     //fragment label matching
     val fragment_label_score = if (entity1_fields.fragment.isDefined && entity2_fields.label.isDefined && useFragment && useLabel) {
       println("fragment label matched")
-      val value = score(entity1_fields.fragment.get, entity2_fields.label.get)
+      val value = getSimilarity(score_cached(entity1_fields.fragment.get, entity2_fields.label.get,true))
       createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_FRAGMENT_LABEL, value)
     } else {
       Option.empty
@@ -217,7 +238,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
     //label fragment matching
     val label_fragment_score = if (entity1_fields.label.isDefined && entity2_fields.fragment.isDefined && useFragment && useLabel) {
       println("label fragment matched")
-      val value = score(entity1_fields.label.get, entity2_fields.fragment.get)
+      val value = getSimilarity(score_cached(entity1_fields.label.get, entity2_fields.fragment.get,true))
       createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_LABEL_FRAGMENT, value)
     } else {
       Option.empty
@@ -225,7 +246,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
 
     val comment_comment_score = if (entity1_fields.comment.isDefined && entity2_fields.comment.isDefined && useComment) {
       //println("comment matched")
-      val value = score(entity1_fields.comment.get, entity2_fields.comment.get)
+      val value = getSimilarity(score_cached(entity1_fields.comment.get, entity2_fields.comment.get,true))
       createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_COMMENT_COMMENT, value)
     } else {
       Option.empty
@@ -233,7 +254,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
 
     val fragment_comment_score = if (entity1_fields.fragment.isDefined && entity2_fields.comment.isDefined && useFragment && useComment) {
       println("comment matched")
-      val value = score(entity1_fields.fragment.get, entity2_fields.comment.get)
+      val value = getSimilarity(score_cached(entity1_fields.fragment.get, entity2_fields.comment.get,true))
       createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_FRAGMENT_COMMENT, value)
     } else {
       Option.empty
@@ -241,7 +262,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
 
     val comment_fragment_score = if (entity1_fields.comment.isDefined && entity2_fields.fragment.isDefined && useFragment && useComment) {
       //println("comment matched")
-      val value = score(entity1_fields.comment.get, entity2_fields.fragment.get)
+      val value = getSimilarity(score_cached(entity1_fields.comment.get, entity2_fields.fragment.get,true))
       createMatchingCellOptional(owlEntity1, owlEntity2, threshold, owlType, Alignment.TYPE_COMMENT_FRAGMENT, value)
     } else {
       Option.empty

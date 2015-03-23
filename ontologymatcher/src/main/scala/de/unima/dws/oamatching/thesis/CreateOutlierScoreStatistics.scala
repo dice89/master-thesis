@@ -108,10 +108,15 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   val REMOVE_CORR_FOLDER = "remove_corr"
   val PREPROCESS_KEY = "prepro"
 
-  val PRE_PRO_TECHNIQUES = List("remove_corr", "pca_fixed", "pca_variant")
+  val PRE_PRO_TECHNIQUES = List("remove_corr")
+  //val PRE_PRO_TECHNIQUES = List("remove_corr", "pca_fixed", "pca_variant")
+  /*val PARAM_CONFIGS_PRE_PRO: Map[String, List[Map[String, Double]]] = Map("pca_variant" -> List(Map("variance" -> 0.85), Map("variance" -> 0.9), Map("variance" -> 0.95), Map("variance" -> 0.97)),
+    "pca_fixed" -> List(Map("number" -> 2.0), Map("number" -> 4.0),Map("number" -> 6.0), Map("number" -> 12.0)),
+    "remove_corr" -> List(Map("corr_variance" -> 0.75, "min_variance" -> 0.01), Map("corr_variance" -> 0.5, "min_variance" -> 0.01), Map("corr_variance" -> 0.9, "min_variance" -> 0.01))
+  )*/
   val PARAM_CONFIGS_PRE_PRO: Map[String, List[Map[String, Double]]] = Map("pca_variant" -> List(Map("variance" -> 0.85), Map("variance" -> 0.9), Map("variance" -> 0.95), Map("variance" -> 0.97)),
     "pca_fixed" -> List(Map("number" -> 2.0), Map("number" -> 4.0),Map("number" -> 6.0), Map("number" -> 12.0)),
-    "remove_corr" -> List(Map("corr_variance" -> 0.5, "min_variance" -> 0.01), Map("corr_variance" -> 0.75, "min_variance" -> 0.01), Map("corr_variance" -> 0.9, "min_variance" -> 0.01))
+    "remove_corr" -> List(Map("corr_variance" -> 0.75, "min_variance" -> 0.01))
   )
 
   /*########################################################################

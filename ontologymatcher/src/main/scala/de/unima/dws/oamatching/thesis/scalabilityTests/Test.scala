@@ -60,14 +60,22 @@ object Test extends App with ResultServerHandling with LazyLogging {
   }
 
 
-  val tokens_a = test.apply("fee")
-  val tokens_b = test.apply("fees")
+
+  val tokenizer = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
+  val tokens_to_string = StringMeasureHelper.token_list_to_String _
+
+  val tokens_a = tokenizer.apply("has_title")
+  val tokens_b = tokenizer.apply("hasTitle")
+
+  val simple_preprocessing: (String) => String = StringMeasureHelper.to_lower_case_single _ compose tokens_to_string compose tokenizer compose StringMeasureHelper.porter_stem compose StringMeasureHelper.minimalPreprocess
 
 
 
+  println(simple_preprocessing("has_title"))
+  println(simple_preprocessing("hasTitle"))
+  //println(tokens_to_string(tokens_b))
 
-
-  println(scoreTokenized(tokens_a,tokens_b))
+  //println(scoreTokenized(tokens_a,tokens_b))
 
 
 

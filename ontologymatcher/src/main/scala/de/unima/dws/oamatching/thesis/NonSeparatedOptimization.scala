@@ -46,24 +46,28 @@ trait NonSeparatedOptimization extends ResultServerHandling{
 
       val ref_alignment = ref_file.reference
 
-     // val norm_res_gaussian: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByGaussianScaling(result._1, result._2, result._3).toMap
+      val norm_res_gaussian: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByGaussianScaling(result._1, result._2, result._3).toMap
       val norm_res_euclidean_max: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByMaxEuclideanDistance(result._1, result._2, result._3).toMap
       val norm_res_gamma: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByGammaScaling(result._1, result._2, result._3).toMap
       val norm_res_znorm: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByZScore(result._1, result._2, result._3).toMap
 
       //val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(("none", (result._3, ref_alignment)), ("gaussian", (norm_res_gaussian, ref_alignment)), ("zscore", (norm_res_znorm, ref_alignment)), ("gammma", (norm_res_gamma, ref_alignment)), ("euclidean_max", (norm_res_euclidean_max, ref_alignment)))
-      val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(  ("zscore", (norm_res_znorm, ref_alignment)), ("gammma", (norm_res_gamma, ref_alignment)), ("euclidean_max", (norm_res_euclidean_max, ref_alignment)))
+      //val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(("none", (result._3, ref_alignment)))
+      val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(  ("zscore", (norm_res_znorm, ref_alignment)))
+      //val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(  ("zscore", (norm_res_znorm, ref_alignment)), ("gammma", (norm_res_gamma, ref_alignment)), ("euclidean_max", (norm_res_euclidean_max, ref_alignment)))
 
 
       val top_n_none: Seq[(MatchRelation, Double, Boolean)] = getTopNResults(result._3, top_n, ref_alignment)
 
       val top_n_euclidean: Seq[(MatchRelation, Double, Boolean)] = getTopNResults(norm_res_euclidean_max, top_n, ref_alignment)
+      val top_n_gaussian: Seq[(MatchRelation, Double, Boolean)] = getTopNResults(norm_res_gaussian, top_n, ref_alignment)
       val top_n_gamma: Seq[(MatchRelation, Double, Boolean)] = getTopNResults(norm_res_gamma, top_n, ref_alignment)
       val top_n_z: Seq[(MatchRelation, Double, Boolean)] = getTopNResults(norm_res_znorm, top_n, ref_alignment)
 
 
-      //val top_n_scores = name -> Map("none" -> top_n_none, "gaussian" -> top_n_gaussian, "euclidean" -> top_n_euclidean, "gamma" -> top_n_gamma, "zscore" -> top_n_z)
-      val top_n_scores = name -> Map( "euclidean" -> top_n_euclidean, "gamma" -> top_n_gamma, "zscore" -> top_n_z)
+      val top_n_scores = name -> Map("none" -> top_n_none, "gaussian" -> top_n_gaussian, "euclidean" -> top_n_euclidean, "gamma" -> top_n_gamma, "zscore" -> top_n_z)
+      //val top_n_scores = name -> Map("none" -> top_n_none)
+      //val top_n_scores = name -> Map( "euclidean" -> top_n_euclidean, "gamma" -> top_n_gamma, "zscore" -> top_n_z)
 
       val values = result._3.values.toArray
       val statistics: OutlierEvalStatisticsObject = computeBaseStatisticsOverOutlierScores(values, name)
@@ -168,19 +172,19 @@ trait NonSeparatedOptimization extends ResultServerHandling{
 
     //get best result
     val best_global_results_pre_debug: Map[String, (Double, AggregatedEvaluationResult)] = global_results.map { case (name, list_of_results) => {
-      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.micro_eval_res.f1Measure)
+      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.macro_eval_res.f1Measure)
       (name, best_result)
     }
     }
 
     val best_global_results: Map[String, (Double, AggregatedEvaluationResult)] = global_results.map { case (name, list_of_results) => {
-      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.micro_eval_res.f1Measure)
+      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.macro_eval_res.f1Measure)
 
       val threshold = best_result._1
 
       val list_of_matchings = results_by_techniques.get(name).get
 
-
+      //at least 3 steps of easing threshold
       val eval_res_single_list: List[EvaluationResult] = list_of_matchings.map(single_matchings=> {
         val selected = selection_function(single_matchings._1, threshold)
         val alignment = new Alignment(single_matchings._2.onto1, single_matchings._2.onto2,single_matchings._2.onto1_reference,single_matchings._2.onto2_reference,selected)
@@ -202,7 +206,12 @@ trait NonSeparatedOptimization extends ResultServerHandling{
 
         val problem_name = single_matchings._2.onto1+"-"+single_matchings._2.onto2
 
-        AlignmentParser.writeFalseNegativesToCSV(debugged,single_matchings._2,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+name)
+        if(Config.loaded_config.getBoolean("optimization.write_details")){
+          AlignmentParser.writeFalseNegativesToCSV(debugged,single_matchings._2,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+name)
+          AlignmentParser.writeTruePositivesToCSV(debugged,single_matchings._2,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+name)
+          AlignmentParser.writeFalsePositivesToCSV(debugged,single_matchings._2,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+name)
+        }
+
         eval_res_debugged
       })
 
@@ -212,6 +221,17 @@ trait NonSeparatedOptimization extends ResultServerHandling{
     }}
 
 
+    best_global_results.foreach(tuple => {
+
+      println(tuple._1 +" Macro")
+      println("Before debugging ---- "+ best_global_results_pre_debug.get(tuple._1).get._2.macro_eval_res.f1Measure)
+      println("After debugging ---- "+ tuple._2._2.macro_eval_res.f1Measure)
+
+      println(tuple._1 +" Micro")
+      println("Before debugging ---- "+ best_global_results_pre_debug.get(tuple._1).get._2.micro_eval_res.f1Measure)
+      println("After debugging ---- "+ tuple._2._2.micro_eval_res.f1Measure)
+
+    })
 
       //write alignments back
     /*println(best_global_results.size)
