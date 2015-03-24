@@ -213,10 +213,12 @@ object MatcherRegistry {
       case "equalSimilarity" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringMeasures.computeEquality)
       case "word2Vec" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.word2VecSimilarityMeasure)
       case "word2VecStemmed" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.word2VecSimilarityMeasureStemmed)
-      case "esaSim" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.esaSim)
       case "umbcSim" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.umbcSim)
-      case "umbcphrasesim" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.callPhraseSimServiceUMBCRegular)
+      case "umbcphrasesim" => SemanticMeasures.umbcPhraseSim
       case "umbcstssim" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.callSTSServiceUMBC)
+      case "fuzzyjaccard" => StringMeasures.computeFuzzyJaccard
+      case "fuzzycosine" => StringMeasures.computeFuzzyCosine
+      case "fuzzydice" => StringMeasures.computeFuzzyDice
       case "jaccard" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeJaccard)
       case "mongeElkan" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeMongeElkan)
       case "prefix" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringMeasures.computePrefixBiDirectional)
@@ -226,7 +228,6 @@ object MatcherRegistry {
       case "jiangConrath" =>  StringMeasureHelper.distance_lower_cased(StringMeasures.computeJiangConrath)
       case "wuPalmer" =>  StringMeasureHelper.distance_lower_cased(StringMeasures.computeWuPalmer)
       case _ => StringMeasureHelper.distance_lower_cased(StringDistances.equalDistance) //default is equal distance
-
     }
   }
 

@@ -8,7 +8,7 @@ import scala.collection.JavaConversions._
 import scala.collection.mutable
 
 
-case class ExtractedFields(val fragment:Option[String], val label: Option[String], val comment: Option[String])
+case class ExtractedFields(val fragment:Option[String], val label: Option[String], val comment: Option[String], val synonym:Option[List[String]])
 
 //case class MatchingResults(val fragment_fragment:Option[MatchingCell], val label_label: Option[MatchingCell],val label_fragment: Option[MatchingCell],val fragment_label: Option[MatchingCell], val comment_comment: Option[MatchingCell])
 /**
@@ -349,7 +349,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
       Option.empty
     }
 
-    ExtractedFields(fragment,label,comment)
+    ExtractedFields(fragment,label,comment,Option.empty)
   }
 
 

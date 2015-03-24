@@ -5,7 +5,7 @@ import com.typesafe.scalalogging.slf4j.LazyLogging
 import de.unima.dws.oamatching.analysis.{RapidminerJobs, SeparatedResults}
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core._
-import de.unima.dws.oamatching.pipeline.{ScoreNormalizationFunctions, MatchingSelector}
+import de.unima.dws.oamatching.pipeline.{MatchingPruner, ScoreNormalizationFunctions, MatchingSelector}
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingTask, EvaluationMatchingRunner}
 import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
 import play.api.libs.json
@@ -51,7 +51,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging{
 
 
 
-    val optimization_grid = ParameterOptimizer.getDoubleGrid(0.001, 0.9999999999, 1000)
+    val optimization_grid = ParameterOptimizer.getDoubleGrid(0.001, 1.1, 1000)
     //globally normalize each tuple
     val best_threshold_classes = findOptimalThresholdGlobalOnly(selection_function,tuple_wise._1, optimization_grid)
     val best_threshold_dps= findOptimalThresholdGlobalOnly(selection_function,tuple_wise._2, optimization_grid)
@@ -61,7 +61,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging{
     val best_results: Map[String, SeparatedResult] = best_threshold_classes.best_global_results.keys.map(norm_technique => {
       val class_threshold = best_threshold_classes.best_global_results.get(norm_technique).get._1
       val dp_threshold = best_threshold_dps.best_global_results.get(norm_technique).get._1
-      val op_threshold = best_threshold_dps.best_global_results.get(norm_technique).get._1
+      val op_threshold = best_threshold_ops.best_global_results.get(norm_technique).get._1
 
       val results = normalized_per_category.map { case ((classes_matchings, dp_matchings, op_matchings), ref_align) => {
 
@@ -71,11 +71,31 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging{
 
         val all_matchings_list = selected_classes ++ selected_dps ++ selected_ops
 
-        val alignment = new Alignment(null, null, all_matchings_list)
+        val alignment = new Alignment(ref_align.onto1, ref_align.onto2,ref_align.onto1_reference,ref_align.onto2_reference, all_matchings_list)
+
+        val debugged = MatchingPruner.debugAlignment(alignment)
+
+        val eval_res_debugged = debugged.evaluate(ref_align)
+
+        val eval_res_normal = alignment.evaluate(ref_align)
+
+        val improvement = eval_res_debugged.f1Measure-eval_res_normal.f1Measure
+        if(eval_res_debugged.f1Measure >= eval_res_normal.f1Measure){
+          println("improved " + improvement)
+        }else {
+          println("fucked " + improvement)
+        }
+
+        val problem_name =ref_align.onto1+"-"+ref_align.onto2
+
+        if(Config.loaded_config.getBoolean("optimization.write_details")){
+          AlignmentParser.writeFalseNegativesToCSV(debugged,ref_align,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+norm_technique)
+          AlignmentParser.writeTruePositivesToCSV(debugged,ref_align,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+norm_technique)
+          AlignmentParser.writeFalsePositivesToCSV(debugged,ref_align,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+norm_technique)
+        }
 
 
-
-        alignment.evaluate(ref_align)
+        eval_res_debugged
       }
       }.toList
 
@@ -153,12 +173,12 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging{
     }.toMap
 
     val best_global_results = global_results.map { case (name, list_of_results) => {
-      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.macro_eval_res.precision)
+      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.macro_eval_res.f1Measure)
 
 
       //handle edge case best global result in terms of f-measure is 0.0 -> then take that result that minimized the fp
-      if (best_result._2.macro_eval_res.f1Measure == 0.0) {
-        val edge_case_best_result = list_of_results.minBy(_._2.micro_eval_res.falsePositives)
+      if (best_result._2.macro_eval_res.f1Measure == 0.00) {
+        val edge_case_best_result = list_of_results.minBy(_._2.micro_eval_res.precision)
         (name, edge_case_best_result)
       } else {
         (name, best_result)

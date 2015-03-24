@@ -35,3 +35,6 @@ word2VecStemmed,word2VecStemmed,E,sim,true,stemmed,true,true,true,false
 graphBasedUsedClassMatcher,graphBasedUsedClassMatcher,S
 graphBasedUsedPropMatcher,graphBasedUsedPropMatcher,S
 simFloodMatcher,simFloodMatcher,S
+fuzzyjaccard,fuzzyjaccard,E,sim,false,none,false,true,true,false
+fuzzydice,fuzzydice,E,sim,false,none,false,true,true,false
+fuzzycosine,fuzzycosine,E,sim,false,none,false,true,true,false

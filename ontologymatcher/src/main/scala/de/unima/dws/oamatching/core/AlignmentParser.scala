@@ -182,7 +182,7 @@ object AlignmentParser {
         } else if (onto1_obj_properties.contains(entity1.toString) && onto2_obj_properties.contains(entity2.toString)) {
           Cell.TYPE_OBJECT_PROPERTY
         } else if (onto1_data_properties.contains(entity1.toString) && onto2_data_properties.contains(entity2.toString)) {
-          Cell.TYPE_OBJECT_PROPERTY
+          Cell.TYPE_DT_PROPERTY
         } else {
           // individuals
 

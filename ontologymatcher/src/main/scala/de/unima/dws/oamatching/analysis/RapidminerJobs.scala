@@ -326,7 +326,7 @@ object RapidminerJobs extends LazyLogging {
 
     //trigger garbage collection
 
-    SeparatedResults(readFunction(output_csv_classes), readFunction(output_csv_op), readFunction(output_csv_dp))
+    SeparatedResults(readFunction(output_csv_classes), readFunction(output_csv_dp), readFunction(output_csv_op))
   }
 
 
@@ -468,7 +468,11 @@ object RapidminerJobs extends LazyLogging {
 
     println(data_set_size)
     println(k_value)
-    process.getOperator(knn_name).setParameter("k", k_value.toString)
+    if(k_value < 50){
+      process.getOperator(knn_name).setParameter("k","50")
+    }else {
+      process.getOperator(knn_name).setParameter("k", k_value.toString)
+    }
   }
 
   def configure_loop(data_set_size: Int, matcher_name_to_index: Map[String, Int], process: RProcess, mining_params: Map[String, Double], LOOP_NAME: String): Double = {

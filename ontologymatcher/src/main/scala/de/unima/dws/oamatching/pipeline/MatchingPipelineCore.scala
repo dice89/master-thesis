@@ -1,5 +1,6 @@
 package de.unima.dws.oamatching.pipeline
 
+import com.typesafe.scalalogging.slf4j.LazyLogging
 import de.unima.dws.oamatching.analysis.SparkJobs
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.matcher.{Matcher, StructuralLevelMatcher}
@@ -19,7 +20,7 @@ case class MatchingEvaluationProblem(ontology1: OWLOntology, ontology2: OWLOntol
  * Core Single to implement matching of two ontologies
  * Created by mueller on 21/01/15.
  */
-object MatchingPipelineCore {
+object MatchingPipelineCore extends LazyLogging{
 
 
   def createMatchingPipeline(outlierFct: (String, FeatureVector) => (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]))(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)]): (MatchingProblem, Double, Double) => (Alignment, FeatureVector) = {
@@ -139,7 +140,8 @@ object MatchingPipelineCore {
       val result = try {
         matchIndividualMatcher(matcher, problem)
       } catch {
-        case _: Throwable => {
+        case e: Throwable => {
+          logger.error("Failed at base matcher",e)
           println("Failed to match" + name)
           null
         }

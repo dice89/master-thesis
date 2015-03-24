@@ -11,7 +11,7 @@ abstract class FuzzyTokenMatch(tokenizer: String => List[String], string_matchin
     computeTokenized(tokenizer(a),tokenizer(b),threshold)
   }
 
-  def computeTokenized(a: List[String], b: List[String],threshold:Double): Double = {
+  protected def computeTokenized(a: List[String], b: List[String],threshold:Double): Double = {
     val bi_graph = createBiPariteGraph(a,b,threshold)
     if(bi_graph.size > 0){
       val max_graph =  extractMaximumWeightBiPariteGraph(bi_graph)
@@ -23,7 +23,7 @@ abstract class FuzzyTokenMatch(tokenizer: String => List[String], string_matchin
 
   }
 
-  def computeSimilarity(card_graph:Double, card_a:Double,card_b:Double):Double
+  protected def computeSimilarity(card_graph:Double, card_a:Double,card_b:Double):Double
 
   /**
    *
@@ -32,7 +32,7 @@ abstract class FuzzyTokenMatch(tokenizer: String => List[String], string_matchin
    * @param threshold
    * @return
    */
-  def createBiPariteGraph(a: List[String], b: List[String], threshold: Double): Map[String, Map[String, Double]] = {
+  protected def createBiPariteGraph(a: List[String], b: List[String], threshold: Double): Map[String, Map[String, Double]] = {
     val biparite_graph = a.map(token_a => {
       val inner_map: Map[String, Double] = b.map(token_b => {
         val score = string_matching(token_a, token_b)
@@ -48,7 +48,7 @@ abstract class FuzzyTokenMatch(tokenizer: String => List[String], string_matchin
     biparite_graph
   }
 
-  def extractMaximumWeightBiPariteGraph(graph: Map[String, Map[String, Double]]): Map[String, (String, Double)] = {
+  private def extractMaximumWeightBiPariteGraph(graph: Map[String, Map[String, Double]]): Map[String, (String, Double)] = {
     val candidates_and_used_rhs = generateCandidatesForMaximumBiGraph(graph)
 
     val candidates = candidates_and_used_rhs._1
@@ -58,13 +58,13 @@ abstract class FuzzyTokenMatch(tokenizer: String => List[String], string_matchin
 
   }
 
-  def computeWeight(maxGraph:Map[String, (String, Double)]):Double = {
+  private def computeWeight(maxGraph:Map[String, (String, Double)]):Double = {
     val weight: Double = maxGraph.map(_._2._2).sum
 
     weight
   }
 
-  def pruneIteratively(graph: Map[String, Map[String, Double]], candidates: Map[String, (String, Double)], used: mutable.MutableList[String]): Map[String, (String, Double)] = {
+  private def pruneIteratively(graph: Map[String, Map[String, Double]], candidates: Map[String, (String, Double)], used: mutable.MutableList[String]): Map[String, (String, Double)] = {
 
     var weight =0.0
     var delta = 0.1
@@ -85,7 +85,7 @@ abstract class FuzzyTokenMatch(tokenizer: String => List[String], string_matchin
     resolved_conflicts._1
   }
 
-  def detectConflicts(candidates: Map[String, (String, Double)], used: mutable.MutableList[String]):  Map[String, Option[Iterable[(String, (String, Double))]]] = {
+  private def detectConflicts(candidates: Map[String, (String, Double)], used: mutable.MutableList[String]):  Map[String, Option[Iterable[(String, (String, Double))]]] = {
     val conflicts_by_rhs: Map[String, Option[Iterable[(String, (String, Double))]]] = used.distinct.map(rhs => {
       val matchings_with_rhs = candidates.map(tuple => {
         //get rhs
@@ -117,7 +117,7 @@ abstract class FuzzyTokenMatch(tokenizer: String => List[String], string_matchin
    * @param conflicts
    * @return
    */
-  def resolveConflicts(candidates: Map[String, Map[String, Double]], used: mutable.MutableList[String],conflicts:Map[String, Option[Iterable[(String, (String, Double))]]]): (Map[String, (String, Double)], mutable.MutableList[String]) = {
+  private def resolveConflicts(candidates: Map[String, Map[String, Double]], used: mutable.MutableList[String],conflicts:Map[String, Option[Iterable[(String, (String, Double))]]]): (Map[String, (String, Double)], mutable.MutableList[String]) = {
 
     //pick highest of conflicts
     val resolved_conflicts: Map[String, (String, Double)] = conflicts.map(conflict_by_rhs => {
@@ -167,7 +167,7 @@ abstract class FuzzyTokenMatch(tokenizer: String => List[String], string_matchin
    * @param graph
    * @return
    */
-  def generateCandidatesForMaximumBiGraph(graph: Map[String, Map[String, Double]]): (Map[String, (String, Double)], mutable.MutableList[String]) = {
+  private def generateCandidatesForMaximumBiGraph(graph: Map[String, Map[String, Double]]): (Map[String, (String, Double)], mutable.MutableList[String]) = {
 
     //get candidate Set -> simply for each lhs edge the max of it's lhs side
     val candidate_graph = graph.map(lhs_to_rhs => {

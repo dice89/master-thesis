@@ -16,6 +16,7 @@ import scala.io.Source
  */
 object StringMeasureHelper {
 
+
   val stoplist:IndexedSeq[String] = createStopWordList(Config.PATH_TO_STOP_LIST)
 
   /**
@@ -70,6 +71,9 @@ object StringMeasureHelper {
 
     tokens_string.trim()
   }
+
+  def tokenize_combined: (String) => List[String] = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash)
+
 
   /**
    * Apply stemming stemming functions

@@ -2,6 +2,7 @@ package de.unima.dws.oamatching.measures
 
 import com.wcohen.ss._
 import com.wcohen.ss.tokens.SimpleTokenizer
+import de.unima.dws.fuzzytoken.{FuzzyDiceMeasure, FuzzyCosineMeasure, FuzzyJaccardMeasure}
 import fr.inrialpes.exmo.ontosim.string.StringDistances
 
 /**
@@ -12,6 +13,12 @@ object StringMeasures {
   val jaro = new Jaro()
   val jarow = new JaroWinkler()
   val mongeElkan: MongeElkan = new MongeElkan()
+
+
+  val fuzzy_jaccard = new FuzzyJaccardMeasure(StringMeasureHelper.tokenize_combined,StringMeasures.computeLevenShteinSim)
+  val fuzzy_cosine = new FuzzyCosineMeasure(StringMeasureHelper.tokenize_combined,StringMeasures.computeLevenShteinSim)
+  val fuzzy_dice = new FuzzyDiceMeasure(StringMeasureHelper.tokenize_combined,StringMeasures.computeLevenShteinSim)
+
   //scale result from 0-1
   mongeElkan.setScaling(true)
 
@@ -251,6 +258,18 @@ object StringMeasures {
 
   def computeLevenShteinSim(a:String,b:String):Double ={
     1- StringDistances.levenshteinDistance(a,b)
+  }
+
+  def computeFuzzyJaccard(a:String,b:String):Double = {
+    fuzzy_jaccard.computeOverlap(a,b,0.8)
+  }
+
+  def computeFuzzyCosine(a:String,b:String):Double = {
+    fuzzy_cosine.computeOverlap(a,b,0.8)
+  }
+
+  def computeFuzzyDice(a:String,b:String):Double = {
+    fuzzy_dice.computeOverlap(a,b,0.8)
   }
 
 }
