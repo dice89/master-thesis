@@ -1,10 +1,10 @@
 package de.unima.dws.oamatching.matcher.structurallevel
 
-import de.unima.dws.oamatching.core.{Cell, Alignment}
 import de.unima.dws.oamatching.core.matcher.StructuralLevelMatcher
+import de.unima.dws.oamatching.core.{MatchingCell, Alignment, Cell}
 import org.semanticweb.owlapi.model._
+
 import scala.collection.JavaConversions._
-import scala.collection.mutable
 
 /**
  * Graphbased Matcher:
@@ -35,8 +35,6 @@ class GraphBasedUsedPropertyMatcher extends StructuralLevelMatcher {
   override protected def align(onto1: OWLOntology, onto2: OWLOntology, initial_Alignment: Alignment, threshold: Double): Alignment = {
 
 
-    val copied_alignment = new Alignment(initial_Alignment)
-
     def property_check(owlEntity: OWLEntity): Boolean = {
       (owlEntity.isOWLDataProperty || owlEntity.isOWLObjectProperty)
     }
@@ -57,10 +55,10 @@ class GraphBasedUsedPropertyMatcher extends StructuralLevelMatcher {
       }
     }
 
-    def matchPairWise(owl_classes1: Set[OWLClass], owl_classes2: Set[OWLClass], measure: Double): Set[Cell] = {
-      val cells: Set[Option[Cell]] = for (owl_class1 <- owl_classes1;
+    def matchPairWise(owl_classes1: Set[OWLClass], owl_classes2: Set[OWLClass], measure: Double,match_type:String): Set[MatchingCell] = {
+      val cells: Set[Option[MatchingCell]] = for (owl_class1 <- owl_classes1;
                                           owl_class2 <- owl_classes2) yield {
-        val candidate = new Cell(owl_class1.getIRI.toString, owl_class2.getIRI.toString, measure, "=", Cell.TYPE_CLASS)
+        val candidate =MatchingCell(owl_class1.getIRI.toString, owl_class2.getIRI.toString, measure, "=", Cell.TYPE_CLASS,match_type)
         if (initial_Alignment.correspondences.contains(candidate)) {
           Option.empty
         } else {
@@ -71,33 +69,45 @@ class GraphBasedUsedPropertyMatcher extends StructuralLevelMatcher {
       cells.filter(cell => cell.isDefined).map(cell => cell.get)
 
     }
-    val additional_correspondences = for (cell <- initial_Alignment.correspondences) yield {
-      val iri_1 = IRI.create(cell.entity1)
-      val iri_2 = IRI.create(cell.entity2)
-      val entity1 = onto1.getEntitiesInSignature(iri_1).head
-      val entity2 = onto2.getEntitiesInSignature(iri_2).head
-      val similarity = cell.measure / 2
-      //check if match is property
-      if (property_check(entity1) && property_check(entity2) && (similarity >= threshold)) {
 
 
-        //get domain and range classes for the property
-        //get domain
-        val domain_1 = getDomain(entity1, onto1)
-        val domain_2 = getDomain(entity2, onto2)
-        //match classes in domain pair-wise
+    val produced_correspondences: Set[Set[MatchingCell]] = initial_Alignment.getPresentMatchTypesinAlignment().map(match_type => {
 
-        val range_1 = getRange(entity1, onto1)
-        val range_2 = getRange(entity2, onto2)
+      val filtered_alingment = initial_Alignment.getNewAlignmentWithMatchType(match_type)
 
-        Option(matchPairWise(domain_1, domain_2, similarity).toList ::: matchPairWise(domain_1, domain_2, similarity).toList)
-        //now add add correspondences
-      } else {
-        Option.empty
+      val additional_correspondences = for (cell <- filtered_alingment.correspondences) yield {
+        val iri_1 = IRI.create(cell.entity1)
+        val iri_2 = IRI.create(cell.entity2)
+        val entity1 = onto1.getEntitiesInSignature(iri_1).head
+        val entity2 = onto2.getEntitiesInSignature(iri_2).head
+        val similarity = cell.measure / 2
+        //check if match is property
+        if (property_check(entity1) && property_check(entity2) && (similarity >= threshold)) {
+
+
+          //get domain and range classes for the property
+          //get domain
+          val domain_1 = getDomain(entity1, onto1)
+          val domain_2 = getDomain(entity2, onto2)
+          //match classes in domain pair-wise
+
+          val range_1 = getRange(entity1, onto1)
+          val range_2 = getRange(entity2, onto2)
+
+          Option(matchPairWise(domain_1, domain_2, similarity,match_type).toList ::: matchPairWise(domain_1, domain_2, similarity,match_type).toList)
+          //now add add correspondences
+        } else {
+          Option.empty
+        }
       }
-    }
-    val new_correspondences = additional_correspondences.filter(cells => cells.isDefined).map(cells => cells.get).flatten.toSet
 
+      additional_correspondences.filter(cells => cells.isDefined).map(cells => cells.get).flatten.toSet
+    })
+
+
+    val copied_alignment = new Alignment(initial_Alignment)
+
+    copied_alignment.addAllCorrespondeces(produced_correspondences.flatten.toSet)
 
 
     copied_alignment

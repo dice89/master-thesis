@@ -85,7 +85,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   /*########################################################################
                            Algorithmns Config
     ########################################################################*/
-  val KNN_CONFIG = List(Map("k" -> 0.01), Map("k" -> 0.05), Map("k" -> 0.025), Map("k" -> 0.1))
+  val KNN_CONFIG = List(Map("k" -> 0.025), Map("k" -> 0.05), Map("k" -> 0.01), Map("k" -> 0.1))
   val CBLOF_DBSCAN_CONFIG = List(Map("minpoints" -> 10.0, "epsilon" -> 1.5, "alpha" -> 99.0), Map("minpoints" -> 10.0, "epsilon" -> 1.0, "alpha" -> 99.0), Map("minpoints" -> 10.0, "epsilon" -> 0.5, "alpha" -> 99.0), Map("minpoints" -> 6.0, "epsilon" -> 1.5, "alpha" -> 99.0), Map("minpoints" -> 6.0, "epsilon" -> 1.0, "alpha" -> 99.0), Map("minpoints" -> 6.0, "epsilon" -> 0.5, "alpha" -> 99.0))
   val CBLOF_XMEANS_CONFIG = List(Map("kmin" -> 7.0, "alpha" -> 99.0), Map("kmin" -> 5.0, "alpha" -> 99.0), Map("kmin" -> 9.0, "alpha" -> 99.0), Map("kmin" -> 7.0, "alpha" -> 97.0), Map("kmin" -> 5.0, "alpha" -> 97.0), Map("kmin" -> 9.0, "alpha" -> 97.0), Map("kmin" -> 7.0, "alpha" -> 99.5), Map("kmin" -> 5.0, "alpha" -> 99.5), Map("kmin" -> 9.0, "alpha" -> 99.5))
   val LDCOF_XMEANS_CONFIG = List(Map("kmin" -> 7.0, "gamma" -> 0.01), Map("kmin" -> 7.0, "gamma" -> 0.05), Map("kmin" -> 7.0, "gamma" -> 0.1))
@@ -108,17 +108,22 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   val REMOVE_CORR_FOLDER = "remove_corr"
   val PREPROCESS_KEY = "prepro"
 
-  val PRE_PRO_TECHNIQUES = List("remove_corr", "pca_fixed", "pca_variant")
+  val PRE_PRO_TECHNIQUES = List("pca_variant","pca_fixed")
+  //val PRE_PRO_TECHNIQUES = List("remove_corr", "pca_fixed", "pca_variant")
+  /*val PARAM_CONFIGS_PRE_PRO: Map[String, List[Map[String, Double]]] = Map("pca_variant" -> List(Map("variance" -> 0.85), Map("variance" -> 0.9), Map("variance" -> 0.95), Map("variance" -> 0.97)),
+    "pca_fixed" -> List(Map("number" -> 2.0), Map("number" -> 4.0),Map("number" -> 6.0), Map("number" -> 12.0)),
+    "remove_corr" -> List(Map("corr_variance" -> 0.75, "min_variance" -> 0.01), Map("corr_variance" -> 0.5, "min_variance" -> 0.01), Map("corr_variance" -> 0.9, "min_variance" -> 0.01))
+  )*/
   val PARAM_CONFIGS_PRE_PRO: Map[String, List[Map[String, Double]]] = Map("pca_variant" -> List(Map("variance" -> 0.85), Map("variance" -> 0.9), Map("variance" -> 0.95), Map("variance" -> 0.97)),
-    "pca_fixed" -> List(Map("number" -> 2.0), Map("number" -> 6.0), Map("number" -> 12.0)),
-    "remove_corr" -> List(Map("corr_variance" -> 0.85, "min_variance" -> 0.1), Map("corr_variance" -> 0.9, "min_variance" -> 0.1), Map("corr_variance" -> 0.95, "min_variance" -> 0.1))
+    "pca_fixed" -> List( Map("number" -> 4.0),Map("number" -> 6.0), Map("number" -> 12.0)),
+    "remove_corr" -> List(Map("corr_variance" -> 0.75, "min_variance" -> 0.01))
   )
 
   /*########################################################################
                          Matching Selection Config
     ########################################################################*/
 
-  val FUZZY_DELTA_SELECTION = List(Map("fuzzy" -> 0.001), Map("fuzzy" -> 0.1), Map("fuzzy" -> 0.01))
+  val FUZZY_DELTA_SELECTION = List(Map("fuzzy" -> 0.02), Map("fuzzy" -> 0.01), Map("fuzzy" -> 0.001))
   val FUZZY_RATIO_SELECTION = List(Map("fuzzy" -> 1.01), Map("fuzzy" -> 1.02), Map("fuzzy" -> 1.10))
   val GREEDY_SELECTION = List(Map("fuzzy" -> 1.0))
 
@@ -207,14 +212,13 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
     createFolder(base_folder)
 
+    val separated_folder = base_folder + "/separated"
+    createFolder(separated_folder)
+    val separated_best: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = runAllForAlgosForAllSlctFunctions(ds_name, separated_folder, matching_pairs, parallel, true)
 
     val non_separated_folder = base_folder + "/non_separated"
     createFolder(non_separated_folder)
     val non_separated_best: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = runAllForAlgosForAllSlctFunctions(ds_name, non_separated_folder, matching_pairs, parallel, false)
-
-    val separated_folder = base_folder + "/separated"
-    createFolder(separated_folder)
-    val separated_best: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = runAllForAlgosForAllSlctFunctions(ds_name, separated_folder, matching_pairs, parallel, true)
 
     val best_result: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = if (separated_best.isDefined && non_separated_best.isDefined) {
       val result = if (separated_best.get._2._2.overall_agg_best.macro_eval_res.f1Measure > non_separated_best.get._2._2.overall_agg_best.macro_eval_res.f1Measure) {
@@ -249,7 +253,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
    * @return
    */
   def runAllForAlgosForAllSlctFunctions(ds_name: String, base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], parallel: Boolean, separated: Boolean): Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = {
-    val results = configured_selection_strategies.par.map { case (name, fuzzy_values) => {
+    val results = configured_selection_strategies.map { case (name, fuzzy_values) => {
       logger.info(s"Start Outlier Analysis for selection strategy $name")
       val fuzzy_base_folder = base_folder + "/" + name
       createFolder(fuzzy_base_folder)

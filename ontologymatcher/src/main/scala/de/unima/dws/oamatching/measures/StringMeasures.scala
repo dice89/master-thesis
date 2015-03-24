@@ -2,15 +2,23 @@ package de.unima.dws.oamatching.measures
 
 import com.wcohen.ss._
 import com.wcohen.ss.tokens.SimpleTokenizer
+import de.unima.dws.fuzzytoken.{FuzzyDiceMeasure, FuzzyCosineMeasure, FuzzyJaccardMeasure}
+import fr.inrialpes.exmo.ontosim.string.StringDistances
 
 /**
  * Created by mueller on 21/01/15.
  */
 object StringMeasures {
-  val jaccard: Jaccard = new Jaccard(new SimpleTokenizer(true, false))
+  val jaccard: Jaccard = new Jaccard(new SimpleTokenizer(true, true))
   val jaro = new Jaro()
   val jarow = new JaroWinkler()
   val mongeElkan: MongeElkan = new MongeElkan()
+
+
+  val fuzzy_jaccard = new FuzzyJaccardMeasure(StringMeasureHelper.tokenize_combined,StringMeasures.computeLevenShteinSim)
+  val fuzzy_cosine = new FuzzyCosineMeasure(StringMeasureHelper.tokenize_combined,StringMeasures.computeLevenShteinSim)
+  val fuzzy_dice = new FuzzyDiceMeasure(StringMeasureHelper.tokenize_combined,StringMeasures.computeLevenShteinSim)
+
   //scale result from 0-1
   mongeElkan.setScaling(true)
 
@@ -29,15 +37,19 @@ object StringMeasures {
    * @return
    */
   def computePrefixBiDirectional(a: String, b: String): Double = {
-    try {
-      val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.startsWith)(a, b)
-      val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.startsWith)(b, a)
-      Math.max(res_a_b, res_b_a)
-    }
-    catch {
-      case e:Throwable => {
 
-        0.0
+    if(a.length>30|| b.length > 30){
+      0.0
+    }else {
+      try {
+        val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.startsWith)(a.toLowerCase(), b.toLowerCase())
+        val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.startsWith)(b.toLowerCase(), a.toLowerCase())
+        Math.max(res_a_b, res_b_a)
+      }
+      catch {
+        case e: Throwable => {
+          0.0
+        }
       }
     }
   }
@@ -50,20 +62,26 @@ object StringMeasures {
    */
   def computeSuffixBiDirectional(a: String, b: String): Double = {
 
-    try {
-      val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.endsWith)(a, b)
-      val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.endsWith)(b, a)
 
-      val test = Math.max(res_a_b, res_b_a)
+    if(a.length>30|| b.length > 30){
+      0.0
+    }else {
+      try {
+        val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.endsWith)(a.toLowerCase(), b.toLowerCase())
+        val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.endsWith)(b.toLowerCase(), a.toLowerCase())
 
-      test
-    }
-    catch {
-      case e:Throwable => {
-        //e.printStackTrace()
-        0.0
+        val test = Math.max(res_a_b, res_b_a)
+
+        test
+      }
+      catch {
+        case e:Throwable => {
+          //e.printStackTrace()
+          0.0
+        }
       }
     }
+
   }
 
   /**
@@ -115,6 +133,22 @@ object StringMeasures {
 
     a_b_score.getOrElse(0.0)
   }
+
+  /**
+   *
+   * @param a
+   * @param b
+   * @return
+   */
+  def computeEquality(a:String,b:String):Double = {
+    if(a.equals(b)){
+      1.0
+    }else {
+      0.0
+    }
+  }
+
+
   /**
    * Simple wrapper function for second string jaccard distance, when calling it, make sure you use a stemmer before
    * @param a
@@ -220,6 +254,22 @@ object StringMeasures {
       res = 1.0
     }
     res
+  }
+
+  def computeLevenShteinSim(a:String,b:String):Double ={
+    1- StringDistances.levenshteinDistance(a,b)
+  }
+
+  def computeFuzzyJaccard(a:String,b:String):Double = {
+    fuzzy_jaccard.computeOverlap(a,b,0.8)
+  }
+
+  def computeFuzzyCosine(a:String,b:String):Double = {
+    fuzzy_cosine.computeOverlap(a,b,0.8)
+  }
+
+  def computeFuzzyDice(a:String,b:String):Double = {
+    fuzzy_dice.computeOverlap(a,b,0.8)
   }
 
 }

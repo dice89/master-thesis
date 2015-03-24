@@ -1,6 +1,7 @@
 package de.unima.dws.oamatching.measures
 
 
+import com.typesafe.scalalogging.slf4j.LazyLogging
 import de.unima.dws.oamatching.analysis.SparkJobs
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.alex.simservice.{Config => Sim_Service_Config, SimService}
@@ -13,7 +14,7 @@ import scalaj.http.{Http, HttpResponse}
 /**
  * Created by mueller on 31/01/15.
  */
-object SemanticMeasures {
+object SemanticMeasures extends  LazyLogging{
 
    //init SimService config
   Sim_Service_Config.readFromFile("config/umbc/sim_config.txt")
@@ -35,9 +36,31 @@ object SemanticMeasures {
     }
   }
 
+  def umbcPhraseSim(phrase1:String,phrase2:String):Double = {
+
+    try {
+      semantic_sim.getSimilarity(phrase1, phrase2, false)
+    }
+    catch {
+      case e:Throwable =>{
+        logger.error(s"error at umbc phrase sim: $phrase1, $phrase2",e)
+        0.0
+      }
+    }
+
+  }
+
 
   def umbcSim(term1:String,term2:String):Double = {
-    semantic_sim.getSimilarity(term1,term2,true)
+    try {
+      semantic_sim.getSimilarity(term1, term2, true)
+    }
+    catch {
+      case e:Throwable =>{
+        logger.error("error at umbc sim",e)
+        0.0
+      }
+    }
   }
 
   def umbcPosSim(term1:String,term2:String):Double = {

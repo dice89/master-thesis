@@ -167,6 +167,8 @@ object SummaryPDFFactory{
           printLocalThresholdsPage(name,result.local_global_threshold.agg_local_optimum,result.local_global_threshold.local_optima_per_ds, chapter)
           chapter.newPage()
 
+
+
           //print top results pages
           printPDFTopNEvaluatedPage(result.top_n_results, chapter)
           chapter.newPage()
@@ -816,7 +818,7 @@ object SummaryPDFFactory{
       table.addCell(relation.toString)
       table.addCell(score.toString)
 
-      val cell = MatchingCell(relation.left, relation.right, score, relation.relation, relation.owl_type)
+      val cell = MatchingCell(relation.left, relation.right, score, relation.relation, relation.owl_type,relation.match_type)
 
       if (ref_alignment.correspondences.contains(cell)) {
         table.addCell("X")

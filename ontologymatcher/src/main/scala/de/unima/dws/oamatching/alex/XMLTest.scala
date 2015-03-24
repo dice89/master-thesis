@@ -3,12 +3,9 @@ package de.unima.dws.oamatching.alex
 import java.io.File
 
 import de.unima.dws.oamatching.config.Config
-import de.unima.dws.oamatching.pipeline.FeatureVector
-
-import scala.collection.immutable.Iterable
 import scala.xml.transform.{RewriteRule, RuleTransformer}
 import scala.xml.{Text, Node, Elem}
-
+import scala.xml.TopScope
 /**
  * Created by mueller on 27/01/15.
  */
@@ -42,10 +39,11 @@ object XMLTest {
     val xml_file: Elem = scala.xml.XML.loadFile(path_to_file)
 
     def getMetaDataParameter: Seq[Node] = {
-      Seq(<parameter key="0" value="left.true.polynominal.attribute"/>,
+      List(<parameter key="0" value="left.true.polynominal.attribute"/>,
           <parameter key="1" value="relation.true.binominal.attribute"/>,
           <parameter key="2" value="right.true.polynominal.attribute"/>,
-          <parameter key="3" value="owl_type.true.polynominal.attribute"/>)
+          <parameter key="3" value="owl_type.true.polynominal.attribute"/>,
+          <parameter key="4" value="match_type.true.polynominal.attribute"/>)
     }
 
     def transform_featureVector_toType(start_key: Int, vector: Map[String,Int]): Seq[Node] = {
@@ -67,8 +65,8 @@ object XMLTest {
 
           if (attribs.get("key").isDefined) {
             if (attribs.get("key").get.toString().equals("data_set_meta_data_information")) {
-              val params = getMetaDataParameter ++ transform_featureVector_toType(4, vector)
-              //here insert fucking xml shit
+              val params = getMetaDataParameter ++ transform_featureVector_toType(5, vector)
+             //here insert xml
               Elem(prefix, node.label, attribs, scope, params: _*)
             } else {
               node

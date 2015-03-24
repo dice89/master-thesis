@@ -9,7 +9,6 @@ import de.unima.dws.oamatching.core._
 import de.unima.dws.oamatching.pipeline.util.ResultLogger
 import de.unima.dws.oamatching.pipeline._
 
-import scala.collection.JavaConversions.JEnumerationWrapper
 
 /**
  * Created by mueller on 28/01/15.

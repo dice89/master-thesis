@@ -1,6 +1,7 @@
 package de.unima.dws.oamatching.thesis
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.AggregatedEvaluationResult
 import play.api.libs.json.Json
 
@@ -12,6 +13,9 @@ import scalaj.http.{Http, HttpResponse}
  * Created by mueller on 04/03/15.
  */
 trait ResultServerHandling extends LazyLogging {
+
+
+  val server:String = Config.loaded_config.getString("general.serveraddress")
 
   def createJSONResultString(ds_name: String, outlier_method: String, pre_pro_method: String, separated: Boolean, result: AggregatedEvaluationResult, parameters:Map[String, Map[String, Double]], thresholds: String): String = {
 
@@ -77,7 +81,7 @@ trait ResultServerHandling extends LazyLogging {
 
     if(proxy_host_setting== null &&proxy_port_setting == null ){
       try{
-        val response: HttpResponse[String] = Http("http://128.199.50.209:3000/api/experiments").postData(json_string).header("content-type", "application/json").asString
+        val response: HttpResponse[String] = Http(server).postData(json_string).header("content-type", "application/json").asString
 
         if(response.is4xx){
           logger.error("Problem with webservice")
@@ -90,7 +94,7 @@ trait ResultServerHandling extends LazyLogging {
       }
     }else {
       try{
-        val response: HttpResponse[String] = Http("http://128.199.50.209:3000/api/experiments").proxy(proxy_host_setting, proxy_port_setting.toInt).postData(json_string).header("content-type", "application/json").asString
+        val response: HttpResponse[String] = Http(server).proxy(proxy_host_setting, proxy_port_setting.toInt).postData(json_string).header("content-type", "application/json").asString
 
         if(response.is4xx){
           logger.error("Problem with webservice")

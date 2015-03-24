@@ -2,14 +2,16 @@ package de.unima.dws.oamatching.thesis
 import java.io.File
 
 import de.unima.dws.oamatching.analysis.RapidminerJobs
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core._
-import de.unima.dws.oamatching.pipeline.ScoreNormalizationFunctions
+import de.unima.dws.oamatching.pipeline.{MatchingPruner, ScoreNormalizationFunctions}
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingTask, EvaluationMatchingRunner}
 import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
 import org.apache.commons.math.stat.inference.ChiSquareTestImpl
 import org.apache.commons.math3.distribution.NormalDistribution
 import org.apache.commons.math3.stat.inference.KolmogorovSmirnovTest
 
+import scala.Predef
 import scala.collection.immutable.Map
 import scala.collection.parallel.immutable.ParSeq
 
@@ -48,18 +50,24 @@ trait NonSeparatedOptimization extends ResultServerHandling{
       val norm_res_euclidean_max: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByMaxEuclideanDistance(result._1, result._2, result._3).toMap
       val norm_res_gamma: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByGammaScaling(result._1, result._2, result._3).toMap
       val norm_res_znorm: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByZScore(result._1, result._2, result._3).toMap
-      val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(("none", (result._3, ref_alignment)), ("gaussian", (norm_res_gaussian, ref_alignment)), ("zscore", (norm_res_znorm, ref_alignment)), ("gammma", (norm_res_gamma, ref_alignment)), ("euclidean_max", (norm_res_euclidean_max, ref_alignment)))
+
+      //val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(("none", (result._3, ref_alignment)), ("gaussian", (norm_res_gaussian, ref_alignment)), ("zscore", (norm_res_znorm, ref_alignment)), ("gammma", (norm_res_gamma, ref_alignment)), ("euclidean_max", (norm_res_euclidean_max, ref_alignment)))
+      //val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(("none", (result._3, ref_alignment)))
+      val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(  ("zscore", (norm_res_znorm, ref_alignment)))
+      //val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(  ("zscore", (norm_res_znorm, ref_alignment)), ("gammma", (norm_res_gamma, ref_alignment)), ("euclidean_max", (norm_res_euclidean_max, ref_alignment)))
 
 
       val top_n_none: Seq[(MatchRelation, Double, Boolean)] = getTopNResults(result._3, top_n, ref_alignment)
-      val top_n_gaussian: Seq[(MatchRelation, Double, Boolean)] = getTopNResults(norm_res_gaussian, top_n, ref_alignment)
+
       val top_n_euclidean: Seq[(MatchRelation, Double, Boolean)] = getTopNResults(norm_res_euclidean_max, top_n, ref_alignment)
+      val top_n_gaussian: Seq[(MatchRelation, Double, Boolean)] = getTopNResults(norm_res_gaussian, top_n, ref_alignment)
       val top_n_gamma: Seq[(MatchRelation, Double, Boolean)] = getTopNResults(norm_res_gamma, top_n, ref_alignment)
       val top_n_z: Seq[(MatchRelation, Double, Boolean)] = getTopNResults(norm_res_znorm, top_n, ref_alignment)
 
 
       val top_n_scores = name -> Map("none" -> top_n_none, "gaussian" -> top_n_gaussian, "euclidean" -> top_n_euclidean, "gamma" -> top_n_gamma, "zscore" -> top_n_z)
-
+      //val top_n_scores = name -> Map("none" -> top_n_none)
+      //val top_n_scores = name -> Map( "euclidean" -> top_n_euclidean, "gamma" -> top_n_gamma, "zscore" -> top_n_z)
 
       val values = result._3.values.toArray
       val statistics: OutlierEvalStatisticsObject = computeBaseStatisticsOverOutlierScores(values, name)
@@ -72,8 +80,12 @@ trait NonSeparatedOptimization extends ResultServerHandling{
 
     val matching_results_seq = matching_results_intermediate.seq.toList
     val matching_results: List[Map[String, (Map[MatchRelation, Double], Alignment)]] = matching_results_seq.map(_._1)
-    val optimization_grid = ParameterOptimizer.getDoubleGrid(0.001, 0.9999999999, 500)
 
+    val grid_size = Config.loaded_config.getInt("optimization.threshold_opt.grid_size")
+    val start = Config.loaded_config.getDouble("optimization.threshold_opt.start")
+    val end = Config.loaded_config.getDouble("optimization.threshold_opt.end")
+
+    val optimization_grid = ParameterOptimizer.getDoubleGrid(start, end, grid_size)
 
     val threshold_optimized_values: ThresholdOptResult = findOptimalThresholds(selection_function, matching_results, optimization_grid)
 
@@ -99,7 +111,7 @@ trait NonSeparatedOptimization extends ResultServerHandling{
 
     val result_tp: Seq[(MatchRelation, Double, Boolean)] = top.map { case (relation, score) => {
 
-      val cell = MatchingCell(relation.left, relation.right, score, relation.relation, relation.owl_type)
+      val cell = MatchingCell(relation.left, relation.right, score, relation.relation, relation.owl_type,relation.match_type)
 
       if (ref_alignment.correspondences.contains(cell)) {
         (relation, score, true)
@@ -125,34 +137,129 @@ trait NonSeparatedOptimization extends ResultServerHandling{
       //get results for a techniques
       val matchings_for_technique: List[(Map[MatchRelation, Double], Alignment)] = scores_by_norm_technique.map(elem => elem.get(technique).get)
 
+
+
       (technique, matchings_for_technique)
     }).toMap
 
-
+    val number_of_debuggers = results_by_techniques.size*threshold_grid.size*results_by_techniques.head._2.size
+    println(s"Size to be debugged $number_of_debuggers")
     //optimize for each matching technique and find global optimum
     val global_results: Map[String, Seq[(Double, AggregatedEvaluationResult)]] = results_by_techniques.map { case (name, list_of_matchings) => {
 
       //try for all thresholds
       val results_by_threshold = threshold_grid.map(threshold => {
         val eval_res_single_list: Seq[EvaluationResult] = list_of_matchings.map(single_matchings => {
+          val starttime = System.currentTimeMillis()
           val selected = selection_function(single_matchings._1, threshold)
-          val alignment = new Alignment(null, null, selected)
+          //TODO add alignment debugging
+          val alignment = new Alignment(single_matchings._2.onto1, single_matchings._2.onto2,single_matchings._2.onto1_reference,single_matchings._2.onto2_reference,selected)
 
-          alignment.evaluate(single_matchings._2)
+          val eval_res_norm = alignment.evaluate(single_matchings._2)
+
+          // val eval_res_debugged = debugged.evaluate(single_matchings._2)
+          val totaltime = System.currentTimeMillis()-starttime
+
+          //println(s"Needed $totaltime to debug alignment of size "+alignment.correspondences.size)
+          eval_res_norm
         })
         val agg_res = EvaluationMatchingRunner.computeAggregatedResults(eval_res_single_list.toList)
         (threshold, agg_res)
       })
-      (name, results_by_threshold)
+      (name, results_by_threshold.seq)
     }
     }.toMap
 
     //get best result
-    val best_global_results: Map[String, (Double, AggregatedEvaluationResult)] = global_results.map { case (name, list_of_results) => {
+    val best_global_results_pre_debug: Map[String, (Double, AggregatedEvaluationResult)] = global_results.map { case (name, list_of_results) => {
       val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.macro_eval_res.f1Measure)
       (name, best_result)
     }
     }
+
+    val best_global_results: Map[String, (Double, AggregatedEvaluationResult)] = global_results.map { case (name, list_of_results) => {
+      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.macro_eval_res.f1Measure)
+
+      val threshold = best_result._1
+
+      val list_of_matchings = results_by_techniques.get(name).get
+
+      //at least 3 steps of easing threshold
+      val eval_res_single_list: List[EvaluationResult] = list_of_matchings.map(single_matchings=> {
+        val selected = selection_function(single_matchings._1, threshold)
+        val alignment = new Alignment(single_matchings._2.onto1, single_matchings._2.onto2,single_matchings._2.onto1_reference,single_matchings._2.onto2_reference,selected)
+
+        val debugged = MatchingPruner.debugAlignment(alignment)
+
+
+        val eval_res_debugged = debugged.evaluate(single_matchings._2)
+
+        val eval_res_normal = alignment.evaluate(single_matchings._2)
+
+
+        val improvement = eval_res_debugged.f1Measure-eval_res_normal.f1Measure
+        if(eval_res_debugged.f1Measure >= eval_res_normal.f1Measure){
+          println("improved " + improvement)
+        }else {
+          println("fucked " + improvement)
+        }
+
+        val problem_name = single_matchings._2.onto1+"-"+single_matchings._2.onto2
+
+        if(Config.loaded_config.getBoolean("optimization.write_details")){
+          AlignmentParser.writeFalseNegativesToCSV(debugged,single_matchings._2,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+name)
+          AlignmentParser.writeTruePositivesToCSV(debugged,single_matchings._2,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+name)
+          AlignmentParser.writeFalsePositivesToCSV(debugged,single_matchings._2,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+name)
+        }
+
+        eval_res_debugged
+      })
+
+      val agg_res = EvaluationMatchingRunner.computeAggregatedResults(eval_res_single_list)
+      name->(threshold, agg_res)
+
+    }}
+
+
+    best_global_results.foreach(tuple => {
+
+      println(tuple._1 +" Macro")
+      println("Before debugging ---- "+ best_global_results_pre_debug.get(tuple._1).get._2.macro_eval_res.f1Measure)
+      println("After debugging ---- "+ tuple._2._2.macro_eval_res.f1Measure)
+
+      println(tuple._1 +" Micro")
+      println("Before debugging ---- "+ best_global_results_pre_debug.get(tuple._1).get._2.micro_eval_res.f1Measure)
+      println("After debugging ---- "+ tuple._2._2.micro_eval_res.f1Measure)
+
+    })
+
+      //write alignments back
+    /*println(best_global_results.size)
+    println(best_global_results.head._2._1)
+    val best_global_threshold =best_global_results.head._2._1
+    val list_of_matchings = results_by_techniques.get(best_global_results.head._1).get
+
+    list_of_matchings.zipWithIndex.foreach(single_matchings=> {
+
+      val selected = selection_function(single_matchings._1._1, 0.0)
+      val alignment = new Alignment(null, null, selected)
+
+      val selected_threshold = selection_function(single_matchings._1._1, best_global_threshold)
+      val alignment_best = new Alignment(null, null, selected_threshold)
+      val unselected = new Alignment(null, null, single_matchings._1._1)
+
+
+      AlignmentParser.writeRDF(alignment_best,"tmp/alignments/"+single_matchings._2+"-best.rdf")
+
+      AlignmentParser.writeRDF(alignment,"tmp/alignments/"+single_matchings._2+"-selected.rdf")
+
+      AlignmentParser.writeRDF(unselected,"tmp/alignments/"+single_matchings._2+"-unselected.rdf")
+
+    })*/
+
+
+    //End debugging
+
 
     //find local optima, so for each technique and for each matched dataset the best threshold and result
     val best_local_results: Map[String, Seq[(Double, EvaluationResult)]] = results_by_techniques.map { case (name, list_of_matchings) => {

@@ -10,15 +10,11 @@ class TokenizedStringMatcher(override val similarity:Boolean,
                              override val stringmatching_fct:(String,String) => Double
                              ) extends  PreProcessedStringMatcher(similarity,useLabel,useFragment,useComment, preprocess_function,stringmatching_fct){
 
+
   override def score(a: String, b: String): Double = {
     val res  = scoreTokenized( tokenizer(a),tokenizer(b))
 
-    if(a.toLowerCase.contains("acceptance") && b.toLowerCase.contains("written")){
-      println("test")
-      println(a +" -- " + b +"="+res)
-    }
-
-   res
+    res
   }
 
   protected def scoreTokenized(tokens_a:List[String], tokens_b:List[String]):Double = {
@@ -27,12 +23,13 @@ class TokenizedStringMatcher(override val similarity:Boolean,
 
     for (term_a <- tokens_a; term_b <- tokens_b) {
       counter= counter +1
-
-      summed_score = summed_score + stringmatching_fct(term_a, term_b)
+      summed_score = summed_score + pre_processed_score(term_a, term_b)
     }
-
-    val res:Double =    summed_score/counter
-
-    res
+    val res:Double =summed_score / Math.max(tokens_a.length,tokens_b.length)
+    if(res > 1.0){
+      1.0
+    }else {
+      res
+    }
   }
 }
