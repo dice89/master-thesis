@@ -219,7 +219,7 @@ object OntologyLoader {
 
     val object_prop_domain: Map[IRI, Set[IRI]] = object_prop_domain_range._1.toMap
     val object_prop_range: Map[IRI, Set[IRI]] = object_prop_domain_range._2.toMap
-    
+
 
     //invert the whole thing get object properties by class, separated domain and range
     val class_object_prop_domain_range = classes.map(owlClass => {
