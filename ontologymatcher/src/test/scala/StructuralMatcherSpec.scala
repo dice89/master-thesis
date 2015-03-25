@@ -26,7 +26,9 @@ class StructuralMatcherSpec extends UnitSpec {
     val onto2 = OntologyLoader.load_fast_ontology("ontos/2014/conference/Conference.owl")
     val initial_alignment = base_matcher.align(onto1, onto2, 0.6)
     val problem = MatchingProblem(onto1,onto2,"test")
-    used_class_matcher.align(problem,initial_alignment,0.1)
+    val created = used_class_matcher.align(problem,initial_alignment,0.0)
+    println("TEST")
+    println(created.correspondences)
   }
 
 
