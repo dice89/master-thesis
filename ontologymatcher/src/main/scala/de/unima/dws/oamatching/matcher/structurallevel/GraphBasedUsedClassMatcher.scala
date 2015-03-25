@@ -1,7 +1,7 @@
 package de.unima.dws.oamatching.matcher.structurallevel
 
 import de.unima.dws.oamatching.core.matcher.StructuralLevelMatcher
-import de.unima.dws.oamatching.core.{MatchingCell, Alignment, Cell, MatchRelation}
+import de.unima.dws.oamatching.core._
 import org.semanticweb.owlapi.model.{OWLClass, OWLOntology}
 
 import scala.collection.JavaConversions._
@@ -23,8 +23,8 @@ import scala.collection.{IterableView, mutable}
  * @author Alexander Mueller (Scala Port)
  */
 class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
-  override protected def align(onto1: OWLOntology, onto2: OWLOntology, initial_Alignment: Alignment, threshold: Double): Alignment = {
-
+  override protected def align(onto1: FastOntology, onto2: FastOntology, initial_Alignment: Alignment, threshold: Double): Alignment = {
+/*
     val produced_alingments = initial_Alignment.getPresentMatchTypesinAlignment().map(match_type =>{
       //loop over alignment and build map for class access
 
@@ -154,6 +154,8 @@ class GraphBasedUsedClassMatcher extends StructuralLevelMatcher {
     new_alignment.addAllCorrespondeces(new_corresp)
 
     new_alignment
+    */
+    initial_Alignment
   }
 
   private def buildMap(alignment: Alignment, onto1: OWLOntology, onto2: OWLOntology): Map[String, mutable.Set[(String, Double)]] = {

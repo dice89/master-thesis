@@ -5,7 +5,7 @@ import java.util
 import com.interdataworking.mm.alg.{MapPair, Match}
 import de.unima.dws.alex.onto2graph.{Matcher, TestMatch}
 import de.unima.dws.oamatching.core.matcher.StructuralLevelMatcher
-import de.unima.dws.oamatching.core.{MatchingCell, Alignment, Cell}
+import de.unima.dws.oamatching.core.{FastOntology, MatchingCell, Alignment, Cell}
 import org.semanticweb.owlapi.model.{IRI, OWLOntology}
 
 import scala.collection.JavaConversions._
@@ -16,8 +16,8 @@ import scala.collection.mutable
  */
 class SimilarityFloodingMatcher  extends  StructuralLevelMatcher{
 
-  override protected def align(onto1: OWLOntology, onto2: OWLOntology, initial_Alignment: Alignment, threshold: Double): Alignment = {
-
+  override protected def align(onto1: FastOntology, onto2: FastOntology, initial_Alignment: Alignment, threshold: Double): Alignment = {
+  /*
     val produced_correspondences: Set[mutable.Set[MatchingCell]] = initial_Alignment.getPresentMatchTypesinAlignment().map(match_type =>{
       val filtered_alignment = initial_Alignment.getNewAlignmentWithMatchType(match_type)
       val alignment: util.List[MapPair] = convertAlignmentToMapPair(filtered_alignment)
@@ -34,6 +34,8 @@ class SimilarityFloodingMatcher  extends  StructuralLevelMatcher{
     copied_alignment.addAllCorrespondeces(produced_correspondences.flatten.toSet)
 
     copied_alignment
+    */
+    initial_Alignment
   }
 
   protected def convertAlignmentToMapPair(alignment:Alignment):java.util.List[MapPair] ={

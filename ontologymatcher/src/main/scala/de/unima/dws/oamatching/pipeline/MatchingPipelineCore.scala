@@ -4,7 +4,7 @@ import com.typesafe.scalalogging.slf4j.LazyLogging
 import de.unima.dws.oamatching.analysis.SparkJobs
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.matcher.{Matcher, StructuralLevelMatcher}
-import de.unima.dws.oamatching.core.{Alignment, MatchRelation}
+import de.unima.dws.oamatching.core.{FastOntology, Alignment, MatchRelation}
 import de.unima.dws.oamatching.matcher.MatcherRegistry
 import org.semanticweb.owlapi.model.OWLOntology
 
@@ -12,9 +12,9 @@ import scala.collection.immutable.Map
 import scala.collection.parallel.immutable.ParMap
 
 
-case class MatchingProblem(ontology1: OWLOntology, ontology2: OWLOntology, name: String)
+case class MatchingProblem(ontology1: FastOntology, ontology2: FastOntology, name: String)
 
-case class MatchingEvaluationProblem(ontology1: OWLOntology, ontology2: OWLOntology, reference: Alignment, name: String)
+case class MatchingEvaluationProblem(ontology1: FastOntology, ontology2: FastOntology, reference: Alignment, name: String)
 
 /**
  * Core Single to implement matching of two ontologies
@@ -67,8 +67,8 @@ object MatchingPipelineCore extends LazyLogging{
   def createFeatureVector(problem: MatchingProblem, remove_correlated_threshold: Double, name_space_filter: Boolean): FeatureVector = {
 
     println("Start element Level Matching")
-    val onto1_namespace = problem.ontology1.getOntologyID.getOntologyIRI.toString
-    val onto2_namespace = problem.ontology2.getOntologyID.getOntologyIRI.toString
+    val onto1_namespace = problem.ontology1.name
+    val onto2_namespace = problem.ontology2.name
     println(onto1_namespace)
     println(onto2_namespace)
     val allowed_namespaces = List(onto1_namespace, onto2_namespace)

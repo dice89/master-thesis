@@ -1,7 +1,7 @@
 package de.unima.dws.oamatching.matcher.structurallevel
 
 import de.unima.dws.oamatching.core.matcher.StructuralLevelMatcher
-import de.unima.dws.oamatching.core.{MatchingCell, Alignment, Cell}
+import de.unima.dws.oamatching.core.{FastOntology, MatchingCell, Alignment, Cell}
 import org.semanticweb.owlapi.model._
 
 import scala.collection.JavaConversions._
@@ -32,44 +32,27 @@ class GraphBasedUsedPropertyMatcher extends StructuralLevelMatcher {
    * @param threshold threshold used
    * @return
    */
-  override protected def align(onto1: OWLOntology, onto2: OWLOntology, initial_Alignment: Alignment, threshold: Double): Alignment = {
-
-
-    def property_check(owlEntity: OWLEntity): Boolean = {
-      (owlEntity.isOWLDataProperty || owlEntity.isOWLObjectProperty)
-    }
-
-    def getDomain(owl_entity: OWLEntity, onto: OWLOntology): Set[OWLClass] = {
-      if (owl_entity.isOWLDataProperty) {
-        onto.getDataPropertyDomainAxioms(owl_entity.asOWLDataProperty()).view.map(axiom => axiom.getClassesInSignature).flatten.toSet
-      } else {
-        onto.getObjectPropertyDomainAxioms(owl_entity.asOWLObjectProperty()).view.map(axiom => axiom.getClassesInSignature).flatten.toSet
-      }
-    }
-
-    def getRange(owl_entity: OWLEntity, onto: OWLOntology): Set[OWLClass] = {
-      if (owl_entity.isOWLDataProperty) {
-        onto.getDataPropertyRangeAxioms(owl_entity.asOWLDataProperty()).view.map(axiom => axiom.getClassesInSignature).flatten.toSet
-      } else {
-        onto.getObjectPropertyRangeAxioms(owl_entity.asOWLObjectProperty()).view.map(axiom => axiom.getClassesInSignature).flatten.toSet
-      }
-    }
-
-    def matchPairWise(owl_classes1: Set[OWLClass], owl_classes2: Set[OWLClass], measure: Double,match_type:String): Set[MatchingCell] = {
+  override protected def align(onto1: FastOntology, onto2: FastOntology, initial_Alignment: Alignment, threshold: Double): Alignment = {
+    initial_Alignment
+    def matchPairWise(owl_classes1: Set[IRI], owl_classes2: Set[IRI], measure: Double,match_type:String): Set[MatchingCell] = {
       val cells: Set[Option[MatchingCell]] = for (owl_class1 <- owl_classes1;
                                           owl_class2 <- owl_classes2) yield {
-        val candidate =MatchingCell(owl_class1.getIRI.toString, owl_class2.getIRI.toString, measure, "=", Cell.TYPE_CLASS,match_type)
-        if (initial_Alignment.correspondences.contains(candidate)) {
-          Option.empty
+        val candidate =MatchingCell(owl_class1.toString, owl_class2.toString, measure, "=", Cell.TYPE_CLASS,match_type)
+        if (initial_Alignment.correspondences.contains(candidate) ) {
+          //replace if sim higher if not keep old one
+          val elem_in = initial_Alignment.correspondences.filter(_.equals(candidate)).head
+          if(elem_in.measure >= measure){
+            Option.empty
+          }else {
+            Option(candidate)
+          }
+
         } else {
           Option(candidate)
         }
       }
-
       cells.filter(cell => cell.isDefined).map(cell => cell.get)
-
     }
-
 
     val produced_correspondences: Set[Set[MatchingCell]] = initial_Alignment.getPresentMatchTypesinAlignment().map(match_type => {
 
@@ -78,27 +61,29 @@ class GraphBasedUsedPropertyMatcher extends StructuralLevelMatcher {
       val additional_correspondences = for (cell <- filtered_alingment.correspondences) yield {
         val iri_1 = IRI.create(cell.entity1)
         val iri_2 = IRI.create(cell.entity2)
-        val entity1 = onto1.getEntitiesInSignature(iri_1).head
-        val entity2 = onto2.getEntitiesInSignature(iri_2).head
         val similarity = cell.measure / 2
-        //check if match is property
-        if (property_check(entity1) && property_check(entity2) && (similarity >= threshold)) {
 
 
-          //get domain and range classes for the property
-          //get domain
-          val domain_1 = getDomain(entity1, onto1)
-          val domain_2 = getDomain(entity2, onto2)
-          //match classes in domain pair-wise
+        if(onto1.base_values.object_properties.contains(iri_1) && onto1.base_values.object_properties.contains(iri_2) && similarity >= threshold){
+          //object properties
+          val domain_1 = onto1.classes_in_object_prop_domain.get(iri_1).get
+          val domain_2 = onto2.classes_in_object_prop_domain.get(iri_2).get
 
-          val range_1 = getRange(entity1, onto1)
-          val range_2 = getRange(entity2, onto2)
+          val range_1 = onto1.classes_in_object_prop_range.get(iri_1).get
+          val range_2 = onto1.classes_in_object_prop_range.get(iri_2).get
 
-          Option(matchPairWise(domain_1, domain_2, similarity,match_type).toList ::: matchPairWise(domain_1, domain_2, similarity,match_type).toList)
-          //now add add correspondences
-        } else {
+          Option(matchPairWise(domain_1, domain_2, similarity,match_type).toList ::: matchPairWise(range_1, range_2, similarity,match_type).toList)
+        } else if (onto1.base_values.data_properties.contains(iri_1) && onto1.base_values.data_properties.contains(iri_2) && similarity >= threshold){
+          //data properties
+
+          val domain_1 = onto1.classes_in_data_prop_domain.get(iri_1).get
+          val domain_2 = onto2.classes_in_data_prop_domain.get(iri_2).get
+
+          Option(matchPairWise(domain_1, domain_2, similarity,match_type).toList)
+        }else {
           Option.empty
         }
+
       }
 
       additional_correspondences.filter(cells => cells.isDefined).map(cells => cells.get).flatten.toSet
@@ -108,10 +93,6 @@ class GraphBasedUsedPropertyMatcher extends StructuralLevelMatcher {
     val copied_alignment = new Alignment(initial_Alignment)
 
     copied_alignment.addAllCorrespondeces(produced_correspondences.flatten.toSet)
-
-
     copied_alignment
   }
-
-
 }

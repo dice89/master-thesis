@@ -47,41 +47,32 @@ case class MatchingCell(entity1: String, entity2: String, measure: Double, relat
 }
 
 
-class Alignment(val onto1:String, val onto2:String, val onto1_reference:OWLOntology, val onto2_reference:OWLOntology) {
+class  Alignment(val onto1:String, val onto2:String, val onto1_reference:FastOntology, val onto2_reference:FastOntology, val i_onto1:IOntology, val i_onto2:IOntology) {
 
   var correspondences: mutable.Set[MatchingCell] =new mutable.HashSet[MatchingCell]
 
-  var i_onto1 = if(onto1_reference!=null){
-    new IOntology(onto1_reference)
-  }else {
-    null
-  }
-  var i_onto2 = if(onto2_reference!=null){
-    new IOntology(onto2_reference)
-  }else {
-    null
-  }
+
 
   /**
    * Copy constructor
    * @param alignment_to_Copy Alingment to Copy
    */
   def this(alignment_to_Copy: Alignment) = {
-    this(alignment_to_Copy.onto1,alignment_to_Copy.onto2,alignment_to_Copy.onto1_reference,alignment_to_Copy.onto2_reference )
+    this(alignment_to_Copy.onto1,alignment_to_Copy.onto2,alignment_to_Copy.onto1_reference,alignment_to_Copy.onto2_reference,alignment_to_Copy.i_onto1,alignment_to_Copy.i_onto2  )
     this.correspondences = alignment_to_Copy.correspondences.map(cell => MatchingCell(cell.entity1,cell.entity2,cell.measure,cell.relation,cell.owl_type,cell.match_type ))
   }
 
 
-  def this ( onto1:String,  onto2:String, onto1_reference:OWLOntology, onto2_reference:OWLOntology, correspondences:List[MatchingCell]){
-    this(onto1,onto2,onto1_reference,onto2_reference)
+  def this ( onto1:String,  onto2:String, onto1_reference:FastOntology, onto2_reference:FastOntology, i_onto1:IOntology, i_onto2:IOntology, correspondences:List[MatchingCell]){
+    this(onto1,onto2,onto1_reference,onto2_reference,i_onto1,i_onto2)
 
 
 
     this.correspondences =  this.correspondences.++(correspondences)
   }
 
-  def this ( onto1:String,  onto2:String, onto1_reference:OWLOntology, onto2_reference:OWLOntology,  matchings:Map[MatchRelation,Double]){
-    this(onto1,onto2,onto1_reference,onto2_reference)
+  def this ( onto1:String,  onto2:String, onto1_reference:FastOntology, onto2_reference:FastOntology, i_onto1:IOntology, i_onto2:IOntology, matchings:Map[MatchRelation,Double]){
+    this(onto1,onto2,onto1_reference,onto2_reference,i_onto1,i_onto2)
 
     matchings.foreach({
       case(matchrelation, similiarity) => {
@@ -96,7 +87,7 @@ class Alignment(val onto1:String, val onto2:String, val onto1_reference:OWLOntol
 
 
   def this ( onto1:String,  onto2:String, correspondences:List[MatchingCell]){
-    this(onto1,onto2,null,null)
+    this(onto1,onto2,null,null,null,null)
 
 
     this.correspondences =  this.correspondences.++(correspondences)
@@ -110,7 +101,7 @@ class Alignment(val onto1:String, val onto2:String, val onto1_reference:OWLOntol
    * @param matchings
    */
   def this (onto1:String, onto2:String,threshold:Double, matchings:Map[MatchRelation,Double]){
-    this(onto1,onto2,null,null)
+    this(onto1,onto2,null,null,null,null)
     matchings.filter(tuple => tuple._2 >= threshold).foreach({
       case(matchrelation, similiarity) => {
         val test = MatchingCell(matchrelation.left,matchrelation.right,similiarity,matchrelation.relation,matchrelation.owl_type,matchrelation.match_type)
@@ -129,7 +120,7 @@ class Alignment(val onto1:String, val onto2:String, val onto1_reference:OWLOntol
    * @param matchings
    */
   def this (onto1:String, onto2:String, matchings:Map[MatchRelation,Double]){
-    this(onto1,onto2,null,null)
+    this(onto1,onto2,null,null,null,null)
     val corresp = matchings.foreach({
       case(matchrelation, similiarity) => {
         val test = MatchingCell(matchrelation.left,matchrelation.right,similiarity,matchrelation.relation,matchrelation.owl_type,matchrelation.match_type)

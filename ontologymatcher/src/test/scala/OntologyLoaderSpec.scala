@@ -11,9 +11,9 @@ class OntologyLoaderSpec extends  UnitSpec{
     val human_onto = OntologyLoader.load_fast_ontology("ontos/2014/anatomy/human.owl")
 
 
-    val classes_size = human_onto.classes.size
-    val data_props_size = human_onto.data_properties.size
-    val object_props_size = human_onto.object_properties.size
+    val classes_size = human_onto.base_values.classes.size
+    val data_props_size = human_onto.base_values.data_properties.size
+    val object_props_size = human_onto.base_values.object_properties.size
 
     assert(classes_size == 3304)
     assert(data_props_size == 0)

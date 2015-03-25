@@ -153,7 +153,8 @@ trait NonSeparatedOptimization extends ResultServerHandling{
           val starttime = System.currentTimeMillis()
           val selected = selection_function(single_matchings._1, threshold)
           //TODO add alignment debugging
-          val alignment = new Alignment(single_matchings._2.onto1, single_matchings._2.onto2,single_matchings._2.onto1_reference,single_matchings._2.onto2_reference,selected)
+          val ref_align= single_matchings._2
+          val alignment = new Alignment(ref_align.onto1, ref_align.onto2,ref_align.onto1_reference,ref_align.onto2_reference,ref_align.i_onto1, ref_align.i_onto2,selected)
 
           val eval_res_norm = alignment.evaluate(single_matchings._2)
 
@@ -187,7 +188,7 @@ trait NonSeparatedOptimization extends ResultServerHandling{
       //at least 3 steps of easing threshold
       val eval_res_single_list: List[EvaluationResult] = list_of_matchings.map(single_matchings=> {
         val selected = selection_function(single_matchings._1, threshold)
-        val alignment = new Alignment(single_matchings._2.onto1, single_matchings._2.onto2,single_matchings._2.onto1_reference,single_matchings._2.onto2_reference,selected)
+        val alignment = new Alignment(single_matchings._2.onto1, single_matchings._2.onto2,single_matchings._2.onto1_reference,single_matchings._2.onto2_reference,single_matchings._2.i_onto1,single_matchings._2.i_onto2,selected)
 
         val debugged = MatchingPruner.debugAlignment(alignment)
 

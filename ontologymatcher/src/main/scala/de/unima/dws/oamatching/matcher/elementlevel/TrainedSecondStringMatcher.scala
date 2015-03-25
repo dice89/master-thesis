@@ -2,7 +2,7 @@ package de.unima.dws.oamatching.matcher.elementlevel
 
 import com.wcohen.ss.api.StringWrapper
 import com.wcohen.ss.{AbstractTokenizedStringDistance, BasicStringWrapperIterator}
-import de.unima.dws.oamatching.core.Alignment
+import de.unima.dws.oamatching.core.{FastOntology, Alignment}
 import de.unima.dws.oamatching.core.matcher.ExtractedFields
 import org.semanticweb.owlapi.model.{OWLEntity, OWLOntology}
 
@@ -26,17 +26,16 @@ class TrainedSecondStringMatcher(override val similarity: Boolean,
    * Performs Training for further matching
    * @param ontology1
    * @param ontology2
-   * @param classes1
-   * @param classes2
-   * @param props1
-   * @param props2
-   */
-  override def init(ontology1: OWLOntology, ontology2: OWLOntology, classes1: List[OWLEntity], classes2: List[OWLEntity], props1: List[OWLEntity], props2: List[OWLEntity]): Unit = {
 
-    val labels: List[StringWrapper] = classes1.map(entity => distance.prepare(preprocess_function(flattenExtractedFields(getLabelAndFragmentOfEntity(entity, ontology1))).toLowerCase)) :::
-      classes2.map(entity => distance.prepare(preprocess_function(flattenExtractedFields(getLabelAndFragmentOfEntity(entity, ontology2))).toLowerCase)) :::
-      props1.map(entity => distance.prepare(preprocess_function(flattenExtractedFields(getLabelAndFragmentOfEntity(entity, ontology1))).toLowerCase)) :::
-      props2.map(entity => distance.prepare(preprocess_function(flattenExtractedFields(getLabelAndFragmentOfEntity(entity, ontology2))).toLowerCase))
+   */
+  override def init(ontology1: FastOntology, ontology2: FastOntology): Unit = {
+
+    val labels: List[StringWrapper] = ontology1.base_values.classes.map(entity=> distance.prepare(preprocess_function(flattenExtractedFields(ontology1.classes_to_names.get(entity).get)).toLowerCase)).toList :::
+      ontology2.base_values.classes.map(entity=> distance.prepare(preprocess_function(flattenExtractedFields(ontology2.classes_to_names.get(entity).get)).toLowerCase)).toList :::
+      ontology1.base_values.data_properties.map(entity=> distance.prepare(preprocess_function(flattenExtractedFields(ontology1.data_properties_to_names.get(entity).get)).toLowerCase)).toList :::
+      ontology2.base_values.data_properties.map(entity=> distance.prepare(preprocess_function(flattenExtractedFields(ontology2.data_properties_to_names.get(entity).get)).toLowerCase)).toList :::
+      ontology1.base_values.object_properties.map(entity=> distance.prepare(preprocess_function(flattenExtractedFields(ontology1.object_properties_to_names.get(entity).get)).toLowerCase)).toList :::
+      ontology2.base_values.object_properties.map(entity=> distance.prepare(preprocess_function(flattenExtractedFields(ontology2.object_properties_to_names.get(entity).get)).toLowerCase)).toList
 
     // transform to java
     val j_iter: java.util.Iterator[StringWrapper] = labels.iterator
@@ -63,15 +62,10 @@ class TrainedSecondStringMatcher(override val similarity: Boolean,
    * @param threshold
    * @return
    */
-  override def align(onto1: OWLOntology, onto2: OWLOntology, threshold: Double): Alignment = {
+  override def align(onto1: FastOntology, onto2: FastOntology, threshold: Double): Alignment = {
+
     //get elements of the ontology
-    val class_labels1: List[OWLEntity] = onto1.getClassesInSignature.toList
-    val class_labels2: List[OWLEntity] = onto2.getClassesInSignature.toList
-    val props_labels1: List[OWLEntity] = onto1.getAnnotationPropertiesInSignature.toList
-    val props_labels2: List[OWLEntity] = onto2.getAnnotationPropertiesInSignature.toList
-
-
-    init(onto1, onto2, class_labels1, class_labels2, props_labels1, props_labels2)
+    init(onto1, onto2)
 
     super.align(onto1, onto2, threshold)
   }

@@ -87,7 +87,7 @@ trait HalfSeparatedOptimization extends ResultServerHandling with LazyLogging {
 
         val all_matchings_list = selected_classes ++ selected_dps ++ selected_ops
 
-        val alignment = new Alignment(ref_align.onto1, ref_align.onto2,ref_align.onto1_reference,ref_align.onto2_reference, all_matchings_list)
+        val alignment = new Alignment(ref_align.onto1, ref_align.onto2,ref_align.onto1_reference,ref_align.onto2_reference,ref_align.i_onto1, ref_align.i_onto2,all_matchings_list)
 
         val debugged = MatchingPruner.debugAlignment(alignment)
 

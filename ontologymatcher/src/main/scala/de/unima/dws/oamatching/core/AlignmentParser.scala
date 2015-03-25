@@ -203,8 +203,7 @@ object AlignmentParser {
 
     val cleaned_correspondences = correspondences.filter(_.isDefined).map(_.get)
 
-
-    new Alignment(onto1_namespace, onto2_namespace, onto1, onto2, cleaned_correspondences)
+    new Alignment(onto1_namespace, onto2_namespace, null, null,null,null, cleaned_correspondences)
   }
 
   /**

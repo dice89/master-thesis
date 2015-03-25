@@ -34,17 +34,11 @@ trait EvaluationDataSetParser {
 
     val ref = path_to_folder +File.separator+"reference.rdf"
 
-    val onto1 = OntologyLoader.load(human_onto_name)
-    val onto2 = OntologyLoader.load(mouse_onto_name)
+    val onto1 = OntologyLoader.load_fast_ontology(human_onto_name)
+    val onto2 = OntologyLoader.load_fast_ontology(mouse_onto_name)
 
 
 
-    println("Size of class human "+onto1.getClassesInSignature().size())
-    println("Size of classes mouse "+onto2.getClassesInSignature().size())
-
-    println("Total Size human: "+onto1.getSignature().size())
-
-    println("Total Size mouse: "+onto2.getSignature().size())
     val name: String = "human-mouse"
     val matching_problem = MatchingProblem(onto1, onto2, name)
 
@@ -68,8 +62,8 @@ trait EvaluationDataSetParser {
       val name_onto2: String = path_to_folder + File.separator + ontos(1).replaceAll("-", "").replaceAll(".rdf", "") + ".owl"
 
 
-      val onto1 = OntologyLoader.load(name_onto1)
-      val onto2 = OntologyLoader.load(name_onto2)
+      val onto1 = OntologyLoader.load_fast_ontology(name_onto1)
+      val onto2 = OntologyLoader.load_fast_ontology(name_onto2)
 
       //parse alignments
       val reference: Alignment = AlignmentParser.parseRDFWithOntos(ref_align_file.getAbsolutePath(), name_onto1, name_onto2)
@@ -87,13 +81,13 @@ trait EvaluationDataSetParser {
 
     val left_name: String = "101"
     val onto_left_file: File = new File(path_to_folder + File.separator + left_name + File.separator + "onto.rdf")
-    val onto_left = OntologyLoader.load(onto_left_file)
+    val onto_left = OntologyLoader.load_fast_ontology(onto_left_file.getPath)
 
     val folder: File = new File(path_to_folder)
 
     val problems: Array[EvaluationMatchingTask] = for (benchmark_folders <- folder.listFiles(new FolderFilter)) yield {
       val onto_right_path: String = benchmark_folders.getAbsolutePath + File.separator + "onto.rdf"
-      val onto_right = OntologyLoader.load(onto_right_path)
+      val onto_right = OntologyLoader.load_fast_ontology(onto_right_path)
 
       val right_name: String = benchmark_folders.getName
 
@@ -116,8 +110,8 @@ trait EvaluationDataSetParser {
 
     //name of the problem is the name of the rdf file alignment without .rdf extension
     val name: String = f_reference.dropRight(4)
-    val onto1 = OntologyLoader.load(f_onto1)
-    val onto2 = OntologyLoader.load(f_onto2)
+    val onto1 = OntologyLoader.load_fast_ontology(f_onto1)
+    val onto2 = OntologyLoader.load_fast_ontology(f_onto2)
     val reference: Alignment = AlignmentParser.parseRDF(f_reference)
 
     val matching_problem = MatchingProblem(onto1, onto2, name)

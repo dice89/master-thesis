@@ -138,8 +138,8 @@ object Runner {
     val file_onto2: File = new File(onto2)
     val reference = AlignmentParser.parseRDF(ref)
 
-    val l_onto1 = OntologyLoader.load(file_onto1)
-    val l_onto2 = OntologyLoader.load(file_onto2)
+    val l_onto1 = OntologyLoader.load_fast_ontology(file_onto1.getPath)
+    val l_onto2 = OntologyLoader.load_fast_ontology(file_onto2.getPath)
     val test_problem = MatchingProblem(l_onto1, l_onto2,data_set_name)
     (reference, test_problem)
   }

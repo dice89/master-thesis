@@ -8,11 +8,14 @@ needlemanWunsch2Distance,needlemanWunsch2Distance,E,dis,false,none,false,true,tr
 ngramDistance,ngramDistance,E,dis,false,none,false,true,true,false
 smoaDistance,smoaDistance,E,dis,false,none,false,true,true,false
 subStringDistance,subStringDistance,E,dis,false,none,false,true,true,false
+fuzzyjaccard,fuzzyjaccard,E,sim,false,none,false,true,true,false
+fuzzydice,fuzzydice,E,sim,false,none,false,true,true,false
+fuzzycosine,fuzzycosine,E,sim,false,none,false,true,true,false
 equalDistance,equalDistance,E,dis,false,none,false,true,true,false
 equalSimilarityStemmed,equalSimilarity,E,sim,true,stemmed,false,true,true,false
 prefix,prefix,E,sim,false,none,false,true,true,false
 suffix,suffix,E,sim,false,none,false,true,true,false
-mongeElkan,mongeElkan,E,sim,false,none,true,true,false
+mongeElkan,mongeElkan,E,sim,false,none,true,true,false,false
 lin,lin,E,sim,true,none,true,true,true,false
 lin_stemmed,lin,E,sim,true,stemmed,true,true,true,false
 path,path,E,sim,true,none,true,true,true,false
@@ -21,9 +24,8 @@ jiangConrath,jiangConrath,E,sim,true,none,true,true,true,false
 jiangConrath_stemmed,jiangConrath,E,sim,true,stemmed,true,true,true,false
 wuPalmer,wuPalmer,E,sim,true,none,true,true,true,false
 wuPalmer_stemmed,wuPalmer,E,sim,true,stemmed,true,true,true,false
-esaSim,esaSim,E,sim,true,none,true,true,true,false
-esaSim_stemmed,esaSim,E,sim,true,stemmed,true,true,true,false
 umbcSim,umbcSim,E,sim,true,none,true,true,true,false
+umbcphrasesim,umbcphrasesim,E,sim,false,none,false,true,true,false
 simple_tfidf,simple_tfidf,T,sim,true,stemmed,false,true,true,false
 soft_tfidf_jaro,soft_tfidf_jaro,T,sim,true,stemmed,false,true,true,false
 jaro_winkler_tfidf,jaro_winkler_tfidf,T,sim,true,stemmed,false,true,true,false
@@ -34,7 +36,3 @@ word2Vec,word2Vec,E,sim,true,none,true,true,true,false
 word2VecStemmed,word2VecStemmed,E,sim,true,stemmed,true,true,true,false
 graphBasedUsedClassMatcher,graphBasedUsedClassMatcher,S
 graphBasedUsedPropMatcher,graphBasedUsedPropMatcher,S
-simFloodMatcher,simFloodMatcher,S
-fuzzyjaccard,fuzzyjaccard,E,sim,false,none,false,true,true,false
-fuzzydice,fuzzydice,E,sim,false,none,false,true,true,false
-fuzzycosine,fuzzycosine,E,sim,false,none,false,true,true,false

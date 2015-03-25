@@ -155,7 +155,7 @@ object MatchingPruner extends LazyLogging{
       convertCorrespondenceToCell(correspondence,owlTypeMap)
     }).toList
 
-    new Alignment(undebugedAlignment.onto1,undebugedAlignment.onto2,null,null,correspondences)
+    new Alignment(undebugedAlignment.onto1,undebugedAlignment.onto2,undebugedAlignment.onto1_reference,undebugedAlignment.onto2_reference,null,null,correspondences)
   }
 
   /**

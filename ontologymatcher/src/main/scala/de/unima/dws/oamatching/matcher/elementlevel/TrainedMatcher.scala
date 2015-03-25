@@ -1,5 +1,6 @@
 package de.unima.dws.oamatching.matcher.elementlevel
 
+import de.unima.dws.oamatching.core.FastOntology
 import org.semanticweb.owlapi.model.{OWLEntity, OWLOntology}
 
 /**
@@ -11,7 +12,7 @@ abstract class TrainedMatcher(override val similarity:Boolean,
                               override val useComment: Boolean,
                      override val preprocess_function:(String) => String ) extends PreProcessedMatcher(similarity,useLabel,useFragment,useComment,preprocess_function){
 
-  def init(ontology1: OWLOntology, ontology2: OWLOntology, classes1: List[OWLEntity], classes2: List[OWLEntity], props1: List[OWLEntity], props2: List[OWLEntity])
+  def init(ontology1: FastOntology, ontology2: FastOntology)
 
 
 }
