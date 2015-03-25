@@ -37,7 +37,7 @@ case class MatchingCell(entity1: String, entity2: String, measure: Double, relat
 
   }
   override def toString:String = {
-    "[ entity1: " + entity1.toString + " ,entity2: " + entity2.toString +" ,relation: "+relation +" ]"
+    "[ entity1: " + entity1.toString + " ,entity2: " + entity2.toString +" ,relation: "+relation +" ," + "sim: " +measure +" ]"
   }
 
   override def hashCode(): Int = {
@@ -219,6 +219,15 @@ class  Alignment(val onto1:String, val onto2:String, val onto1_reference:FastOnt
     println(test)
 
     test
+  }
+
+  //TODO more efficient
+  def containsCorrespondence(left:String, right:String):Boolean ={
+    this.correspondences.filter(_.entity1.equalsIgnoreCase(left)).filter(_.entity2.equalsIgnoreCase(right)).size > 0
+  }
+
+  def getCorrespondence(left:String, right:String):MatchingCell ={
+    this.correspondences.filter(_.entity1.equalsIgnoreCase(left)).filter(_.entity2.equalsIgnoreCase(right)).head
   }
 }
 

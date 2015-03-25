@@ -7,7 +7,7 @@ import de.unima.dws.alex.simservice.SimService
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.matcher.{Matcher, StructuralLevelMatcher}
 import de.unima.dws.oamatching.matcher.elementlevel.{PreProcessedStringMatcher, SimpleStringFunctionMatcher, TokenizedStringMatcher, TrainedSecondStringMatcher}
-import de.unima.dws.oamatching.matcher.structurallevel.{GraphBasedUsedClassMatcher, GraphBasedUsedPropertyMatcher, SimilarityFloodingMatcher}
+import de.unima.dws.oamatching.matcher.structurallevel.{PropertiesMatcher, GraphBasedUsedClassMatcher, GraphBasedUsedPropertyMatcher, SimilarityFloodingMatcher}
 import de.unima.dws.oamatching.measures.{SemanticMeasures, StringMeasureHelper, StringMeasures}
 import fr.inrialpes.exmo.ontosim.string.StringDistances
 
@@ -176,6 +176,7 @@ object MatcherRegistry {
       case "simFloodMatcher" => new SimilarityFloodingMatcher()
       case "graphBasedUsedPropMatcher" => new GraphBasedUsedPropertyMatcher()
       case "graphBasedUsedClassMatcher" => new GraphBasedUsedClassMatcher()
+      case "propertiesMatcher" => new PropertiesMatcher()
     }
   }
 

@@ -263,6 +263,4 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
 
     ExtractedFields(fragment,label,comment,Option.empty)
   }
-
-
 }

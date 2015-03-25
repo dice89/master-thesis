@@ -33,7 +33,7 @@ class GraphBasedUsedPropertyMatcher extends StructuralLevelMatcher {
    * @return
    */
   override protected def align(onto1: FastOntology, onto2: FastOntology, initial_Alignment: Alignment, threshold: Double): Alignment = {
-    initial_Alignment
+
     def matchPairWise(owl_classes1: Set[IRI], owl_classes2: Set[IRI], measure: Double,match_type:String): Set[MatchingCell] = {
       val cells: Set[Option[MatchingCell]] = for (owl_class1 <- owl_classes1;
                                           owl_class2 <- owl_classes2) yield {
