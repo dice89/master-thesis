@@ -1,12 +1,13 @@
 package de.unima.dws.oamatching.core
 
-import java.io.{File, InputStream}
+import java.io.{File, InputStream, PrintWriter}
 import java.net.URI
 
 import com.github.tototoshi.csv.CSVWriter
 import com.hp.hpl.jena.rdf.model._
 import com.hp.hpl.jena.rdf.model.impl.ResourceImpl
 import com.hp.hpl.jena.util.FileManager
+import de.unima.alcomox.ontology.IOntology
 import org.semanticweb.owlapi.model.OWLOntology
 
 import scala.collection.JavaConversions._
@@ -203,7 +204,11 @@ object AlignmentParser {
 
     val cleaned_correspondences = correspondences.filter(_.isDefined).map(_.get)
 
-    new Alignment(onto1_namespace, onto2_namespace, null, null,null,null, cleaned_correspondences)
+
+    val i_onto1 = new IOntology(onto1)
+    val i_onto2 = new IOntology(onto2)
+
+    new Alignment(onto1_namespace, onto2_namespace, null, null, i_onto1, i_onto2, cleaned_correspondences)
   }
 
   /**
@@ -255,8 +260,12 @@ object AlignmentParser {
         <Cell>
           <entity1 rdf:resource={entity1}/>
           <entity2 rdf:resource={entity2}/>
-          <measure rdf:datatype='xsd:float'>{measure}</measure>
-          <relation>{relation}</relation>
+          <measure rdf:datatype='xsd:float'>
+            {measure}
+          </measure>
+          <relation>
+            {relation}
+          </relation>
         </Cell>
       </map>
     }
@@ -272,15 +281,20 @@ object AlignmentParser {
         <xml>yes</xml>
         <level>0</level>
         <type>??</type>
-        <onto1>{onto1}</onto1>
-        <onto2>{onto2}</onto2>
-        {cells}
+        <onto1>
+          {onto1}
+        </onto1>
+        <onto2>
+          {onto2}
+        </onto2>{cells}
       </Alignment>
     }
 
     def getOnto(about: String, location: String): Elem =
       <Ontology rdf:about={about}>
-        <location>{location}</location>
+        <location>
+          {location}
+        </location>
       </Ontology>
     val cells = alignment.correspondences.toList.zipWithIndex.map { case (cell, index) =>
       getCell(index + 1, cell.entity1.toString, cell.entity2.toString, cell.measure, cell.relation)
@@ -301,25 +315,79 @@ object AlignmentParser {
   }
 
 
+  def writeFalseNegativesAnalysis(alignment: Alignment, reference: Alignment, name: String, selected_matchings: Map[MatchRelation, Double], raw_matchings: Map[MatchRelation, Double], threshold: Double): Unit = {
+    val testFile = new PrintWriter("tmp/falsenegatives" + File.separator + name + "fn_log.txt", "UTF-8")
+    val falseNegatives =alignment.getFalseNegatives(reference)
 
-  def writeFalseNegativesToCSV (alignment: Alignment, reference: Alignment, name: String): Unit = {
-    val falseNegatives = reference.correspondences.filterNot(cell => alignment.correspondences.contains(cell))
+    //get best result for false negative
+    val best_false_negative_result: Map[MatchingCell, (MatchRelation, Double)] = falseNegatives.map(elem => {
+      val filtered = raw_matchings.filter { case (relation, measure) => {
+        relation.left.equals(elem.entity1) && relation.right.equals(elem.entity2)
+      }
+      }
+      if (filtered.size > 0) {
+        Option(elem -> filtered.maxBy(_._2))
+      } else {
+        Option.empty
+      }
+    }).filter(_.isDefined).map(_.get).toMap
 
-    val csv_file = new File("tmp/falsenegatives" + File.separator +name+"_fn.csv")
+    falseNegatives.foreach(false_negative_cell => {
+      //loop over all false negatives
+      val res = best_false_negative_result.get(false_negative_cell)
+      if (res.isDefined) {
+        val negative_result = if (res.isDefined) res.get._2 else 0.0
+        val rights = selected_matchings.filter { case (relation, measure) => {
+          relation.right.equals(false_negative_cell.entity2)
+        }
+        }
 
-    println(csv_file.getAbsolutePath)
+        testFile.println("##############################")
+        testFile.println("Analyse fn " + false_negative_cell)
+        testFile.println(s"Threshold $threshold")
+        testFile.println(s"Is in Alignment? " + alignment.containsCorrespondence(false_negative_cell.entity1,false_negative_cell.entity2))
+        testFile.println(s"Best false negative result $negative_result")
+
+        rights.foreach(right_elem => {
+
+          val score = right_elem._2 - negative_result
+          testFile.println(s"Difference $score to " + right_elem._1)
+        })
+        val lefts = selected_matchings.filter { case (relation, measure) => {
+          relation.left.equals(false_negative_cell.entity1)
+        }
+        }
+        lefts.foreach(right_elem => {
+
+          val score = right_elem._2 - negative_result
+          testFile.println(s"Difference $score to " + right_elem._1)
+        })
+      }
+    })
+
+    testFile.flush()
+    testFile.close()
+  }
+
+
+  def writeFalseNegativesToCSV(alignment: Alignment, reference: Alignment, name: String): Unit = {
+    val falseNegatives = alignment.getFalseNegatives(reference)
+
+    val csv_file = new File("tmp/falsenegatives" + File.separator + name + "_fn.csv")
+
+   // println(csv_file.getAbsolutePath)
     if (!csv_file.exists()) {
       csv_file.createNewFile()
     }
     val writer = CSVWriter.open(csv_file)
 
     //print Headline
-    val header: List[String] = List[String]("left", "relation", "right", "owl_type","measure")
+    val header: List[String] = List[String]("left", "relation", "right", "owl_type", "measure")
 
 
     writer.writeRow(header)
-    falseNegatives.foreach(cell =>{
-      val row = List(cell.entity1,cell.relation,cell.entity2,cell.owl_type,cell.measure.toString)
+    falseNegatives.foreach(cell => {
+      val row = List(cell.entity1, cell.relation, cell.entity2, cell.owl_type, cell.measure.toString)
       writer.writeRow(row)
     })
 
@@ -327,24 +395,24 @@ object AlignmentParser {
     writer.close()
   }
 
-  def writeFalsePositivesToCSV (alignment: Alignment, reference: Alignment, name: String): Unit = {
-    val falsePositives = alignment.correspondences.filterNot(cell => reference.correspondences.contains(cell))
+  def writeFalsePositivesToCSV(alignment: Alignment, reference: Alignment, name: String): Unit = {
+    val falsePositives = alignment.getFalsePositives(reference)
 
-    val csv_file = new File("tmp/falsenegatives" + File.separator +name+"_fp.csv")
+    val csv_file = new File("tmp/falsenegatives" + File.separator + name + "_fp.csv")
 
-    println(csv_file.getAbsolutePath)
+    //println(csv_file.getAbsolutePath)
     if (!csv_file.exists()) {
       csv_file.createNewFile()
     }
     val writer = CSVWriter.open(csv_file)
 
     //print Headline
-    val header: List[String] = List[String]("left", "relation", "right", "owl_type","measure")
+    val header: List[String] = List[String]("left", "relation", "right", "owl_type", "measure")
 
 
     writer.writeRow(header)
-    falsePositives.foreach(cell =>{
-      val row = List(cell.entity1,cell.relation,cell.entity2,cell.owl_type,cell.measure.toString)
+    falsePositives.foreach(cell => {
+      val row = List(cell.entity1, cell.relation, cell.entity2, cell.owl_type, cell.measure.toString)
       writer.writeRow(row)
     })
 
@@ -352,33 +420,30 @@ object AlignmentParser {
     writer.close()
   }
 
-  def writeTruePositivesToCSV (alignment: Alignment, reference: Alignment, name: String): Unit = {
-    val truePositives = alignment.correspondences.filter(cell => reference.correspondences.contains(cell))
+  def writeTruePositivesToCSV(alignment: Alignment, reference: Alignment, name: String): Unit = {
+    val truePositives = alignment.getTruePositives(reference)
 
-    val csv_file = new File("tmp/falsenegatives" + File.separator +name+"_tp.csv")
+    val csv_file = new File("tmp/falsenegatives" + File.separator + name + "_tp.csv")
 
-    println(csv_file.getAbsolutePath)
+    //println(csv_file.getAbsolutePath)
     if (!csv_file.exists()) {
       csv_file.createNewFile()
     }
     val writer = CSVWriter.open(csv_file)
 
     //print Headline
-    val header: List[String] = List[String]("left", "relation", "right", "owl_type","measure")
+    val header: List[String] = List[String]("left", "relation", "right", "owl_type", "measure")
 
 
     writer.writeRow(header)
-    truePositives.foreach(cell =>{
-      val row = List(cell.entity1,cell.relation,cell.entity2,cell.owl_type,cell.measure.toString)
+    truePositives.foreach(cell => {
+      val row = List(cell.entity1, cell.relation, cell.entity2, cell.owl_type, cell.measure.toString)
       writer.writeRow(row)
     })
 
     writer.flush()
     writer.close()
   }
-
-
-
 
 
 }

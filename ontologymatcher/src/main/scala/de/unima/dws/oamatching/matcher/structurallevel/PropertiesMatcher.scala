@@ -2,6 +2,7 @@ package de.unima.dws.oamatching.matcher.structurallevel
 
 import de.unima.dws.oamatching.core.matcher.StructuralLevelMatcher
 import de.unima.dws.oamatching.core.{Alignment, Cell, FastOntology, MatchingCell}
+import de.unima.dws.oamatching.pipeline.MatchingSelector
 import org.semanticweb.owlapi.model.IRI
 
 /**
@@ -14,6 +15,12 @@ class PropertiesMatcher extends StructuralLevelMatcher {
     val produced_matching: Set[Vector[Option[MatchingCell]]] = initial_Alignment.getPresentMatchTypesinAlignment().map(match_type => {
 
       val filtered_alignment = initial_Alignment.getNewAlignmentWithMatchType(match_type)
+
+      //selection function
+
+      val selected_matchings = MatchingSelector.fuzzyGreedyRankSelectorDelta(0.05)(filtered_alignment.asMatchRelationMap(),0.5)
+
+      val selected_alignment = new Alignment(filtered_alignment.onto1, filtered_alignment.onto2, filtered_alignment.onto1_reference, filtered_alignment.onto2_reference, filtered_alignment.i_onto1, filtered_alignment.i_onto2,selected_matchings)
 
       val obj_alignments = for (obj_prop_1 <- onto1.base_values.object_properties;
                                 obj_prop_2 <- onto2.base_values.object_properties) yield {
@@ -76,8 +83,8 @@ class PropertiesMatcher extends StructuralLevelMatcher {
 
     val tester = for (iri_1 <- iris_1;
                       iri_2 <- iris_2;
-                      measure = uri_match(iri_1, iri_2, onto1, onto2, alignment);
-                      if(measure > 0.0)) yield {
+                      measure = uri_match(iri_1, iri_2, onto1, onto2, alignment)) yield {
+
       measure
     }
 
@@ -135,7 +142,8 @@ class PropertiesMatcher extends StructuralLevelMatcher {
       0.0
     } else {
       if (alignment.containsCorrespondence(iri_1_string, iri_2_string)) {
-        alignment.getCorrespondence(iri_1_string, iri_2_string).measure
+        val measure = alignment.getCorrespondence(iri_1_string, iri_2_string).measure
+        measure
       } else {
         0.0
       }

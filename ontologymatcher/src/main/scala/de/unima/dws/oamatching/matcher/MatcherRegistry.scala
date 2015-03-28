@@ -7,7 +7,7 @@ import de.unima.dws.alex.simservice.SimService
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.matcher.{Matcher, StructuralLevelMatcher}
 import de.unima.dws.oamatching.matcher.elementlevel.{PreProcessedStringMatcher, SimpleStringFunctionMatcher, TokenizedStringMatcher, TrainedSecondStringMatcher}
-import de.unima.dws.oamatching.matcher.structurallevel.{PropertiesMatcher, GraphBasedUsedClassMatcher, GraphBasedUsedPropertyMatcher, SimilarityFloodingMatcher}
+import de.unima.dws.oamatching.matcher.structurallevel._
 import de.unima.dws.oamatching.measures.{SemanticMeasures, StringMeasureHelper, StringMeasures}
 import fr.inrialpes.exmo.ontosim.string.StringDistances
 
@@ -98,7 +98,7 @@ object MatcherRegistry {
     def measure_fct = get_string_matching_function(matcher_name)
 
     var preprocess: (String) => String = null
-    val tokenizer = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
+    val tokenizer = StringMeasureHelper.tokenize_combined_all
     val tokens_to_string = StringMeasureHelper.token_list_to_String _
 
     if (tokenized) {
@@ -126,8 +126,7 @@ object MatcherRegistry {
       case KEY_SIM => true
       case _ => true
     }
-    val tokenizer: (String) => List[String] = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
-
+    val tokenizer: (String) => List[String] = StringMeasureHelper.tokenize_combined_all
     val stemmed_tokenizer: (String) => List[String] = StringMeasureHelper.stemMultiple _ compose tokenizer
     val stop_filtered_tokenizer = StringMeasureHelper.stopWordFilter _ compose tokenizer
     val stop_filtered_stemmed_tokenizer = StringMeasureHelper.stemMultiple _ compose stop_filtered_tokenizer
@@ -177,6 +176,7 @@ object MatcherRegistry {
       case "graphBasedUsedPropMatcher" => new GraphBasedUsedPropertyMatcher()
       case "graphBasedUsedClassMatcher" => new GraphBasedUsedClassMatcher()
       case "propertiesMatcher" => new PropertiesMatcher()
+      case "neighborhoodMatcher" => new NeighborHoodSimilarityMatcher(NeighborHoodSimilarityMatcher.STRATEGY_MAX)
     }
   }
 
@@ -186,7 +186,7 @@ object MatcherRegistry {
    * @return
    */
   def initTrainedMatcher(matcher_name: String, use_label: Boolean, use_fragment: Boolean, use_comment: Boolean): Matcher = {
-    val tokenizer = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
+    val tokenizer = StringMeasureHelper.tokenize_combined_all
     val tokens_to_string = StringMeasureHelper.token_list_to_String _
     val simple_preprocessing = StringMeasureHelper.to_lower_case_single _ compose tokens_to_string compose tokenizer compose StringMeasureHelper.porter_stem compose StringMeasureHelper.minimalPreprocess
 

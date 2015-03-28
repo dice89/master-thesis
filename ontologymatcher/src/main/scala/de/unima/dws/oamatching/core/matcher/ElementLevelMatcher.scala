@@ -43,7 +43,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
       }
       i=i+1
     }
-
+    i=0
     //match data props
     while(i < onto1.base_values.data_properties.size){
       n = 0
@@ -55,7 +55,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
       }
       i=i+1
     }
-
+    i=0
     //match object props
     while(i < onto1.base_values.object_properties.size){
       n = 0

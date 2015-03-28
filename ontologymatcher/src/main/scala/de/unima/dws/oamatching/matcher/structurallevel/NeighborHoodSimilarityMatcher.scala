@@ -1,24 +1,28 @@
 package de.unima.dws.oamatching.matcher.structurallevel
 
+import com.typesafe.scalalogging.slf4j.LazyLogging
 import de.unima.dws.oamatching.core.matcher.StructuralLevelMatcher
 import de.unima.dws.oamatching.core.{Alignment, Cell, FastOntology, MatchingCell}
+import de.unima.dws.oamatching.pipeline.MatchingSelector
 import org.semanticweb.owlapi.model.IRI
 
 /**
  * Created by mueller on 25/03/15.
  */
-class NeighborHoodSimilarityMatcher(val strategy: Int) extends StructuralLevelMatcher {
+class NeighborHoodSimilarityMatcher(val strategy: Int) extends StructuralLevelMatcher with LazyLogging {
 
 
   override protected def align(onto1: FastOntology, onto2: FastOntology, initial_Alignment: Alignment, threshold: Double): Alignment = {
 
     val produced_matchings: Set[Set[MatchingCell]] = initial_Alignment.getPresentMatchTypesinAlignment().map(match_type => {
 
-      val filtered_alignment = initial_Alignment.getNewAlignmentWithMatchType(match_type)
+      val filtered_alignment: Alignment = initial_Alignment.getNewAlignmentWithMatchType(match_type)
 
+      val selected_matchings = MatchingSelector.fuzzyGreedyRankSelectorDelta(0.01)(filtered_alignment.asMatchRelationMap(), 0.5)
+      val selected_alignment = new Alignment(filtered_alignment.onto1, filtered_alignment.onto2, filtered_alignment.onto1_reference, filtered_alignment.onto2_reference, filtered_alignment.i_onto1, filtered_alignment.i_onto2, selected_matchings)
 
       val cells_to_add = filtered_alignment.correspondences.map(cell => {
-        getMatchingByNeighborHood(cell, onto1, onto2, filtered_alignment, match_type)
+        getMatchingByNeighborHood(cell, onto1, onto2, selected_alignment, match_type, threshold)
       }).toList.flatten.groupBy(identity)
 
       //TODO different strategies
@@ -36,15 +40,17 @@ class NeighborHoodSimilarityMatcher(val strategy: Int) extends StructuralLevelMa
   }
 
 
-  def getMatchingByNeighborHood(cell: MatchingCell, onto1: FastOntology, onto2: FastOntology, alignment: Alignment, match_type: String): Set[MatchingCell] = {
+  def getMatchingByNeighborHood(cell: MatchingCell, onto1: FastOntology, onto2: FastOntology, alignment: Alignment, match_type: String, threshold: Double): Set[MatchingCell] = {
 
     //super classes
     val sub_entities_onto1 = getDirectChildren(cell.owl_type, cell.entity1, onto1)
     val sub_entities_onto2 = getDirectChildren(cell.owl_type, cell.entity2, onto2)
 
     val matching_from_sub_classes: Set[MatchingCell] = for (entity1 <- sub_entities_onto1.get;
-                                                            entity2 <- sub_entities_onto2.get) yield {
-      matchNeighborHood(entity1, entity2, alignment, cell.owl_type, onto1, onto2, match_type)
+                                                            entity2 <- sub_entities_onto2.get;
+                                                            candidate = matchNeighborHood(entity1, entity2, alignment, cell.owl_type, onto1, onto2, match_type, threshold);
+                                                            if (candidate.isDefined)) yield {
+      candidate.get
     }
 
     //super classes
@@ -52,8 +58,10 @@ class NeighborHoodSimilarityMatcher(val strategy: Int) extends StructuralLevelMa
     val super_entities_onto2 = getDirectParents(cell.owl_type, cell.entity2, onto2)
 
     val matching_from_super_classes: Set[MatchingCell] = for (entity1 <- super_entities_onto1.get;
-                                                              entity2 <- super_entities_onto2.get) yield {
-      matchNeighborHood(entity1, entity2, alignment, cell.owl_type, onto1, onto2, match_type)
+                                                              entity2 <- super_entities_onto2.get;
+                                                              candidate = matchNeighborHood(entity1, entity2, alignment, cell.owl_type, onto1, onto2, match_type, threshold)
+                                                              if (candidate.isDefined)) yield {
+      candidate.get
     }
 
     //resolve potentially double matched cells
@@ -74,8 +82,18 @@ class NeighborHoodSimilarityMatcher(val strategy: Int) extends StructuralLevelMa
     resulting_matchings
   }
 
-
-  def matchNeighborHood(entity1: IRI, entity2: IRI, alignment: Alignment, owl_type: String, onto1: FastOntology, onto2: FastOntology, match_type: String): MatchingCell = {
+  /**
+   * Match based on its neighborhood
+   * @param entity1
+   * @param entity2
+   * @param alignment
+   * @param owl_type
+   * @param onto1
+   * @param onto2
+   * @param match_type
+   * @return
+   */
+  def matchNeighborHood(entity1: IRI, entity2: IRI, alignment: Alignment, owl_type: String, onto1: FastOntology, onto2: FastOntology, match_type: String, threshold: Double): Option[MatchingCell] = {
     val entity1_parents: Option[Map[IRI, Integer]] = getParents(entity1, onto1, owl_type)
     val entity1_children = getChildren(entity1, onto1, owl_type)
 
@@ -96,11 +114,15 @@ class NeighborHoodSimilarityMatcher(val strategy: Int) extends StructuralLevelMa
     } else {
       (new_measure_child + new_measure_parent) / 2
     }
-    println(s"Child Measure $entity1 $entity2 " + new_measure_child)
-    println(s"Parent Measure  $entity1 $entity2 " + new_measure_parent)
+    //println(s"Child Measure $entity1 $entity2 " + new_measure_child)
+    //println(s"Parent Measure  $entity1 $entity2 " + new_measure_parent)
 
+    if (measure >= threshold) {
+      Option(MatchingCell(entity1.toString, entity2.toString, measure, "=", owl_type, match_type))
+    } else {
+      Option.empty
+    }
 
-    MatchingCell(entity1.toString, entity2.toString, measure, "=", owl_type, match_type)
   }
 
 
@@ -131,7 +153,7 @@ class NeighborHoodSimilarityMatcher(val strategy: Int) extends StructuralLevelMa
 
       val sim_parent_tupled = sim.unzip3
       //TODO discuss divided by 2
-      val new_measure = sim_parent_tupled._1.sum / (sim_parent_tupled._2.sum / 2 + sim_parent_tupled._3.sum / 2)
+      val new_measure = sim_parent_tupled._1.sum / (sim_parent_tupled._2.sum + sim_parent_tupled._3.sum)
       if (new_measure > 1.0) {
         1.0
       } else {
@@ -223,7 +245,7 @@ class NeighborHoodSimilarityMatcher(val strategy: Int) extends StructuralLevelMa
   def getParents(child_iri: IRI, onto: FastOntology, owl_type: String): Option[Map[IRI, Integer]] = {
 
     def parent_map = getChildToParentMap(owl_type, onto)
-    getChildren(child_iri, 0, parent_map)
+    getParents(child_iri, 0, parent_map)
   }
 
   def getChildren(parent: IRI, start_depth: Integer, children_map: Map[IRI, Set[IRI]]): Option[Map[IRI, Integer]] = {
@@ -237,15 +259,24 @@ class NeighborHoodSimilarityMatcher(val strategy: Int) extends StructuralLevelMa
         Option(Map(parent -> start_depth))
       }
 
+    }else if(children.size == 1 && children.head.equals(parent)){
+      Option.empty
     } else {
-      val new_elems = children.map(new_parent => {
-        getChildren(new_parent, start_depth + 1, children_map)
-      }).filter(_.isDefined).map(_.get).flatten.toMap
+
+      try {
+        val new_elems = children.map(new_parent => {
+          getChildren(new_parent, start_depth + 1, children_map)
+        }).filter(_.isDefined).map(_.get).flatten.toMap
+        Option(Map(parent -> start_depth) ++ new_elems)
+      }
+      catch {
+        case e: Throwable => {
+          logger.error("error in Neighborhood Matcher", e)
+          Option(Map(parent -> start_depth))
+        }
+      }
 
       //add self
-
-      Option(Map(parent -> start_depth) ++ new_elems)
-
     }
   }
 
@@ -259,14 +290,24 @@ class NeighborHoodSimilarityMatcher(val strategy: Int) extends StructuralLevelMa
       } else {
         Option(Map(child -> start_depth))
       }
+    //avoid cyclical effects
+    } else if(parents.size == 1 && parents.head.equals(child)){
+      Option.empty
+    }else {
+      try {
+        val new_elems = parents.map(new_parent => {
+          getParents(new_parent, start_depth + 1, parents_map)
+        }).filter(_.isDefined).map(_.get).flatten.toMap
 
-    } else {
-      val new_elems = parents.map(new_parent => {
-        getParents(new_parent, start_depth + 1, parents_map)
-      }).filter(_.isDefined).map(_.get).flatten.toMap
-
-      //add self
-      Option(Map(child -> start_depth) ++ new_elems)
+        //add self
+        Option(Map(child -> start_depth) ++ new_elems)
+      }
+      catch {
+        case e: Throwable => {
+          logger.error("error in Neighborhood Matcher", e)
+          Option(Map(child -> start_depth))
+        }
+      }
 
 
     }

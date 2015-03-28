@@ -1,25 +1,25 @@
 package de.unima.dws.oamatching.pipeline
 
-import java.io.File
-
 import com.typesafe.scalalogging.slf4j.LazyLogging
-import de.unima.alcomox.{Settings, ExtractionProblem}
-import de.unima.alcomox.mapping.{SemanticRelation, Correspondence, Mapping}
-import de.unima.alcomox.ontology.IOntology
+import de.unima.alcomox.mapping.{Correspondence, Mapping, SemanticRelation}
+import de.unima.alcomox.{ExtractionProblem, Settings}
 import de.unima.dws.oamatching.core._
-import org.semanticweb.owlapi.model.OWLOntology
+
 import scala.collection.JavaConversions._
 
 /**
  * Implements some post matching pruning techniques
  * Created by mueller on 23/01/15.
  */
-object MatchingPruner extends LazyLogging{
-  val runtime = Runtime.getRuntime()
-  import runtime.{ totalMemory, freeMemory, maxMemory }
+object MatchingPruner extends LazyLogging {
+
   //Debugging settings
   Settings.BLACKBOX_REASONER = Settings.BlackBoxReasoner.PELLET;
   Settings.ONE_TO_ONE = false;
+  Settings.MANY_TO_ONE = true
+  Settings.ONE_TO_MANY = true
+  Settings.REMOVE_INDIVIDUALS = true
+
   /**
    * Simple namespace filter,only return matching which ids are start with the once mentioned in the allowedNamespaces list
    * @param matchings matchings to filter
@@ -71,17 +71,16 @@ object MatchingPruner extends LazyLogging{
    * @param alignment
    * @return
    */
-  def debugAlignment(alignment:Alignment):Alignment = {
-
+  def debugAlignment(alignment: Alignment): Alignment = {
 
 
     val owlTypeMap: Map[String, String] = alignment.correspondences.map(cell => {
-      val key =cell.entity1+"="+cell.entity2
+      val key = cell.entity1 + "=" + cell.entity2
       val value = cell.owl_type
-      key->value
+      key -> value
     }).toMap
 
-    val mapping =convertAlignmentToMapping(alignment)
+    val mapping = convertAlignmentToMapping(alignment)
 
     val ep = new ExtractionProblem(
       ExtractionProblem.ENTITIES_CONCEPTSPROPERTIES,
@@ -99,22 +98,130 @@ object MatchingPruner extends LazyLogging{
     val result = try {
       ep.solve();
 
+      println("Removed Matchings")
+      ep.getDiscardedMapping.foreach(corres => {
+        println(corres.toString)
+      })
       val extracted: Mapping = ep.getExtractedMapping()
       logger.info("Debugging completed")
-      convertMappingToAlignment(extracted,owlTypeMap,alignment)
+      convertMappingToAlignment(extracted, owlTypeMap, alignment)
 
     }
     catch {
-      case _:Throwable  =>{
-
+      case e: Throwable => {
+        logger.error("Error while Debugging Ontolog", e)
         println("error")
         alignment
       }
     };
 
-    println("New session, total memory = %s, max memory = %s, free memory = %s".format(totalMemory/1024, maxMemory/1024, freeMemory/1024))
+    result
+  }
+
+  /**
+   * Removes incoherent correspondences from the alignment based on alcomo and replaces them with very similar ones and peforms debugging again
+   * @param alignment
+   * @return
+   */
+  def debugAlignment(alignment: Alignment, raw_matchings: Map[MatchRelation, Double], threshold:Double): Alignment = {
+
+
+    val owlTypeMap: Map[String, String] = alignment.correspondences.map(cell => {
+      val key = cell.entity1 + "=" + cell.entity2
+      val value = cell.owl_type
+      key -> value
+    }).toMap
+
+    val mapping = convertAlignmentToMapping(alignment)
+
+    val ep = new ExtractionProblem(
+      ExtractionProblem.ENTITIES_CONCEPTSPROPERTIES,
+      ExtractionProblem.METHOD_GREEDY,
+      ExtractionProblem.REASONING_EFFICIENT
+    );
+
+    // attach ontologies and mapping to the problem
+    ep.bindSourceOntology(alignment.i_onto1);
+    ep.bindTargetOntology(alignment.i_onto2);
+    ep.bindMapping(mapping);
+    ep.init()
+    // solve the problem
+    val result = try {
+      ep.solve();
+      val discarded: Mapping = ep.getDiscardedMapping
+
+      val extracted: Mapping = ep.getExtractedMapping()
+      logger.info("Debugging completed")
+      val pre_result =  convertMappingToAlignment(extracted, owlTypeMap, alignment)
+
+      if(discarded.size() > 0) {
+        val to_be_added = getSimilarMatchingForDiscarded(discarded, raw_matchings,threshold*0.5)
+        val new_matchings = to_be_added.map { case (relation, value) => {
+          MatchingCell(relation.left, relation.right, value, relation.relation, relation.owl_type, relation.match_type)
+        }
+        }.toSet
+
+        val size_before = pre_result.correspondences.size
+        pre_result.addAllCorrespondeces(new_matchings)
+        val size_after = pre_result.correspondences.size
+        if(size_after < size_before){
+          println("not worked")
+        }
+        //now debug again
+        pre_result
+      }else {
+        pre_result
+      }
+
+
+    }
+    catch {
+      case e: Throwable => {
+        logger.error("Error while Debugging Ontology", e)
+        println("error")
+        alignment
+      }
+    };
 
     result
+  }
+
+  def getSimilarMatchingForDiscarded(discarded: Mapping, raw_matchings: Map[MatchRelation, Double], threshold:Double): Map[MatchRelation, Double] = {
+
+
+    val result_tmp = discarded.map(correspondence => {
+      getSimilarMatchingForDiscardedSingle(correspondence, raw_matchings)
+    }).unzip
+
+    val result_option: Iterable[Option[(MatchRelation, Double)]] = result_tmp._1 ++ result_tmp._2
+
+    val result_map: Map[MatchRelation, Double] = result_option.filter(_.isDefined).map(_.get).filter(elem => elem._2 > threshold).toMap
+
+    result_map
+  }
+
+  def getSimilarMatchingForDiscardedSingle(correspondence: Correspondence, raw_matchings: Map[MatchRelation, Double]): (Option[(MatchRelation, Double)], Option[(MatchRelation, Double)]) = {
+
+    //best left alternatives
+    val left_alternatives = raw_matchings.filter { case (relation, value) => {
+      relation.left.equals(correspondence.getSourceEntityUri) && !relation.right.equals(correspondence.getTargetEntityUri)
+    }
+    }
+
+    val best_left = if (left_alternatives.size > 0) Option(left_alternatives.maxBy(_._2)) else Option.empty
+
+
+    //best right alternatives
+    val right_alternatives = raw_matchings.filter { case (relation, value) => {
+      relation.right.equals(correspondence.getTargetEntityUri) && !relation.left.equals(correspondence.getSourceEntityUri)
+    }
+    }
+
+    val best_right = if (right_alternatives.size > 0) Option(right_alternatives.maxBy(_._2)) else Option.empty
+
+    val res: (Option[(MatchRelation, Double)], Option[(MatchRelation, Double)]) = (best_left, best_right)
+
+    res
   }
 
 
@@ -123,9 +230,9 @@ object MatchingPruner extends LazyLogging{
    * @param alignment
    * @return
    */
-  def convertAlignmentToMapping(alignment:Alignment):Mapping = {
+  def convertAlignmentToMapping(alignment: Alignment): Mapping = {
 
-    val correspondances = alignment.correspondences.map(cell=>{
+    val correspondances = alignment.correspondences.map(cell => {
       convertMatchingCellToCorrespondence(cell)
     })
 
@@ -137,42 +244,42 @@ object MatchingPruner extends LazyLogging{
    * @param cell
    * @return
    */
-  def convertMatchingCellToCorrespondence(cell:MatchingCell): Correspondence = {
-    val correspondence = new Correspondence(cell.entity1,cell.entity2,new SemanticRelation(SemanticRelation.EQUIV), cell.measure)
+  def convertMatchingCellToCorrespondence(cell: MatchingCell): Correspondence = {
+    val correspondence = new Correspondence(cell.entity1, cell.entity2, new SemanticRelation(SemanticRelation.EQUIV), cell.measure)
     correspondence
   }
 
   /**
-   *Converts an alcomo mapping to an alignment suitable for oamatch
+   * Converts an alcomo mapping to an alignment suitable for oamatch
    * @param mapping
    * @param owlTypeMap
    * @param undebugedAlignment the undebuged version of this created alignment
    * @return
    */
-  def convertMappingToAlignment(mapping:Mapping,owlTypeMap: Map[String, String], undebugedAlignment:Alignment):Alignment = {
+  def convertMappingToAlignment(mapping: Mapping, owlTypeMap: Map[String, String], undebugedAlignment: Alignment): Alignment = {
 
     val correspondences: List[MatchingCell] = mapping.getCorrespondences().map(correspondence => {
-      convertCorrespondenceToCell(correspondence,owlTypeMap)
+      convertCorrespondenceToCell(correspondence, owlTypeMap)
     }).toList
 
-    new Alignment(undebugedAlignment.onto1,undebugedAlignment.onto2,undebugedAlignment.onto1_reference,undebugedAlignment.onto2_reference,null,null,correspondences)
+    new Alignment(undebugedAlignment.onto1, undebugedAlignment.onto2, undebugedAlignment.onto1_reference, undebugedAlignment.onto2_reference, undebugedAlignment.i_onto1, undebugedAlignment.i_onto2, correspondences)
   }
 
   /**
-   *  Converts an alcomo mapping to a oamatch matching cell
+   * Converts an alcomo mapping to a oamatch matching cell
    * @param correspondence
    * @param owlTypeMap
    * @return
    */
-  def convertCorrespondenceToCell(correspondence: Correspondence,owlTypeMap: Map[String, String]):MatchingCell = {
+  def convertCorrespondenceToCell(correspondence: Correspondence, owlTypeMap: Map[String, String]): MatchingCell = {
     val measure = correspondence.getConfidence
     val entity1 = correspondence.getSourceEntityUri
     val entity2 = correspondence.getTargetEntityUri
 
     val relation = correspondence.getRelation.toString
-    val owlType: String = owlTypeMap.getOrElse(entity1+"="+entity2,Cell.TYPE_UNKOWN)
+    val owlType: String = owlTypeMap.getOrElse(entity1 + "=" + entity2, Cell.TYPE_UNKOWN)
 
-    MatchingCell(entity1,entity2,measure,relation,owlType,Alignment.TYPE_NONE)
+    MatchingCell(entity1, entity2, measure, relation, owlType, Alignment.TYPE_NONE)
   }
 
 

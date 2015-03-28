@@ -1,4 +1,4 @@
-import de.unima.dws.oamatching.core.OntologyLoader
+import de.unima.dws.oamatching.core.{AlignmentParser, OntologyLoader}
 import de.unima.dws.oamatching.matcher.elementlevel.SimpleStringFunctionMatcher
 import de.unima.dws.oamatching.matcher.structurallevel.{NeighborHoodSimilarityMatcher, PropertiesMatcher}
 import de.unima.dws.oamatching.measures.{StringMeasures, StringMeasureHelper}
@@ -8,7 +8,7 @@ import de.unima.dws.oamatching.pipeline.MatchingProblem
  * Created by mueller on 25/03/15.
  */
 class NeighbourhoodSimilaritySpec extends UnitSpec {
-  val base_matcher = new SimpleStringFunctionMatcher(true, true, true, true, StringMeasureHelper.distance_lower_cased(StringMeasures.computeEquality))
+  val base_matcher = new SimpleStringFunctionMatcher(true, true, true, true, StringMeasureHelper.distance_lower_cased(StringMeasures.computeLevenShteinSim))
   val n_matcher = new NeighborHoodSimilarityMatcher(NeighborHoodSimilarityMatcher.STRATEGY_MAX)
 
   "The neighbourhood similarity matcher " should "work" in {
@@ -52,10 +52,45 @@ class NeighbourhoodSimilaritySpec extends UnitSpec {
     val onto2 = OntologyLoader.load_fast_ontology("ontos/testontos/hierachy/tree2.owl")
     val initial_alignment = base_matcher.align(onto1, onto2, 0.6)
     val problem = MatchingProblem(onto1,onto2,"test")
-    val created =  n_matcher.align(problem,initial_alignment,0.0)
+    val created =  n_matcher.align(problem,initial_alignment,0.6)
 
-    println("TEST")
     println(created.correspondences)
+  }
+
+  "The NeighborhoodSimilarity " should "work with reallife ontologies" in {
+
+    val onto1 = OntologyLoader.load_fast_ontology("ontos/2014/conference/confOf.owl")
+    val onto2 = OntologyLoader.load_fast_ontology("ontos/2014/conference/iasted.owl")
+
+    val reference = AlignmentParser.parseRDFWithOntos("ontos/2014/conference/reference-alignment/confOf-iasted.rdf","ontos/2014/conference/cmt.owl","ontos/2014/conference/Conference.owl")
+    val initial_alignment = base_matcher.align(onto1, onto2, 0.4)
+
+    println(reference.correspondences.size)
+    val initial_result = initial_alignment.evaluate(reference)
+    println(initial_result)
+
+    val problem = MatchingProblem(onto1,onto2,"test")
+    val created =  n_matcher.align(problem,initial_alignment,0.6)
+
+    val created_result = created.evaluate(reference)
+    println(created_result)
+    println(created.correspondences)
+  }
+
+  "The NeighborhoodSimilarity " should "work with conference ekaw ontologies" in {
+
+    val onto1 = OntologyLoader.load_fast_ontology("ontos/2014/conference/Conference.owl")
+    val onto2 = OntologyLoader.load_fast_ontology("ontos/2014/conference/ekaw.owl")
+
+    val reference = AlignmentParser.parseRDFWithOntos("ontos/2014/conference/reference-alignment/conference-ekaw.rdf","ontos/2014/conference/Conference.owl","ontos/2014/conference/ekaw.owl")
+    val initial_alignment = base_matcher.align(onto1, onto2, 0.4)
+
+    println(reference.correspondences.size)
+    val initial_result = initial_alignment.evaluate(reference)
+
+    val problem = MatchingProblem(onto1,onto2,"test")
+    val created =  n_matcher.align(problem,initial_alignment,0.6)
+    val created_result = created.evaluate(reference)
 
   }
 }

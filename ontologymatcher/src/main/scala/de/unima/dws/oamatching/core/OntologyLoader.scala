@@ -68,7 +68,7 @@ object OntologyLoader {
     //get classes
 
 
-    val class_name_to_iri_map: Map[String, IRI] = owlOntology.getClassesInSignature().map(owlClass => {
+    val class_name_to_iri_map: Map[String, IRI] = owlOntology.getClassesInSignature().filter(filterNotOWLThing).map(owlClass => {
       owlClass.toStringID -> owlClass.getIRI
     }).toMap
 
@@ -90,14 +90,14 @@ object OntologyLoader {
     /*#################################################################################################################
                                             Class Hierachy
     ################################################################################################################*/
-    val class_hierachy: (Set[(IRI, Set[IRI])], Set[(IRI, Set[IRI])]) = owlOntology.getClassesInSignature().map(owlClass => {
+    val class_hierachy: (Set[(IRI, Set[IRI])], Set[(IRI, Set[IRI])]) = owlOntology.getClassesInSignature().filter(filterNotOWLThing).map(owlClass => {
       /*
         A sub class of B
         here we are B, so get A's
       */
       val sub_classes = owlOntology.getSubClassAxiomsForSuperClass(owlClass).map(classAxiom => {
         if (!classAxiom.getSubClass.isAnonymous) {
-          val sub_classes = classAxiom.getSubClass.asConjunctSet().map(sub_class => {
+          val sub_classes = classAxiom.getSubClass.asConjunctSet().filter(elem => filterNotOWLThing(elem.asOWLClass())).map(sub_class => {
             sub_class.asOWLClass().getIRI
           }).toSet
           Option(sub_classes)
@@ -112,7 +112,7 @@ object OntologyLoader {
       */
       val super_classes = owlOntology.getSubClassAxiomsForSubClass(owlClass).map(classAxiom => {
         if (!classAxiom.getSuperClass.isAnonymous) {
-          val sub_classes = classAxiom.getSuperClass.asConjunctSet().map(super_class => {
+          val sub_classes = classAxiom.getSuperClass.asConjunctSet().filter(elem => filterNotOWLThing(elem.asOWLClass())).map(super_class => {
             super_class.asOWLClass().getIRI
           }).toSet
           Option(sub_classes)
@@ -204,13 +204,13 @@ object OntologyLoader {
     val object_prop_domain_range = owlOntology.getObjectPropertiesInSignature().map(owlProp => {
 
       val domain = owlOntology.getObjectPropertyDomainAxioms(owlProp).map(domain_axiom => {
-        domain_axiom.getClassesInSignature.map(owl_class => {
+        domain_axiom.getClassesInSignature.filter(filterNotOWLThing).map(owl_class => {
           owl_class.getIRI
         }).toSet
       }).flatten.toSet
 
       val range = owlOntology.getObjectPropertyRangeAxioms(owlProp).map(range_axiom => {
-        range_axiom.getClassesInSignature.map(owl_class => {
+        range_axiom.getClassesInSignature.filter(filterNotOWLThing).map(owl_class => {
           owl_class.getIRI
         }).toSet
       }).flatten.toSet
@@ -257,14 +257,14 @@ object OntologyLoader {
     val data_prop_domain_range = owlOntology.getDataPropertiesInSignature().map(owlProp => {
 
       val domain = owlOntology.getDataPropertyDomainAxioms(owlProp).map(domain_axiom => {
-        domain_axiom.getClassesInSignature.map(owl_class => {
+        domain_axiom.getClassesInSignature.filter(filterNotOWLThing).map(owl_class => {
           owl_class.getIRI
         }).toSet
       }).flatten.toSet
 
 
       val range = owlOntology.getDataPropertyRangeAxioms(owlProp).map(range_axiom => {
-        range_axiom.getClassesInSignature.map(owl_class => {
+        range_axiom.getClassesInSignature.filter(filterNotOWLThing).map(owl_class => {
           owl_class.getIRI
         }).toSet
       }).flatten.toSet
@@ -295,7 +295,7 @@ object OntologyLoader {
                                        Extract Fields for Classes
     ################################################################################################################*/
 
-    val owlClassToNames: Map[IRI, ExtractedFields] = owlOntology.getClassesInSignature().map(owlClass => {
+    val owlClassToNames: Map[IRI, ExtractedFields] = owlOntology.getClassesInSignature().filter(filterNotOWLThing).map(owlClass => {
       //Fragment
       val local_name = Option(owlClass.getIRI.getRemainder.get())
 
@@ -392,5 +392,10 @@ object OntologyLoader {
     }
 
 
+  }
+
+  def filterNotOWLThing(elem:OWLEntity):Boolean = {
+    val iri_String = elem.getIRI.toString
+    !(iri_String.isEmpty || iri_String.endsWith("owl#Thing") ||  iri_String.endsWith("owl:Thing"))
   }
 }

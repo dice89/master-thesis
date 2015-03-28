@@ -1,24 +1,24 @@
 package de.unima.dws.oamatching.thesis
+
 import java.io.File
 
 import de.unima.dws.oamatching.analysis.RapidminerJobs
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core._
-import de.unima.dws.oamatching.pipeline.{MatchingPruner, ScoreNormalizationFunctions}
-import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingTask, EvaluationMatchingRunner}
+import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingRunner, EvaluationMatchingTask}
 import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
+import de.unima.dws.oamatching.pipeline.{MatchingPruner, ScoreNormalizationFunctions}
 import org.apache.commons.math.stat.inference.ChiSquareTestImpl
 import org.apache.commons.math3.distribution.NormalDistribution
 import org.apache.commons.math3.stat.inference.KolmogorovSmirnovTest
 
-import scala.Predef
 import scala.collection.immutable.Map
 import scala.collection.parallel.immutable.ParSeq
 
 /**
  * Created by mueller on 01/03/15.
  */
-trait NonSeparatedOptimization extends ResultServerHandling{
+trait NonSeparatedOptimization extends ResultServerHandling with OptimizationDebugging {
   this: CreateOutlierScoreStatistics.type =>
 
   /**
@@ -31,7 +31,7 @@ trait NonSeparatedOptimization extends ResultServerHandling{
    * @param pre_pro_key
    * @return
    */
-  def executeProcessNonSeparated(ds_name:String,run_number: Int, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], ref_matching_pairs:List[(EvaluationMatchingTask, File)], rapidminer_file: String, parameters: Map[String, Map[String, Double]], top_n: Int, pre_pro_key: String): ProcessEvalExecutionResultNonSeparated = {
+  def executeProcessNonSeparated(ds_name: String, run_number: Int, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], ref_matching_pairs: List[(EvaluationMatchingTask, File)], rapidminer_file: String, parameters: Map[String, Map[String, Double]], top_n: Int, pre_pro_key: String): ProcessEvalExecutionResultNonSeparated = {
 
     val process_name = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.lastIndexOf("."));
     val process_name_with_ending = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.size);
@@ -53,7 +53,7 @@ trait NonSeparatedOptimization extends ResultServerHandling{
 
       //val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(("none", (result._3, ref_alignment)), ("gaussian", (norm_res_gaussian, ref_alignment)), ("zscore", (norm_res_znorm, ref_alignment)), ("gammma", (norm_res_gamma, ref_alignment)), ("euclidean_max", (norm_res_euclidean_max, ref_alignment)))
       //val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(("none", (result._3, ref_alignment)))
-      val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(  ("zscore", (norm_res_znorm, ref_alignment)))
+      val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(("zscore", (norm_res_znorm, ref_alignment)))
       //val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(  ("zscore", (norm_res_znorm, ref_alignment)), ("gammma", (norm_res_gamma, ref_alignment)), ("euclidean_max", (norm_res_euclidean_max, ref_alignment)))
 
 
@@ -95,7 +95,7 @@ trait NonSeparatedOptimization extends ResultServerHandling{
     //get best normalization technique by max macro f1 measure
     val best_result: (String, (Double, AggregatedEvaluationResult)) = threshold_optimized_values.best_global_results.maxBy(_._2._2.macro_eval_res.f1Measure)
 
-    val json_result = createJSONResultString(ds_name,process_type,pre_pro_key,false, best_result._2._2,parameters,createJSONThresholdStringNonSeparated(best_result._2._1))
+    val json_result = createJSONResultString(ds_name, process_type, pre_pro_key, false, best_result._2._2, parameters, createJSONThresholdStringNonSeparated(best_result._2._1))
 
     sendResultToServer(json_result)
 
@@ -111,7 +111,7 @@ trait NonSeparatedOptimization extends ResultServerHandling{
 
     val result_tp: Seq[(MatchRelation, Double, Boolean)] = top.map { case (relation, score) => {
 
-      val cell = MatchingCell(relation.left, relation.right, score, relation.relation, relation.owl_type,relation.match_type)
+      val cell = MatchingCell(relation.left, relation.right, score, relation.relation, relation.owl_type, relation.match_type)
 
       if (ref_alignment.correspondences.contains(cell)) {
         (relation, score, true)
@@ -142,7 +142,7 @@ trait NonSeparatedOptimization extends ResultServerHandling{
       (technique, matchings_for_technique)
     }).toMap
 
-    val number_of_debuggers = results_by_techniques.size*threshold_grid.size*results_by_techniques.head._2.size
+    val number_of_debuggers = results_by_techniques.size * threshold_grid.size * results_by_techniques.head._2.size
     println(s"Size to be debugged $number_of_debuggers")
     //optimize for each matching technique and find global optimum
     val global_results: Map[String, Seq[(Double, AggregatedEvaluationResult)]] = results_by_techniques.map { case (name, list_of_matchings) => {
@@ -153,13 +153,13 @@ trait NonSeparatedOptimization extends ResultServerHandling{
           val starttime = System.currentTimeMillis()
           val selected = selection_function(single_matchings._1, threshold)
           //TODO add alignment debugging
-          val ref_align= single_matchings._2
-          val alignment = new Alignment(ref_align.onto1, ref_align.onto2,ref_align.onto1_reference,ref_align.onto2_reference,ref_align.i_onto1, ref_align.i_onto2,selected)
+          val ref_align = single_matchings._2
+          val alignment = new Alignment(ref_align.onto1, ref_align.onto2, ref_align.onto1_reference, ref_align.onto2_reference, ref_align.i_onto1, ref_align.i_onto2, selected)
 
           val eval_res_norm = alignment.evaluate(single_matchings._2)
 
           // val eval_res_debugged = debugged.evaluate(single_matchings._2)
-          val totaltime = System.currentTimeMillis()-starttime
+          val totaltime = System.currentTimeMillis() - starttime
 
           //println(s"Needed $totaltime to debug alignment of size "+alignment.correspondences.size)
           eval_res_norm
@@ -183,58 +183,46 @@ trait NonSeparatedOptimization extends ResultServerHandling{
 
       val threshold = best_result._1
 
-      val list_of_matchings = results_by_techniques.get(name).get
+      //at least 3 steps of easing thresh Lold
+      println(s"best threshold $threshold")
+      val easing_threshold_list = List(threshold - 0.2, threshold - 0.125, threshold - 0.1, threshold - 0.075, threshold - 0.05, threshold - 0.025, threshold - 0.015, threshold - 0.01, threshold)
+      val result_by_threshold = easing_threshold_list.map(test_threshold => {
 
-      //at least 3 steps of easing threshold
-      val eval_res_single_list: List[EvaluationResult] = list_of_matchings.map(single_matchings=> {
-        val selected = selection_function(single_matchings._1, threshold)
-        val alignment = new Alignment(single_matchings._2.onto1, single_matchings._2.onto2,single_matchings._2.onto1_reference,single_matchings._2.onto2_reference,single_matchings._2.i_onto1,single_matchings._2.i_onto2,selected)
+        val list_of_matchings = results_by_techniques.get(name).get
 
-        val debugged = MatchingPruner.debugAlignment(alignment)
+        val eval_res_single_list: List[EvaluationResult] = list_of_matchings.map(single_matchings => {
 
+          val selected = selection_function(single_matchings._1, test_threshold)
 
-        val eval_res_debugged = debugged.evaluate(single_matchings._2)
+          debugAndEvaluate(test_threshold, single_matchings._1, single_matchings._2, selected, name)
+        })
+        val agg_res = EvaluationMatchingRunner.computeAggregatedResults(eval_res_single_list)
 
-        val eval_res_normal = alignment.evaluate(single_matchings._2)
-
-
-        val improvement = eval_res_debugged.f1Measure-eval_res_normal.f1Measure
-        if(eval_res_debugged.f1Measure >= eval_res_normal.f1Measure){
-          println("improved " + improvement)
-        }else {
-          println("fucked " + improvement)
-        }
-
-        val problem_name = single_matchings._2.onto1+"-"+single_matchings._2.onto2
-
-        if(Config.loaded_config.getBoolean("optimization.write_details")){
-          AlignmentParser.writeFalseNegativesToCSV(debugged,single_matchings._2,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+name)
-          AlignmentParser.writeTruePositivesToCSV(debugged,single_matchings._2,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+name)
-          AlignmentParser.writeFalsePositivesToCSV(debugged,single_matchings._2,problem_name.replaceAll("http:/","").replaceAll("/","")+"_"+name)
-        }
-
-        eval_res_debugged
+        println(s"result for threshold $test_threshold")
+        println(agg_res)
+        (threshold -> agg_res)
       })
+      val best_result_threshold = result_by_threshold.maxBy(_._2.macro_eval_res.f1Measure)
 
-      val agg_res = EvaluationMatchingRunner.computeAggregatedResults(eval_res_single_list)
-      name->(threshold, agg_res)
+      name -> best_result_threshold
 
-    }}
+    }
+    }
 
 
     best_global_results.foreach(tuple => {
 
-      println(tuple._1 +" Macro")
-      println("Before debugging ---- "+ best_global_results_pre_debug.get(tuple._1).get._2.macro_eval_res.f1Measure)
-      println("After debugging ---- "+ tuple._2._2.macro_eval_res.f1Measure)
+      println(tuple._1 + " Macro")
+      println("Before debugging ---- " + best_global_results_pre_debug.get(tuple._1).get._2.macro_eval_res.f1Measure)
+      println("After debugging ---- " + tuple._2._2.macro_eval_res.f1Measure)
 
-      println(tuple._1 +" Micro")
-      println("Before debugging ---- "+ best_global_results_pre_debug.get(tuple._1).get._2.micro_eval_res.f1Measure)
-      println("After debugging ---- "+ tuple._2._2.micro_eval_res.f1Measure)
+      println(tuple._1 + " Micro")
+      println("Before debugging ---- " + best_global_results_pre_debug.get(tuple._1).get._2.micro_eval_res.f1Measure)
+      println("After debugging ---- " + tuple._2._2.micro_eval_res.f1Measure)
 
     })
 
-      //write alignments back
+    //write alignments back
     /*println(best_global_results.size)
     println(best_global_results.head._2._1)
     val best_global_threshold =best_global_results.head._2._1

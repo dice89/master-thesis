@@ -261,15 +261,15 @@ object StringMeasures {
   }
 
   def computeFuzzyJaccard(a:String,b:String):Double = {
-    fuzzy_jaccard.computeOverlap(a,b,0.8)
+    fuzzy_jaccard.computeOverlap(a,b,0.5)
   }
 
   def computeFuzzyCosine(a:String,b:String):Double = {
-    fuzzy_cosine.computeOverlap(a,b,0.8)
+    fuzzy_cosine.computeOverlap(a,b,0.5)
   }
 
   def computeFuzzyDice(a:String,b:String):Double = {
-    fuzzy_dice.computeOverlap(a,b,0.8)
+    fuzzy_dice.computeOverlap(a,b,0.5)
   }
 
 }

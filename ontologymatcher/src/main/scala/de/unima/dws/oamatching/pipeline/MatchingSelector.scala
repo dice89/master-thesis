@@ -89,7 +89,7 @@ object MatchingSelector {
       }
 
     selected_matchings_raw.filter(_.isDefined).map(_.get).map{case(relation,score)=> {
-      val new_relation: MatchRelation =MatchRelation(relation.left,relation.relation,relation.right,relation.owl_type,Alignment.TYPE_NONE)
+      val new_relation: MatchRelation =MatchRelation(relation.left,relation.relation,relation.right,relation.owl_type,relation.match_type)
       (new_relation,score)
     }}.toMap
   }

@@ -12,6 +12,7 @@ class TokenizedStringMatcher(override val similarity:Boolean,
 
 
   override def score(a: String, b: String): Double = {
+
     val res  = scoreTokenized( tokenizer(a),tokenizer(b))
 
     res

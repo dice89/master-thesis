@@ -58,6 +58,10 @@ object StringMeasureHelper {
     a.split("_")toList
   }
 
+  def tokenize_dash(a: String): List[String] = {
+    a.split("-")toList
+  }
+
   def tokenize_low_whiteSpace(a: String): List[String] = {
     a.split(" ")toList
   }
@@ -74,6 +78,7 @@ object StringMeasureHelper {
 
   def tokenize_combined: (String) => List[String] = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash)
 
+  def tokenize_combined_all: (String) => List[String] = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_combined, StringMeasureHelper.tokenize_dash)
 
   /**
    * Apply stemming stemming functions

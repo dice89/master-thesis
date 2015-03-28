@@ -23,10 +23,10 @@ case class MatchingCell(entity1: String, entity2: String, measure: Double, relat
   override def equals(other: Any): Boolean = other match {
     case that: MatchingCell => {
       (that canEqual this) &&
-        (this.entity1.equals(that.entity1) || this.entity1.equals(that.entity2)) &&
-        (this.entity2.equals(that.entity2) || this.entity2.equals(that.entity1)) &&
-        this.match_type.equals(that.match_type) &&
-        relation.equals(that.relation)
+        (this.entity1.equals(that.entity1)) &&
+        (this.entity2.equals(that.entity2)) &&
+        relation.equals(that.relation) &&
+        (match_type.equals(that.relation))
     }
     case _ => {
       true
@@ -39,7 +39,7 @@ case class MatchingCell(entity1: String, entity2: String, measure: Double, relat
   }
 
   override def hashCode(): Int = {
-    val state = Seq(entity1, entity2, match_type, relation)
+    val state = Seq(entity1, entity2, relation)
     state.map(_.hashCode()).foldLeft(0)((a, b) => 31 * a + b)
   }
 }
@@ -75,7 +75,6 @@ class Alignment(val onto1: String, val onto2: String, val onto1_reference: FastO
       case (matchrelation, similiarity) => {
         val cell = MatchingCell(matchrelation.left, matchrelation.right, similiarity, matchrelation.relation, matchrelation.owl_type, matchrelation.match_type)
         this.correspondences.add(cell)
-
       }
     })
 
@@ -139,19 +138,20 @@ class Alignment(val onto1: String, val onto2: String, val onto1_reference: FastO
 
   def addAllCorrespondecesKeepHigher(cells: Set[MatchingCell]): Unit = {
     correspondences = mutable.HashSet(cells.toSeq: _*) ++ correspondences
+    /*
+      cells.foreach(cell => {
+        //very inefficient
+        //TODO make more efficient
+        if (correspondences.contains(cell)) {
+          val existing_cell = correspondences.filter(_.equals(cell)).head
 
-    cells.foreach(cell => {
-      //very inefficient
-      //TODO make more efficient
-      if (correspondences.contains(cell)) {
-        val existing_cell = correspondences.filter(_.equals(cell)).head
-
-        if (existing_cell.measure < cell.measure) {
-          println("higher")
-          correspondences.add(cell)
+          if (existing_cell.measure < cell.measure) {
+            println("higher")
+            correspondences.add(cell)
+          }
         }
-      }
-    })
+      })*/
+
   }
 
   def addAllCorrespondeces(cells: mutable.Set[MatchingCell]): Unit = {
@@ -179,34 +179,126 @@ class Alignment(val onto1: String, val onto2: String, val onto1_reference: FastO
 
   def evaluate(reference: Alignment): EvaluationResult = {
 
-    //
-    val tp = if (reference.correspondences.size == 0) {
-      0
-    } else {
+    var tmp_tp = 0
+    var tmp_fp = 0
+    correspondences.foreach(cell_1 => {
+      var fp_tester = false
+      reference.correspondences.foreach(cell_2 => {
+        if (cell_1.entity1.equals(cell_2.entity1) && cell_1.entity2.equals(cell_2.entity2) && cell_1.relation.equals(cell_2.relation)) {
+          tmp_tp = tmp_tp + 1
+          fp_tester = true
+        }
+      })
 
-      correspondences.filter(cell => reference.correspondences.contains(cell)).size
-    }
-    //val tp =  correspondences.count(cell => reference.correspondences.contains(cell))
-    //val tp =  correspondences.filter(cell => reference.correspondences.exists(cell2 => cell.equals(cell2))).size
-    //false positives only present in this correspondance
-    val fp = if (reference.correspondences.size == 0) {
-      correspondences.size
-    } else {
-      correspondences.filterNot(cell => reference.correspondences.contains(cell)).size
-    }
-    //false negatives
-    val fn = if (reference.correspondences.size == 0) {
-      0
-    } else {
-      reference.correspondences.filterNot(cell => correspondences.contains(cell)).size
-    }
+      if (!fp_tester) {
+        tmp_fp = tmp_fp + 1
+      }
+    })
 
+    var tmp_fn = 0
+    reference.correspondences.foreach(cell_1 => {
+      var fn_tester = false
+      correspondences.foreach(cell_2 => {
+        if (cell_1.entity1.equals(cell_2.entity1) && cell_1.entity2.equals(cell_2.entity2) && cell_1.relation.equals(cell_2.relation)) {
+          fn_tester = true
+        }
+      })
+      if (!fn_tester) {
+        tmp_fn = tmp_fn + 1
+      }
+    })
+
+
+    /*
+        //
+        val tp = if (reference.correspondences.size == 0) {
+          0
+        } else {
+
+          correspondences.filter(cell => reference.correspondences.contains(cell)).size
+        }
+        //val tp =  correspondences.count(cell => reference.correspondences.contains(cell))
+        //val tp =  correspondences.filter(cell => reference.correspondences.exists(cell2 => cell.equals(cell2))).size
+        //false positives only present in this correspondance
+        val fp = if (reference.correspondences.size == 0) {
+          correspondences.size
+        } else {
+          correspondences.filterNot(cell => reference.correspondences.contains(cell)).size
+        }
+        //false negatives
+        val fn = if (reference.correspondences.size == 0) {
+          0
+        } else {
+          reference.correspondences.filterNot(cell => correspondences.contains(cell)).size
+        }
+    */
 
     val name = reference.onto1 + "-" + reference.onto2
-    EvaluationResultAggregator.createEvaluationResult(tp, fp, fn, name)
+    EvaluationResultAggregator.createEvaluationResult(tmp_tp, tmp_fp, tmp_fn, name)
 
   }
 
+
+  def getFalsePositives(reference: Alignment): Set[MatchingCell] = {
+
+    val false_positives = for (cell_1 <- correspondences) yield {
+
+      val tester = reference.correspondences.map(cell_2 => {
+        if (cell_1.entity1.equals(cell_2.entity1) && cell_1.entity2.equals(cell_2.entity2) && cell_1.relation.equals(cell_2.relation)) {
+          true
+        } else {
+          false
+        }
+      })
+
+      if (tester.contains(true)) {
+        Option.empty
+      } else {
+        Option(cell_1)
+      }
+    }
+
+    false_positives.filter(_.isDefined).map(_.get).toSet
+  }
+
+  def getTruePositives(reference: Alignment): Set[MatchingCell] = {
+
+    val true_positives = for (cell_1 <- correspondences) yield {
+
+      val tester = reference.correspondences.map(cell_2 => {
+        if (cell_1.entity1.equals(cell_2.entity1) && cell_1.entity2.equals(cell_2.entity2) && cell_1.relation.equals(cell_2.relation)) {
+          true
+        } else {
+          false
+        }
+      })
+      if (tester.contains(true)) {
+        Option(cell_1)
+      } else {
+       Option.empty
+      }
+    }
+    true_positives.filter(_.isDefined).map(_.get).toSet
+  }
+
+  def getFalseNegatives(reference: Alignment): Set[MatchingCell] = {
+    val false_negatives = for (cell_1 <- reference.correspondences) yield {
+
+      val tester = correspondences.map(cell_2 => {
+        if (cell_1.entity1.equals(cell_2.entity1) && cell_1.entity2.equals(cell_2.entity2) && cell_1.relation.equals(cell_2.relation)) {
+          true
+        } else {
+          false
+        }
+      })
+      if (tester.contains(true)) {
+        Option.empty
+      } else {
+        Option(cell_1)
+      }
+    }
+    false_negatives.filter(_.isDefined).map(_.get).toSet
+  }
 
   def getNewAlignmentWithMatchType(match_type: String): Alignment = {
     val new_alignment = new Alignment(this)
@@ -227,6 +319,10 @@ class Alignment(val onto1: String, val onto2: String, val onto1_reference: FastO
   //TODO more efficient
   def containsCorrespondence(left: String, right: String): Boolean = {
     this.correspondences.filter(_.entity1.equalsIgnoreCase(left)).filter(_.entity2.equalsIgnoreCase(right)).size > 0
+  }
+
+  def containsCorrespondenceRemainder(left_remainder: String, right_remainder: String): Boolean = {
+    this.correspondences.filter(_.entity1.toLowerCase().contains(left_remainder)).filter(_.entity2.toLowerCase().contains(right_remainder)).size > 0
   }
 
   def getCorrespondence(left: String, right: String): MatchingCell = {

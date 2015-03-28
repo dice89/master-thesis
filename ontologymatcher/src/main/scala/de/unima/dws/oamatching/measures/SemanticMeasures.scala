@@ -57,7 +57,7 @@ object SemanticMeasures extends  LazyLogging{
     }
     catch {
       case e:Throwable =>{
-        logger.error("error at umbc sim",e)
+        logger.info("error at umbc sim",e)
         0.0
       }
     }

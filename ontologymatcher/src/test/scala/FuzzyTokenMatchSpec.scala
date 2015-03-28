@@ -87,4 +87,15 @@ class FuzzyTokenMatchSpec extends UnitSpec {
     val result5 = test_match.computeOverlap("collegeboards","collegeboard",0.85)
     assert(result5=== 0.923077 +- 0.001)
   }
+
+
+
+
+  it should "behave better " in {
+    val measure = StringMeasures.computeFuzzyJaccard("has_the_first_name","hasFirstName")
+
+    assert(measure == 0.75)
+  }
+
+
 }
