@@ -64,20 +64,20 @@ class GraphBasedUsedPropertyMatcher extends StructuralLevelMatcher {
         val similarity = cell.measure / 2
 
 
-        if(onto1.base_values.object_properties.contains(iri_1) && onto1.base_values.object_properties.contains(iri_2) && similarity >= threshold){
+        if(onto1.base_values.object_properties.contains(iri_1) && onto2.base_values.object_properties.contains(iri_2) && similarity >= threshold){
           //object properties
-          val domain_1 = onto1.classes_in_object_prop_domain.get(iri_1).get
-          val domain_2 = onto2.classes_in_object_prop_domain.get(iri_2).get
+          val domain_1 = onto1.object_property_to_domain_map.get(iri_1).get
+          val domain_2 = onto2.object_property_to_domain_map.get(iri_2).get
 
-          val range_1 = onto1.classes_in_object_prop_range.get(iri_1).get
-          val range_2 = onto1.classes_in_object_prop_range.get(iri_2).get
+          val range_1 = onto1.object_property_to_range_map.get(iri_1).get
+          val range_2 = onto2.object_property_to_range_map.get(iri_2).get
 
           Option(matchPairWise(domain_1, domain_2, similarity,match_type).toList ::: matchPairWise(range_1, range_2, similarity,match_type).toList)
-        } else if (onto1.base_values.data_properties.contains(iri_1) && onto1.base_values.data_properties.contains(iri_2) && similarity >= threshold){
+        } else if (onto1.base_values.data_properties.contains(iri_1) && onto2.base_values.data_properties.contains(iri_2) && similarity >= threshold){
           //data properties
 
-          val domain_1 = onto1.classes_in_data_prop_domain.get(iri_1).get
-          val domain_2 = onto2.classes_in_data_prop_domain.get(iri_2).get
+          val domain_1 = onto1.data_property_to_domain_map.get(iri_1).get
+          val domain_2 = onto2.data_property_to_domain_map.get(iri_2).get
 
           Option(matchPairWise(domain_1, domain_2, similarity,match_type).toList)
         }else {

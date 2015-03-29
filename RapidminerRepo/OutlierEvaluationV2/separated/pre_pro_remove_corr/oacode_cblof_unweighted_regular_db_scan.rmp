@@ -15,7 +15,7 @@
     <parameter key="parallelize_main_process" value="true"/>
     <process expanded="true">
       <operator activated="true" class="read_csv" compatibility="5.3.013" expanded="true" height="60" name="ReadVector" width="90" x="45" y="210">
-        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/ontologymatcher/matchings/conference/matchings/cmt-confOf_raw_matchings.csv"/>
+        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/ontologymatcher/matchings/benchmarks/matchings/101-101_raw_matchings.csv"/>
         <parameter key="column_separators" value=","/>
         <parameter key="trim_lines" value="true"/>
         <parameter key="use_quotes" value="true"/>
@@ -40,25 +40,20 @@
           <parameter key="1" value="relation.true.binominal.attribute"/>
           <parameter key="2" value="right.true.polynominal.attribute"/>
           <parameter key="3" value="owl_type.true.polynominal.attribute"/>
-          <parameter key="4" value="match_type.true.binominal.attribute"/>
+          <parameter key="4" value="match_type.true.polynominal.attribute"/>
           <parameter key="5" value="path.true.real.attribute"/>
           <parameter key="6" value="lin.true.real.attribute"/>
-          <parameter key="7" value="equalSimilarityStemmed.true.real.attribute"/>
-          <parameter key="8" value="word2Vec.true.real.attribute"/>
-          <parameter key="9" value="prefix.true.real.attribute"/>
-          <parameter key="10" value="suffix.true.real.attribute"/>
-          <parameter key="11" value="equalSimilarityStemmeddeunimadwsoamatchingmatcherstructurallevelNeighborHoodSimilarityMatcher.true.real.attribute"/>
-          <parameter key="12" value="path_stemmed.true.real.attribute"/>
-          <parameter key="13" value="smoaDistance.true.real.attribute"/>
-          <parameter key="14" value="equalSimilarityStemmeddeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="15" value="jiangConrath.true.real.attribute"/>
-          <parameter key="16" value="umbcSim.true.real.attribute"/>
-          <parameter key="17" value="soft_tfidf_jaro.true.real.attribute"/>
-          <parameter key="18" value="fuzzydice.true.real.attribute"/>
-          <parameter key="19" value="fuzzycosine.true.real.attribute"/>
-          <parameter key="20" value="hammingDistance.true.real.attribute"/>
-          <parameter key="21" value="umbcphrasesim.true.real.attribute"/>
-          <parameter key="22" value="equalSimilarityStemmeddeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
+          <parameter key="7" value="word2Vec.true.real.attribute"/>
+          <parameter key="8" value="prefix.true.real.attribute"/>
+          <parameter key="9" value="suffix.true.real.attribute"/>
+          <parameter key="10" value="path_stemmed.true.real.attribute"/>
+          <parameter key="11" value="smoaDistance.true.real.attribute"/>
+          <parameter key="12" value="jiangConrath.true.real.attribute"/>
+          <parameter key="13" value="umbcSim.true.real.attribute"/>
+          <parameter key="14" value="soft_tfidf_jaro.true.real.attribute"/>
+          <parameter key="15" value="simple_tfidf.true.real.attribute"/>
+          <parameter key="16" value="hammingDistance.true.real.attribute"/>
+          <parameter key="17" value="umbcphrasesim.true.real.attribute"/>
         </list>
         <parameter key="read_not_matching_values_as_missings" value="true"/>
         <parameter key="datamanagement" value="double_array"/>

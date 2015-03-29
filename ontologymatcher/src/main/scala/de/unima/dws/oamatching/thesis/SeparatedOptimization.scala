@@ -25,6 +25,9 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
     val process_type: String = processes.get(process_name_with_ending).get
 
 
+    logger.info(s"Start threshold optimization for $ds_name and $process_name in run $run_number")
+
+
     val normalized_per_category: List[(Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Alignment)] = ref_matching_pairs.par.map { case (ref_file, matching_file) => {
 
       val ref_alignment: Alignment = ref_file.reference
@@ -43,12 +46,11 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
       (class_normalized, dp_normalized, op_normalized, (ref_alignment))
     }
     }.toList
+    println("TEEEEEEEEEST")
 
-
-    val optimization_grid = ParameterOptimizer.getDoubleGrid(0.001, 1.1, 1000)
+    val optimization_grid = ParameterOptimizer.getDoubleGrid(0.001, 1.1, 200)
     val optimal_thresholds = findOptimalThresholds(selection_function, normalized_per_category, optimization_grid)
 
-    logger.info(s"Start threshold optimization for $ds_name and $process_name in run $run_number")
 
     //construct final matchings and evaluate
     val best_results = optimal_thresholds.map { case (norm_technique, (class_threshold, dp_threshold, op_threshold)) => {
@@ -161,7 +163,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
 
     //first find best class threshold
 
-    val best_class_thresholds_by_norm: Map[String, Double] = unique_techniques.map(norm_technique => {
+    val best_class_thresholds_by_norm = unique_techniques.par.map(norm_technique => {
       val results_by_threshold = threshold_grid.map(threshold => {
         (threshold, evaluateRound(norm_technique, selection_function, normalizedScores, threshold, 1.1, 1.1, false))
       })
@@ -171,7 +173,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
     }).toMap
 
     //find best dp threshold
-    val best_dp_thresholds_by_norm: Map[String, Double] = unique_techniques.map(norm_technique => {
+    val best_dp_thresholds_by_norm = unique_techniques.par.map(norm_technique => {
       val class_threshold = best_class_thresholds_by_norm.get(norm_technique).get
       val results_by_threshold = threshold_grid.map(threshold => {
 
@@ -183,7 +185,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
     }).toMap
 
 
-    val best_op_thresholds_by_norm: Map[String, Double] = unique_techniques.map(norm_technique => {
+    val best_op_thresholds_by_norm = unique_techniques.par.map(norm_technique => {
       val class_threshold = best_class_thresholds_by_norm.get(norm_technique).get
       val dp_threshold = best_dp_thresholds_by_norm.get(norm_technique).get
       val results_by_threshold = threshold_grid.map(threshold => {
