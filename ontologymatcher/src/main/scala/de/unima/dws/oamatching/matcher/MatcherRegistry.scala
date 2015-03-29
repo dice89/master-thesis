@@ -150,14 +150,14 @@ object MatcherRegistry {
       case true => {
         stop_filter match {
           case true => string_norm match {
-            case KEY_STEMMED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, stop_filtered_stemmed_tokenizer, measure_fct)
-            case KEY_LEMMATIZED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, stop_filtered_stemmed_tokenizer, measure_fct)
-            case _ => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, stop_filtered_tokenizer, measure_fct)
+            case KEY_STEMMED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.remove_punctuation, stop_filtered_stemmed_tokenizer, measure_fct)
+            case KEY_LEMMATIZED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.remove_punctuation, stop_filtered_stemmed_tokenizer, measure_fct)
+            case _ => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.remove_punctuation, stop_filtered_tokenizer, measure_fct)
           }
           case false => string_norm match {
-            case KEY_STEMMED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, stemmed_tokenizer, measure_fct)
-            case KEY_LEMMATIZED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, stemmed_tokenizer, measure_fct)
-            case _ => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.minimalPreprocess, tokenizer, measure_fct)
+            case KEY_STEMMED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.remove_punctuation, stemmed_tokenizer, measure_fct)
+            case KEY_LEMMATIZED => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.remove_punctuation, stemmed_tokenizer, measure_fct)
+            case _ => new TokenizedStringMatcher(is_similarity, use_label, use_fragment, use_comment, StringMeasureHelper.remove_punctuation, tokenizer, measure_fct)
           }
         }
       }

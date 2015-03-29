@@ -155,7 +155,7 @@ object MatchingPruner extends LazyLogging {
       val pre_result =  convertMappingToAlignment(extracted, owlTypeMap, alignment)
 
       if(discarded.size() > 0) {
-        val to_be_added = getSimilarMatchingForDiscarded(discarded, raw_matchings,threshold*0.5)
+        val to_be_added = getSimilarMatchingForDiscarded(discarded, raw_matchings,threshold*0.9)
         val new_matchings = to_be_added.map { case (relation, value) => {
           MatchingCell(relation.left, relation.right, value, relation.relation, relation.owl_type, relation.match_type)
         }

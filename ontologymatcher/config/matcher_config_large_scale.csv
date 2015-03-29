@@ -1,6 +1,6 @@
 name,technique,type,sim_type,tokenized,normalized,stopfilter,use_fragment,use_label,use_comment
 jaccard,jaccard,P,sim,true,stemmed,false,true,true,false
-needlemanWunsch2Distance,needlemanWunsch2Distance,E,dis,false,none,false,true,true,false
+hammingDistance,hammingDistance,E,dis,false,none,false,true,true,false
 smoaDistance,smoaDistance,E,dis,false,none,false,true,true,false
 fuzzyjaccard,fuzzyjaccard,E,sim,false,none,false,true,true,false
 fuzzydice,fuzzydice,E,sim,false,none,false,true,true,false
@@ -21,4 +21,3 @@ word2Vec,word2Vec,E,sim,true,none,true,true,true,false
 graphBasedUsedClassMatcher,graphBasedUsedClassMatcher,S
 graphBasedUsedPropMatcher,graphBasedUsedPropMatcher,S
 neighborhoodMatcher,neighborhoodMatcher,S
-propertiesMatcher,propertiesMatcher,S

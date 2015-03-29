@@ -53,7 +53,7 @@ trait NonSeparatedOptimization extends ResultServerHandling with OptimizationDeb
 
       //val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(("none", (result._3, ref_alignment)), ("gaussian", (norm_res_gaussian, ref_alignment)), ("zscore", (norm_res_znorm, ref_alignment)), ("gammma", (norm_res_gamma, ref_alignment)), ("euclidean_max", (norm_res_euclidean_max, ref_alignment)))
       //val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(("none", (result._3, ref_alignment)))
-      val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(("zscore", (norm_res_znorm, ref_alignment)))
+      val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(("euclidean_max", (norm_res_euclidean_max, ref_alignment)))
       //val resulting_matchings: Map[String, (Map[MatchRelation, Double], Alignment)] = Map(  ("zscore", (norm_res_znorm, ref_alignment)), ("gammma", (norm_res_gamma, ref_alignment)), ("euclidean_max", (norm_res_euclidean_max, ref_alignment)))
 
 
@@ -148,24 +148,34 @@ trait NonSeparatedOptimization extends ResultServerHandling with OptimizationDeb
     val global_results: Map[String, Seq[(Double, AggregatedEvaluationResult)]] = results_by_techniques.map { case (name, list_of_matchings) => {
 
       //try for all thresholds
-      val results_by_threshold = threshold_grid.map(threshold => {
+      val results_by_threshold = threshold_grid.zipWithIndex.map(threshold => {
         val eval_res_single_list: Seq[EvaluationResult] = list_of_matchings.map(single_matchings => {
           val starttime = System.currentTimeMillis()
-          val selected = selection_function(single_matchings._1, threshold)
+          val selected = selection_function(single_matchings._1, threshold._1)
           //TODO add alignment debugging
           val ref_align = single_matchings._2
           val alignment = new Alignment(ref_align.onto1, ref_align.onto2, ref_align.onto1_reference, ref_align.onto2_reference, ref_align.i_onto1, ref_align.i_onto2, selected)
 
           val eval_res_norm = alignment.evaluate(single_matchings._2)
 
+          val eval_res_debugged =  if(selected.size <30 && selected.size >5 ) {
+           // println("debugged" + threshold._2)
+            debugAndEvaluate(threshold._1,single_matchings._1,ref_align,selected,"",false)
+          }else {
+            eval_res_norm
+          }
           // val eval_res_debugged = debugged.evaluate(single_matchings._2)
           val totaltime = System.currentTimeMillis() - starttime
 
           //println(s"Needed $totaltime to debug alignment of size "+alignment.correspondences.size)
-          eval_res_norm
+          eval_res_debugged
         })
+
+
         val agg_res = EvaluationMatchingRunner.computeAggregatedResults(eval_res_single_list.toList)
-        (threshold, agg_res)
+        println("Round "+ threshold._2)
+        println(agg_res)
+        (threshold._1, agg_res)
       })
       (name, results_by_threshold.seq)
     }
@@ -194,7 +204,7 @@ trait NonSeparatedOptimization extends ResultServerHandling with OptimizationDeb
 
           val selected = selection_function(single_matchings._1, test_threshold)
 
-          debugAndEvaluate(test_threshold, single_matchings._1, single_matchings._2, selected, name)
+          debugAndEvaluate(test_threshold, single_matchings._1, single_matchings._2, selected, name,true)
         })
         val agg_res = EvaluationMatchingRunner.computeAggregatedResults(eval_res_single_list)
 

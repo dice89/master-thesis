@@ -4,9 +4,8 @@ import com.typesafe.scalalogging.slf4j.LazyLogging
 import de.unima.dws.oamatching.analysis.SparkJobs
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.matcher.{Matcher, StructuralLevelMatcher}
-import de.unima.dws.oamatching.core.{FastOntology, Alignment, MatchRelation}
+import de.unima.dws.oamatching.core.{Alignment, FastOntology, MatchRelation}
 import de.unima.dws.oamatching.matcher.MatcherRegistry
-import org.semanticweb.owlapi.model.OWLOntology
 
 import scala.collection.immutable.Map
 import scala.collection.parallel.immutable.ParMap
@@ -20,7 +19,7 @@ case class MatchingEvaluationProblem(ontology1: FastOntology, ontology2: FastOnt
  * Core Single to implement matching of two ontologies
  * Created by mueller on 21/01/15.
  */
-object MatchingPipelineCore extends LazyLogging{
+object MatchingPipelineCore extends LazyLogging {
 
 
   def createMatchingPipeline(outlierFct: (String, FeatureVector) => (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]))(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)]): (MatchingProblem, Double, Double) => (Alignment, FeatureVector) = {
@@ -40,10 +39,12 @@ object MatchingPipelineCore extends LazyLogging{
 
     val filtered_outlier_analysis_vector: FeatureVector = createFeatureVector(problem, remove_correlated_threshold, true)
 
+
+
+
     println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory) / mb))
     println("Start Outlier analysis")
     val outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) = outlierFct(problem.name, filtered_outlier_analysis_vector)
-
     println("Outlier Analysis Done")
     println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory) / mb))
 
@@ -75,23 +76,32 @@ object MatchingPipelineCore extends LazyLogging{
     println("Start element Level Matching")
     val individual_matcher_results: FeatureVector = matchAllIndividualMatchers(problem)
     println("Element Level Matching Done")
+
     println("Start remove correlated")
     val uncorrelated_matcher_results: FeatureVector = removeCorrelatedMatchers(individual_matcher_results, remove_correlated_threshold)
     println("Remove correlated done")
+
     val structural_matcher_results: Option[FeatureVector] = matchAllStructuralMatchers(problem, uncorrelated_matcher_results)
 
-    // RapidminerJobs.writeCSV("struct_test123","tmp")(structural_matcher_results.get)
     val outlier_analysis_vector: FeatureVector = if (structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results, structural_matcher_results.get), problem.name).get else individual_matcher_results
-    // RapidminerJobs.writeCSV("combined_test123","tmp")(outlier_analysis_vector)
-    if (name_space_filter) {
-      println("Filter size")
-      //println(outlier_analysis_vector.vector.size)
+
+    //name space filtering
+    val name_space_filtered = if (name_space_filter) {
       val filtered_outlier_analysis_vector: FeatureVector = MatchingPruner.featureVectorNameSpaceFilter(outlier_analysis_vector, allowed_namespaces)
-      println(filtered_outlier_analysis_vector.vector.size)
       filtered_outlier_analysis_vector
     } else {
       outlier_analysis_vector
     }
+    println("pre feature selection" +name_space_filtered.matcher_name_to_index.size)
+
+    //First pre feature selection
+    val feature_selected = if (Config.loaded_config.getBoolean("general.feature_selection")) {
+      VectorUtil.selectFeatures(name_space_filtered)
+    } else {
+      name_space_filtered
+    }
+    println("after feature selection" +feature_selected.matcher_name_to_index.size)
+    feature_selected
   }
 
   /**
@@ -141,7 +151,7 @@ object MatchingPipelineCore extends LazyLogging{
         matchIndividualMatcher(matcher, problem)
       } catch {
         case e: Throwable => {
-          logger.error("Failed at base matcher",e)
+          logger.error("Failed at base matcher", e)
           println("Failed to match" + name)
           null
         }

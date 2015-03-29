@@ -61,7 +61,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
       val class_threshold = best_threshold_classes.best_global_results.get(norm_technique).get._1
       val dp_threshold = best_threshold_dps.best_global_results.get(norm_technique).get._1
       val op_threshold = best_threshold_ops.best_global_results.get(norm_technique).get._1
-      //TODO ease threshold
+
 
       val eased_thresholds = List((class_threshold - 0.01, dp_threshold - 0.01, op_threshold - 0.01), (class_threshold - 0.025, dp_threshold - 0.025, op_threshold - 0.025), (class_threshold - 0.05, dp_threshold - 0.05, op_threshold - 0.05))
       val eased_thresholds_results = eased_thresholds.map(triple => {
@@ -77,7 +77,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
 
           val all_selected_matchings_list = selected_classes ++ selected_dps ++ selected_ops
 
-          val eval_res = debugAndEvaluate(op_threshold, all_matchings, ref_align, all_selected_matchings_list, norm_technique)
+          val eval_res = debugAndEvaluate(op_threshold, all_matchings, ref_align, all_selected_matchings_list, norm_technique,true)
 
 
 

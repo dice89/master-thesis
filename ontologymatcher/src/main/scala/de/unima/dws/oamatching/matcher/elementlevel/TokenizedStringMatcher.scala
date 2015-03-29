@@ -24,7 +24,7 @@ class TokenizedStringMatcher(override val similarity:Boolean,
 
     for (term_a <- tokens_a; term_b <- tokens_b) {
       counter= counter +1
-      summed_score = summed_score + pre_processed_score(term_a, term_b)
+      summed_score = summed_score + pre_processed_score(preprocess_function(term_a), preprocess_function(term_b))
     }
     val res:Double =summed_score / Math.max(tokens_a.length,tokens_b.length)
     if(res > 1.0){

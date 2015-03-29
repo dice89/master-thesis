@@ -38,7 +38,9 @@ object StringMeasureHelper {
   def to_lower_case_single(a:String):String = {
     a.toLowerCase
   }
-
+  def remove_punctuation(a:String):String = {
+    a.replaceAll("[^a-zA-Z ]", "").toLowerCase()
+  }
 
   def remove_punctuation(a:String,b:String):(String,String) = {
     (a.replaceAll("[^a-zA-Z ]", "").toLowerCase(),b.replaceAll("[^a-zA-Z ]", "").toLowerCase())
@@ -78,7 +80,8 @@ object StringMeasureHelper {
 
   def tokenize_combined: (String) => List[String] = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash)
 
-  def tokenize_combined_all: (String) => List[String] = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_combined, StringMeasureHelper.tokenize_dash)
+  def tokenize_combined_all: (String) => List[String] = StringMeasureHelper.tokenize_combined
+ // def tokenize_combined_all: (String) => List[String] = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_combined, StringMeasureHelper.tokenize_dash)
 
   /**
    * Apply stemming stemming functions

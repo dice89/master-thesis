@@ -2,7 +2,7 @@ package de.unima.dws.oamatching.measures
 
 import com.wcohen.ss._
 import com.wcohen.ss.tokens.SimpleTokenizer
-import de.unima.dws.fuzzytoken.{FuzzyDiceMeasure, FuzzyCosineMeasure, FuzzyJaccardMeasure}
+import de.unima.dws.fuzzytoken.{FuzzyCosineMeasure, FuzzyDiceMeasure, FuzzyJaccardMeasure}
 import fr.inrialpes.exmo.ontosim.string.StringDistances
 
 /**
@@ -15,20 +15,20 @@ object StringMeasures {
   val mongeElkan: MongeElkan = new MongeElkan()
 
 
-  val fuzzy_jaccard = new FuzzyJaccardMeasure(StringMeasureHelper.tokenize_combined,StringMeasures.computeLevenShteinSim)
-  val fuzzy_cosine = new FuzzyCosineMeasure(StringMeasureHelper.tokenize_combined,StringMeasures.computeLevenShteinSim)
-  val fuzzy_dice = new FuzzyDiceMeasure(StringMeasureHelper.tokenize_combined,StringMeasures.computeLevenShteinSim)
+  val fuzzy_jaccard = new FuzzyJaccardMeasure(StringMeasureHelper.tokenize_combined, StringMeasures.computeLevenShteinSim)
+  val fuzzy_cosine = new FuzzyCosineMeasure(StringMeasureHelper.tokenize_combined, StringMeasures.computeLevenShteinSim)
+  val fuzzy_dice = new FuzzyDiceMeasure(StringMeasureHelper.tokenize_combined, StringMeasures.computeLevenShteinSim)
 
   //scale result from 0-1
   mongeElkan.setScaling(true)
 
-      def measureEquality(a:String,b:String) :Double = {
-        if(a.equals(b)) {
-          1.0
-        }else {
-          0.0
-        }
-      }
+  def measureEquality(a: String, b: String): Double = {
+    if (a.equals(b)) {
+      1.0
+    } else {
+      0.0
+    }
+  }
 
   /**
    * Computes if the string b starts with parts of string a
@@ -38,9 +38,9 @@ object StringMeasures {
    */
   def computePrefixBiDirectional(a: String, b: String): Double = {
 
-    if(a.length>30|| b.length > 30){
+    if (a.length > 30 || b.length > 30) {
       0.0
-    }else {
+    } else {
       try {
         val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.startsWith)(a.toLowerCase(), b.toLowerCase())
         val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.startsWith)(b.toLowerCase(), a.toLowerCase())
@@ -63,9 +63,9 @@ object StringMeasures {
   def computeSuffixBiDirectional(a: String, b: String): Double = {
 
 
-    if(a.length>30|| b.length > 30){
+    if (a.length > 30 || b.length > 30) {
       0.0
-    }else {
+    } else {
       try {
         val res_a_b = computeAnyfixUniDirectional(b.toLowerCase.endsWith)(a.toLowerCase(), b.toLowerCase())
         val res_b_a = computeAnyfixUniDirectional(a.toLowerCase.endsWith)(b.toLowerCase(), a.toLowerCase())
@@ -75,7 +75,7 @@ object StringMeasures {
         test
       }
       catch {
-        case e:Throwable => {
+        case e: Throwable => {
           //e.printStackTrace()
           0.0
         }
@@ -93,7 +93,7 @@ object StringMeasures {
    */
   private def computeAnyfixUniDirectional(anyfixfunction: (String) => Boolean)(substring: String, superstring: String): Double = {
     //first check if subsequence of min length 2 are a is Anyfix of b
-    val res_values = for { seq_size <- 1 until substring.length() + 1; subseq <- substring.toLowerCase.sliding(seq_size, 1).toSeq } yield {
+    val res_values = for {seq_size <- 1 until substring.length() + 1; subseq <- substring.toLowerCase.sliding(seq_size, 1).toSeq} yield {
       if (anyfixfunction(subseq)) {
         Some(seq_size.asInstanceOf[Double] / substring.length().asInstanceOf[Double])
       } else {
@@ -115,7 +115,7 @@ object StringMeasures {
   @Deprecated
   private def computePrefixUniDirectional(substring: String, superstring: String): Double = {
     //first check if subsequence of min length 2 are a is Anyfix of b
-    val res_values = for { seq_size <- 1 until substring.length() + 1; subseq <- substring.sliding(seq_size, 1).toSeq } yield {
+    val res_values = for {seq_size <- 1 until substring.length() + 1; subseq <- substring.sliding(seq_size, 1).toSeq} yield {
       if (superstring.startsWith(subseq)) {
         Some(seq_size.asInstanceOf[Double] / substring.length().asInstanceOf[Double])
       } else {
@@ -140,10 +140,10 @@ object StringMeasures {
    * @param b
    * @return
    */
-  def computeEquality(a:String,b:String):Double = {
-    if(a.equals(b)){
+  def computeEquality(a: String, b: String): Double = {
+    if (a.equals(b)) {
       1.0
-    }else {
+    } else {
       0.0
     }
   }
@@ -181,14 +181,14 @@ object StringMeasures {
    * @param b
    * @return
    */
-  def computeJaroWinkler(a:String,b:String):Double = {
+  def computeJaroWinkler(a: String, b: String): Double = {
 
-    jarow.score(a.toLowerCase,b.toLowerCase)
+    jarow.score(a.toLowerCase, b.toLowerCase)
   }
 
-  def computeJaro(a:String,b:String):Double = {
+  def computeJaro(a: String, b: String): Double = {
 
-    jaro.score(a.toLowerCase,b.toLowerCase)
+    jaro.score(a.toLowerCase, b.toLowerCase)
 
   }
 
@@ -200,36 +200,39 @@ object StringMeasures {
    */
   def computeLin(a: String, b: String): Double = {
 
-    var res = WordNetMeasureHelper.lin.calcRelatednessOfWords(a, b)
-    //println(res)
 
-    //if they are the same he score is Double.MaxValue => normalize to 1
-    if (res > 1.0) {
-      res = 1.0
-    }
+      var res = WordNetMeasureHelper.lin.calcRelatednessOfWords(a, b)
+      //println(res)
 
-    if (res == -0.0) {
-      res = 0.0
-    }
+      //if they are the same he score is Double.MaxValue => normalize to 1
+      if (res > 1.0) {
+        res = 1.0
+      }
 
-    res
+      if (res == -0.0) {
+        res = 0.0
+      }
+
+      res
+
   }
 
   /**
-   *  Computes Jiang Conrath Measure base on WS4J
+   * Computes Jiang Conrath Measure base on WS4J
    * @param a
    * @param b
    * @return
    */
   def computeJiangConrath(a: String, b: String): Double = {
 
-    var res = WordNetMeasureHelper.jianConrath.calcRelatednessOfWords(a, b)
-    //if they are the same he score is Double.MaxValue => normalize to 1
+      var res = WordNetMeasureHelper.jianConrath.calcRelatednessOfWords(a, b)
+      //if they are the same he score is Double.MaxValue => normalize to 1
 
-    if (res > 1.0) {
-      res = 1.0
-    }
-    res
+      if (res > 1.0) {
+        res = 1.0
+      }
+      res
+
   }
 
   /**
@@ -239,37 +242,42 @@ object StringMeasures {
    * @return
    */
   def computeWuPalmer(a: String, b: String): Double = {
-    var res = WordNetMeasureHelper.wuPalmer.calcRelatednessOfWords(a, b)
-    //if they are the same he score is Double.MaxValue => normalize to 1
-    if (res > 1.0) {
-      res = 1.0
-    }
-    res
+
+      var res = WordNetMeasureHelper.wuPalmer.calcRelatednessOfWords(a, b)
+      //if they are the same he score is Double.MaxValue => normalize to 1
+      if (res > 1.0) {
+        res = 1.0
+      }
+      res
+
   }
 
   def computePath(a: String, b: String): Double = {
-    var res = WordNetMeasureHelper.path calcRelatednessOfWords (a, b)
-    //if they are the same he score is Double.MaxValue => normalize to 1
-    if (res > 1.0) {
-      res = 1.0
-    }
-    res
+
+      var res = WordNetMeasureHelper.path calcRelatednessOfWords(a, b)
+      //if they are the same he score is Double.MaxValue => normalize to 1
+      if (res > 1.0) {
+        res = 1.0
+      }
+      res
+
+
   }
 
-  def computeLevenShteinSim(a:String,b:String):Double ={
-    1- StringDistances.levenshteinDistance(a,b)
+  def computeLevenShteinSim(a: String, b: String): Double = {
+    1 - StringDistances.levenshteinDistance(a, b)
   }
 
-  def computeFuzzyJaccard(a:String,b:String):Double = {
-    fuzzy_jaccard.computeOverlap(a,b,0.5)
+  def computeFuzzyJaccard(a: String, b: String): Double = {
+    fuzzy_jaccard.computeOverlap(a, b, 0.5)
   }
 
-  def computeFuzzyCosine(a:String,b:String):Double = {
-    fuzzy_cosine.computeOverlap(a,b,0.5)
+  def computeFuzzyCosine(a: String, b: String): Double = {
+    fuzzy_cosine.computeOverlap(a, b, 0.5)
   }
 
-  def computeFuzzyDice(a:String,b:String):Double = {
-    fuzzy_dice.computeOverlap(a,b,0.5)
+  def computeFuzzyDice(a: String, b: String): Double = {
+    fuzzy_dice.computeOverlap(a, b, 0.5)
   }
 
 }

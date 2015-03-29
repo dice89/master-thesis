@@ -4,8 +4,11 @@ import java.io.File
 import com.github.tototoshi.csv._
 
 import _root_.de.unima.dws.oamatching.core.MatchRelation
+import org.apache.commons.math.stat.descriptive.moment.Mean
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation
 
 
+import scala.Predef
 import scala.collection.immutable.{Iterable, Map}
 
 /**
@@ -15,6 +18,10 @@ import scala.collection.immutable.{Iterable, Map}
 case class FeatureVector(data_set_name:String,vector: Map[String, Map[MatchRelation, Double]], transposed_vector: Map[MatchRelation, Map[String, Double]], matcher_name_to_index: Map[String, Int], matcher_index_to_name: Map[Int, String])
 
 object VectorUtil {
+
+  //for feature selection
+  val mean_computer = new Mean()
+  val stdev_computer = new StandardDeviation()
 
   /**
    * This function removes elements from the feature vector specified by
@@ -81,6 +88,27 @@ object VectorUtil {
     }else {
       Option.empty
     }
+  }
+
+  def selectFeatures(vector:FeatureVector):FeatureVector= {
+    val sum_of_scores_per_feature: Map[String, Double] = vector.vector.map{case (name, relations) => {
+      ( name, relations.values.sum)
+    }}.toMap
+
+
+    //compute stdev of sum
+    val stdev = stdev_computer.evaluate(sum_of_scores_per_feature.values.toArray)
+    val mean = mean_computer.evaluate(sum_of_scores_per_feature.values.toArray)
+    //select according defined interval
+
+    //exact values discussable
+    val sum_of_scores_per_feature_filtered = sum_of_scores_per_feature.filter{case(feature, sum) => (sum>= mean-0.75*stdev && sum <= mean+0.75*stdev)}
+
+    val filtered_results = vector.vector.filter{case(feature, relations) => {
+      sum_of_scores_per_feature_filtered.contains(feature)
+    }}
+
+    createVectorFromResult(filtered_results,vector.data_set_name)
   }
 
 

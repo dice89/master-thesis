@@ -26,8 +26,12 @@ object SemanticMeasures extends  LazyLogging{
 
   def word2VecCosineSimilarity(model:Word2VecModel)(term1:String,term2:String):Double= {
     try {
-      val value = SparkJobs.cousineSimilarityBetweenTerms(model,term1.trim,term2.trim)
-      value
+
+        val value = SparkJobs.cousineSimilarityBetweenTerms(model,term1.trim,term2.trim)
+
+        value
+
+
     }catch {
       case e: Exception => {
         //println(e)
@@ -39,7 +43,10 @@ object SemanticMeasures extends  LazyLogging{
   def umbcPhraseSim(phrase1:String,phrase2:String):Double = {
 
     try {
-      semantic_sim.getSimilarity(phrase1, phrase2, false)
+
+        semantic_sim.getSimilarity(phrase1, phrase2, false)
+
+
     }
     catch {
       case e:Throwable =>{
@@ -53,7 +60,10 @@ object SemanticMeasures extends  LazyLogging{
 
   def umbcSim(term1:String,term2:String):Double = {
     try {
-      semantic_sim.getSimilarity(term1, term2, true)
+
+        semantic_sim.getSimilarity(term1, term2, true)
+
+
     }
     catch {
       case e:Throwable =>{
@@ -114,89 +124,7 @@ object SemanticMeasures extends  LazyLogging{
 
   }
 
-  /**
-   * Potentially Better Results with POS Tagged words
-   *
-   * @param sim_type
-   * @param corpus
-   * @param phrase1 word with with part-of-speech-tag in the form of word_VB
-   * @param phrase2 word with with part-of-speech-tag
-   * @return
-   */
-  def callPhraseSimServiceUMBC(sim_type: String)(corpus: String)(phrase1: String, phrase2: String): Double = {
 
-
-    try {
-      val response: HttpResponse[String] = Http(Config.UMBC_PHRASE_SIM_SERVICE_URL)
-        .param("operation", "api")
-        .param("phrase1", phrase1)
-        .param("phrase2", phrase2)
-        .param("type", sim_type)
-        .param("corpus", corpus).asString
-      response.body.toDouble
-    } catch {
-      case e: Exception => {
-        println("fal")
-        0.0
-      }
-    }
-
-  }
-
-  /**
-   * Potentially better results with pos-tagged words
-   * @param phrase1
-   * @param phrase2
-   * @return
-   */
-  def callPhraseSimServiceUMBCRegular(phrase1: String, phrase2: String): Double = {
-    try {
-      val response: HttpResponse[String] = Http(Config.UMBC_PHRASE_SIM_SERVICE_URL)
-        .param("operation", "api")
-        .param("phrase1", phrase1)
-        .param("phrase2", phrase2).asString
-      val measure = response.body.toDouble
-      if(measure > 0.5){
-        println(phrase1 +" -- " + phrase2 +": " +measure)
-      }
-
-      if(measure.equals(Double.NegativeInfinity)){
-        0.0
-      }else{
-        measure
-      }
-    } catch {
-      case e: Exception => {
-        println("fail")
-        0.0
-      }
-    }
-
-  }
-
-  /**
-   * Input words only with POS TAG
-   * @return
-   */
-  def callPhraseServiceConceptWebbase: (String, String) => Double = callPhraseSimServiceUMBC("concept")("webbase")
-
-  /**
-   * Input words only with POS TAG
-   * @return
-   */
-  def callPhraseServiceRelationWebbase: (String, String) => Double = callPhraseSimServiceUMBC("relation")("webbase")
-
-  /**
-   * Input words only with POS TAG
-   * @return
-   */
-  def callPhraseServiceConceptGigaWords: (String, String) => Double = callPhraseSimServiceUMBC("concept")("gigawords")
-
-  /**
-   * Input words only with POS TAG
-   * @return
-   */
-  def callPhraseServiceRelationGigaWords: (String, String) => Double = callPhraseSimServiceUMBC("relation")("gigawords")
 
   def isSynonymOf(term: String, to_check: String): Double = {
     val response: HttpResponse[String] = Http(Config.BIG_HUGE_THESAURUS_SERVICE_URL + "/" + term + "/json").asString
