@@ -52,7 +52,7 @@ case class ProcessEvalExecutionResultsNonSeparated(separated: Boolean, overall_a
 
 
 /**
- * Runnable Object that performs a paramter optimization on a problem specified in the config for configured algorithms and precprocessing methods
+ * Runnable Object that performs a parameter optimization on a problem specified in the config for configured algorithms and precprocessing methods
  * @author Alexander C. Mueller
  */
 object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessParser with SeparatedOptimization with EvaluationDataSetParser with NonSeparatedOptimization with LazyLogging {
@@ -109,26 +109,23 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   val PREPROCESS_KEY = "prepro"
 
   val PRE_PRO_TECHNIQUES = List("remove_corr","pca_variant","pca_fixed")
-  //val PRE_PRO_TECHNIQUES = List("remove_corr", "pca_fixed", "pca_variant")
-  /*val PARAM_CONFIGS_PRE_PRO: Map[String, List[Map[String, Double]]] = Map("pca_variant" -> List(Map("variance" -> 0.85), Map("variance" -> 0.9), Map("variance" -> 0.95), Map("variance" -> 0.97)),
-    "pca_fixed" -> List(Map("number" -> 2.0), Map("number" -> 4.0),Map("number" -> 6.0), Map("number" -> 12.0)),
-    "remove_corr" -> List(Map("corr_variance" -> 0.75, "min_variance" -> 0.01), Map("corr_variance" -> 0.5, "min_variance" -> 0.01), Map("corr_variance" -> 0.9, "min_variance" -> 0.01))
-  )*/
-  val PARAM_CONFIGS_PRE_PRO: Map[String, List[Map[String, Double]]] = Map("pca_variant" -> List(Map("variance" -> 0.85), Map("variance" -> 0.9), Map("variance" -> 0.95), Map("variance" -> 0.97)),
-    "pca_fixed" -> List( Map("number" -> 4.0),Map("number" -> 6.0), Map("number" -> 12.0)),
-    "remove_corr" -> List(Map("corr_variance" -> 0.85, "min_variance" -> 0.01),Map("corr_variance" -> 0.75, "min_variance" -> 0.01))
+
+
+  val PARAM_CONFIGS_PRE_PRO: Map[String, List[Map[String, Double]]] = Map("pca_variant" -> List(Map("variance" -> 0.75),Map("variance" -> 0.85), Map("variance" -> 0.9), Map("variance" -> 0.95), Map("variance" -> 0.97)),
+    "pca_fixed" -> List( Map("number" -> 4.0),Map("number" -> 6.0),Map("number" -> 8.0), Map("number" -> 12.0)),
+    "remove_corr" -> List(Map("corr_variance" -> 0.85, "min_variance" -> 0.01),Map("corr_variance" -> 0.75, "min_variance" -> 0.01), Map("corr_variance" -> 0.5, "min_variance" -> 0.01), Map("corr_variance" -> 0.9, "min_variance" -> 0.01))
   )
 
   /*########################################################################
                          Matching Selection Config
     ########################################################################*/
 
-  val FUZZY_DELTA_SELECTION = List(Map("fuzzy" -> 0.02), Map("fuzzy" -> 0.01), Map("fuzzy" -> 0.001))
+  val FUZZY_DELTA_SELECTION = List(Map("fuzzy" -> 0.02), Map("fuzzy" -> 0.01))
   val FUZZY_RATIO_SELECTION = List(Map("fuzzy" -> 1.01), Map("fuzzy" -> 1.02), Map("fuzzy" -> 1.10))
   val GREEDY_SELECTION = List(Map("fuzzy" -> 1.0))
 
   val SELECTION_CONFIG = Map("greedy_rank_fuzzy_delta" -> FUZZY_DELTA_SELECTION, "greedy_rank_fuzzy_ratio" -> FUZZY_RATIO_SELECTION, "greedy_rank" -> GREEDY_SELECTION)
-  //val SELECTION_CONFIG = Map("greedy_rank" -> GREEDY_SELECTION)
+
   val SELECTION_METHODS_BY_NAME: Map[String, (Double) => (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double]] = Map("greedy_rank" -> MatchingSelector.greedyRankSelectorSimpleExp, "greedy_rank_fuzzy_delta" -> MatchingSelector.fuzzyGreedyRankSelectorDelta, "greedy_rank_fuzzy_ratio" -> MatchingSelector.fuzzyGreedyRankSelectorDelta)
 
   /*########################################################################
@@ -212,15 +209,14 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
     createFolder(base_folder)
 
-    val non_separated_folder = base_folder + "/non_separated"
-    createFolder(non_separated_folder)
-    val non_separated_best: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = runAllForAlgosForAllSlctFunctions(ds_name, non_separated_folder, matching_pairs, parallel, false)
-
-
     val separated_folder = base_folder + "/separated"
     createFolder(separated_folder)
     val separated_best: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = runAllForAlgosForAllSlctFunctions(ds_name, separated_folder, matching_pairs, parallel, true)
 
+
+    val non_separated_folder = base_folder + "/non_separated"
+    createFolder(non_separated_folder)
+    val non_separated_best: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = runAllForAlgosForAllSlctFunctions(ds_name, non_separated_folder, matching_pairs, parallel, false)
 
 
     val best_result: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = if (separated_best.isDefined && non_separated_best.isDefined) {

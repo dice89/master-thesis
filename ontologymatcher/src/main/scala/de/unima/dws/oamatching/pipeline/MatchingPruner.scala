@@ -14,10 +14,8 @@ import scala.collection.JavaConversions._
 object MatchingPruner extends LazyLogging {
 
   //Debugging settings
-  Settings.BLACKBOX_REASONER = Settings.BlackBoxReasoner.PELLET;
-  Settings.ONE_TO_ONE = false;
-  Settings.MANY_TO_ONE = true
-  Settings.ONE_TO_MANY = true
+  Settings.BLACKBOX_REASONER = Settings.BlackBoxReasoner.PELLET
+  Settings.ONE_TO_ONE = true
   Settings.REMOVE_INDIVIDUALS = true
 
   /**
@@ -123,7 +121,7 @@ object MatchingPruner extends LazyLogging {
    * @param alignment
    * @return
    */
-  def debugAlignment(alignment: Alignment, raw_matchings: Map[MatchRelation, Double], threshold:Double): Alignment = {
+  def debugAlignment(alignment: Alignment, raw_matchings: Map[MatchRelation, Double], threshold: Double): Alignment = {
 
 
     val owlTypeMap: Map[String, String] = alignment.correspondences.map(cell => {
@@ -152,10 +150,10 @@ object MatchingPruner extends LazyLogging {
 
       val extracted: Mapping = ep.getExtractedMapping()
       logger.info("Debugging completed")
-      val pre_result =  convertMappingToAlignment(extracted, owlTypeMap, alignment)
+      val pre_result = convertMappingToAlignment(extracted, owlTypeMap, alignment)
 
-      if(discarded.size() > 0) {
-        val to_be_added = getSimilarMatchingForDiscarded(discarded, raw_matchings,threshold*0.9)
+      if (discarded.size() > 0) {
+        val to_be_added = getSimilarMatchingForDiscarded(discarded, raw_matchings, threshold * 0.9)
         val new_matchings = to_be_added.map { case (relation, value) => {
           MatchingCell(relation.left, relation.right, value, relation.relation, relation.owl_type, relation.match_type)
         }
@@ -164,12 +162,12 @@ object MatchingPruner extends LazyLogging {
         val size_before = pre_result.correspondences.size
         pre_result.addAllCorrespondeces(new_matchings)
         val size_after = pre_result.correspondences.size
-        if(size_after < size_before){
+        if (size_after < size_before) {
           println("not worked")
         }
         //now debug again
         pre_result
-      }else {
+      } else {
         pre_result
       }
 
@@ -186,7 +184,73 @@ object MatchingPruner extends LazyLogging {
     result
   }
 
-  def getSimilarMatchingForDiscarded(discarded: Mapping, raw_matchings: Map[MatchRelation, Double], threshold:Double): Map[MatchRelation, Double] = {
+
+
+  def debugAlignment(alignment: Alignment, raw_matchings: Map[MatchRelation, Double],  class_threshold: Double, dp_threshold: Double, op_threshold: Double): Alignment = {
+
+
+    val owlTypeMap: Map[String, String] = alignment.correspondences.map(cell => {
+      val key = cell.entity1 + "=" + cell.entity2
+      val value = cell.owl_type
+      key -> value
+    }).toMap
+
+    val mapping = convertAlignmentToMapping(alignment)
+
+    val ep = new ExtractionProblem(
+      ExtractionProblem.ENTITIES_CONCEPTSPROPERTIES,
+      ExtractionProblem.METHOD_GREEDY,
+      ExtractionProblem.REASONING_EFFICIENT
+    );
+
+    // attach ontologies and mapping to the problem
+    ep.bindSourceOntology(alignment.i_onto1);
+    ep.bindTargetOntology(alignment.i_onto2);
+    ep.bindMapping(mapping);
+    ep.init()
+    // solve the problem
+    val result = try {
+      ep.solve();
+      val discarded: Mapping = ep.getDiscardedMapping
+
+      val extracted: Mapping = ep.getExtractedMapping()
+      logger.info("Debugging completed")
+      val pre_result = convertMappingToAlignment(extracted, owlTypeMap, alignment)
+
+      if (discarded.size() > 0) {
+        val to_be_added = getSimilarMatchingForDiscardedSeparated(discarded, raw_matchings, class_threshold*0.9, dp_threshold*0.9, op_threshold*0.9)
+        val new_matchings = to_be_added.map { case (relation, value) => {
+          MatchingCell(relation.left, relation.right, value, relation.relation, relation.owl_type, relation.match_type)
+        }
+        }.toSet
+
+        val size_before = pre_result.correspondences.size
+        pre_result.addAllCorrespondeces(new_matchings)
+        val size_after = pre_result.correspondences.size
+        if (size_after < size_before) {
+          println("not worked")
+        }
+        //now debug again
+        pre_result
+      } else {
+        pre_result
+      }
+
+
+    }
+    catch {
+      case e: Throwable => {
+        logger.error("Error while Debugging Ontology", e)
+        println("error")
+        alignment
+      }
+    };
+
+    result
+  }
+
+
+  def getSimilarMatchingForDiscarded(discarded: Mapping, raw_matchings: Map[MatchRelation, Double], threshold: Double): Map[MatchRelation, Double] = {
 
 
     val result_tmp = discarded.map(correspondence => {
@@ -199,6 +263,40 @@ object MatchingPruner extends LazyLogging {
 
     result_map
   }
+
+  /**
+   *
+   * @param discarded
+   * @param raw_matchings
+   * @param class_threshold
+   * @param dp_threshold
+   * @param op_threshold
+   * @return
+   */
+  def getSimilarMatchingForDiscardedSeparated(discarded: Mapping, raw_matchings: Map[MatchRelation, Double], class_threshold: Double, dp_threshold: Double, op_threshold: Double): Map[MatchRelation, Double] = {
+
+
+    val result_tmp = discarded.map(correspondence => {
+      getSimilarMatchingForDiscardedSingle(correspondence, raw_matchings)
+    }).unzip
+
+    val result_option: Iterable[Option[(MatchRelation, Double)]] = result_tmp._1 ++ result_tmp._2
+
+    val result_map: Map[MatchRelation, Double] = result_option.filter(_.isDefined).map(_.get).filter(elem => {
+      if (elem._1.owl_type.equals(Cell.TYPE_CLASS)) {
+        elem._2 >= class_threshold
+      } else if (elem._1.owl_type.equals(Cell.TYPE_DT_PROPERTY)) {
+        elem._2 >= dp_threshold
+      } else if (elem._1.owl_type.equals(Cell.TYPE_OBJECT_PROPERTY)) {
+        elem._2 >= op_threshold
+      } else {
+        false
+      }
+    }).toMap
+
+    result_map
+  }
+
 
   def getSimilarMatchingForDiscardedSingle(correspondence: Correspondence, raw_matchings: Map[MatchRelation, Double]): (Option[(MatchRelation, Double)], Option[(MatchRelation, Double)]) = {
 
