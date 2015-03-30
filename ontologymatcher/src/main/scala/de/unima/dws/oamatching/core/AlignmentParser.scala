@@ -8,7 +8,7 @@ import com.hp.hpl.jena.rdf.model._
 import com.hp.hpl.jena.rdf.model.impl.ResourceImpl
 import com.hp.hpl.jena.util.FileManager
 import de.unima.alcomox.ontology.IOntology
-import org.semanticweb.owlapi.model.OWLOntology
+import org.semanticweb.owlapi.model.{OWLObject, OWLLiteral, OWLOntology}
 
 import scala.collection.JavaConversions._
 import scala.collection.convert.Wrappers.JIteratorWrapper
@@ -229,17 +229,27 @@ object AlignmentParser {
   }
 
   def getOntoProperty(alignment_parent: Resource, alignment_onto2_query: Property): String = {
-    val onto2_namespace_prop = alignment_parent.getProperty(alignment_onto2_query)
-    val onto2_namespace = if (alignment_parent.hasProperty(alignment_onto2_query)) {
 
-      try {
-        alignment_parent.getProperty(alignment_onto2_query).getResource.getURI.toString
-      } catch {
-        case _: Throwable => "nn"
+    val result = alignment_parent.listProperties(alignment_onto2_query).toList
+
+    val onto2_namespace =if(result.size() > 0){
+
+
+        if(result.head.isInstanceOf[OWLLiteral]) {
+          result.head.getLiteral.toString
+        }else {
+         if(result.head.getObject.isResource) {
+           result.head.getObject().asResource().toString
+         }else {
+           ""
+         }
+        }
+
+
+      }else {
+        "nn"
       }
-    } else {
-      "nn"
-    }
+
     onto2_namespace
   }
 
