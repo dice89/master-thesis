@@ -15,8 +15,6 @@ case class EvaluationRoundResult(createdAlignment: Alignment, evaluationResult: 
  * Created by mueller on 28/01/15.
  */
 object Evaluation  {
-
-
   /**
    *
    * @param matching_problem
@@ -28,7 +26,11 @@ object Evaluation  {
     //match core platform and store results
 
     val problem_name = matching_problem.name;
-    val core_pipeline_res =   config.matching_pipline(matching_problem, config.threshold, 0.5)
+    val core_pipeline_res = if(config.separated) {
+      config.matching_pipline_separated(matching_problem, config.class_threshold, config.dp_threshold, config.op_threshold, 0.5)
+    }else {
+      config.matching_pipline(matching_problem, config.threshold, 0.5)
+    }
     val created_alignment = core_pipeline_res._1
     val feature_vector = core_pipeline_res._2
 

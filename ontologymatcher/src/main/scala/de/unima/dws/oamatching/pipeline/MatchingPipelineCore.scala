@@ -1,7 +1,7 @@
 package de.unima.dws.oamatching.pipeline
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
-import de.unima.dws.oamatching.analysis.SparkJobs
+import de.unima.dws.oamatching.analysis.{SeparatedResults, SparkJobs}
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.matcher.{Matcher, StructuralLevelMatcher}
 import de.unima.dws.oamatching.core.{Alignment, FastOntology, MatchRelation}
@@ -26,6 +26,10 @@ object MatchingPipelineCore extends LazyLogging {
     matchProblem(outlierFct)(normFct)
   }
 
+  def createMatchingPipelineSeparated(outlierFct: (String, FeatureVector) => SeparatedResults)(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)]): (MatchingProblem, Double,Double,Double, Double) => (Alignment, FeatureVector) = {
+    matchProblemSeparated(outlierFct)(normFct)
+  }
+
   /**
    * To execute matching process
    * @param problem
@@ -34,26 +38,31 @@ object MatchingPipelineCore extends LazyLogging {
    */
   def matchProblem(outlierFct: (String, FeatureVector) => (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]))(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)])(problem: MatchingProblem, threshold: Double, remove_correlated_threshold: Double): (Alignment, FeatureVector) = {
     val start_time = System.currentTimeMillis()
-    val runtime = Runtime.getRuntime
-    val mb = 1024 * 1024
 
     val filtered_outlier_analysis_vector: FeatureVector = createFeatureVector(problem, remove_correlated_threshold, true)
 
-
-
-
-    println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory) / mb))
     println("Start Outlier analysis")
     val outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) = outlierFct(problem.name, filtered_outlier_analysis_vector)
     println("Outlier Analysis Done")
-    println("RAM Used " + ((runtime.totalMemory - runtime.freeMemory) / mb))
 
     println("Total Execution Time: " + (System.currentTimeMillis() - start_time))
-
-    //dimensionality normalization
-
+    //post processing, so normalization and feature selection
     val alignment: Alignment = postProcessMatchings(normFct, threshold, outlier_analysis_result)
 
+    (alignment, filtered_outlier_analysis_vector)
+  }
+
+  def matchProblemSeparated(outlierFct: (String, FeatureVector) => SeparatedResults)(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)])(problem: MatchingProblem, class_threshold: Double, dp_threshold: Double, op_threshold: Double, remove_correlated_threshold: Double): (Alignment, FeatureVector) = {
+    val start_time = System.currentTimeMillis()
+    val filtered_outlier_analysis_vector: FeatureVector = createFeatureVector(problem, remove_correlated_threshold, true)
+
+    println("Start Outlier analysis")
+    val outlier_analysis_result_separated = outlierFct(problem.name, filtered_outlier_analysis_vector)
+    println("Outlier Analysis Done")
+
+    println("Total Execution Time: " + (System.currentTimeMillis() - start_time))
+    //post processing, so normalization and feature selection
+    val alignment: Alignment = postProcessSeparatedMatchings(normFct, class_threshold,dp_threshold,op_threshold, outlier_analysis_result_separated)
 
     (alignment, filtered_outlier_analysis_vector)
   }
@@ -92,7 +101,7 @@ object MatchingPipelineCore extends LazyLogging {
     } else {
       outlier_analysis_vector
     }
-    println("pre feature selection" +name_space_filtered.matcher_name_to_index.size)
+    println("pre feature selection" + name_space_filtered.matcher_name_to_index.size)
 
     //First pre feature selection
     val feature_selected = if (Config.loaded_config.getBoolean("general.feature_selection")) {
@@ -100,7 +109,7 @@ object MatchingPipelineCore extends LazyLogging {
     } else {
       name_space_filtered
     }
-    println("after feature selection" +feature_selected.matcher_name_to_index.size)
+    println("after feature selection" + feature_selected.matcher_name_to_index.size)
     feature_selected
   }
 
@@ -112,16 +121,32 @@ object MatchingPipelineCore extends LazyLogging {
    * @return
    */
   def postProcessMatchings(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], threshold: Double, outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double])): Alignment = {
-    val final_result: Iterable[(MatchRelation, Double)] = normFct.tupled(outlier_analysis_result)
 
-    //now perform outlier analysis
-    println("Namespace Filtering done")
-    println(threshold)
-    val selected = MatchingSelector.greedyRankSelectorSimple(final_result.toMap, threshold)
-    println("Greedy Rank Selection done")
+    val selected = normalizeAndSelectSingle(normFct, outlier_analysis_result, threshold)
+
 
     val alignment = new Alignment(null, null, selected)
     alignment
+  }
+
+  def postProcessSeparatedMatchings(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], class_threshold: Double, dp_threshold: Double, op_threshold: Double, outlier_analysis_result: SeparatedResults): Alignment = {
+
+    val selected_classes = normalizeAndSelectSingle(normFct, outlier_analysis_result.class_matchings, class_threshold)
+    val selected_dps = normalizeAndSelectSingle(normFct, outlier_analysis_result.dp_matchings, dp_threshold)
+    val selected_ops = normalizeAndSelectSingle(normFct, outlier_analysis_result.op_matchings, op_threshold)
+
+    val final_matchings = selected_classes ++ selected_dps ++ selected_ops
+
+    val alignment = new Alignment(null, null, final_matchings)
+
+    alignment
+  }
+
+  def normalizeAndSelectSingle(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]), threshold: Double): Map[MatchRelation, Double] = {
+    val final_result: Iterable[(MatchRelation, Double)] = normFct.tupled(outlier_analysis_result)
+
+    val selected: Map[MatchRelation, Double] = MatchingSelector.greedyRankSelectorSimple(final_result.toMap, threshold)
+    selected
   }
 
   /**

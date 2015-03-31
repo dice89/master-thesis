@@ -23,6 +23,10 @@ import scala.io.Source
 case class SeparatedResults(class_matchings: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]), dp_matchings: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]), op_matchings: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]))
 
 object RapidminerJobs extends LazyLogging {
+  val pca_operator_name = "PCA"
+  val remove_useless_name = "REMOVE_USELESS"
+  val remove_correlated_name = "REMOVE_CORRELATED"
+
 
   def init() = {
     RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE)
@@ -52,8 +56,12 @@ object RapidminerJobs extends LazyLogging {
 
   val tmp_matching_folder = Config.loaded_config.getString("rapidminerconfig.tmp_matching_location")
 
-  def rapidminerOutlierDetection(rapidminer_file: String, base_dir: String)(csv_prefix: String, featureVector: FeatureVector): (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) = rapidminerOutlier(writeCSV(csv_prefix, base_dir))(readCSV)(rapidminer_file, base_dir)(featureVector)
+  //for the core pipeline
+  def rapidminerOutlierDetection(rapidminer_file: String, base_dir: String, process_type: String, parameters: Map[String, Map[String, Double]], pre_pro_key: String)(csv_prefix: String, featureVector: FeatureVector): (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) = rapidminerOutlier(writeCSV(csv_prefix, base_dir))(readCSV)(rapidminer_file, base_dir, process_type, parameters, pre_pro_key)(featureVector)
 
+  def rapidminerOutlierDetectionSeparated(rapidminer_file: String, base_dir: String, process_type: String, parameters: Map[String, Map[String, Double]], pre_pro_key: String)(csv_prefix: String, featureVector: FeatureVector): SeparatedResults = rapidminerOutlierSeparated(writeCSV(csv_prefix, base_dir))(readCSV)(rapidminer_file, base_dir, process_type, parameters, pre_pro_key)(featureVector)
+
+  //for threshold optimization
   def rapidminerOutlierDetectionExperiments(run_number: Int, rapidminer_file: String, matching_file: File, parameters: Map[String, Map[String, Double]], pre_pro_key: String, process_type: String): (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) = rapidminerOutlierFromExistentFile(readCSV)(rapidminer_file)(run_number, matching_file, parameters, pre_pro_key: String, process_type: String)
 
   def rapidminerOutlierDetectionExperimentsSeparated(run_number: Int, rapidminer_file: String, matching_file: File, parameters: Map[String, Map[String, Double]], pre_pro_key: String, process_type: String): SeparatedResults = rapidminerOutlierFromExistentFileSeparated(readCSV)(rapidminer_file)(run_number, matching_file, parameters, pre_pro_key: String, process_type: String)
@@ -66,7 +74,7 @@ object RapidminerJobs extends LazyLogging {
    * @param matchings
    * @return
    */
-  def rapidminerOutlier(writeFunction: FeatureVector => File)(readFunction: File => (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]))(rapidminer_file: String, oa_base_dir: String)(matchings: FeatureVector): (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) = {
+  def rapidminerOutlier(writeFunction: FeatureVector => File)(readFunction: File => (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]))(rapidminer_file: String, oa_base_dir: String, process_type: String, parameters: Map[String, Map[String, Double]], pre_pro_key: String)(matchings: FeatureVector): (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) = {
     val input_csv: File = writeFunction(matchings)
     //Rapidminer Handling
     val data_set_size: Int = matchings.transposed_vector.size
@@ -80,23 +88,18 @@ object RapidminerJobs extends LazyLogging {
     val file = new File(process_file);
 
     var process: RProcess = new RProcess(file);
-    process.getOperator("Process").setParameter("logverbosity", "error")
 
+    //configure preprocessing
+    configurePrePro(parameters, pre_pro_key, process, pca_operator_name, remove_useless_name, remove_correlated_name)
+
+    val mining_params = parameters.get("mining").get
+
+    //configure outlier detection operators
+    configureNonSeparated(process_type, data_set_size, matchings.matcher_name_to_index, process, mining_params)
+
+    //set path correctly
     process.getOperator("ReadVector").setParameter("csv_file", input_csv.getAbsolutePath)
     process.getOperator("Output").setParameter("csv_file", output_csv.getAbsolutePath)
-
-    //quick hack to make process specific configurations
-    if (rapidminer_file.contains("loop")) {
-      //set k to 10%
-      val k_value = Math.ceil(data_set_size.toDouble * 0.05).toInt
-
-      process.getOperator("Loop").setParameter("k", k_value + "")
-
-      val norm_factor = 0.2 * dimensions.toDouble
-      process.getOperator("Loop").setParameter("normalization factor", norm_factor + "")
-      println(norm_factor)
-    }
-
 
     try {
       process.run()
@@ -114,18 +117,100 @@ object RapidminerJobs extends LazyLogging {
   }
 
 
+  def rapidminerOutlierSeparated(writeFunction: FeatureVector => File)(readFunction: File => (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]))(rapidminer_file: String, oa_base_dir: String, process_type: String, parameters: Map[String, Map[String, Double]], pre_pro_key: String)(matchings: FeatureVector): SeparatedResults = {
+    val input_csv: File = writeFunction(matchings)
+
+
+    val matching_lines = Source.fromFile(input_csv, "utf-8").getLines()
+    val header_line = matching_lines.next()
+    val data_set_size = matching_lines.size - 1;
+
+    //minus 1 for header lines
+    //split by comma
+    //get sizes by owl type
+    val line_by_headers = CSVReader.open(input_csv).allWithHeaders()
+    val lines_by_owl_type: Map[String, List[Predef.Map[String, String]]] = line_by_headers.groupBy(_.get("owl_type").get)
+    val size_by_owl_type = lines_by_owl_type.map { case (key, list) => key -> list.size}
+
+
+    //Rapidminer Handling
+    val output_csv_classes: File = new File(tmp_matching_folder + File.separator + process_type + s"classes" + "_" + System.currentTimeMillis() + matchings.data_set_name);
+    val output_csv_dp: File = new File(tmp_matching_folder + File.separator + process_type + s"dp" + "_" + System.currentTimeMillis() + matchings.data_set_name);
+    val output_csv_op: File = new File(tmp_matching_folder + File.separator + process_type + s"op" + "_" + System.currentTimeMillis() + matchings.data_set_name);
+
+
+    //dynamic parameter selection
+    val file_name = matchings.data_set_name + System.currentTimeMillis().toString + ".rmp"
+    val process_file = XMLTest.transformXMLProcess(rapidminer_file, matchings.matcher_name_to_index, file_name)
+    val file = new File(process_file);
+
+    var process: RProcess = new RProcess(file);
+
+    logger.info(s"Created Custom Process $process_file")
+
+    // process.getOperator("Process").setParameter("logverbosity","error")
+
+    configurePrePro(parameters, pre_pro_key, process, "PCA_C", "REMOVE_USELESS_C", "REMOVE_CORRELATED_C")
+    configurePrePro(parameters, pre_pro_key, process, "PCA_DP", "REMOVE_USELESS_DP", "REMOVE_CORRELATED_DP")
+    configurePrePro(parameters, pre_pro_key, process, "PCA_OP", "REMOVE_USELESS_OP", "REMOVE_CORRELATED_OP")
+
+
+    val mining_params = parameters.get("mining").get
+
+    val class_size = size_by_owl_type.get("c").getOrElse(0)
+    val dp_size = size_by_owl_type.get("dp").getOrElse(0)
+    val op_size = size_by_owl_type.get("op").getOrElse(0)
+
+
+    configureMiningSeparated(process_type, matchings.matcher_name_to_index, process, mining_params, class_size, dp_size, op_size)
+
+
+    process.getOperator("ReadVector").setParameter("csv_file", input_csv.getAbsolutePath)
+
+    process.getOperator("Output_C").setParameter("csv_file", output_csv_classes.getAbsolutePath)
+    process.getOperator("Output_DP").setParameter("csv_file", output_csv_dp.getAbsolutePath)
+    process.getOperator("Output_OP").setParameter("csv_file", output_csv_op.getAbsolutePath)
+
+    try {
+      process.run()
+    }
+    catch {
+      case e: Throwable => {
+        logger.error("Rapidminer error in file " + input_csv.getAbsolutePath, e)
+      }
+    }
+
+    //cleanup process file
+    if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup")) {
+      file.delete()
+    }
+
+    //read results
+    SeparatedResults(readFunction(output_csv_classes), readFunction(output_csv_dp), readFunction(output_csv_op))
+  }
+
+  /**
+   * For optimization
+   *
+   * @param readFunction
+   * @param rapidminer_file
+   * @param run_number
+   * @param matching_file
+   * @param parameters
+   * @param pre_pro_key
+   * @param process_type
+   * @return
+   */
   def rapidminerOutlierFromExistentFile(readFunction: File => (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]))(rapidminer_file: String)(run_number: Int, matching_file: File, parameters: Map[String, Map[String, Double]], pre_pro_key: String, process_type: String): (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) = {
     //get list of matchers in file
-    val matching_lines = Source.fromFile(matching_file,"utf-8").getLines()
+    val matching_lines = Source.fromFile(matching_file, "utf-8").getLines()
     val header_line = matching_lines.next()
     val data_set_size = matching_lines.size - 1; //minus 1 for header lines
     //split by comma
 
     //left,relation,right,owl_type, <--- filter out those fields
-    val meta_data_fields: List[String] = List("left", "relation", "right", "owl_type","match_type")
-    val matcher_name_to_index: Map[String, Int] = header_line.split(",").filterNot(field => meta_data_fields.contains(field)).zipWithIndex.toMap
-
-
+    val meta_data_fields: List[String] = List("left", "relation", "right", "owl_type", "match_type")
+    val matcher_name_to_index: Predef.Map[String, Int] = header_line.split(",").filterNot(field => meta_data_fields.contains(field)).zipWithIndex.toMap
 
 
     val output_csv: File = new File(tmp_matching_folder + File.separator + process_type + s"_$run_number" + "_" + System.nanoTime() + "_" + pre_pro_key + "_" + matching_file.getName);
@@ -138,14 +223,35 @@ object RapidminerJobs extends LazyLogging {
 
     var process: RProcess = new RProcess(file);
 
-    val pca_operator_name = "PCA"
-    val remove_useless_name = "REMOVE_USELESS"
-    val remove_correlated_name = "REMOVE_CORRELATED"
 
     configurePrePro(parameters, pre_pro_key, process, pca_operator_name, remove_useless_name, remove_correlated_name)
 
     val mining_params = parameters.get("mining").get
 
+    configureNonSeparated(process_type, data_set_size, matcher_name_to_index, process, mining_params)
+
+    process.getOperator("ReadVector").setParameter("csv_file", matching_file.getAbsolutePath)
+    process.getOperator("Output").setParameter("csv_file", output_csv.getAbsolutePath)
+
+
+    try {
+      process.run()
+    }
+    catch {
+      case e: Throwable => {
+        logger.error("Rapidminer error in file " + matching_file.getAbsolutePath, e)
+      }
+    }
+
+    if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup")) {
+      file.delete()
+    }
+    //trigger garbage collection
+
+    readFunction(output_csv)
+  }
+
+  def configureNonSeparated(process_type: String, data_set_size: Int, matcher_name_to_index: Predef.Map[String, Int], process: RProcess, mining_params: Predef.Map[String, Double]): Unit = {
     if (process_type.equals("knn")) {
       configure_knn(data_set_size, process, mining_params, "KNN")
 
@@ -182,26 +288,6 @@ object RapidminerJobs extends LazyLogging {
     } else if (process_type.equals("loop")) {
       configure_loop(data_set_size, matcher_name_to_index, process, mining_params, "LOOP")
     }
-
-    process.getOperator("ReadVector").setParameter("csv_file", matching_file.getAbsolutePath)
-    process.getOperator("Output").setParameter("csv_file", output_csv.getAbsolutePath)
-
-
-    try {
-      process.run()
-    }
-    catch {
-      case e: Throwable => {
-        logger.error("Rapidminer error in file " + matching_file.getAbsolutePath, e)
-      }
-    }
-
-    if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup")) {
-      file.delete()
-    }
-    //trigger garbage collection
-
-    readFunction(output_csv)
   }
 
   /**
@@ -223,13 +309,13 @@ object RapidminerJobs extends LazyLogging {
     //split by comma
     //get sizes by owl type
     val line_by_headers = CSVReader.open(matching_file).allWithHeaders()
-    val lines_by_owl_type: Map[String, List[Predef.Map[String, String]]] = line_by_headers.groupBy(_.get("owl_type").get)
+    val lines_by_owl_type: Predef.Map[String, List[Predef.Map[String, String]]] = line_by_headers.groupBy(_.get("owl_type").get)
     val size_by_owl_type = lines_by_owl_type.map { case (key, list) => key -> list.size}
 
     //println(size_by_owl_type)
     //left,relation,right,owl_type, <--- filter out those fields
     val meta_data_fields: List[String] = List("left", "relation", "right", "owl_type", "match_type")
-    val matcher_name_to_index: Map[String, Int] = header_line.split(",").filterNot(field => meta_data_fields.contains(field)).zipWithIndex.toMap
+    val matcher_name_to_index: Predef.Map[String, Int] = header_line.split(",").filterNot(field => meta_data_fields.contains(field)).zipWithIndex.toMap
 
 
     val output_csv_classes: File = new File(tmp_matching_folder + File.separator + process_type + s"classes_$run_number" + "_" + System.currentTimeMillis() + matching_file.getName);
@@ -261,6 +347,35 @@ object RapidminerJobs extends LazyLogging {
     val op_size = size_by_owl_type.get("op").getOrElse(0)
 
 
+    configureMiningSeparated(process_type, matcher_name_to_index, process, mining_params, class_size, dp_size, op_size)
+
+
+    process.getOperator("ReadVector").setParameter("csv_file", matching_file.getAbsolutePath)
+
+    process.getOperator("Output_C").setParameter("csv_file", output_csv_classes.getAbsolutePath)
+    process.getOperator("Output_DP").setParameter("csv_file", output_csv_dp.getAbsolutePath)
+    process.getOperator("Output_OP").setParameter("csv_file", output_csv_op.getAbsolutePath)
+
+    try {
+      process.run()
+    }
+    catch {
+      case e: Throwable => {
+        logger.error("Rapidminer error in file " + matching_file.getAbsolutePath, e)
+      }
+    }
+
+    //cleanup process file
+    if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup")) {
+      file.delete()
+    }
+
+    //read results
+    SeparatedResults(readFunction(output_csv_classes), readFunction(output_csv_dp), readFunction(output_csv_op))
+  }
+
+
+  def configureMiningSeparated(process_type: String, matcher_name_to_index: Predef.Map[String, Int], process: RProcess, mining_params: Predef.Map[String, Double], class_size: Int, dp_size: Int, op_size: Int): Unit = {
     if (process_type.equals("knn")) {
       configure_knn(class_size, process, mining_params, "KNN_C")
       configure_knn(dp_size, process, mining_params, "KNN_DP")
@@ -302,33 +417,7 @@ object RapidminerJobs extends LazyLogging {
       configure_loop(dp_size, matcher_name_to_index, process, mining_params, "LOOP_DP")
       configure_loop(op_size, matcher_name_to_index, process, mining_params, "LOOP_OP")
     }
-
-
-    process.getOperator("ReadVector").setParameter("csv_file", matching_file.getAbsolutePath)
-
-    process.getOperator("Output_C").setParameter("csv_file", output_csv_classes.getAbsolutePath)
-    process.getOperator("Output_DP").setParameter("csv_file", output_csv_dp.getAbsolutePath)
-    process.getOperator("Output_OP").setParameter("csv_file", output_csv_op.getAbsolutePath)
-
-    try {
-      process.run()
-    }
-    catch {
-      case e: Throwable => {
-        logger.error("Rapidminer error in file " + matching_file.getAbsolutePath, e)
-      }
-    }
-
-    //cleanup process file
-    if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup")) {
-      file.delete()
-    }
-
-    //trigger garbage collection
-
-    SeparatedResults(readFunction(output_csv_classes), readFunction(output_csv_dp), readFunction(output_csv_op))
   }
-
 
   def normalize(norm_value: Double, matchings: Map[MatchRelation, Double]): Map[MatchRelation, Double] = {
     matchings.map { case (relation, value) => (relation, (value / norm_value))}
@@ -357,7 +446,7 @@ object RapidminerJobs extends LazyLogging {
     val writer = CSVWriter.open(csv_file)
 
     //print Headline
-    val header: List[String] = List[String]("left", "relation", "right", "owl_type","match_type") ::: matcher_name_to_index.values.toList.sorted.map(A => matcher_index_to_name.get(A).get)
+    val header: List[String] = List[String]("left", "relation", "right", "owl_type", "match_type") ::: matcher_name_to_index.values.toList.sorted.map(A => matcher_index_to_name.get(A).get)
 
     //convert to java UTIL List
     writer.writeRow(header)
@@ -394,7 +483,7 @@ object RapidminerJobs extends LazyLogging {
     logger.info("Read input from " + file.getName)
 
     // get dim names
-    val metaDataFields = List("left", "relation", "right", "owl_type","match_type", "outlier")
+    val metaDataFields = List("left", "relation", "right", "owl_type", "match_type", "outlier")
     val reader_head = CSVReader.open(file)
     val dim_names = reader_head.all().head.filterNot(name => metaDataFields.contains(name))
     reader_head.close()
@@ -408,7 +497,7 @@ object RapidminerJobs extends LazyLogging {
       dim_size = tuple.size - 6
       //get max score by dimensions
 
-      MatchRelation(left = tuple.get("left").get, relation = tuple.get("relation").get, right = tuple.get("right").get, owl_type = tuple.get("owl_type").get,match_type = tuple.get("match_type").get) -> tuple.get("outlier").getOrElse("0.0").toDouble
+      MatchRelation(left = tuple.get("left").get, relation = tuple.get("relation").get, right = tuple.get("right").get, owl_type = tuple.get("owl_type").get, match_type = tuple.get("match_type").get) -> tuple.get("outlier").getOrElse("0.0").toDouble
     }) toMap
 
     reader.close()
@@ -468,9 +557,9 @@ object RapidminerJobs extends LazyLogging {
 
     println(data_set_size)
     println(k_value)
-    if(k_value < 50){
-      process.getOperator(knn_name).setParameter("k","50")
-    }else {
+    if (k_value < 50) {
+      process.getOperator(knn_name).setParameter("k", "50")
+    } else {
       process.getOperator(knn_name).setParameter("k", k_value.toString)
     }
   }
@@ -546,7 +635,7 @@ object RapidminerJobs extends LazyLogging {
     if (pre_pro_key.equals("pca_fixed")) {
       configurePCAFixed(process, pre_pro_params, pca_operator_name)
     } else if (pre_pro_key.equals("pca_variant")) {
-      conifgurePCAVariant(process, pre_pro_params, pca_operator_name)
+      configurePCAVariant(process, pre_pro_params, pca_operator_name)
     } else if (pre_pro_key.equals("remove_corr")) {
       configureRemoveCorrelated(process, pre_pro_params, remove_useless_name, remove_correlated_name)
     }
@@ -556,7 +645,7 @@ object RapidminerJobs extends LazyLogging {
     process.getOperator(pca_operator_name).setParameter("number_of_components", pre_pro_params.get("number").get.toInt.toString)
   }
 
-  def conifgurePCAVariant(process: RProcess, pre_pro_params: Map[String, Double], pca_operator_name: String) {
+  def configurePCAVariant(process: RProcess, pre_pro_params: Map[String, Double], pca_operator_name: String) {
     process.getOperator(pca_operator_name).setParameter("variance_threshold", pre_pro_params.get("variance").get.toString)
   }
 
@@ -567,6 +656,5 @@ object RapidminerJobs extends LazyLogging {
     process.getOperator(remove_useless_name).setParameter("numerical_min_deviation", min_variance + "")
     process.getOperator(remove_correlated_name).setParameter("correlation", max_correlation.toString)
   }
-
 
 }

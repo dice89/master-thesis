@@ -46,7 +46,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
       (class_normalized, dp_normalized, op_normalized, (ref_alignment))
     }
     }.toList
-    println("TEEEEEEEEEST")
+
 
     val optimization_grid = ParameterOptimizer.getDoubleGrid(0.001, 1.1, 200)
     val optimal_thresholds = findOptimalThresholds(selection_function, normalized_per_category, optimization_grid)

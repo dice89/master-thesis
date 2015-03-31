@@ -2,9 +2,9 @@ package de.unima.dws.oamatching.measures
 
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
+import de.unima.dws.alex.simservice.{Config => Sim_Service_Config, SimService}
 import de.unima.dws.oamatching.analysis.SparkJobs
 import de.unima.dws.oamatching.config.Config
-import de.unima.dws.alex.simservice.{Config => Sim_Service_Config, SimService}
 import org.apache.spark.mllib.feature.Word2VecModel
 import play.api.libs.json._
 
@@ -14,25 +14,24 @@ import scalaj.http.{Http, HttpResponse}
 /**
  * Created by mueller on 31/01/15.
  */
-object SemanticMeasures extends  LazyLogging{
+object SemanticMeasures extends LazyLogging {
 
-   //init SimService config
+  //init SimService config
   Sim_Service_Config.readFromFile("config/umbc/sim_config.txt")
-  var semantic_sim:SimService = null
+  var semantic_sim: SimService = null
 
-  def word2VecSimilarityMeasure: (String, String) => Double = word2VecCosineSimilarity(SparkJobs.word_2_vec_model)_
+  def word2VecSimilarityMeasure: (String, String) => Double = word2VecCosineSimilarity(SparkJobs.word_2_vec_model) _
 
-  def word2VecSimilarityMeasureStemmed: (String, String) => Double = word2VecCosineSimilarity(SparkJobs.word_2_vec_model_stemmed)_
+  def word2VecSimilarityMeasureStemmed: (String, String) => Double = word2VecCosineSimilarity(SparkJobs.word_2_vec_model_stemmed) _
 
-  def word2VecCosineSimilarity(model:Word2VecModel)(term1:String,term2:String):Double= {
+  def word2VecCosineSimilarity(model: Word2VecModel)(term1: String, term2: String): Double = {
     try {
 
-        val value = SparkJobs.cousineSimilarityBetweenTerms(model,term1.trim,term2.trim)
+      val value = SparkJobs.cousineSimilarityBetweenTerms(model, term1.trim, term2.trim)
 
-        value
+      value
 
-
-    }catch {
+    } catch {
       case e: Exception => {
         //println(e)
         0.0
@@ -40,17 +39,14 @@ object SemanticMeasures extends  LazyLogging{
     }
   }
 
-  def umbcPhraseSim(phrase1:String,phrase2:String):Double = {
+  def umbcPhraseSim(phrase1: String, phrase2: String): Double = {
 
     try {
-
-        semantic_sim.getSimilarity(phrase1, phrase2, false)
-
-
+      semantic_sim.getSimilarity(phrase1, phrase2, false)
     }
     catch {
-      case e:Throwable =>{
-        logger.error(s"error at umbc phrase sim: $phrase1, $phrase2",e)
+      case e: Throwable => {
+        //logger.error(s"error at umbc phrase sim: $phrase1, $phrase2", e)
         0.0
       }
     }
@@ -58,27 +54,24 @@ object SemanticMeasures extends  LazyLogging{
   }
 
 
-  def umbcSim(term1:String,term2:String):Double = {
+  def umbcSim(term1: String, term2: String): Double = {
     try {
-
-        semantic_sim.getSimilarity(term1, term2, true)
-
-
+      semantic_sim.getSimilarity(term1, term2, true)
     }
     catch {
-      case e:Throwable =>{
-        logger.info("error at umbc sim",e)
+      case e: Throwable => {
+        //logger.info("error at umbc sim",e)
         0.0
       }
     }
   }
 
-  def umbcPosSim(term1:String,term2:String):Double = {
+  def umbcPosSim(term1: String, term2: String): Double = {
     semantic_sim.getPosSimilarity(term1, term2, true)
   }
 
 
-  def esaSim(term1:String,term2:String):Double = {
+  def esaSim(term1: String, term2: String): Double = {
 
     try {
       val response: HttpResponse[String] = Http("http://localhost:8890/esaservice")
@@ -100,7 +93,7 @@ object SemanticMeasures extends  LazyLogging{
       }
     }
     catch {
-      case e:Throwable => 0.0
+      case e: Throwable => 0.0
     }
 
   }
@@ -123,7 +116,6 @@ object SemanticMeasures extends  LazyLogging{
     }
 
   }
-
 
 
   def isSynonymOf(term: String, to_check: String): Double = {

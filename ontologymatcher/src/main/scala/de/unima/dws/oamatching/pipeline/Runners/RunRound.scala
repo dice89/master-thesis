@@ -10,8 +10,6 @@ import de.unima.dws.oamatching.pipeline.util.MetaDataMgmt
 object RunRound extends App{
   val config = Runner.parseRunConfig()
 
-
-  val threshold = MetaDataMgmt.getThreshold("Conference","pipeline").getOrElse(0.7)
   Runner.runRound(config)
 }
 

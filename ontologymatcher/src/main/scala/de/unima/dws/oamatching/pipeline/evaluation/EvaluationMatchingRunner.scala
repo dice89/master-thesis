@@ -102,7 +102,6 @@ object EvaluationMatchingRunner extends EvaluationDataSetParser {
    * @return
    */
   def matchAndEvaluateSingle(eval_task: EvaluationMatchingTaskWithParameters): EvaluationRoundResult = {
-
     Evaluation.evaluate(eval_task.matching_problem, eval_task.reference, eval_task.config)
   }
 

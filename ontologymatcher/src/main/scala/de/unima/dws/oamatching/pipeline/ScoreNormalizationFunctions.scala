@@ -18,8 +18,9 @@ object ScoreNormalizationFunctions {
   def getNormFunction(normFCT:String): (Int, Map[String, (Double, Double)],Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)] = {
     normFCT match {
       case "none" => noNormalization _
-      case "maxeuclidean"  =>  normalizeByMaxEuclideanDistance _
+      case "euclidean_max"  =>  normalizeByMaxEuclideanDistance _
       case "gaussianscale" => normalizeByGaussianScaling _
+      case "zscore" => normalizeByGaussianScaling _
       case other =>  noNormalization _
     }
   }

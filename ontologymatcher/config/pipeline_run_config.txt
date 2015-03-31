@@ -1,4 +1,0 @@
-thresh=0.525
-norm=none
-dsname=conference
-pathtods=test
