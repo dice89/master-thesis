@@ -2,6 +2,7 @@ package de.unima.dws.oamatching.pipeline.evaluation
 
 import java.io.File
 
+import de.unima.alcomox.ontology.IOntology
 import de.unima.dws.oamatching.core.{Alignment, AlignmentParser, OntologyLoader}
 import de.unima.dws.oamatching.pipeline.MatchingProblem
 
@@ -37,10 +38,12 @@ trait EvaluationDataSetParser {
     val onto1 = OntologyLoader.load_fast_ontology(human_onto_name)
     val onto2 = OntologyLoader.load_fast_ontology(mouse_onto_name)
 
-
+    val ionto_1 = new IOntology(human_onto_name)
+    val ionto_2 = new IOntology(mouse_onto_name)
 
     val name: String = "human-mouse"
-    val matching_problem = MatchingProblem(onto1, onto2, name)
+
+    val matching_problem = MatchingProblem(onto1, onto2,ionto_1,ionto_2, name)
 
     val reference: Alignment = AlignmentParser.parseRDFWithOntos(ref, human_onto_name, mouse_onto_name)
 
@@ -65,10 +68,14 @@ trait EvaluationDataSetParser {
       val onto1 = OntologyLoader.load_fast_ontology(name_onto1)
       val onto2 = OntologyLoader.load_fast_ontology(name_onto2)
 
+      val ionto_1 = new IOntology(name_onto1)
+      val ionto_2 = new IOntology(name_onto2)
+
+
       //parse alignments
       val reference: Alignment = AlignmentParser.parseRDFWithOntos(ref_align_file.getAbsolutePath(), name_onto1, name_onto2)
       val name: String = ref_align_file.getName().dropRight(4)
-      val matching_problem = MatchingProblem(onto1, onto2, name)
+      val matching_problem = MatchingProblem(onto1, onto2,ionto_1,ionto_2, name)
 
       EvaluationMatchingTask(matching_problem, reference)
     }
@@ -95,10 +102,12 @@ trait EvaluationDataSetParser {
 
       val reference_alignment: Alignment = AlignmentParser.parseRDFWithOntos(ref_align_path, onto_left_file.getAbsolutePath, onto_right_path)
 
+      val ionto_1 = new IOntology(onto_left_file.getPath)
+      val ionto_2 = new IOntology(onto_right_path)
 
       val name: String = left_name + "-" + right_name
 
-      val matching_problem = MatchingProblem(onto_left, onto_right, name)
+      val matching_problem = MatchingProblem(onto_left, onto_right,ionto_1,ionto_2, name)
 
       EvaluationMatchingTask(matching_problem, reference_alignment)
     }
@@ -112,9 +121,13 @@ trait EvaluationDataSetParser {
     val name: String = f_reference.dropRight(4)
     val onto1 = OntologyLoader.load_fast_ontology(f_onto1)
     val onto2 = OntologyLoader.load_fast_ontology(f_onto2)
+
+    val ionto_1 = new IOntology(f_onto1)
+    val ionto_2 = new IOntology(f_onto2)
+
     val reference: Alignment = AlignmentParser.parseRDF(f_reference)
 
-    val matching_problem = MatchingProblem(onto1, onto2, name)
+    val matching_problem = MatchingProblem(onto1, onto2,ionto_1,ionto_2, name)
 
     EvaluationMatchingTask(matching_problem, reference)
   }

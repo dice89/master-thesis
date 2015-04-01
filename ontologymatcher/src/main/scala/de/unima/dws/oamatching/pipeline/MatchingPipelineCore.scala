@@ -1,6 +1,7 @@
 package de.unima.dws.oamatching.pipeline
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
+import de.unima.alcomox.ontology.IOntology
 import de.unima.dws.oamatching.analysis.{SeparatedResults, SparkJobs}
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.matcher.{Matcher, StructuralLevelMatcher}
@@ -11,7 +12,7 @@ import scala.collection.immutable.Map
 import scala.collection.parallel.immutable.ParMap
 
 
-case class MatchingProblem(ontology1: FastOntology, ontology2: FastOntology, name: String)
+case class MatchingProblem(ontology1: FastOntology, ontology2: FastOntology,debug_onto1:IOntology, debug_onto2:IOntology, name: String)
 
 case class MatchingEvaluationProblem(ontology1: FastOntology, ontology2: FastOntology, reference: Alignment, name: String)
 
@@ -47,7 +48,7 @@ object MatchingPipelineCore extends LazyLogging {
 
     println("Total Execution Time: " + (System.currentTimeMillis() - start_time))
     //post processing, so normalization and feature selection
-    val alignment: Alignment = postProcessMatchings(normFct, threshold, outlier_analysis_result)
+    val alignment: Alignment = postProcessMatchings(normFct, threshold, outlier_analysis_result,problem)
 
     (alignment, filtered_outlier_analysis_vector)
   }
@@ -62,7 +63,7 @@ object MatchingPipelineCore extends LazyLogging {
 
     println("Total Execution Time: " + (System.currentTimeMillis() - start_time))
     //post processing, so normalization and feature selection
-    val alignment: Alignment = postProcessSeparatedMatchings(normFct, class_threshold,dp_threshold,op_threshold, outlier_analysis_result_separated)
+    val alignment: Alignment = postProcessSeparatedMatchings(normFct, class_threshold,dp_threshold,op_threshold, outlier_analysis_result_separated,problem)
 
     (alignment, filtered_outlier_analysis_vector)
   }
@@ -120,16 +121,30 @@ object MatchingPipelineCore extends LazyLogging {
    * @param outlier_analysis_result
    * @return
    */
-  def postProcessMatchings(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], threshold: Double, outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double])): Alignment = {
+  def postProcessMatchings(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], threshold: Double, outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]),problem: MatchingProblem): Alignment = {
 
     val selected = normalizeAndSelectSingle(normFct, outlier_analysis_result, threshold)
 
+    val alignment = new Alignment(problem.ontology1.name, problem.ontology2.name,null,null,problem.debug_onto1, problem.debug_onto2,selected)
 
-    val alignment = new Alignment(null, null, selected)
-    alignment
+    if(Config.loaded_config.getBoolean("pipeline.debug_alignment")){
+      MatchingPruner.debugAlignment(alignment,outlier_analysis_result._3,threshold)
+    }else {
+      alignment
+    }
   }
 
-  def postProcessSeparatedMatchings(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], class_threshold: Double, dp_threshold: Double, op_threshold: Double, outlier_analysis_result: SeparatedResults): Alignment = {
+  /**
+   *
+   * @param normFct
+   * @param class_threshold
+   * @param dp_threshold
+   * @param op_threshold
+   * @param outlier_analysis_result
+   * @param problem
+   * @return
+   */
+  def postProcessSeparatedMatchings(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], class_threshold: Double, dp_threshold: Double, op_threshold: Double, outlier_analysis_result: SeparatedResults,problem: MatchingProblem): Alignment = {
 
     val selected_classes = normalizeAndSelectSingle(normFct, outlier_analysis_result.class_matchings, class_threshold)
     val selected_dps = normalizeAndSelectSingle(normFct, outlier_analysis_result.dp_matchings, dp_threshold)
@@ -137,9 +152,15 @@ object MatchingPipelineCore extends LazyLogging {
 
     val final_matchings = selected_classes ++ selected_dps ++ selected_ops
 
-    val alignment = new Alignment(null, null, final_matchings)
+    val alignment = new Alignment(problem.ontology1.name, problem.ontology2.name,null,null,problem.debug_onto1, problem.debug_onto2,final_matchings)
 
-    alignment
+    if(Config.loaded_config.getBoolean("pipeline.debug_alignment")){
+      val raw_matchings = outlier_analysis_result.class_matchings._3 ++  outlier_analysis_result.dp_matchings._3 ++outlier_analysis_result.op_matchings._3
+      MatchingPruner.debugAlignment(alignment,raw_matchings,class_threshold,dp_threshold,op_threshold)
+    }else {
+      alignment
+    }
+
   }
 
   def normalizeAndSelectSingle(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]), threshold: Double): Map[MatchRelation, Double] = {

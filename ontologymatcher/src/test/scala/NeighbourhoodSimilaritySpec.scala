@@ -51,7 +51,7 @@ class NeighbourhoodSimilaritySpec extends UnitSpec {
     val onto1 = OntologyLoader.load_fast_ontology("ontos/testontos/hierachy/tree1.owl")
     val onto2 = OntologyLoader.load_fast_ontology("ontos/testontos/hierachy/tree2.owl")
     val initial_alignment = base_matcher.align(onto1, onto2, 0.6)
-    val problem = MatchingProblem(onto1,onto2,"test")
+    val problem = MatchingProblem(onto1,onto2,null,null,"test")
     val created =  n_matcher.align(problem,initial_alignment,0.6)
 
     println(created.correspondences)
@@ -69,7 +69,7 @@ class NeighbourhoodSimilaritySpec extends UnitSpec {
     val initial_result = initial_alignment.evaluate(reference)
     println(initial_result)
 
-    val problem = MatchingProblem(onto1,onto2,"test")
+    val problem = MatchingProblem(onto1,onto2,null,null,"test")
     val created =  n_matcher.align(problem,initial_alignment,0.6)
 
     val created_result = created.evaluate(reference)
@@ -88,7 +88,7 @@ class NeighbourhoodSimilaritySpec extends UnitSpec {
     println(reference.correspondences.size)
     val initial_result = initial_alignment.evaluate(reference)
 
-    val problem = MatchingProblem(onto1,onto2,"test")
+    val problem = MatchingProblem(onto1,onto2,null,null,"test")
     val created =  n_matcher.align(problem,initial_alignment,0.6)
     val created_result = created.evaluate(reference)
 

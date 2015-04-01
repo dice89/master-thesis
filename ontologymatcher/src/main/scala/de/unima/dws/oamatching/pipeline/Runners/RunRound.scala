@@ -12,4 +12,3 @@ object RunRound extends App{
 
   Runner.runRound(config)
 }
-

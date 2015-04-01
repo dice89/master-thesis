@@ -16,7 +16,7 @@ class PropertyMatcherSpec extends UnitSpec{
     val initial_alignment = base_matcher.align(onto1, onto2, 0.6)
 
     assert(initial_alignment.correspondences.size > 0)
-    val problem = MatchingProblem(onto1,onto2,"test")
+    val problem = MatchingProblem(onto1,onto2,null,null,"test")
 
     val new_alingment = prop_matcher.align(problem,initial_alignment,0.0)
 
@@ -36,7 +36,7 @@ class PropertyMatcherSpec extends UnitSpec{
     val initial_alignment = base_matcher.align(onto1, onto2, 0.6)
 
     assert(initial_alignment.correspondences.size > 0)
-    val problem = MatchingProblem(onto1,onto2,"test")
+    val problem = MatchingProblem(onto1,onto2,null,null,"test")
 
     val new_alingment = prop_matcher.align(problem,initial_alignment,0.0)
 
@@ -62,7 +62,7 @@ class PropertyMatcherSpec extends UnitSpec{
     val initial_result = initial_alignment.evaluate(reference)
     println(initial_result)
 
-    val problem = MatchingProblem(onto1,onto2,"test")
+    val problem = MatchingProblem(onto1,onto2,null,null,"test")
     val created =  prop_matcher.align(problem,initial_alignment,0.8)
 
     val created_result = created.evaluate(reference)

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
     <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
-        <uri id="Automatically generated entry, Timestamp=1427304866342" name="http://www.semanticweb.org/mueller/ontologies/2015/2/hierachy" uri="onto1.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1427304866342" name="duplicate:http://www.semanticweb.org/mueller/ontologies/2015/2/tree2" uri="tree1.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1427304866342" name="duplicate:http://www.semanticweb.org/mueller/ontologies/2015/2/tree2" uri="tree2.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1427802578318" name="http://www.semanticweb.org/mueller/ontologies/2015/2/hierachy" uri="onto1.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1427802578318" name="duplicate:http://www.semanticweb.org/mueller/ontologies/2015/2/tree2" uri="tree1.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1427802578318" name="duplicate:http://www.semanticweb.org/mueller/ontologies/2015/2/tree2" uri="tree2.owl"/>
     </group>
 </catalog>

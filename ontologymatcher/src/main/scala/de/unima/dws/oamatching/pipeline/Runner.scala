@@ -2,13 +2,14 @@ package de.unima.dws.oamatching.pipeline
 
 import java.io.File
 
+import de.unima.alcomox.ontology.IOntology
 import de.unima.dws.oamatching.analysis.RapidminerJobs
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core._
 import de.unima.dws.oamatching.matcher.MatcherRegistry
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingRunner, EvaluationMatchingTask, EvaluationMatchingTaskWithParameters}
 import de.unima.dws.oamatching.pipeline.registry.OutlierRegistry
-import de.unima.dws.oamatching.pipeline.util.MetaDataMgmt
+import de.unima.dws.oamatching.pipeline.util.{TimeTaker, MetaDataMgmt}
 
 import scala.collection.JavaConversions._
 
@@ -22,7 +23,6 @@ object Runner {
   MatcherRegistry.initLargeScale()
   RapidminerJobs.init()
 
-  //TODO spark init
 
   /**
    * Runs a single structural Matcher based on a base matcher result
@@ -59,7 +59,11 @@ object Runner {
    * @param config
    */
   def runRound(config: RunConfiguration): Unit = {
+    TimeTaker.takeTime("pipeline_and_evaluate")
     EvaluationMatchingRunner.matchAndEvaluateConference(Config.PATH_TO_CONFERENCE, config)
+    val total = TimeTaker.takeTime("pipeline_and_evaluate")
+
+    println(total)
   }
 
   /**
@@ -143,7 +147,9 @@ object Runner {
 
     val l_onto1 = OntologyLoader.load_fast_ontology(file_onto1.getPath)
     val l_onto2 = OntologyLoader.load_fast_ontology(file_onto2.getPath)
-    val test_problem = MatchingProblem(l_onto1, l_onto2, data_set_name)
+    val i_onto1 = new IOntology(file_onto1.getPath)
+    val i_onto2 = new IOntology(file_onto2.getPath)
+    val test_problem = MatchingProblem(l_onto1, l_onto2,i_onto1,i_onto2, data_set_name)
     (reference, test_problem)
   }
 
