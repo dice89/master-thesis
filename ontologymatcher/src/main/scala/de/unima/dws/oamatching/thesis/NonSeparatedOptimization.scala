@@ -18,7 +18,7 @@ import scala.collection.parallel.immutable.ParSeq
 /**
  * Created by mueller on 01/03/15.
  */
-trait NonSeparatedOptimization extends ResultServerHandling with OptimizationDebugging {
+trait NonSeparatedOptimization extends ResultHandling with OptimizationDebugging {
   this: CreateOutlierScoreStatistics.type =>
 
   /**

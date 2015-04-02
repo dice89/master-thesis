@@ -6,7 +6,7 @@ import de.unima.dws.alex.simservice.SimService
 import de.unima.dws.oamatching.core.{AlignmentParser, AggregatedEvaluationResult}
 import de.unima.dws.oamatching.measures.{SemanticMeasures, StringMeasureHelper, StringMeasures}
 import de.unima.dws.oamatching.pipeline.MatchingPruner
-import de.unima.dws.oamatching.thesis.{ResultServerHandling, SeparatedResult}
+import de.unima.dws.oamatching.thesis.{ResultHandling, SeparatedResult}
 import org.slf4j.LoggerFactory
 import play.api.libs.json.Json
 
@@ -20,7 +20,7 @@ import scalaj.http.{Http, HttpResponse}
 
 case class Tester(left: String, right: String, relation: String, measure: Double, owl_type: String)
 
-object Test extends App with ResultServerHandling with LazyLogging {
+object Test extends App with ResultHandling with LazyLogging {
 
   def test = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash) _
 

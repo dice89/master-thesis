@@ -14,7 +14,7 @@ import scala.collection.immutable.Map
 /**
  * Created by mueller on 23/03/15.
  */
-trait HalfSeparatedOptimization extends ResultServerHandling with LazyLogging {
+trait HalfSeparatedOptimization extends ResultHandling with LazyLogging {
 
   def executeProcessSeparated(ds_name:String,run_number:Int,selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double],ref_matching_pairs: List[(EvaluationMatchingTask, File)], rapidminer_file: String, pre_pro_key: String,parameters: Map[String, Map[String, Double]], processes:Map[String, String]): ProcessEvalExecutionResultNonSeparated = {
 

@@ -26,9 +26,9 @@ wuPalmer,wuPalmer,E,sim,true,none,true,true,true,false
 wuPalmer_stemmed,wuPalmer,E,sim,true,stemmed,true,true,true,false
 umbcSim,umbcSim,E,sim,true,none,true,true,true,false
 umbcphrasesim,umbcphrasesim,E,sim,false,none,false,true,true,false
-simple_tfidf,simple_tfidf,T,sim,true,stemmed,false,true,true,false
-soft_tfidf_jaro,soft_tfidf_jaro,T,sim,true,stemmed,false,true,true,false
-jaro_winkler_tfidf,jaro_winkler_tfidf,T,sim,true,stemmed,false,true,true,false
+simple_tfidf,simple_tfidf,T,sim,true,stemmed,false,true,true,true
+soft_tfidf_jaro,soft_tfidf_jaro,T,sim,true,stemmed,false,true,true,true
+jaro_winkler_tfidf,jaro_winkler_tfidf,T,sim,true,stemmed,false,true,true,true
 level2_jaro,level2_jaro,T,sim,true,stemmed,false,true,true,false
 level2_jara_winkler,level2_jara_winkler,T,sim,true,stemmed,false,true,true,false
 level2_monge_elkan,level2_monge_elkan,T,sim,true,stemmed,false,true,true,false
@@ -36,3 +36,5 @@ word2Vec,word2Vec,E,sim,true,none,true,true,true,false
 word2VecStemmed,word2VecStemmed,E,sim,true,stemmed,true,true,true,false
 graphBasedUsedClassMatcher,graphBasedUsedClassMatcher,S
 graphBasedUsedPropMatcher,graphBasedUsedPropMatcher,S
+neighborhoodMatcher,neighborhoodMatcher,S
+propertiesMatcher,propertiesMatcher,S

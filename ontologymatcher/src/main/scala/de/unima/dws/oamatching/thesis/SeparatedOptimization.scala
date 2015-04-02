@@ -10,12 +10,14 @@ import de.unima.dws.oamatching.pipeline.ScoreNormalizationFunctions
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingRunner, EvaluationMatchingTask}
 import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
 
+import scala.Predef
 import scala.collection.immutable.Map
+import scala.collection.parallel.immutable.ParSeq
 
 /**
  * Created by mueller on 27/02/15.
  */
-trait SeparatedOptimization extends ResultServerHandling with LazyLogging with OptimizationDebugging {
+trait SeparatedOptimization extends ResultHandling with LazyLogging with OptimizationDebugging {
 
   val csv_file = new File("tmp/separated_results.csv")
   val csv_result_writer = CSVWriter.open(csv_file)
@@ -32,14 +34,30 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
     logger.info(s"Start threshold optimization for $ds_name and $process_name in run $run_number")
 
 
-    val normalized_per_category: List[(Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Alignment)] = ref_matching_pairs.par.map { case (ref_file, matching_file) => {
-
+    //execute Outlier analysis
+    val matching_results = ref_matching_pairs.par.map { case (ref_file, matching_file) => {
       val ref_alignment: Alignment = ref_file.reference
 
       //build different reference alignments out of original one for different classes
       val result: SeparatedResults = RapidminerJobs.rapidminerOutlierDetectionExperimentsSeparated(run_number, rapidminer_file, matching_file, parameters, pre_pro_key, process_type)
 
-      val class_normalized = getNormalizedScores( result.class_matchings)
+      (result, ref_alignment)
+
+    }
+    }
+
+    //get usage probability for each parameter
+    val probablility_of_usage: Map[String, Double] = getParameterUsageProbabilites(matching_results)
+
+    //write propbility of parameter usage to file
+    writeProbabilitiesToFile(ds_name,process_type,pre_pro_key,true,run_number,probablility_of_usage)
+
+    println(probablility_of_usage)
+    //normalize values
+    val normalized_per_category: List[(Predef.Map[String, Predef.Map[MatchRelation, Double]], Predef.Map[String, Predef.Map[MatchRelation, Double]], Predef.Map[String, Predef.Map[MatchRelation, Double]], Alignment)] = matching_results.map { case (result, ref_alignment) => {
+
+      //build different reference alignments out of original one for different classes
+      val class_normalized = getNormalizedScores(result.class_matchings)
       val dp_normalized = getNormalizedScores(result.dp_matchings)
       val op_normalized = getNormalizedScores(result.op_matchings)
 
@@ -54,7 +72,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
 
     //construct final matchings and evaluate
     val best_results = optimal_thresholds.map { case (norm_technique, (class_threshold, dp_threshold, op_threshold)) => {
-      val eval_res = evaluateRound(norm_technique, selection_function, normalized_per_category, class_threshold, dp_threshold, op_threshold,true, true)
+      val eval_res = evaluateRound(norm_technique, selection_function, normalized_per_category, class_threshold, dp_threshold, op_threshold, true, true)
       println(eval_res)
       norm_technique -> eval_res
     }
@@ -69,6 +87,34 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
     logger.info(s"Done with threshold optimization for $ds_name and $process_name in run $run_number")
     ProcessEvalExecutionResultNonSeparated(true, best_result._2.result, null, null, null, null, best_result, best_results)
 
+  }
+
+  def getParameterUsageProbabilites(matching_results: ParSeq[(SeparatedResults, Alignment)]): Predef.Map[String, Double] = {
+    //get unique parameters
+    val attributes_per_matching = matching_results.map { case (result, ref_alignment) => {
+      val attributes_used = result.class_matchings._2.map(_._1)
+
+      attributes_used.toList
+
+    }
+    }.toList
+
+    val unique_attributes = attributes_per_matching.flatten.distinct
+
+    //count the occurence for each attributes
+
+    val probablility_of_usage = unique_attributes.map(attribute => {
+      val total_usage = attributes_per_matching.map(attributes_for_problem => {
+        if (attributes_for_problem.contains(attribute)) {
+          1
+        } else {
+          0
+        }
+      }).sum
+
+      attribute -> total_usage.toDouble / attributes_per_matching.size.toDouble
+    }).toMap
+    probablility_of_usage
   }
 
   /**
@@ -100,7 +146,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
    * @param ref_alignment
    * @return
    */
-  def selectAndEvaluate(selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], class_matchings: Map[MatchRelation, Double], dp_matchings: Map[MatchRelation, Double], op_matchings: Map[MatchRelation, Double], class_threshold: Double, dp_threshold: Double, op_threshold: Double, ref_alignment: Alignment, debug: Boolean, verbose:Boolean, norm_technique:String): EvaluationResult = {
+  def selectAndEvaluate(selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], class_matchings: Map[MatchRelation, Double], dp_matchings: Map[MatchRelation, Double], op_matchings: Map[MatchRelation, Double], class_threshold: Double, dp_threshold: Double, op_threshold: Double, ref_alignment: Alignment, debug: Boolean, verbose: Boolean, norm_technique: String): EvaluationResult = {
 
     val unselected = class_matchings ++ dp_matchings ++ op_matchings
 
@@ -111,7 +157,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
     val selected: Map[MatchRelation, Double] = selected_classes ++ selected_dps ++ selected_ops
 
     val result = if (debug) {
-      val eval_res =  debugAndEvaluateSeparated(class_threshold, dp_threshold, op_threshold, unselected, ref_alignment, selected, "", false)
+      val eval_res = debugAndEvaluateSeparated(class_threshold, dp_threshold, op_threshold, unselected, ref_alignment, selected, "", false)
 
 
       eval_res
@@ -121,7 +167,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
       alignment.evaluate(ref_alignment)
     }
 
-    if(verbose){
+    if (verbose) {
       printResult(norm_technique, ref_alignment, result)
     }
 
@@ -130,7 +176,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
   }
 
 
-  def evaluateRound(norm_technique: String, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], normalizedScores: List[(Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Alignment)], class_threshold: Double, dp_threshold: Double, op_threshold: Double, debug: Boolean,verbose:Boolean): SeparatedResult = {
+  def evaluateRound(norm_technique: String, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], normalizedScores: List[(Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Alignment)], class_threshold: Double, dp_threshold: Double, op_threshold: Double, debug: Boolean, verbose: Boolean): SeparatedResult = {
 
     val unique_techniques = normalizedScores.head._1.keys.toVector
 
@@ -141,7 +187,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
       val dp_matchings_norm = dp_matchings.get(norm_technique).get
       val op_matchings_norm = op_matchings.get(norm_technique).get
 
-      selectAndEvaluate(selection_function, class_matchings_norm, dp_matchings_norm, op_matchings_norm, class_threshold, dp_threshold, op_threshold, ref_alignment, debug,verbose, norm_technique )
+      selectAndEvaluate(selection_function, class_matchings_norm, dp_matchings_norm, op_matchings_norm, class_threshold, dp_threshold, op_threshold, ref_alignment, debug, verbose, norm_technique)
 
     }
     }.toList
@@ -171,7 +217,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
 
     val best_class_thresholds_by_norm = unique_techniques.par.map(norm_technique => {
       val results_by_threshold = threshold_grid.map(threshold => {
-        (threshold, evaluateRound(norm_technique, selection_function, normalizedScores, threshold, 1.1, 1.1, false,false))
+        (threshold, evaluateRound(norm_technique, selection_function, normalizedScores, threshold, 1.1, 1.1, false, false))
       })
       val best_result = results_by_threshold.maxBy(_._2.result.macro_eval_res.f1Measure)
 
@@ -183,7 +229,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
       val class_threshold = best_class_thresholds_by_norm.get(norm_technique).get
       val results_by_threshold = threshold_grid.map(threshold => {
 
-        (threshold, evaluateRound(norm_technique, selection_function, normalizedScores, class_threshold, threshold, 1.1, false,false))
+        (threshold, evaluateRound(norm_technique, selection_function, normalizedScores, class_threshold, threshold, 1.1, false, false))
       })
       val best_result = results_by_threshold.maxBy(_._2.result.macro_eval_res.f1Measure)
 
@@ -196,7 +242,7 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
       val dp_threshold = best_dp_thresholds_by_norm.get(norm_technique).get
       val results_by_threshold = threshold_grid.map(threshold => {
 
-        (threshold, evaluateRound(norm_technique, selection_function, normalizedScores, class_threshold, dp_threshold, threshold, false,false))
+        (threshold, evaluateRound(norm_technique, selection_function, normalizedScores, class_threshold, dp_threshold, threshold, false, false))
       })
       val best_result = results_by_threshold.maxBy(_._2.result.macro_eval_res.f1Measure)
 
@@ -272,16 +318,16 @@ trait SeparatedOptimization extends ResultServerHandling with LazyLogging with O
     ThresholdOptResult(global_results.seq, best_global_results.seq, null, null)
   }
 
-  def printResult(norm_technique:String,ref:Alignment, eval_res:EvaluationResult):Unit = {
+  def printResult(norm_technique: String, ref: Alignment, eval_res: EvaluationResult): Unit = {
 
 
     val onto1_splitted = ref.onto1.split("/")
-    val ont1_name = if(onto1_splitted.length>3) onto1_splitted(onto1_splitted.length-2) else ref.onto1
+    val ont1_name = if (onto1_splitted.length > 3) onto1_splitted(onto1_splitted.length - 2) else ref.onto1
 
     val onto2_splitted = ref.onto2.split("/")
-    val ont2_name = if(onto2_splitted.length>3) onto2_splitted(onto2_splitted.length-2) else ref.onto2
+    val ont2_name = if (onto2_splitted.length > 3) onto2_splitted(onto2_splitted.length - 2) else ref.onto2
 
-    val row:List[String] = List(norm_technique, ont1_name+"-"+ont2_name, eval_res.precision.toString,  eval_res.recall.toString, eval_res.f1Measure.toString, eval_res.truePositives.toString, eval_res.falsePositives.toString, eval_res.FalseNegatives.toString)
+    val row: List[String] = List(norm_technique, ont1_name + "-" + ont2_name, eval_res.precision.toString, eval_res.recall.toString, eval_res.f1Measure.toString, eval_res.truePositives.toString, eval_res.falsePositives.toString, eval_res.FalseNegatives.toString)
     csv_result_writer.writeRow(row)
 
     csv_result_writer.flush()

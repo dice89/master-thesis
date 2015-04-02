@@ -1,5 +1,8 @@
 package de.unima.dws.oamatching.thesis
 
+import java.io.File
+
+import com.github.tototoshi.csv.CSVWriter
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.AggregatedEvaluationResult
@@ -12,10 +15,21 @@ import scalaj.http.{Http, HttpResponse}
 /**
  * Created by mueller on 04/03/15.
  */
-trait ResultServerHandling extends LazyLogging {
-
+trait ResultHandling extends LazyLogging {
 
   val server:String = Config.loaded_config.getString("general.serveraddress")
+
+
+  def writeProbabilitiesToFile(ds_name: String, outlier_method: String, pre_pro_method: String, separated: Boolean,run_number:Integer, probabilites:Map[String,Double]):Unit = {
+    val csv_file = new File(s"tmp/probabilites/probabilities$outlier_method$ds_name$pre_pro_method$separated$run_number.csv")
+    val csv_result_writer = CSVWriter.open(csv_file)
+
+    probabilites.foreach(tuple => {
+      csv_result_writer.writeRow(List(tuple._1,tuple._2.toString))
+    })
+
+    csv_result_writer.close()
+  }
 
   def createJSONResultString(ds_name: String, outlier_method: String, pre_pro_method: String, separated: Boolean, result: AggregatedEvaluationResult, parameters:Map[String, Map[String, Double]], thresholds: String): String = {
 
