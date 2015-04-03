@@ -15,7 +15,7 @@
     <parameter key="parallelize_main_process" value="false"/>
     <process expanded="true">
       <operator activated="true" class="read_csv" compatibility="5.3.013" expanded="true" height="60" name="ReadVector" width="90" x="45" y="30">
-        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/ontologymatcher/matchings/cmt-confOf_raw_matchings.csv"/>
+        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/ontologymatcher/matchings/conference/matchings/cmt-confOf_raw_matchings.csv"/>
         <parameter key="column_separators" value=","/>
         <parameter key="trim_lines" value="true"/>
         <parameter key="use_quotes" value="true"/>
@@ -40,41 +40,37 @@
           <parameter key="1" value="relation.true.binominal.attribute"/>
           <parameter key="2" value="right.true.polynominal.attribute"/>
           <parameter key="3" value="owl_type.true.polynominal.attribute"/>
-          <parameter key="4" value="ngramDistance.true.real.attribute"/>
-          <parameter key="5" value="wuPalmer.true.real.attribute"/>
-          <parameter key="6" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelSimilarityFloodingMatcher.true.real.attribute"/>
-          <parameter key="7" value="path.true.real.attribute"/>
-          <parameter key="8" value="lin.true.real.attribute"/>
-          <parameter key="9" value="level2_jara_winklerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="10" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="11" value="jaroWinklerMeasure.true.real.attribute"/>
-          <parameter key="12" value="word2Vec.true.real.attribute"/>
-          <parameter key="13" value="level2_jara_winkler.true.real.attribute"/>
-          <parameter key="14" value="prefix.true.real.attribute"/>
-          <parameter key="15" value="level2_jara_winklerdeunimadwsoamatchingmatcherstructurallevelSimilarityFloodingMatcher.true.real.attribute"/>
-          <parameter key="16" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="17" value="word2VecStemmed.true.real.attribute"/>
-          <parameter key="18" value="jaccard.true.real.attribute"/>
-          <parameter key="19" value="level2_monge_elkan.true.real.attribute"/>
-          <parameter key="20" value="suffix.true.real.attribute"/>
-          <parameter key="21" value="esaSim.true.real.attribute"/>
-          <parameter key="22" value="level2_jaro.true.real.attribute"/>
-          <parameter key="23" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="24" value="smoaDistance.true.real.attribute"/>
-          <parameter key="25" value="jiangConrath.true.real.attribute"/>
-          <parameter key="26" value="needlemanWunsch2Distance.true.real.attribute"/>
-          <parameter key="27" value="umbcSim.true.real.attribute"/>
-          <parameter key="28" value="soft_tfidf_jaro.true.real.attribute"/>
-          <parameter key="29" value="mongeElkan.true.real.attribute"/>
-          <parameter key="30" value="simple_tfidf.true.real.attribute"/>
-          <parameter key="31" value="jaro_winkler_tfidf.true.real.attribute"/>
-          <parameter key="32" value="levenshteinDistance.true.real.attribute"/>
-          <parameter key="33" value="hammingDistance.true.real.attribute"/>
-          <parameter key="34" value="equalDistance.true.real.attribute"/>
-          <parameter key="35" value="subStringDistance.true.real.attribute"/>
-          <parameter key="36" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelSimilarityFloodingMatcher.true.real.attribute"/>
-          <parameter key="37" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelSimilarityFloodingMatcher.true.real.attribute"/>
-          <parameter key="38" value="jaroMeasure.true.real.attribute"/>
+          <parameter key="4" value="match_type.true.polynominal.attribute"/>
+          <parameter key="5" value="ngramDistance.true.real.attribute"/>
+          <parameter key="6" value="jiangConrath_stemmed.true.real.attribute"/>
+          <parameter key="7" value="lin_stemmed.true.real.attribute"/>
+          <parameter key="8" value="path.true.real.attribute"/>
+          <parameter key="9" value="lin.true.real.attribute"/>
+          <parameter key="10" value="equalSimilarityStemmed.true.real.attribute"/>
+          <parameter key="11" value="word2Vec.true.real.attribute"/>
+          <parameter key="12" value="prefix.true.real.attribute"/>
+          <parameter key="13" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
+          <parameter key="14" value="word2VecStemmed.true.real.attribute"/>
+          <parameter key="15" value="jaccard.true.real.attribute"/>
+          <parameter key="16" value="suffix.true.real.attribute"/>
+          <parameter key="17" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelNeighborHoodSimilarityMatcher.true.real.attribute"/>
+          <parameter key="18" value="path_stemmed.true.real.attribute"/>
+          <parameter key="19" value="smoaDistance.true.real.attribute"/>
+          <parameter key="20" value="jiangConrath.true.real.attribute"/>
+          <parameter key="21" value="needlemanWunsch2Distance.true.real.attribute"/>
+          <parameter key="22" value="umbcSim.true.real.attribute"/>
+          <parameter key="23" value="soft_tfidf_jaro.true.real.attribute"/>
+          <parameter key="24" value="fuzzydice.true.real.attribute"/>
+          <parameter key="25" value="fuzzycosine.true.real.attribute"/>
+          <parameter key="26" value="wuPalmer_stemmed.true.real.attribute"/>
+          <parameter key="27" value="jaro_winkler_tfidf.true.real.attribute"/>
+          <parameter key="28" value="fuzzyjaccard.true.real.attribute"/>
+          <parameter key="29" value="levenshteinDistance.true.real.attribute"/>
+          <parameter key="30" value="hammingDistance.true.real.attribute"/>
+          <parameter key="31" value="subStringDistance.true.real.attribute"/>
+          <parameter key="32" value="umbcphrasesim.true.real.attribute"/>
+          <parameter key="33" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
+          <parameter key="34" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelPropertiesMatcher.true.real.attribute"/>
         </list>
         <parameter key="read_not_matching_values_as_missings" value="true"/>
         <parameter key="datamanagement" value="double_array"/>
@@ -93,7 +89,7 @@
               <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (3)" width="90" x="180" y="30">
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
-                <parameter key="attributes" value="left|relation|right|owl_type"/>
+                <parameter key="attributes" value="left|owl_type|relation|right|match_type"/>
                 <parameter key="use_except_expression" value="false"/>
                 <parameter key="value_type" value="attribute_value"/>
                 <parameter key="use_value_type_exception" value="false"/>
@@ -107,7 +103,7 @@
               <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (5)" width="90" x="315" y="30">
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
-                <parameter key="attributes" value="id|left|relation|right|owl_type"/>
+                <parameter key="attributes" value="id|left|owl_type|relation|right|match_type"/>
                 <parameter key="use_except_expression" value="false"/>
                 <parameter key="value_type" value="attribute_value"/>
                 <parameter key="use_value_type_exception" value="false"/>
@@ -190,7 +186,7 @@
                     <parameter key="invert_selection" value="false"/>
                     <parameter key="include_special_attributes" value="false"/>
                   </operator>
-                  <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (13)" width="90" x="585" y="30">
+                  <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (13)" width="90" x="581" y="255">
                     <parameter key="attribute_filter_type" value="subset"/>
                     <parameter key="attribute" value=""/>
                     <parameter key="attributes" value="sum|"/>
@@ -204,26 +200,7 @@
                     <parameter key="invert_selection" value="true"/>
                     <parameter key="include_special_attributes" value="false"/>
                   </operator>
-                  <operator activated="true" class="normalize" compatibility="5.3.013" expanded="true" height="94" name="Normalize (6)" width="90" x="720" y="30">
-                    <parameter key="return_preprocessing_model" value="false"/>
-                    <parameter key="create_view" value="false"/>
-                    <parameter key="attribute_filter_type" value="all"/>
-                    <parameter key="attribute" value=""/>
-                    <parameter key="attributes" value=""/>
-                    <parameter key="use_except_expression" value="false"/>
-                    <parameter key="value_type" value="numeric"/>
-                    <parameter key="use_value_type_exception" value="false"/>
-                    <parameter key="except_value_type" value="real"/>
-                    <parameter key="block_type" value="value_series"/>
-                    <parameter key="use_block_type_exception" value="false"/>
-                    <parameter key="except_block_type" value="value_series_end"/>
-                    <parameter key="invert_selection" value="false"/>
-                    <parameter key="include_special_attributes" value="false"/>
-                    <parameter key="method" value="range transformation"/>
-                    <parameter key="min" value="-1.0"/>
-                    <parameter key="max" value="1.0"/>
-                  </operator>
-                  <operator activated="true" class="remove_useless_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_USELESS" width="90" x="45" y="120">
+                  <operator activated="true" class="remove_useless_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_USELESS" width="90" x="313" y="210">
                     <parameter key="numerical_min_deviation" value="0.0"/>
                     <parameter key="nominal_useless_above" value="1.0"/>
                     <parameter key="nominal_remove_id_like" value="false"/>
@@ -243,8 +220,7 @@
                   <connect from_op="Generate Aggregation (4)" from_port="example set output" to_op="Select Attributes (11)" to_port="example set input"/>
                   <connect from_op="Select Attributes (11)" from_port="example set output" to_port="out 2"/>
                   <connect from_op="Select Attributes (11)" from_port="original" to_op="Select Attributes (13)" to_port="example set input"/>
-                  <connect from_op="Select Attributes (13)" from_port="example set output" to_op="Normalize (6)" to_port="example set input"/>
-                  <connect from_op="Normalize (6)" from_port="example set output" to_op="REMOVE_USELESS" to_port="example set input"/>
+                  <connect from_op="Select Attributes (13)" from_port="example set output" to_op="REMOVE_USELESS" to_port="example set input"/>
                   <connect from_op="REMOVE_USELESS" from_port="example set output" to_op="REMOVE_CORRELATED" to_port="example set input"/>
                   <connect from_op="REMOVE_CORRELATED" from_port="example set output" to_port="out 1"/>
                   <portSpacing port="source_in 1" spacing="0"/>

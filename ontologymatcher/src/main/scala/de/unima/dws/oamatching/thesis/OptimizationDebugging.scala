@@ -38,6 +38,7 @@ trait OptimizationDebugging {
   }
 
   def debugAndEvaluateSeparated(class_threshold: Double,dp_threshold: Double,op_threshold: Double,  single_matchings: Map[MatchRelation, Double], ref: Alignment, selected: Map[MatchRelation, Double], name: String, verbose:Boolean): EvaluationResult = {
+
     val alignment = new Alignment(ref.onto1, ref.onto2, ref.onto1_reference, ref.onto2_reference, ref.i_onto1, ref.i_onto2, selected)
 
     val debugged = MatchingPruner.debugAlignment(alignment, single_matchings, class_threshold,dp_threshold, op_threshold)
@@ -47,6 +48,19 @@ trait OptimizationDebugging {
 
     val improvement = eval_res_debugged.f1Measure - eval_res_normal.f1Measure
 
+
+    if (verbose) {
+      val problem_name = ref.onto1 + "-" + ref.onto2
+      val prob_name = problem_name.replaceAll("http:/", "").replaceAll("/", "") + "_" + name
+      AlignmentParser.writeRDF(debugged, "tmp/alignments/" + prob_name + ".rdf")
+
+      AlignmentParser.writeFalseNegativesToCSV(alignment, ref, problem_name.replaceAll("http:/", "").replaceAll("/", "") + "_" + name)
+      AlignmentParser.writeTruePositivesToCSV(alignment, ref, problem_name.replaceAll("http:/", "").replaceAll("/", "") + "_" + name)
+      AlignmentParser.writeFalsePositivesToCSV(alignment, ref, problem_name.replaceAll("http:/", "").replaceAll("/", "") + "_" + name)
+
+      AlignmentParser.writeFalseNegativesAnalysis(alignment, ref, prob_name, selected, single_matchings, 0.0)
+
+    }
 
     eval_res_debugged
   }

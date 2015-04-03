@@ -66,14 +66,14 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
     }.toList
 
 
-    val optimization_grid = ParameterOptimizer.getDoubleGrid(0.001, 1.1, 200)
+    val optimization_grid = ParameterOptimizer.getDoubleGrid(0.01, 1.1, 400)
     val optimal_thresholds = findOptimalThresholds(selection_function, normalized_per_category, optimization_grid)
 
 
     //construct final matchings and evaluate
     val best_results = optimal_thresholds.map { case (norm_technique, (class_threshold, dp_threshold, op_threshold)) => {
       val eval_res = evaluateRound(norm_technique, selection_function, normalized_per_category, class_threshold, dp_threshold, op_threshold, true, true)
-      println(eval_res)
+
       norm_technique -> eval_res
     }
     }
@@ -157,7 +157,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
     val selected: Map[MatchRelation, Double] = selected_classes ++ selected_dps ++ selected_ops
 
     val result = if (debug) {
-      val eval_res = debugAndEvaluateSeparated(class_threshold, dp_threshold, op_threshold, unselected, ref_alignment, selected, "", false)
+      val eval_res = debugAndEvaluateSeparated(class_threshold, dp_threshold, op_threshold, unselected, ref_alignment, selected, norm_technique, verbose)
 
 
       eval_res

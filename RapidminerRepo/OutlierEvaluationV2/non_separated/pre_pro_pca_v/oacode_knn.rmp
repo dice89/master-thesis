@@ -200,25 +200,6 @@
                 <parameter key="invert_selection" value="true"/>
                 <parameter key="include_special_attributes" value="false"/>
               </operator>
-              <operator activated="true" class="normalize" compatibility="5.3.013" expanded="true" height="94" name="Normalize" width="90" x="715" y="165">
-                <parameter key="return_preprocessing_model" value="false"/>
-                <parameter key="create_view" value="false"/>
-                <parameter key="attribute_filter_type" value="all"/>
-                <parameter key="attribute" value=""/>
-                <parameter key="attributes" value=""/>
-                <parameter key="use_except_expression" value="false"/>
-                <parameter key="value_type" value="numeric"/>
-                <parameter key="use_value_type_exception" value="false"/>
-                <parameter key="except_value_type" value="real"/>
-                <parameter key="block_type" value="value_series"/>
-                <parameter key="use_block_type_exception" value="false"/>
-                <parameter key="except_block_type" value="value_series_end"/>
-                <parameter key="invert_selection" value="false"/>
-                <parameter key="include_special_attributes" value="false"/>
-                <parameter key="method" value="range transformation"/>
-                <parameter key="min" value="-1.0"/>
-                <parameter key="max" value="1.0"/>
-              </operator>
               <operator activated="true" class="principal_component_analysis" compatibility="5.3.013" expanded="true" height="94" name="PCA" width="90" x="715" y="300">
                 <parameter key="dimensionality_reduction" value="keep variance"/>
                 <parameter key="variance_threshold" value="0.9"/>
@@ -230,8 +211,7 @@
               <connect from_op="Generate Aggregation (3)" from_port="example set output" to_op="Select Attributes (9)" to_port="example set input"/>
               <connect from_op="Select Attributes (9)" from_port="example set output" to_port="out 2"/>
               <connect from_op="Select Attributes (9)" from_port="original" to_op="Select Attributes (10)" to_port="example set input"/>
-              <connect from_op="Select Attributes (10)" from_port="example set output" to_op="Normalize" to_port="example set input"/>
-              <connect from_op="Normalize" from_port="example set output" to_op="PCA" to_port="example set input"/>
+              <connect from_op="Select Attributes (10)" from_port="example set output" to_op="PCA" to_port="example set input"/>
               <connect from_op="PCA" from_port="example set output" to_port="out 1"/>
               <portSpacing port="source_in 1" spacing="0"/>
               <portSpacing port="source_in 2" spacing="0"/>

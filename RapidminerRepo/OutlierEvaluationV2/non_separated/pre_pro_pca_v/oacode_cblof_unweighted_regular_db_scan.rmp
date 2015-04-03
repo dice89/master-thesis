@@ -211,7 +211,7 @@
                 <parameter key="invert_selection" value="true"/>
                 <parameter key="include_special_attributes" value="false"/>
               </operator>
-              <operator activated="true" class="normalize" compatibility="5.3.013" expanded="true" height="94" name="Normalize" width="90" x="715" y="165">
+              <operator activated="false" class="normalize" compatibility="5.3.013" expanded="true" height="94" name="Normalize" width="90" x="715" y="165">
                 <parameter key="return_preprocessing_model" value="false"/>
                 <parameter key="create_view" value="false"/>
                 <parameter key="attribute_filter_type" value="all"/>
@@ -241,8 +241,7 @@
               <connect from_op="Generate Aggregation (3)" from_port="example set output" to_op="Select Attributes (9)" to_port="example set input"/>
               <connect from_op="Select Attributes (9)" from_port="example set output" to_port="out 2"/>
               <connect from_op="Select Attributes (9)" from_port="original" to_op="Select Attributes (10)" to_port="example set input"/>
-              <connect from_op="Select Attributes (10)" from_port="example set output" to_op="Normalize" to_port="example set input"/>
-              <connect from_op="Normalize" from_port="example set output" to_op="PCA" to_port="example set input"/>
+              <connect from_op="Select Attributes (10)" from_port="example set output" to_op="PCA" to_port="example set input"/>
               <connect from_op="PCA" from_port="example set output" to_port="out 1"/>
               <portSpacing port="source_in 1" spacing="0"/>
               <portSpacing port="source_in 2" spacing="0"/>

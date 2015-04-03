@@ -354,7 +354,6 @@ object AlignmentParser {
 
         testFile.println("##############################")
         testFile.println("Analyse fn " + false_negative_cell)
-        testFile.println(s"Threshold $threshold")
         testFile.println(s"Is in Alignment? " + alignment.containsCorrespondence(false_negative_cell.entity1,false_negative_cell.entity2))
         testFile.println(s"Best false negative result $negative_result")
 

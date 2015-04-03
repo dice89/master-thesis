@@ -120,13 +120,14 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
                          Matching Selection Config
     ########################################################################*/
 
-  val FUZZY_DELTA_SELECTION = List(Map("fuzzy" -> 0.02), Map("fuzzy" -> 0.01))
+  val FUZZY_DELTA_SELECTION = List(Map("fuzzy" -> 0.2), Map("fuzzy" -> 0.1),Map("fuzzy" -> 0.05))
   val FUZZY_RATIO_SELECTION = List(Map("fuzzy" -> 1.01), Map("fuzzy" -> 1.02), Map("fuzzy" -> 1.10))
   val GREEDY_SELECTION = List(Map("fuzzy" -> 1.0))
+  val HUNGARIAN_SELECTION = List(Map("fuzzy" -> 1.0))
 
-  val SELECTION_CONFIG = Map("greedy_rank_fuzzy_delta" -> FUZZY_DELTA_SELECTION, "greedy_rank_fuzzy_ratio" -> FUZZY_RATIO_SELECTION, "greedy_rank" -> GREEDY_SELECTION)
+  val SELECTION_CONFIG = Map("greedy_rank_fuzzy_delta" -> FUZZY_DELTA_SELECTION, "greedy_rank_fuzzy_ratio" -> FUZZY_RATIO_SELECTION, "greedy_rank" -> GREEDY_SELECTION, "hungarian"->HUNGARIAN_SELECTION)
 
-  val SELECTION_METHODS_BY_NAME: Map[String, (Double) => (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double]] = Map("greedy_rank" -> MatchingSelector.greedyRankSelectorSimpleExp, "greedy_rank_fuzzy_delta" -> MatchingSelector.fuzzyGreedyRankSelectorDelta, "greedy_rank_fuzzy_ratio" -> MatchingSelector.fuzzyGreedyRankSelectorDelta)
+  val SELECTION_METHODS_BY_NAME: Map[String, (Double) => (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double]] = Map("greedy_rank" -> MatchingSelector.greedyRankSelectorSimpleExp, "greedy_rank_fuzzy_delta" -> MatchingSelector.fuzzyGreedyRankSelectorDelta, "greedy_rank_fuzzy_ratio" -> MatchingSelector.fuzzyGreedyRankSelectorDelta, "hungarian" -> MatchingSelector.hungarianMethodSelection)
 
   /*########################################################################
                        Data Set Config
