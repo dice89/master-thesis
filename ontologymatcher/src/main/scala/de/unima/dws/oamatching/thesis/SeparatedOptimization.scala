@@ -74,7 +74,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
     }.toList
 
 
-    val optimization_grid = ParameterOptimizer.getDoubleGrid(0.01, 1.1, 400)
+    val optimization_grid = ParameterOptimizer.getDoubleGrid(0.01, 1.1, 100)
     val optimal_thresholds = findOptimalThresholds(selection_function, normalized_per_category, optimization_grid)
 
 
@@ -188,8 +188,10 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
     val unique_techniques = normalizedScores.head._1.keys.toVector
 
+
+    val scores = if(debug) normalizedScores else normalizedScores.par
     //get single results
-    val results: List[EvaluationResult] = normalizedScores.map { case (class_matchings, dp_matchings, op_matchings, ref_alignment) => {
+    val results = scores.map { case (class_matchings, dp_matchings, op_matchings, ref_alignment) => {
 
       val class_matchings_norm = class_matchings.get(norm_technique).get
       val dp_matchings_norm = dp_matchings.get(norm_technique).get
