@@ -49,8 +49,16 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
     //get usage probability for each parameter
     val probablility_of_usage: Map[String, Double] = getParameterUsageProbabilites(matching_results)
 
+
+    try{
+      writeProbabilitiesToFile(ds_name,process_type,pre_pro_key,true,run_number,probablility_of_usage)
+
+    }catch{
+      case e: Throwable => {
+        logger.error("error in proabilities",e)
+      }
+    }
     //write propbility of parameter usage to file
-    writeProbabilitiesToFile(ds_name,process_type,pre_pro_key,true,run_number,probablility_of_usage)
 
     println(probablility_of_usage)
     //normalize values

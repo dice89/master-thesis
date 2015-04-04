@@ -29,6 +29,7 @@ trait ResultHandling extends LazyLogging {
     })
 
     csv_result_writer.close()
+
   }
 
   def createJSONResultString(ds_name: String, outlier_method: String, pre_pro_method: String, separated: Boolean, result: AggregatedEvaluationResult, parameters:Map[String, Map[String, Double]], thresholds: String): String = {
