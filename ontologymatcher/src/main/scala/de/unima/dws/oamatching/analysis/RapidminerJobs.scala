@@ -140,7 +140,7 @@ object RapidminerJobs extends LazyLogging {
 
 
     //dynamic parameter selection
-    val file_name = matchings.data_set_name + System.currentTimeMillis().toString + ".rmp"
+    val file_name = process_type +matchings.data_set_name + pre_pro_key + System.nanoTime().toString + ".rmp"
     val process_file = XMLTest.transformXMLProcess(rapidminer_file, matchings.matcher_name_to_index, file_name)
     val file = new File(process_file);
 
