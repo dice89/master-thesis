@@ -36,8 +36,8 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
     //execute Outlier analysis
     val matching_results = ref_matching_pairs.par.map { case (ref_file, matching_file) => {
-      val ref_alignment: Alignment = ref_file.reference
 
+      val ref_alignment: Alignment = ref_file.reference
       //build different reference alignments out of original one for different classes
       val result: SeparatedResults = RapidminerJobs.rapidminerOutlierDetectionExperimentsSeparated(run_number, rapidminer_file, matching_file, parameters, pre_pro_key, process_type)
       println("done with " + ref_alignment.onto1 + ref_alignment.onto2 +"size classes: "+result.class_matchings._3.size +"size dp: "+result.dp_matchings._3.size +"size op: "+result.op_matchings._3.size)
@@ -45,6 +45,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
     }
     }
+
     println("matching done")
     //get usage probability for each parameter
     val probablility_of_usage: Map[String, Double] = getParameterUsageProbabilites(matching_results)

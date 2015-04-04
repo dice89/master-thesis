@@ -361,9 +361,12 @@ object RapidminerJobs extends LazyLogging {
     }
     catch {
       case e: Throwable => {
+        println("error")
         logger.error("Rapidminer error in file " + matching_file.getAbsolutePath, e)
       }
     }
+
+    process.stop()
 
     //cleanup process file
     if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup")) {
