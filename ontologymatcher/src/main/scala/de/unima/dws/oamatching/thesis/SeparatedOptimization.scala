@@ -10,7 +10,6 @@ import de.unima.dws.oamatching.pipeline.ScoreNormalizationFunctions
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingRunner, EvaluationMatchingTask}
 import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
 
-import scala.Predef
 import scala.collection.immutable.Map
 import scala.collection.parallel.immutable.ParSeq
 
@@ -36,34 +35,45 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
     //execute Outlier analysis
     val matching_results = ref_matching_pairs.par.map { case (ref_file, matching_file) => {
+      try {
 
+      } catch {
+        case e: Throwable => {
+          println(e)
+          Option.empty
+        }
+      }
       val ref_alignment: Alignment = ref_file.reference
       //build different reference alignments out of original one for different classes
       val result: SeparatedResults = RapidminerJobs.rapidminerOutlierDetectionExperimentsSeparated(run_number, rapidminer_file, matching_file, parameters, pre_pro_key, process_type)
-      println("done with " + ref_alignment.onto1 + ref_alignment.onto2 +"size classes: "+result.class_matchings._3.size +"size dp: "+result.dp_matchings._3.size +"size op: "+result.op_matchings._3.size)
-      (result, ref_alignment)
+      println("done with " + ref_alignment.onto1 + ref_alignment.onto2 + "size classes: " + result.class_matchings._3.size + "size dp: " + result.dp_matchings._3.size + "size op: " + result.op_matchings._3.size)
+      Option((result, ref_alignment))
+    }
+    }
 
-    }
-    }
+    val size = matching_results.filter(!_.isDefined).size
+
+    val matching_results_filtered:Seq[(SeparatedResults, Alignment)] = matching_results.filter(_.isDefined).map(_.get).seq
+    println(s"Failure Matchings $size")
 
     println("matching done")
     //get usage probability for each parameter
-    val probablility_of_usage: Map[String, Double] = getParameterUsageProbabilites(matching_results)
+    val probablility_of_usage: Map[String, Double] = getParameterUsageProbabilites(matching_results_filtered)
 
     println("probability computation done")
-    try{
-      writeProbabilitiesToFile(ds_name,process_type,pre_pro_key,true,run_number,probablility_of_usage)
+    try {
+      writeProbabilitiesToFile(ds_name, process_type, pre_pro_key, true, run_number, probablility_of_usage)
 
-    }catch{
+    } catch {
       case e: Throwable => {
-        logger.error("error in proabilities",e)
+        logger.error("error in proabilities", e)
       }
     }
     //write propbility of parameter usage to file
 
     println(probablility_of_usage)
     //normalize values
-    val normalized_per_category: List[(Predef.Map[String, Predef.Map[MatchRelation, Double]], Predef.Map[String, Predef.Map[MatchRelation, Double]], Predef.Map[String, Predef.Map[MatchRelation, Double]], Alignment)] = matching_results.map { case (result, ref_alignment) => {
+    val normalized_per_category: List[(Predef.Map[String, Predef.Map[MatchRelation, Double]], Predef.Map[String, Predef.Map[MatchRelation, Double]], Predef.Map[String, Predef.Map[MatchRelation, Double]], Alignment)] = matching_results_filtered.map { case (result, ref_alignment) => {
 
       //build different reference alignments out of original one for different classes
       val class_normalized = getNormalizedScores(result.class_matchings)
@@ -98,7 +108,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
   }
 
-  def getParameterUsageProbabilites(matching_results: ParSeq[(SeparatedResults, Alignment)]): Predef.Map[String, Double] = {
+  def getParameterUsageProbabilites(matching_results: Seq[(SeparatedResults, Alignment)]): Predef.Map[String, Double] = {
     //get unique parameters
     val attributes_per_matching = matching_results.map { case (result, ref_alignment) => {
       val attributes_used = result.class_matchings._2.map(_._1)
@@ -120,9 +130,9 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
           0
         }
       })
-      if(total_usage.size > 0 && attributes_per_matching.size > 0 ){
+      if (total_usage.size > 0 && attributes_per_matching.size > 0) {
         attribute -> total_usage.sum.toDouble / attributes_per_matching.size.toDouble
-      }else {
+      } else {
         attribute -> 0.0
       }
     }).toMap
@@ -193,7 +203,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
     val unique_techniques = normalizedScores.head._1.keys.toVector
 
 
-    val scores = if(debug) normalizedScores else normalizedScores.par
+    val scores = if (debug) normalizedScores else normalizedScores.par
     //get single results
     val results = scores.map { case (class_matchings, dp_matchings, op_matchings, ref_alignment) => {
 

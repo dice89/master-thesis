@@ -318,9 +318,9 @@ object RapidminerJobs extends LazyLogging {
     val matcher_name_to_index: Predef.Map[String, Int] = header_line.split(",").filterNot(field => meta_data_fields.contains(field)).zipWithIndex.toMap
 
 
-    val output_csv_classes: File = new File(tmp_matching_folder + File.separator + process_type + s"classes_$run_number" + "_" + System.currentTimeMillis() + matching_file.getName);
-    val output_csv_dp: File = new File(tmp_matching_folder + File.separator + process_type + s"dp_$run_number" + "_" + System.currentTimeMillis() + matching_file.getName);
-    val output_csv_op: File = new File(tmp_matching_folder + File.separator + process_type + s"op_$run_number" + "_" + System.currentTimeMillis() + matching_file.getName);
+    val output_csv_classes: File = new File(tmp_matching_folder + File.separator +pre_pro_key+ "_"+ process_type + s"classes_$run_number" + "_" + System.nanoTime() + matching_file.getName);
+    val output_csv_dp: File = new File(tmp_matching_folder + File.separator +pre_pro_key+ "_"+ process_type + s"dp_$run_number" + "_" + System.nanoTime() + matching_file.getName);
+    val output_csv_op: File = new File(tmp_matching_folder + File.separator +pre_pro_key+ "_"+  process_type + s"op_$run_number" + "_" + System.nanoTime() + matching_file.getName);
 
 
     val file_name = pre_pro_key + "_" + process_type + "_run" + run_number + System.nanoTime().toString + ".rmp"
@@ -358,6 +358,11 @@ object RapidminerJobs extends LazyLogging {
 
     try {
       process.run()
+      if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup")) {
+        file.delete()
+      }
+
+      process.stop()
     }
     catch {
       case e: Throwable => {
@@ -366,12 +371,9 @@ object RapidminerJobs extends LazyLogging {
       }
     }
 
-    process.stop()
+
 
     //cleanup process file
-    if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup")) {
-      file.delete()
-    }
 
     //read results
     SeparatedResults(readFunction(output_csv_classes), readFunction(output_csv_dp), readFunction(output_csv_op))
