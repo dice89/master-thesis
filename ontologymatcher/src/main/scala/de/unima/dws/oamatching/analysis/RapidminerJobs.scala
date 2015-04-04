@@ -375,8 +375,38 @@ object RapidminerJobs extends LazyLogging {
 
     //cleanup process file
 
+
+    val classes = try{
+      readFunction(output_csv_classes)
+    }catch {
+      case e:Throwable => {
+        logger.error("error reading classes",e)
+        println(e)
+        null
+      }
+    }
+
+    val dps = try{
+      readFunction(output_csv_dp)
+    }catch {
+      case e:Throwable => {
+        logger.error("error reading dataprops",e)
+        println(e)
+        null
+      }
+    }
+
+    val ops = try{
+      readFunction(output_csv_op)
+    }catch {
+      case e:Throwable => {
+        logger.error("error reading objectprops",e)
+        println(e)
+        null
+      }
+    }
     //read results
-    SeparatedResults(readFunction(output_csv_classes), readFunction(output_csv_dp), readFunction(output_csv_op))
+    SeparatedResults(classes,dps , ops)
   }
 
 
@@ -488,6 +518,11 @@ object RapidminerJobs extends LazyLogging {
     logger.info("Read input from " + file.getName)
 
     // get dim names
+
+    if(! file.exists()){
+      println("file does not exists")
+      logger.info("Fiel does not exists" + file.getName)
+    }
     val metaDataFields = List("left", "relation", "right", "owl_type", "match_type", "outlier")
     val reader_head = CSVReader.open(file)
     val dim_names = reader_head.all().head.filterNot(name => metaDataFields.contains(name))
@@ -541,9 +576,15 @@ object RapidminerJobs extends LazyLogging {
 
     reader.close()
 
-    if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup")) {
-      file.delete()
+
+    try{
+      if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup")) {
+        file.delete()
+      }
+    }catch{
+      case e:Throwable => println(e)
     }
+
 
 
     logger.info(s"Parsed $dim_size dimenions from  " + file.getName)
