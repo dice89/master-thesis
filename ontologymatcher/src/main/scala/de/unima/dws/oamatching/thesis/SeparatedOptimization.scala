@@ -45,11 +45,11 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
     }
     }
-
+    println("matching done")
     //get usage probability for each parameter
     val probablility_of_usage: Map[String, Double] = getParameterUsageProbabilites(matching_results)
 
-
+    println("probability computation done")
     try{
       writeProbabilitiesToFile(ds_name,process_type,pre_pro_key,true,run_number,probablility_of_usage)
 
@@ -118,9 +118,12 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
         } else {
           0
         }
-      }).sum
-
-      attribute -> total_usage.toDouble / attributes_per_matching.size.toDouble
+      })
+      if(total_usage.size > 0 && attributes_per_matching.size > 0 ){
+        attribute -> total_usage.sum.toDouble / attributes_per_matching.size.toDouble
+      }else {
+        attribute -> 0.0
+      }
     }).toMap
     probablility_of_usage
   }
