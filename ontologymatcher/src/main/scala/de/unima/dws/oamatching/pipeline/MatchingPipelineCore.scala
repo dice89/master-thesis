@@ -177,7 +177,7 @@ object MatchingPipelineCore extends LazyLogging {
    * @return
    */
   def matchIndividualMatcher(matcher: Matcher, problem: MatchingProblem): Map[MatchRelation, Double] = {
-    val threshold = Config.loaded_config.getInt("general.base_threshold")
+    val threshold = Config.loaded_config.getDouble("general.base_threshold")
 
     matcher.align(problem, threshold).asMatchRelationMap()
   }
