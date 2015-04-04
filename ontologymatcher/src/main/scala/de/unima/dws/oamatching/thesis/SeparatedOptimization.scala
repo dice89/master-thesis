@@ -40,7 +40,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
       //build different reference alignments out of original one for different classes
       val result: SeparatedResults = RapidminerJobs.rapidminerOutlierDetectionExperimentsSeparated(run_number, rapidminer_file, matching_file, parameters, pre_pro_key, process_type)
-      println("done with " + ref_alignment.onto1 + ref_alignment.onto2)
+      println("done with " + ref_alignment.onto1 + ref_alignment.onto2 +"size classes: "+result.class_matchings._3.size +"size dp: "+result.dp_matchings._3.size +"size op: "+result.op_matchings._3.size)
       (result, ref_alignment)
 
     }
