@@ -94,7 +94,7 @@ object MatchingPipelineCore extends LazyLogging {
     val structural_matcher_results: Option[FeatureVector] = matchAllStructuralMatchers(problem, uncorrelated_matcher_results)
 
     val outlier_analysis_vector: FeatureVector = if (structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results, structural_matcher_results.get), problem.name).get else individual_matcher_results
-
+    println("Combination done")
     //name space filtering
     val name_space_filtered = if (name_space_filter) {
       val filtered_outlier_analysis_vector: FeatureVector = MatchingPruner.featureVectorNameSpaceFilter(outlier_analysis_vector, allowed_namespaces)

@@ -605,7 +605,9 @@ object RapidminerJobs extends LazyLogging {
     println(k_value)
     if (k_value < 50) {
       process.getOperator(knn_name).setParameter("k", "50")
-    } else {
+    } else if(k_value >1000) {
+      process.getOperator(knn_name).setParameter("k", "1000")
+    }else {
       process.getOperator(knn_name).setParameter("k", k_value.toString)
     }
   }
