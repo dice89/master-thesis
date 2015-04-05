@@ -312,7 +312,7 @@
                 <parameter key="kernel_shift" value="1.0"/>
                 <parameter key="kernel_a" value="1.0"/>
                 <parameter key="kernel_b" value="0.0"/>
-                <parameter key="parallelize evaluation process" value="false"/>
+                <parameter key="parallelize evaluation process" value="true"/>
                 <parameter key="number of threads" value="4"/>
               </operator>
               <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (2)" width="90" x="720" y="30">
@@ -584,7 +584,7 @@
                 <parameter key="kernel_shift" value="1.0"/>
                 <parameter key="kernel_a" value="1.0"/>
                 <parameter key="kernel_b" value="0.0"/>
-                <parameter key="parallelize evaluation process" value="false"/>
+                <parameter key="parallelize evaluation process" value="true"/>
                 <parameter key="number of threads" value="4"/>
               </operator>
               <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (3)" width="90" x="720" y="30">
@@ -848,7 +848,7 @@
                 <parameter key="kernel_shift" value="1.0"/>
                 <parameter key="kernel_a" value="1.0"/>
                 <parameter key="kernel_b" value="0.0"/>
-                <parameter key="parallelize evaluation process" value="false"/>
+                <parameter key="parallelize evaluation process" value="true"/>
                 <parameter key="number of threads" value="4"/>
               </operator>
               <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (6)" width="90" x="720" y="30">
