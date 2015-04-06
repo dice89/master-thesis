@@ -129,18 +129,10 @@ object VectorUtil {
       (name, stdev_computer.evaluate(relations.values.toArray))
     }
     }.toMap
+    
 
-    /*
-    //compute stdev of sum
-    val stdev = stdev_computer.evaluate(sum_of_scores_per_feature.values.toArray)
-    val mean = mean_computer.evaluate(sum_of_scores_per_feature.values.toArray)
-    //select according defined interval
-    //get parameters from config
-    val minimal_times_stdev = Config.loaded_config.getDouble("general.feature_selection_values.min")
-    val maximal_times_stdev = Config.loaded_config.getDouble("general.feature_selection_values.max")
-    //exact values discussable
-    */
-    val sum_of_scores_per_feature_filtered = sum_of_scores_per_feature.filter { case (feature, stdev) => (stdev >0.2)}
+   val min_stdev =  Config.loaded_config.getDouble("general.base_threshold")
+    val sum_of_scores_per_feature_filtered = sum_of_scores_per_feature.filter { case (feature, stdev) => (stdev >min_stdev)}
 
     val filtered_results = vector.vector.filter { case (feature, relations) => {
       sum_of_scores_per_feature_filtered.contains(feature)
