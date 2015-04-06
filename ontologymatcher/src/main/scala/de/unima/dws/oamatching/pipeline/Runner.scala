@@ -60,7 +60,10 @@ object Runner {
    */
   def runRound(config: RunConfiguration): Unit = {
     TimeTaker.takeTime("pipeline_and_evaluate")
-    EvaluationMatchingRunner.matchAndEvaluateConference(Config.PATH_TO_CONFERENCE, config)
+
+    val path_to_ds = Config.loaded_config.getString("pipeline.path_to_dataset")
+    val ds_name = Config.loaded_config.getString("pipeline.dataset_type")
+    EvaluationMatchingRunner.matchAndEvaluateConference(path_to_ds,ds_name, config)
     val total = TimeTaker.takeTime("pipeline_and_evaluate")
 
     println(total)

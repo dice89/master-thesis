@@ -2,6 +2,7 @@ package de.unima.dws.oamatching.pipeline
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import de.unima.alcomox.mapping.{Correspondence, Mapping, SemanticRelation}
+import de.unima.alcomox.ontology.IOntology
 import de.unima.alcomox.{ExtractionProblem, Settings}
 import de.unima.dws.oamatching.core._
 
@@ -15,7 +16,7 @@ object MatchingPruner extends LazyLogging {
 
   //Debugging settings
   Settings.BLACKBOX_REASONER = Settings.BlackBoxReasoner.PELLET
-  Settings.ONE_TO_ONE = true
+  Settings.ONE_TO_ONE = false
   Settings.REMOVE_INDIVIDUALS = true
 
   /**
@@ -87,8 +88,8 @@ object MatchingPruner extends LazyLogging {
     );
 
     // attach ontologies and mapping to the problem
-    ep.bindSourceOntology(alignment.i_onto1);
-    ep.bindTargetOntology(alignment.i_onto2);
+    ep.bindSourceOntology( new IOntology(alignment.onto1_reference.path));
+    ep.bindTargetOntology( new IOntology(alignment.onto2_reference.path));
     ep.bindMapping(mapping);
 
 
@@ -96,10 +97,7 @@ object MatchingPruner extends LazyLogging {
     val result = try {
       ep.solve();
 
-      println("Removed Matchings")
-      ep.getDiscardedMapping.foreach(corres => {
-        println(corres.toString)
-      })
+
       val extracted: Mapping = ep.getExtractedMapping()
       logger.info("Debugging completed")
       convertMappingToAlignment(extracted, owlTypeMap, alignment)
@@ -139,8 +137,10 @@ object MatchingPruner extends LazyLogging {
     );
 
     // attach ontologies and mapping to the problem
-    ep.bindSourceOntology(alignment.i_onto1);
-    ep.bindTargetOntology(alignment.i_onto2);
+
+
+    ep.bindSourceOntology( new IOntology(alignment.onto1_reference.path));
+    ep.bindTargetOntology( new IOntology(alignment.onto2_reference.path));
     ep.bindMapping(mapping);
     ep.init()
     // solve the problem
@@ -204,8 +204,8 @@ object MatchingPruner extends LazyLogging {
     );
 
     // attach ontologies and mapping to the problem
-    ep.bindSourceOntology(alignment.i_onto1);
-    ep.bindTargetOntology(alignment.i_onto2);
+    ep.bindSourceOntology( new IOntology(alignment.onto1_reference.path));
+    ep.bindTargetOntology( new IOntology(alignment.onto2_reference.path));
     ep.bindMapping(mapping);
     ep.init()
     // solve the problem
@@ -218,7 +218,7 @@ object MatchingPruner extends LazyLogging {
       val pre_result = convertMappingToAlignment(extracted, owlTypeMap, alignment)
 
       if (discarded.size() > 0) {
-        val to_be_added = getSimilarMatchingForDiscardedSeparated(discarded, raw_matchings, class_threshold*0.9, dp_threshold*0.9, op_threshold*0.9)
+        val to_be_added = getSimilarMatchingForDiscardedSeparated(discarded, raw_matchings, class_threshold*1.0, dp_threshold*1.0, op_threshold*1.0)
         val new_matchings = to_be_added.map { case (relation, value) => {
           MatchingCell(relation.left, relation.right, value, relation.relation, relation.owl_type, relation.match_type)
         }
@@ -231,7 +231,7 @@ object MatchingPruner extends LazyLogging {
           println("not worked")
         }
         //now debug again
-        pre_result
+       pre_result
       } else {
         pre_result
       }

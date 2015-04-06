@@ -34,7 +34,8 @@ case class FastOntology(val base_values:EntitiesOntology,
                         val class_name_to_IRI:Map[String,IRI],
                         val object_property_name_to_IRI:Map[String,IRI],
                         val data_property_name_to_IRI:Map[String,IRI],
-                        val name:String)
+                        val name:String,
+                         val path:String)
 
 object OntologyLoader {
   val manager: OWLOntologyManager = OWLManager.createOWLOntologyManager()
@@ -334,7 +335,7 @@ object OntologyLoader {
 
     manager.removeOntology(owlOntology)
     val base_values = EntitiesOntology(classes,object_properties,data_properties)
-    FastOntology(base_values, parent_to_child_classes, child_to_parent_classes, parent_to_child_object_props, child_to_parent_object_props, parent_to_child_data_props, child_to_parent_data_props, object_prop_domain, object_prop_range, data_prop_domain, data_prop_range, class_object_prop_domain, class_object_prop_range, class_data_prop, owlClassToNames, owlObjectPropertiesToNames, owlDataPropertiesToNames, class_name_to_iri_map, object_property_name_to_iri_map, data_proptery_name_to_iri_map,onto_name)
+    FastOntology(base_values, parent_to_child_classes, child_to_parent_classes, parent_to_child_object_props, child_to_parent_object_props, parent_to_child_data_props, child_to_parent_data_props, object_prop_domain, object_prop_range, data_prop_domain, data_prop_range, class_object_prop_domain, class_object_prop_range, class_data_prop, owlClassToNames, owlObjectPropertiesToNames, owlDataPropertiesToNames, class_name_to_iri_map, object_property_name_to_iri_map, data_proptery_name_to_iri_map,onto_name,onto)
   }
 
 

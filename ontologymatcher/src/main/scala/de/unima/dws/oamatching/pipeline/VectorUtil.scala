@@ -1,10 +1,14 @@
 package de.unima.dws.oamatching.pipeline
 
+import java.io.File
+
 import _root_.de.unima.dws.oamatching.core.MatchRelation
+import com.github.tototoshi.csv.CSVReader
 import de.unima.dws.oamatching.config.Config
 import org.apache.commons.math.stat.descriptive.moment.Mean
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation
 
+import scala.Predef
 import scala.collection.immutable.{Iterable, Map}
 
 case class FeatureVector(data_set_name: String, vector: Map[String, Map[MatchRelation, Double]], transposed_vector: Map[MatchRelation, Map[String, Double]], matcher_name_to_index: Map[String, Int], matcher_index_to_name: Map[Int, String])
@@ -85,13 +89,48 @@ object VectorUtil {
     }
   }
 
+  def readFromMatchingFile(matching_file:File, name:String):FeatureVector = {
+    val metaDataFields = List("left", "relation", "right", "owl_type", "match_type")
+
+    val reader_head = CSVReader.open(matching_file)
+    val matcher_names = reader_head.all().head.filterNot(name => metaDataFields.contains(name))
+
+    println(matcher_names)
+    reader_head.close()
+
+    val reader = CSVReader.open(matching_file)
+    var dim_size: Int = 0
+    val lines = reader.allWithHeaders
+
+
+   val results: Map[String, Map[MatchRelation, Double]] =  matcher_names.map(matcher => {
+
+      matcher -> lines.map(tuple => {
+        val matcher_result = tuple.get(matcher).get.toDouble
+
+        val left = tuple.get("left").get
+        val right = tuple.get("right").get
+
+        val owl_type = tuple.get("owl_type").get
+        val match_type = tuple.get("match_type").get
+
+
+         MatchRelation(left,"=",right,owl_type,match_type)-> matcher_result
+      }).toMap
+
+    }).toMap
+
+    reader.close()
+    createVectorFromResult(results,name)
+  }
+
   def selectFeatures(vector: FeatureVector): FeatureVector = {
     val sum_of_scores_per_feature: Map[String, Double] = vector.vector.map { case (name, relations) => {
-      (name, relations.values.sum)
+      (name, stdev_computer.evaluate(relations.values.toArray))
     }
     }.toMap
 
-
+    /*
     //compute stdev of sum
     val stdev = stdev_computer.evaluate(sum_of_scores_per_feature.values.toArray)
     val mean = mean_computer.evaluate(sum_of_scores_per_feature.values.toArray)
@@ -100,7 +139,8 @@ object VectorUtil {
     val minimal_times_stdev = Config.loaded_config.getDouble("general.feature_selection_values.min")
     val maximal_times_stdev = Config.loaded_config.getDouble("general.feature_selection_values.max")
     //exact values discussable
-    val sum_of_scores_per_feature_filtered = sum_of_scores_per_feature.filter { case (feature, sum) => (sum >= mean - minimal_times_stdev * stdev && sum <= mean + maximal_times_stdev * stdev)}
+    */
+    val sum_of_scores_per_feature_filtered = sum_of_scores_per_feature.filter { case (feature, stdev) => (stdev >0.2)}
 
     val filtered_results = vector.vector.filter { case (feature, relations) => {
       sum_of_scores_per_feature_filtered.contains(feature)

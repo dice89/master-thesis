@@ -43,7 +43,7 @@ trait EvaluationDataSetParser {
 
     val name: String = "human-mouse"
 
-    val matching_problem = MatchingProblem(onto1, onto2,ionto_1,ionto_2, name)
+    val matching_problem = MatchingProblem(onto1, onto2,ionto_1,ionto_2, name,"anatomy")
 
     val reference: Alignment = AlignmentParser.parseRDFWithOntos(ref, human_onto_name, mouse_onto_name)
 
@@ -74,8 +74,13 @@ trait EvaluationDataSetParser {
 
       //parse alignments
       val reference: Alignment = AlignmentParser.parseRDFWithOntos(ref_align_file.getAbsolutePath(), name_onto1, name_onto2)
+
+      //quick hack TODO change
+      reference.onto1_reference = onto1
+      reference.onto2_reference = onto2
+
       val name: String = ref_align_file.getName().dropRight(4)
-      val matching_problem = MatchingProblem(onto1, onto2,ionto_1,ionto_2, name)
+      val matching_problem = MatchingProblem(onto1, onto2,ionto_1,ionto_2, name,"conference")
 
       EvaluationMatchingTask(matching_problem, reference)
     }
@@ -107,7 +112,7 @@ trait EvaluationDataSetParser {
 
       val name: String = left_name + "-" + right_name
 
-      val matching_problem = MatchingProblem(onto_left, onto_right,ionto_1,ionto_2, name)
+      val matching_problem = MatchingProblem(onto_left, onto_right,ionto_1,ionto_2, name,"benchmarks")
 
       EvaluationMatchingTask(matching_problem, reference_alignment)
     }

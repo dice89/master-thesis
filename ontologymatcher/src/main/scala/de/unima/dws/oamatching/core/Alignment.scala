@@ -45,7 +45,7 @@ case class MatchingCell(entity1: String, entity2: String, measure: Double, relat
 }
 
 
-class Alignment(val onto1: String, val onto2: String, val onto1_reference: FastOntology, val onto2_reference: FastOntology, val i_onto1: IOntology, val i_onto2: IOntology) {
+class Alignment(val onto1: String, val onto2: String, var onto1_reference: FastOntology, var onto2_reference: FastOntology, val i_onto1: IOntology, val i_onto2: IOntology) {
 
   var correspondences: mutable.Set[MatchingCell] = new mutable.HashSet[MatchingCell]
 

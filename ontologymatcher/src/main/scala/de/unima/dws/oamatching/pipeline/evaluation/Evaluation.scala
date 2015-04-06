@@ -1,11 +1,9 @@
 package de.unima.dws.oamatching.pipeline.evaluation
 
-import java.io.File
-
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core._
+import de.unima.dws.oamatching.pipeline._
 import de.unima.dws.oamatching.pipeline.util.{MetaDataMgmt, ResultLogger}
-import de.unima.dws.oamatching.pipeline.{RunConfiguration, MatchingPipelineCore, MatchingProblem, FeatureVector}
-
 
 import scala.collection.immutable.Map
 
@@ -14,7 +12,25 @@ case class EvaluationRoundResult(createdAlignment: Alignment, evaluationResult: 
 /**
  * Created by mueller on 28/01/15.
  */
-object Evaluation  {
+object Evaluation {
+
+  def evaluateOnlyCore(matching_problem: MatchingProblem, reference: Alignment, config: RunConfiguration):EvaluationResult = {
+    val problem_name = matching_problem.name;
+    val core_pipeline_res = if (config.separated) {
+      config.matching_pipline_separated(matching_problem, config.class_threshold, config.dp_threshold, config.op_threshold, 0.5)
+    } else {
+      config.matching_pipline(matching_problem, config.threshold, 0.5)
+    }
+
+    val created_alignment = core_pipeline_res._1
+
+    val core_platform_result = evaluateMatcher(created_alignment, reference, problem_name, "core_platform")
+
+    println(core_platform_result)
+    core_platform_result
+  }
+
+
   /**
    *
    * @param matching_problem
@@ -26,35 +42,35 @@ object Evaluation  {
     //match core platform and store results
 
     val problem_name = matching_problem.name;
-    val core_pipeline_res = if(config.separated) {
+    val core_pipeline_res = if (config.separated) {
       config.matching_pipline_separated(matching_problem, config.class_threshold, config.dp_threshold, config.op_threshold, 0.5)
-    }else {
+    } else {
       config.matching_pipline(matching_problem, config.threshold, 0.5)
     }
     val created_alignment = core_pipeline_res._1
     val feature_vector = core_pipeline_res._2
 
     //calculate evaluation result of core platform
-    val core_platform_result = evaluateMatcher(created_alignment, reference, problem_name,"core_platform")
+    val core_platform_result = evaluateMatcher(created_alignment, reference, problem_name, "core_platform")
 
     //calc and evaluate majority vote
-    val majority_vote_alignment = calcMajorityVoteAlignment(feature_vector)
-    val majority_vote_res = evaluateMatcher(majority_vote_alignment, reference, problem_name,"majority_vote")
+    val majority_vote_alignment = calcMajorityVoteAlignment(feature_vector, reference)
+    val majority_vote_res = evaluateMatcher(majority_vote_alignment, reference, problem_name, "majority_vote")
 
-
+    //TODO add debugging
     //calc base matcher results
-    val base_matcher_alignment = calcAllBaseMatchersAlignments(feature_vector)
-    val base_matcher_results = evaluateAllBaseMatcher(base_matcher_alignment, reference,problem_name)
+    val base_matcher_alignment = calcAllBaseMatchersAlignments(feature_vector,reference)
+    val base_matcher_results = evaluateAllBaseMatcher(base_matcher_alignment, reference, problem_name)
 
     //get best base matcher
     val best_base_matcher = getBestBaseMatcher(base_matcher_results)
-    ResultLogger.log_matcher_result(problem_name,"best_base_matcher",best_base_matcher._2)
+    ResultLogger.log_matcher_result(problem_name, "best_base_matcher", best_base_matcher._2)
 
     //calculate bet statements
     val bet_best_base_matcher = best_base_matcher._2.f1Measure < core_platform_result.f1Measure
     val bet_majority_vote_matcher = majority_vote_res.f1Measure < core_platform_result.f1Measure
 
-    val round_res: EvaluationRoundResult =  EvaluationRoundResult(created_alignment, core_platform_result, base_matcher_results, majority_vote_res, best_base_matcher, bet_best_base_matcher, bet_majority_vote_matcher)
+    val round_res: EvaluationRoundResult = EvaluationRoundResult(created_alignment, core_platform_result, base_matcher_results, majority_vote_res, best_base_matcher, bet_best_base_matcher, bet_majority_vote_matcher)
     println(core_platform_result)
     //log round result
     ResultLogger.log(problem_name + ":" + round_res.toString)
@@ -68,7 +84,7 @@ object Evaluation  {
    * @param featureVector featureVector from Matching core pipeline
    * @return alignment
    */
-  def calcMajorityVoteAlignment(featureVector: FeatureVector): Alignment = {
+  def calcMajorityVoteAlignment(featureVector: FeatureVector, reference: Alignment): Alignment = {
 
     //build threshold map for all matcher
     val matcher_name_to_threshold: Map[String, Double] = featureVector.matcher_name_to_index.keys.map(key => (key, getBaseMatcherThreshold(key, featureVector.data_set_name))).toMap
@@ -88,9 +104,14 @@ object Evaluation  {
     val final_relation_simplified: Map[MatchRelation, Double] = final_relations.map { case (match_relation, res_map) => (match_relation, 0.0)}.toMap
 
     //create final alignment and return
-    val final_alignment: Alignment = new Alignment(null, null, final_relation_simplified)
+    val final_alignment: Alignment = new Alignment(reference.onto1, reference.onto2, reference.onto1_reference, reference.onto2_reference, reference.i_onto1, reference.i_onto2, final_relation_simplified)
 
-    final_alignment
+    if (Config.loaded_config.getBoolean("pipeline.debug_alignment")) {
+      MatchingPruner.debugAlignment(final_alignment)
+    } else {
+      final_alignment
+    }
+
   }
 
   /**
@@ -98,14 +119,23 @@ object Evaluation  {
    * @param featureVector Feature vector from the core matching platform
    * @return
    */
-  def calcAllBaseMatchersAlignments(featureVector: FeatureVector): Map[String, Alignment] = {
+  def calcAllBaseMatchersAlignments(featureVector: FeatureVector, reference: Alignment): Map[String, Alignment] = {
     //filter base matcher for their threshold and build alignment and yield it to automatically return it
     for ((matcher, relations) <- featureVector.vector) yield {
-      //TODO check if name is correct here
+
       val threshold: Double = getBaseMatcherThreshold(matcher, featureVector.data_set_name);
       val filtered_relation: Map[MatchRelation, Double] = relations.filter { case (relation, measure) => measure >= threshold}
 
-      (matcher, new Alignment(null, null, filtered_relation))
+      val final_alignment: Alignment = new Alignment(reference.onto1, reference.onto2, reference.onto1_reference, reference.onto2_reference, reference.i_onto1, reference.i_onto2, filtered_relation)
+
+
+      val result = if (Config.loaded_config.getBoolean("pipeline.debug_alignment")) {
+        MatchingPruner.debugAlignment(final_alignment)
+      } else {
+        final_alignment
+      }
+
+      (matcher, result)
     }
   }
 

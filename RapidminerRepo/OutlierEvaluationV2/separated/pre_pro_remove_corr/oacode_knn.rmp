@@ -506,7 +506,7 @@
                     <parameter key="invert_selection" value="false"/>
                     <parameter key="include_special_attributes" value="false"/>
                   </operator>
-                  <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (10)" width="90" x="585" y="30">
+                  <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (10)" width="90" x="581" y="210">
                     <parameter key="attribute_filter_type" value="subset"/>
                     <parameter key="attribute" value=""/>
                     <parameter key="attributes" value="sum|"/>
@@ -698,7 +698,7 @@
                 <parameter key="invert_selection" value="false"/>
                 <parameter key="include_special_attributes" value="true"/>
               </operator>
-              <operator activated="true" breakpoints="after" class="subprocess" compatibility="5.3.013" expanded="true" height="94" name="Preprocess Remove Corr (3)" width="90" x="447" y="30">
+              <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" height="94" name="Preprocess Remove Corr (3)" width="90" x="447" y="30">
                 <parameter key="parallelize_nested_chain" value="false"/>
                 <process expanded="true">
                   <operator activated="true" class="replace_missing_values" compatibility="5.3.013" expanded="true" height="94" name="Replace Missing Values (4)" width="90" x="45" y="30">
@@ -809,7 +809,7 @@
                     <parameter key="nominal_remove_id_like" value="false"/>
                     <parameter key="nominal_useless_below" value="0.0"/>
                   </operator>
-                  <operator activated="true" breakpoints="after" class="remove_correlated_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_CORRELATED_OP" width="90" x="246" y="255">
+                  <operator activated="true" class="remove_correlated_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_CORRELATED_OP" width="90" x="246" y="255">
                     <parameter key="correlation" value="0.85"/>
                     <parameter key="filter_relation" value="greater"/>
                     <parameter key="attribute_order" value="original"/>
