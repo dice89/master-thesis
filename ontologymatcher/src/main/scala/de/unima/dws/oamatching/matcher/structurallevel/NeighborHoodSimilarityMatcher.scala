@@ -18,7 +18,7 @@ class NeighborHoodSimilarityMatcher(val strategy: Int) extends StructuralLevelMa
 
       val filtered_alignment: Alignment = initial_Alignment.getNewAlignmentWithMatchType(match_type)
 
-      val selected_matchings = MatchingSelector.fuzzyGreedyRankSelectorDelta(0.01)(filtered_alignment.asMatchRelationMap(), 0.5)
+      val selected_matchings = MatchingSelector.fuzzyGreedyRankSelectorDelta(0.05)(filtered_alignment.asMatchRelationMap(), 0.5)
       val selected_alignment = new Alignment(filtered_alignment.onto1, filtered_alignment.onto2, filtered_alignment.onto1_reference, filtered_alignment.onto2_reference, filtered_alignment.i_onto1, filtered_alignment.i_onto2, selected_matchings)
 
       val cells_to_add = filtered_alignment.correspondences.map(cell => {
@@ -26,7 +26,7 @@ class NeighborHoodSimilarityMatcher(val strategy: Int) extends StructuralLevelMa
       }).toList.flatten.groupBy(identity)
 
       //TODO different strategies
-      val test = cells_to_add.map { case (x, ys) => ys.maxBy(_.measure)}
+      val test = cells_to_add.map { case (x, ys) => ys.minBy(_.measure)}
 
       test.toSet
 

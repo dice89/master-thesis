@@ -15,7 +15,7 @@
     <parameter key="parallelize_main_process" value="true"/>
     <process expanded="true">
       <operator activated="true" class="read_csv" compatibility="5.3.013" expanded="true" height="60" name="ReadVector" width="90" x="45" y="255">
-        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/ontologymatcher/matchings/conference/matchings/cmt-conference_raw_matchings.csv"/>
+        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/ontologymatcher/matchings/benchmarks/matchings/101-202_raw_matchings.csv"/>
         <parameter key="column_separators" value=","/>
         <parameter key="trim_lines" value="true"/>
         <parameter key="use_quotes" value="true"/>
@@ -40,52 +40,53 @@
           <parameter key="1" value="relation.true.binominal.attribute"/>
           <parameter key="2" value="right.true.polynominal.attribute"/>
           <parameter key="3" value="owl_type.true.polynominal.attribute"/>
-          <parameter key="4" value="match_type.true.binominal.attribute"/>
-          <parameter key="5" value="level2_monge_elkandeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
+          <parameter key="4" value="match_type.true.polynominal.attribute"/>
+          <parameter key="5" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelPropertiesMatcher.true.real.attribute"/>
           <parameter key="6" value="ngramDistance.true.real.attribute"/>
-          <parameter key="7" value="level2_monge_elkandeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
+          <parameter key="7" value="prefixdeunimadwsoamatchingmatcherstructurallevelPropertiesMatcher.true.real.attribute"/>
           <parameter key="8" value="wuPalmer.true.real.attribute"/>
-          <parameter key="9" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
+          <parameter key="9" value="prefixdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
           <parameter key="10" value="jiangConrath_stemmed.true.real.attribute"/>
           <parameter key="11" value="lin_stemmed.true.real.attribute"/>
           <parameter key="12" value="path.true.real.attribute"/>
           <parameter key="13" value="lin.true.real.attribute"/>
           <parameter key="14" value="equalSimilarityStemmed.true.real.attribute"/>
-          <parameter key="15" value="level2_jara_winklerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="16" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="17" value="esaSim_stemmed.true.real.attribute"/>
-          <parameter key="18" value="jaroWinklerMeasure.true.real.attribute"/>
-          <parameter key="19" value="word2Vec.true.real.attribute"/>
-          <parameter key="20" value="level2_jara_winkler.true.real.attribute"/>
-          <parameter key="21" value="prefix.true.real.attribute"/>
-          <parameter key="22" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="23" value="equalDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="24" value="word2VecStemmed.true.real.attribute"/>
-          <parameter key="25" value="jaccard.true.real.attribute"/>
-          <parameter key="26" value="level2_monge_elkan.true.real.attribute"/>
-          <parameter key="27" value="suffix.true.real.attribute"/>
-          <parameter key="28" value="esaSim.true.real.attribute"/>
-          <parameter key="29" value="level2_jara_winklerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
-          <parameter key="30" value="level2_jaro.true.real.attribute"/>
-          <parameter key="31" value="path_stemmed.true.real.attribute"/>
-          <parameter key="32" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="33" value="smoaDistance.true.real.attribute"/>
-          <parameter key="34" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
-          <parameter key="35" value="jiangConrath.true.real.attribute"/>
-          <parameter key="36" value="needlemanWunsch2Distance.true.real.attribute"/>
-          <parameter key="37" value="umbcSim.true.real.attribute"/>
-          <parameter key="38" value="equalDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
-          <parameter key="39" value="soft_tfidf_jaro.true.real.attribute"/>
-          <parameter key="40" value="mongeElkan.true.real.attribute"/>
-          <parameter key="41" value="simple_tfidf.true.real.attribute"/>
-          <parameter key="42" value="wuPalmer_stemmed.true.real.attribute"/>
-          <parameter key="43" value="jaro_winkler_tfidf.true.real.attribute"/>
-          <parameter key="44" value="levenshteinDistance.true.real.attribute"/>
-          <parameter key="45" value="hammingDistance.true.real.attribute"/>
+          <parameter key="15" value="mongeElkandeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
+          <parameter key="16" value="prefixdeunimadwsoamatchingmatcherstructurallevelNeighborHoodSimilarityMatcher.true.real.attribute"/>
+          <parameter key="17" value="mongeElkandeunimadwsoamatchingmatcherstructurallevelNeighborHoodSimilarityMatcher.true.real.attribute"/>
+          <parameter key="18" value="word2Vec.true.real.attribute"/>
+          <parameter key="19" value="prefix.true.real.attribute"/>
+          <parameter key="20" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
+          <parameter key="21" value="word2VecStemmed.true.real.attribute"/>
+          <parameter key="22" value="jaccard.true.real.attribute"/>
+          <parameter key="23" value="suffix.true.real.attribute"/>
+          <parameter key="24" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelNeighborHoodSimilarityMatcher.true.real.attribute"/>
+          <parameter key="25" value="path_stemmed.true.real.attribute"/>
+          <parameter key="26" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
+          <parameter key="27" value="smoaDistance.true.real.attribute"/>
+          <parameter key="28" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
+          <parameter key="29" value="jiangConrath.true.real.attribute"/>
+          <parameter key="30" value="needlemanWunsch2Distance.true.real.attribute"/>
+          <parameter key="31" value="umbcSim.true.real.attribute"/>
+          <parameter key="32" value="soft_tfidf_jaro.true.real.attribute"/>
+          <parameter key="33" value="mongeElkandeunimadwsoamatchingmatcherstructurallevelPropertiesMatcher.true.real.attribute"/>
+          <parameter key="34" value="fuzzydice.true.real.attribute"/>
+          <parameter key="35" value="prefixdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
+          <parameter key="36" value="fuzzycosine.true.real.attribute"/>
+          <parameter key="37" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelNeighborHoodSimilarityMatcher.true.real.attribute"/>
+          <parameter key="38" value="mongeElkan.true.real.attribute"/>
+          <parameter key="39" value="simple_tfidf.true.real.attribute"/>
+          <parameter key="40" value="wuPalmer_stemmed.true.real.attribute"/>
+          <parameter key="41" value="jaro_winkler_tfidf.true.real.attribute"/>
+          <parameter key="42" value="fuzzyjaccard.true.real.attribute"/>
+          <parameter key="43" value="levenshteinDistance.true.real.attribute"/>
+          <parameter key="44" value="hammingDistance.true.real.attribute"/>
+          <parameter key="45" value="mongeElkandeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
           <parameter key="46" value="equalDistance.true.real.attribute"/>
           <parameter key="47" value="subStringDistance.true.real.attribute"/>
-          <parameter key="48" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
-          <parameter key="49" value="jaroMeasure.true.real.attribute"/>
+          <parameter key="48" value="umbcphrasesim.true.real.attribute"/>
+          <parameter key="49" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
+          <parameter key="50" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelPropertiesMatcher.true.real.attribute"/>
         </list>
         <parameter key="read_not_matching_values_as_missings" value="true"/>
         <parameter key="datamanagement" value="double_array"/>
@@ -161,7 +162,7 @@
                 <parameter key="invert_selection" value="false"/>
                 <parameter key="include_special_attributes" value="true"/>
               </operator>
-              <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" height="94" name="Preprocess Remove Corr" width="90" x="380" y="165">
+              <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" height="94" name="Preprocess Remove Corr" width="90" x="380" y="30">
                 <parameter key="parallelize_nested_chain" value="false"/>
                 <process expanded="true">
                   <operator activated="true" class="replace_missing_values" compatibility="5.3.013" expanded="true" height="94" name="Replace Missing Values (3)" width="90" x="45" y="30">
@@ -219,7 +220,7 @@
                     <parameter key="keep_all" value="true"/>
                     <parameter key="ignore_missings" value="true"/>
                   </operator>
-                  <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (3)" width="90" x="583" y="39">
+                  <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (3)" width="90" x="514" y="30">
                     <parameter key="attribute_filter_type" value="subset"/>
                     <parameter key="attribute" value=""/>
                     <parameter key="attributes" value="id||sum"/>
@@ -233,7 +234,7 @@
                     <parameter key="invert_selection" value="false"/>
                     <parameter key="include_special_attributes" value="false"/>
                   </operator>
-                  <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (5)" width="90" x="585" y="30">
+                  <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (5)" width="90" x="179" y="255">
                     <parameter key="attribute_filter_type" value="subset"/>
                     <parameter key="attribute" value=""/>
                     <parameter key="attributes" value="sum|"/>
@@ -266,13 +267,13 @@
                     <parameter key="min" value="-1.0"/>
                     <parameter key="max" value="1.0"/>
                   </operator>
-                  <operator activated="true" class="remove_useless_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_USELESS_C" width="90" x="45" y="120">
-                    <parameter key="numerical_min_deviation" value="0.1"/>
+                  <operator activated="true" class="remove_useless_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_USELESS_C" width="90" x="514" y="300">
+                    <parameter key="numerical_min_deviation" value="0.05"/>
                     <parameter key="nominal_useless_above" value="1.0"/>
                     <parameter key="nominal_remove_id_like" value="false"/>
                     <parameter key="nominal_useless_below" value="0.0"/>
                   </operator>
-                  <operator activated="true" class="remove_correlated_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_CORRELATED_C" width="90" x="448" y="75">
+                  <operator activated="true" class="remove_correlated_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_CORRELATED_C" width="90" x="648" y="255">
                     <parameter key="correlation" value="0.95"/>
                     <parameter key="filter_relation" value="greater"/>
                     <parameter key="attribute_order" value="original"/>
@@ -327,7 +328,7 @@
                 <parameter key="parameter_string" value="sum &gt;0"/>
                 <parameter key="invert_filter" value="false"/>
               </operator>
-              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (5)" width="90" x="179" y="390">
+              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (5)" width="90" x="380" y="390">
                 <parameter key="remove_double_attributes" value="true"/>
                 <parameter key="join_type" value="inner"/>
                 <parameter key="use_id_attribute_as_key" value="false"/>
@@ -336,7 +337,7 @@
                 </list>
                 <parameter key="keep_both_join_attributes" value="false"/>
               </operator>
-              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (8)" width="90" x="514" y="255">
+              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (8)" width="90" x="514" y="390">
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
                 <parameter key="attributes" value="id|sum|cluster"/>
@@ -608,7 +609,7 @@
                 </list>
                 <parameter key="keep_both_join_attributes" value="false"/>
               </operator>
-              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (11)" width="90" x="515" y="75">
+              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (11)" width="90" x="514" y="165">
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
                 <parameter key="attributes" value="id|sum|cluster"/>
@@ -697,7 +698,7 @@
                 <parameter key="invert_selection" value="false"/>
                 <parameter key="include_special_attributes" value="true"/>
               </operator>
-              <operator activated="true" class="subprocess" compatibility="5.3.013" expanded="true" height="94" name="Preprocess Remove Corr (3)" width="90" x="447" y="30">
+              <operator activated="true" breakpoints="after" class="subprocess" compatibility="5.3.013" expanded="true" height="94" name="Preprocess Remove Corr (3)" width="90" x="447" y="30">
                 <parameter key="parallelize_nested_chain" value="false"/>
                 <process expanded="true">
                   <operator activated="true" class="replace_missing_values" compatibility="5.3.013" expanded="true" height="94" name="Replace Missing Values (4)" width="90" x="45" y="30">
@@ -769,7 +770,7 @@
                     <parameter key="invert_selection" value="false"/>
                     <parameter key="include_special_attributes" value="false"/>
                   </operator>
-                  <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (15)" width="90" x="585" y="30">
+                  <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (15)" width="90" x="380" y="120">
                     <parameter key="attribute_filter_type" value="subset"/>
                     <parameter key="attribute" value=""/>
                     <parameter key="attributes" value="sum|"/>
@@ -802,14 +803,14 @@
                     <parameter key="min" value="-1.0"/>
                     <parameter key="max" value="1.0"/>
                   </operator>
-                  <operator activated="true" class="remove_useless_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_USELESS_OP" width="90" x="45" y="120">
-                    <parameter key="numerical_min_deviation" value="0.1"/>
+                  <operator activated="true" class="remove_useless_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_USELESS_OP" width="90" x="45" y="255">
+                    <parameter key="numerical_min_deviation" value="0.05"/>
                     <parameter key="nominal_useless_above" value="1.0"/>
                     <parameter key="nominal_remove_id_like" value="false"/>
                     <parameter key="nominal_useless_below" value="0.0"/>
                   </operator>
-                  <operator activated="true" class="remove_correlated_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_CORRELATED_OP" width="90" x="448" y="75">
-                    <parameter key="correlation" value="0.95"/>
+                  <operator activated="true" breakpoints="after" class="remove_correlated_attributes" compatibility="5.3.013" expanded="true" height="76" name="REMOVE_CORRELATED_OP" width="90" x="246" y="255">
+                    <parameter key="correlation" value="0.85"/>
                     <parameter key="filter_relation" value="greater"/>
                     <parameter key="attribute_order" value="original"/>
                     <parameter key="use_absolute_correlation" value="true"/>
@@ -851,7 +852,7 @@
                 <parameter key="parallelize evaluation process" value="true"/>
                 <parameter key="number of threads" value="4"/>
               </operator>
-              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (6)" width="90" x="720" y="30">
+              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (6)" width="90" x="45" y="300">
                 <parameter key="remove_double_attributes" value="true"/>
                 <parameter key="join_type" value="inner"/>
                 <parameter key="use_id_attribute_as_key" value="true"/>
@@ -863,7 +864,7 @@
                 <parameter key="parameter_string" value="sum &gt;0"/>
                 <parameter key="invert_filter" value="false"/>
               </operator>
-              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (7)" width="90" x="180" y="120">
+              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (7)" width="90" x="313" y="255">
                 <parameter key="remove_double_attributes" value="true"/>
                 <parameter key="join_type" value="inner"/>
                 <parameter key="use_id_attribute_as_key" value="false"/>
@@ -872,7 +873,7 @@
                 </list>
                 <parameter key="keep_both_join_attributes" value="false"/>
               </operator>
-              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (16)" width="90" x="515" y="75">
+              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (16)" width="90" x="514" y="255">
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
                 <parameter key="attributes" value="id|sum|cluster"/>

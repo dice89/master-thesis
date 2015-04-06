@@ -176,7 +176,7 @@ object MatcherRegistry {
       case "graphBasedUsedPropMatcher" => new GraphBasedUsedPropertyMatcher()
       case "graphBasedUsedClassMatcher" => new GraphBasedUsedClassMatcher()
       case "propertiesMatcher" => new PropertiesMatcher()
-      case "neighborhoodMatcher" => new NeighborHoodSimilarityMatcher(NeighborHoodSimilarityMatcher.STRATEGY_MAX)
+      case "neighborhoodMatcher" => new NeighborHoodSimilarityMatcher(NeighborHoodSimilarityMatcher.STRATEGY_MIN)
     }
   }
 
