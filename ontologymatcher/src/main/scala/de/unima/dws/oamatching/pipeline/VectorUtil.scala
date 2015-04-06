@@ -129,9 +129,9 @@ object VectorUtil {
       (name, stdev_computer.evaluate(relations.values.toArray))
     }
     }.toMap
-    
 
-   val min_stdev =  Config.loaded_config.getDouble("general.base_threshold")
+
+   val min_stdev =  Config.loaded_config.getDouble("general.min_stdev")
     val sum_of_scores_per_feature_filtered = sum_of_scores_per_feature.filter { case (feature, stdev) => (stdev >min_stdev)}
 
     val filtered_results = vector.vector.filter { case (feature, relations) => {
