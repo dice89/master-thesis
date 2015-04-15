@@ -30,6 +30,8 @@ object SummaryPDFFactory{
     val writer: PdfWriter = PdfWriter.getInstance(document, new FileOutputStream(folder+"/"+name+".pdf"));
 
     document.open()
+
+
     val best_result_res = best_result._2
 
     val anchor = new Anchor("Results of Analysis for: " + name);
@@ -602,7 +604,6 @@ object SummaryPDFFactory{
     section.add(table)
 
   }
-
 
 
   def printGlobalThresholdsPage(process_name:String,best_thresholds: Map[String, (Double, AggregatedEvaluationResult)], chapter: Chapter) = {

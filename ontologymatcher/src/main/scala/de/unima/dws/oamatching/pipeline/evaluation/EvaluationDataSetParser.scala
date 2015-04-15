@@ -112,6 +112,11 @@ trait EvaluationDataSetParser {
 
       val name: String = left_name + "-" + right_name
 
+      //quick hack TODO change
+      reference_alignment.onto1_reference = onto_left
+      reference_alignment.onto2_reference = onto_right
+
+
       val matching_problem = MatchingProblem(onto_left, onto_right,ionto_1,ionto_2, name,"benchmarks")
 
       EvaluationMatchingTask(matching_problem, reference_alignment)
@@ -131,6 +136,9 @@ trait EvaluationDataSetParser {
     val ionto_2 = new IOntology(f_onto2)
 
     val reference: Alignment = AlignmentParser.parseRDF(f_reference)
+    //quick hack TODO change
+    reference.onto1_reference = onto1
+    reference.onto2_reference = onto2
 
     val matching_problem = MatchingProblem(onto1, onto2,ionto_1,ionto_2, name)
 

@@ -85,9 +85,9 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   /*########################################################################
                            Algorithmns Config
     ########################################################################*/
-  val KNN_CONFIG = List(Map("k" -> 0.05), Map("k" -> 0.01), Map("k" -> 0.1))
-  val CBLOF_DBSCAN_CONFIG = List(Map("minpoints" -> 15.0, "epsilon" -> 1.5, "alpha" -> 99.0), Map("minpoints" -> 10.0, "epsilon" -> 1.0, "alpha" -> 99.0), Map("minpoints" -> 10.0, "epsilon" -> 0.5, "alpha" -> 99.0), Map("minpoints" -> 6.0, "epsilon" -> 1.5, "alpha" -> 99.0), Map("minpoints" -> 6.0, "epsilon" -> 1.0, "alpha" -> 99.0), Map("minpoints" -> 6.0, "epsilon" -> 0.5, "alpha" -> 99.0))
-  val CBLOF_XMEANS_CONFIG = List(Map("kmin" -> 7.0, "alpha" -> 99.0), Map("kmin" -> 5.0, "alpha" -> 99.0), Map("kmin" -> 9.0, "alpha" -> 99.0), Map("kmin" -> 7.0, "alpha" -> 97.0), Map("kmin" -> 5.0, "alpha" -> 97.0), Map("kmin" -> 9.0, "alpha" -> 97.0), Map("kmin" -> 7.0, "alpha" -> 99.5), Map("kmin" -> 5.0, "alpha" -> 99.5), Map("kmin" -> 9.0, "alpha" -> 99.5))
+  val KNN_CONFIG = List(Map("k" -> 0.05), Map("k" -> 0.01), Map("k" -> 0.075))
+  val CBLOF_DBSCAN_CONFIG = List(Map("minpoints" -> 25.0, "epsilon" -> 1.5, "alpha" -> 95.0),Map("minpoints" -> 25.0, "epsilon" -> 1.5, "alpha" -> 99.5),Map("minpoints" -> 15.0, "epsilon" -> 1.5, "alpha" -> 99.0), Map("minpoints" -> 10.0, "epsilon" -> 1.0, "alpha" -> 99.0), Map("minpoints" -> 10.0, "epsilon" -> 0.5, "alpha" -> 99.0), Map("minpoints" -> 6.0, "epsilon" -> 1.5, "alpha" -> 99.0), Map("minpoints" -> 6.0, "epsilon" -> 1.0, "alpha" -> 99.0), Map("minpoints" -> 6.0, "epsilon" -> 0.5, "alpha" -> 99.0))
+  val CBLOF_XMEANS_CONFIG = List(Map("kmin" -> 7.0, "alpha" -> 95.0), Map("kmin" -> 5.0, "alpha" -> 99.0), Map("kmin" -> 9.0, "alpha" -> 99.0), Map("kmin" -> 7.0, "alpha" -> 97.0), Map("kmin" -> 5.0, "alpha" -> 97.0), Map("kmin" -> 9.0, "alpha" -> 97.0), Map("kmin" -> 7.0, "alpha" -> 99.5), Map("kmin" -> 5.0, "alpha" -> 99.5), Map("kmin" -> 9.0, "alpha" -> 99.5))
   val LDCOF_XMEANS_CONFIG = List(Map("kmin" -> 7.0, "gamma" -> 0.01), Map("kmin" -> 7.0, "gamma" -> 0.05), Map("kmin" -> 7.0, "gamma" -> 0.1))
   val LDCOF_DBSCAN_CONFIG = List(Map("minpoints" -> 6.0, "epsilon" -> 1.5, "gamma" -> 0.01), Map("minpoints" -> 6.0, "epsilon" -> 1.0, "gamma" -> 0.01), Map("minpoints" -> 6.0, "epsilon" -> 0.5, "gamma" -> 0.01))
   val LOF_CONFIG = List(Map("kmin" -> 0.02, "kmax" -> 0.045), Map("kmin" -> 0.01, "kmax" -> 0.045), Map("kmin" -> 0.03, "kmax" -> 0.06), Map("kmin" -> 0.005, "kmax" -> 0.01))
@@ -112,9 +112,9 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   //val PRE_PRO_TECHNIQUES = List("remove_corr","pca_variant","pca_fixed")
 
 
-  val PARAM_CONFIGS_PRE_PRO: Map[String, List[Map[String, Double]]] = Map("pca_variant" -> List(Map("variance" -> 0.75),Map("variance" -> 0.85), Map("variance" -> 0.9), Map("variance" -> 0.95), Map("variance" -> 0.97)),
+  val PARAM_CONFIGS_PRE_PRO: Map[String, List[Map[String, Double]]] = Map("pca_variant" -> List(Map("variance" -> 0.75),Map("variance" -> 0.85), Map("variance" -> 0.9), Map("variance" -> 0.95)),
     "pca_fixed" -> List( Map("number" -> 4.0),Map("number" -> 6.0),Map("number" -> 8.0), Map("number" -> 12.0)),
-    "remove_corr" -> List(Map("corr_variance" -> 0.85, "min_variance" -> 0.05),Map("corr_variance" -> 0.75, "min_variance" -> 0.05), Map("corr_variance" -> 0.5, "min_variance" -> 0.05), Map("corr_variance" -> 0.9, "min_variance" -> 0.05))
+    "remove_corr" -> List(Map("corr_variance" -> 0.9, "min_variance" -> 0.1),Map("corr_variance" -> 0.75, "min_variance" -> 0.1))
   )
 
   /*########################################################################
@@ -200,7 +200,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
 
 
   /**
-   * Functon that facilitates the whole run for both separated and non separated results
+   * Function that facilitates the whole run for both separated and non separated results
    * @param ds_name
    * @param base_folder
    * @param matching_pairs
@@ -216,7 +216,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     val separated_best: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = runAllForAlgosForAllSlctFunctions(ds_name, separated_folder, matching_pairs, parallel, true)
 
 
-    val non_separated_folder = base_folder + "/non_separated"
+   /* val non_separated_folder = base_folder + "/non_separated"
     createFolder(non_separated_folder)
     val non_separated_best: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = runAllForAlgosForAllSlctFunctions(ds_name, non_separated_folder, matching_pairs, parallel, false)
 
@@ -233,14 +233,14 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
       result
     } else {
       Option.empty
+    }*/
+
+
+    if (separated_best.isDefined) {
+      SummaryPDFFactory.createExecutionSummaryReport(base_folder, "overall_best_result", separated_best.get)
     }
 
-
-    if (best_result.isDefined) {
-      SummaryPDFFactory.createExecutionSummaryReport(base_folder, "overall_best_result", best_result.get)
-    }
-
-    best_result
+    separated_best
   }
 
 

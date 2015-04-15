@@ -68,7 +68,23 @@ object ScoreNormalizationFunctions {
   def normalizeByGammaScaling(dimensions: Int, max_min_by_dim:Map[String, (Double, Double)], relations: Iterable[(MatchRelation, Double)]): Iterable[(MatchRelation, Double)] = {
 
     def cdfGamma(k:Double,theta:Double) (param:Double):Double = {
-      Gamma.regularizedGammaP(k,param/theta)
+
+      if(param > 0.0){
+        try{
+          Gamma.regularizedGammaP(k,param/theta)
+        }catch{
+          case e:Throwable => {
+            println(s"K: $k")
+            println(s"theta $theta")
+            println(s"param $theta")
+            0.0
+          }
+        }
+
+      }else {
+        0.0
+      }
+
     }
 
     val values = relations.unzip._2.toArray

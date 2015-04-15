@@ -235,7 +235,7 @@ object MatcherRegistry {
   def getSecondTrainingFunction(second_string_measure: String) = {
     second_string_measure match {
       case "simple_tfidf" => new TFIDF(new SimpleTokenizer(true, false))
-      case "soft_tfidf_jaro" => new SoftTFIDF(new SimpleTokenizer(true, false), new JaroWinkler(), 0.8)
+      case "soft_tfidf_jaro" => new SoftTFIDF(new SimpleTokenizer(true, false), new JaroWinkler(), 0.9)
       case "jaro_winkler_tfidf" => new JaroWinklerTFIDF()
       case "level2_jaro" => new Level2Jaro()
       case "level2_jara_winkler" => new Level2JaroWinkler()

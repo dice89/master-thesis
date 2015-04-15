@@ -46,10 +46,10 @@ object VectorUtil {
    * @return
    */
   def createInvertedVector(vector: Map[String, Map[MatchRelation, Double]]): Map[MatchRelation, Map[String, Double]] = {
-    val unique_matchings: Iterable[MatchRelation] = vector.map({ case (name, matchings) => matchings.keySet}).flatten
+    val unique_matchings: Set[MatchRelation] = vector.map({ case (name, matchings) => matchings.keySet}).flatten.toSet
 
 
-    val vector_per_matchings: Map[MatchRelation, Map[String, Double]] = unique_matchings.map(matching => (matching, vector.map(tuple => (tuple._1, tuple._2.get(matching).getOrElse(0.0))))).toMap
+    val vector_per_matchings: Map[MatchRelation, Map[String, Double]] = unique_matchings.view.map(matching => (matching, vector.map(tuple => (tuple._1, tuple._2.get(matching).getOrElse(0.0))))).toMap
     //val vector_per_matchings: Map[MatchRelation, Map[String, Double]] = unique_matchings.map(matching => (matching, vector.filter(tuple => tuple._2.contains(matching)).map(tuple => (tuple._1, tuple._2.get(matching).getOrElse(0.0))))).toMap
     vector_per_matchings
   }
@@ -100,6 +100,7 @@ object VectorUtil {
 
     val reader = CSVReader.open(matching_file)
     var dim_size: Int = 0
+    //maybe change to iterator
     val lines = reader.allWithHeaders
 
 

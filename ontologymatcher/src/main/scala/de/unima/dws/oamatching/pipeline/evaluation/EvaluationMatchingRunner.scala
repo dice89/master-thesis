@@ -2,6 +2,7 @@ package de.unima.dws.oamatching.pipeline.evaluation
 
 import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core._
+import de.unima.dws.oamatching.matcher.MatcherRegistry
 import de.unima.dws.oamatching.pipeline._
 import de.unima.dws.oamatching.pipeline.util.ResultLogger
 
@@ -16,6 +17,7 @@ case class EvaluationMatchingTask(matching_problem: MatchingProblem, reference: 
 
 
 object EvaluationMatchingRunner extends EvaluationDataSetParser {
+
 
 
   def matchAndEvaluateConference(path_to_prob: String,problem:String, config: RunConfiguration): Unit = {

@@ -5,13 +5,14 @@ import java.io.File
 import com.github.tototoshi.csv.CSVWriter
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import de.unima.dws.oamatching.analysis.{RapidminerJobs, SeparatedResults}
+import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core._
 import de.unima.dws.oamatching.pipeline.ScoreNormalizationFunctions
 import de.unima.dws.oamatching.pipeline.evaluation.{EvaluationMatchingRunner, EvaluationMatchingTask}
 import de.unima.dws.oamatching.pipeline.optimize.ParameterOptimizer
 
 import scala.collection.immutable.Map
-import scala.collection.parallel.immutable.ParSeq
+import scala.collection.parallel.{ForkJoinTaskSupport, ParIterable}
 
 /**
  * Created by mueller on 27/02/15.
@@ -21,6 +22,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
   val csv_file = new File("tmp/separated_results.csv")
   val csv_result_writer = CSVWriter.open(csv_file)
 
+  val parallel_degree = Config.loaded_config.getInt("pipeline.max_threads")
 
   def executeProcessSeparated(ds_name: String, run_number: Int, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], ref_matching_pairs: List[(EvaluationMatchingTask, File)], rapidminer_file: String, pre_pro_key: String, parameters: Map[String, Map[String, Double]], processes: Map[String, String]): ProcessEvalExecutionResultNonSeparated = {
 
@@ -33,8 +35,9 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
     logger.info(s"Start threshold optimization for $ds_name and $process_name in run $run_number")
 
 
+
     //execute Outlier analysis
-    val matching_results = ref_matching_pairs.par.map { case (ref_file, matching_file) => {
+    val matching_results = parallelizeCollection(ref_matching_pairs).map { case (ref_file, matching_file) => {
       try {
 
       } catch {
@@ -53,12 +56,12 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
     val size = matching_results.filter(!_.isDefined).size
 
-    val matching_results_filtered:Seq[(SeparatedResults, Alignment)] = matching_results.filter(_.isDefined).map(_.get).seq
+    val matching_results_filtered = matching_results.filter(_.isDefined).map(_.get).seq
     println(s"Failure Matchings $size")
 
     println("matching done")
     //get usage probability for each parameter
-    val probablility_of_usage: Map[String, Double] = getParameterUsageProbabilites(matching_results_filtered)
+    val probablility_of_usage: Map[String, Double] = getParameterUsageProbabilites(matching_results_filtered.toSeq)
 
     println("probability computation done")
     try {
@@ -85,7 +88,14 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
     }.toList
 
 
-    val optimization_grid = ParameterOptimizer.getDoubleGrid(0.01, 1.1, 100)
+
+    val grid_size = Config.loaded_config.getInt("optimization.threshold_opt.grid_size")
+    val start = Config.loaded_config.getDouble("optimization.threshold_opt.start")
+    val end = Config.loaded_config.getDouble("optimization.threshold_opt.end")
+
+    val optimization_grid = ParameterOptimizer.getDoubleGrid(start, end, grid_size)
+
+
     val optimal_thresholds = findOptimalThresholds(selection_function, normalized_per_category, optimization_grid)
 
 
@@ -150,7 +160,8 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
     val norm_res_gamma: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByGammaScaling(test._1, test._2, test._3).toMap
     val norm_res_znorm: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByZScore(test._1, test._2, test._3).toMap
 
-    val resulting_matchings: Map[String, Map[MatchRelation, Double]] = Map(("none", test._3), ("gaussian", norm_res_gaussian), ("zscore", norm_res_znorm), ("gammma", norm_res_gamma), ("euclidean_max", norm_res_euclidean_max))
+    //val resulting_matchings: Map[String, Map[MatchRelation, Double]] = Map(("none", test._3), ("gaussian", norm_res_gaussian), ("zscore", norm_res_znorm), ("gammma", norm_res_gamma), ("euclidean_max", norm_res_euclidean_max))
+    val resulting_matchings: Map[String, Map[MatchRelation, Double]] = Map( ("euclidean_max", norm_res_euclidean_max))
 
     resulting_matchings
   }
@@ -199,11 +210,11 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
 
   def evaluateRound(norm_technique: String, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], normalizedScores: List[(Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Alignment)], class_threshold: Double, dp_threshold: Double, op_threshold: Double, debug: Boolean, verbose: Boolean): SeparatedResult = {
-
     val unique_techniques = normalizedScores.head._1.keys.toVector
-
-
-    val scores = if (debug) normalizedScores else normalizedScores.par
+    val scores = if (debug) normalizedScores
+    else {
+      parallelizeCollection(normalizedScores)
+    }
     //get single results
     val results = scores.map { case (class_matchings, dp_matchings, op_matchings, ref_alignment) => {
 
@@ -238,8 +249,8 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
 
     //first find best class threshold
-
-    val best_class_thresholds_by_norm = unique_techniques.par.map(norm_technique => {
+    val unique_par = parallelizeCollection(unique_techniques)
+    val best_class_thresholds_by_norm = unique_par.map(norm_technique => {
       val results_by_threshold = threshold_grid.map(threshold => {
         (threshold, evaluateRound(norm_technique, selection_function, normalizedScores, threshold, 1.1, 1.1, false, false))
       })
@@ -249,7 +260,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
     }).toMap
 
     //find best dp threshold
-    val best_dp_thresholds_by_norm = unique_techniques.par.map(norm_technique => {
+    val best_dp_thresholds_by_norm = unique_par.map(norm_technique => {
       val class_threshold = best_class_thresholds_by_norm.get(norm_technique).get
       val results_by_threshold = threshold_grid.map(threshold => {
 
@@ -261,7 +272,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
     }).toMap
 
 
-    val best_op_thresholds_by_norm = unique_techniques.par.map(norm_technique => {
+    val best_op_thresholds_by_norm = unique_par.map(norm_technique => {
       val class_threshold = best_class_thresholds_by_norm.get(norm_technique).get
       val dp_threshold = best_dp_thresholds_by_norm.get(norm_technique).get
       val results_by_threshold = threshold_grid.map(threshold => {
@@ -287,61 +298,6 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
   }
 
 
-  /**
-   *
-   * @param selection_function
-   * @param scores_by_norm_technique
-   * @param threshold_grid
-   * @return
-   */
-  def findOptimalThresholdGlobalOnly(selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], scores_by_norm_technique: List[Map[String, (Map[MatchRelation, Double], Alignment)]], threshold_grid: List[Double]): ThresholdOptResult = {
-    val unique_techniques = scores_by_norm_technique.head.keys.toVector
-
-    val results_by_techniques = unique_techniques.par.map(technique => {
-      //get results for a techniques
-      val matchings_for_technique: List[(Map[MatchRelation, Double], Alignment)] = scores_by_norm_technique.map(elem => elem.get(technique).get)
-
-      (technique, matchings_for_technique)
-    }).toMap
-
-    //optimize for each matching technique and find global optimum
-    val global_results = results_by_techniques.map { case (name, list_of_matchings) => {
-
-      //try for all thresholds
-      val results_by_threshold: List[(Double, AggregatedEvaluationResult)] = threshold_grid.map(threshold => {
-        val eval_res_single_list: Seq[EvaluationResult] = list_of_matchings.map(single_matchings => {
-          // val selected = MatchingSelector.fuzzyGreedyRankSelectorDelta(single_matchings._1, threshold, delta_fuzzy_selection)
-          val selected = selection_function(single_matchings._1, threshold)
-
-          val alignment = new Alignment(null, null, selected)
-
-          alignment.evaluate(single_matchings._2)
-        })
-        val agg_res = EvaluationMatchingRunner.computeAggregatedResults(eval_res_single_list.toList)
-        (threshold, agg_res)
-      })
-      (name, results_by_threshold)
-    }
-    }.toMap
-
-    val best_global_results = global_results.map { case (name, list_of_results) => {
-      val best_result: (Double, AggregatedEvaluationResult) = list_of_results.maxBy(_._2.macro_eval_res.f1Measure)
-
-
-      //handle edge case best global result in terms of f-measure is 0.0 -> then take that result that minimized the fp
-      if (best_result._2.macro_eval_res.f1Measure == 0.00) {
-        val edge_case_best_result = list_of_results.minBy(_._2.micro_eval_res.precision)
-        (name, edge_case_best_result)
-      } else {
-        (name, best_result)
-      }
-    }
-    }
-
-
-    ThresholdOptResult(global_results.seq, best_global_results.seq, null, null)
-  }
-
   def printResult(norm_technique: String, ref: Alignment, eval_res: EvaluationResult): Unit = {
 
 
@@ -358,5 +314,11 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
   }
 
+
+  def parallelizeCollection[A](to_be_parallelized: Iterable[A]): ParIterable[A] = {
+    val para_it = to_be_parallelized.par
+    para_it.tasksupport = new ForkJoinTaskSupport(new scala.concurrent.forkjoin.ForkJoinPool(parallel_degree))
+    para_it
+  }
 
 }

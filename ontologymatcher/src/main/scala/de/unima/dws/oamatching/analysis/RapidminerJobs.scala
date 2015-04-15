@@ -140,7 +140,7 @@ object RapidminerJobs extends LazyLogging {
 
 
     //dynamic parameter selection
-    val file_name = process_type +matchings.data_set_name + pre_pro_key + System.nanoTime().toString + ".rmp"
+    val file_name = process_type + matchings.data_set_name + pre_pro_key + System.nanoTime().toString + ".rmp"
     val process_file = XMLTest.transformXMLProcess(rapidminer_file, matchings.matcher_name_to_index, file_name)
     val file = new File(process_file);
 
@@ -318,9 +318,9 @@ object RapidminerJobs extends LazyLogging {
     val matcher_name_to_index: Predef.Map[String, Int] = header_line.split(",").filterNot(field => meta_data_fields.contains(field)).zipWithIndex.toMap
 
 
-    val output_csv_classes: File = new File(tmp_matching_folder + File.separator +pre_pro_key+ "_"+ process_type + s"classes_$run_number" + "_" + System.nanoTime() + matching_file.getName);
-    val output_csv_dp: File = new File(tmp_matching_folder + File.separator +pre_pro_key+ "_"+ process_type + s"dp_$run_number" + "_" + System.nanoTime() + matching_file.getName);
-    val output_csv_op: File = new File(tmp_matching_folder + File.separator +pre_pro_key+ "_"+  process_type + s"op_$run_number" + "_" + System.nanoTime() + matching_file.getName);
+    val output_csv_classes: File = new File(tmp_matching_folder + File.separator + pre_pro_key + "_" + process_type + s"classes_$run_number" + "_" + System.nanoTime() + matching_file.getName);
+    val output_csv_dp: File = new File(tmp_matching_folder + File.separator + pre_pro_key + "_" + process_type + s"dp_$run_number" + "_" + System.nanoTime() + matching_file.getName);
+    val output_csv_op: File = new File(tmp_matching_folder + File.separator + pre_pro_key + "_" + process_type + s"op_$run_number" + "_" + System.nanoTime() + matching_file.getName);
 
 
     val file_name = pre_pro_key + "_" + process_type + "_run" + run_number + System.nanoTime().toString + ".rmp"
@@ -376,37 +376,37 @@ object RapidminerJobs extends LazyLogging {
     //cleanup process file
 
 
-    val classes = try{
+    val classes = try {
       readFunction(output_csv_classes)
-    }catch {
-      case e:Throwable => {
-        logger.error("error reading classes",e)
+    } catch {
+      case e: Throwable => {
+        logger.error("error reading classes", e)
         println(e)
         null
       }
     }
 
-    val dps = try{
+    val dps = try {
       readFunction(output_csv_dp)
-    }catch {
-      case e:Throwable => {
-        logger.error("error reading dataprops",e)
+    } catch {
+      case e: Throwable => {
+        logger.error("error reading dataprops", e)
         println(e)
         null
       }
     }
 
-    val ops = try{
+    val ops = try {
       readFunction(output_csv_op)
-    }catch {
-      case e:Throwable => {
-        logger.error("error reading objectprops",e)
+    } catch {
+      case e: Throwable => {
+        logger.error("error reading objectprops", e)
         println(e)
         null
       }
     }
     //read results
-    SeparatedResults(classes,dps , ops)
+    SeparatedResults(classes, dps, ops)
   }
 
 
@@ -519,7 +519,7 @@ object RapidminerJobs extends LazyLogging {
 
     // get dim names
 
-    if(! file.exists()){
+    if (!file.exists()) {
       println("file does not exists")
       logger.info("Fiel does not exists" + file.getName)
     }
@@ -532,12 +532,31 @@ object RapidminerJobs extends LazyLogging {
     val reader = CSVReader.open(file)
     var dim_size: Int = 0
     val lines = reader.allWithHeaders
+
+    var error_in_read = false
+
     val mapped_values = lines.map(tuple => {
       //remove non numercial fields from count
       dim_size = tuple.size - 6
       //get max score by dimensions
 
-      MatchRelation(left = tuple.get("left").get, relation = tuple.get("relation").get, right = tuple.get("right").get, owl_type = tuple.get("owl_type").get, match_type = tuple.get("match_type").get) -> tuple.get("outlier").getOrElse("0.0").toDouble
+      val outlier_string = if(tuple.get("outlier").isDefined) {
+        tuple.get("outlier").get
+      }else {
+        println("failed to read dataprops at "+file.getAbsolutePath)
+        error_in_read=true
+        "0.0"
+      }
+
+      val outlier_value = if (outlier_string.isEmpty()) {
+        0.0
+      } else {
+        outlier_string.toDouble
+      }
+
+      MatchRelation(left = tuple.get("left").get, relation = tuple.get("relation").get, right = tuple.get("right").get, owl_type = tuple.get("owl_type").get, match_type = tuple.get("match_type").get) -> outlier_value
+
+
     }) toMap
 
     reader.close()
@@ -577,12 +596,12 @@ object RapidminerJobs extends LazyLogging {
     reader.close()
 
 
-    try{
-      if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup")) {
+    try {
+      if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup") && ! error_in_read) {
         file.delete()
       }
-    }catch{
-      case e:Throwable => println(e)
+    } catch {
+      case e: Throwable => println(e)
     }
 
 
@@ -605,9 +624,9 @@ object RapidminerJobs extends LazyLogging {
     println(k_value)
     if (k_value < 50) {
       process.getOperator(knn_name).setParameter("k", "50")
-    } else if(k_value >1000) {
+    } else if (k_value > 1000) {
       process.getOperator(knn_name).setParameter("k", "1000")
-    }else {
+    } else {
       process.getOperator(knn_name).setParameter("k", k_value.toString)
     }
   }

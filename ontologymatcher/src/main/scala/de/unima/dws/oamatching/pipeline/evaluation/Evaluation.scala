@@ -94,17 +94,19 @@ object Evaluation {
       //get majority count
       val majority = (matcher_to_measure.size.toDouble / 2).ceil
       //count of matcher that fullfill the criteria (res >= threshold) and therefore
-      val count_matcher_fullfilled = matcher_to_measure.count { case (matcher_name, res) => res >= matcher_name_to_threshold.get(matcher_name).getOrElse(1.0)}
+      val count_matcher_fullfilled = matcher_to_measure.count { case (matcher_name, res) => res >= matcher_name_to_threshold.get(matcher_name).getOrElse(0.8)}
 
       (count_matcher_fullfilled.toDouble > majority)
     }
     }
 
     //bring to a format suitable for alignment, similarity score is always 1.0
-    val final_relation_simplified: Map[MatchRelation, Double] = final_relations.map { case (match_relation, res_map) => (match_relation, 0.0)}.toMap
+    val final_relation_simplified: Map[MatchRelation, Double] = final_relations.map { case (match_relation, res_map) => (match_relation, 1.0)}.toMap
 
+
+    val selected =  MatchingSelector.greedyRankSelectorSimple(final_relation_simplified,0.8)
     //create final alignment and return
-    val final_alignment: Alignment = new Alignment(reference.onto1, reference.onto2, reference.onto1_reference, reference.onto2_reference, reference.i_onto1, reference.i_onto2, final_relation_simplified)
+    val final_alignment: Alignment = new Alignment(reference.onto1, reference.onto2, reference.onto1_reference, reference.onto2_reference, reference.i_onto1, reference.i_onto2, selected)
 
     if (Config.loaded_config.getBoolean("pipeline.debug_alignment")) {
       MatchingPruner.debugAlignment(final_alignment)
@@ -179,6 +181,6 @@ object Evaluation {
    * @return
    */
   def getBaseMatcherThreshold(matcher_name: String, dataset_name: String): Double = {
-    MetaDataMgmt.getThreshold(dataset_name, matcher_name).getOrElse(0.8)
+    MetaDataMgmt.getThreshold(dataset_name, matcher_name).getOrElse(0.7)
   }
 }

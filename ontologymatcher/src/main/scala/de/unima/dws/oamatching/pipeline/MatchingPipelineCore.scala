@@ -11,6 +11,7 @@ import de.unima.dws.oamatching.core.{Alignment, FastOntology, MatchRelation}
 import de.unima.dws.oamatching.matcher.MatcherRegistry
 
 import scala.collection.immutable.Map
+import scala.collection.parallel.ForkJoinTaskSupport
 import scala.collection.parallel.immutable.ParMap
 
 
@@ -202,7 +203,14 @@ object MatchingPipelineCore extends LazyLogging {
    * @return
    */
   def matchAllIndividualMatchers(problem: MatchingProblem): FeatureVector = {
-    val vector: ParMap[String, Map[MatchRelation, Double]] = MatcherRegistry.matcher_by_name.par.map({ case (name, matcher) => {
+
+    val par_collection =  MatcherRegistry.matcher_by_name.par
+
+
+    par_collection.tasksupport = new ForkJoinTaskSupport(new scala.concurrent.forkjoin.ForkJoinPool(1))
+
+
+    val vector: ParMap[String, Map[MatchRelation, Double]] =par_collection.map({ case (name, matcher) => {
 
       val starttime = System.currentTimeMillis()
       println(s"start $name")
@@ -227,8 +235,9 @@ object MatchingPipelineCore extends LazyLogging {
 
     val matcher_name_to_index: Map[String, Int] = vector.keys.toList.zipWithIndex.toMap
     val matcher_index_to_name: Map[Int, String] = matcher_name_to_index.map(tuple => (tuple._2, tuple._1)).toMap
+    println("Create inverted Vector")
     val vector_per_matchings = VectorUtil.createInvertedVector(vector.seq)
-
+    println("Invertation Finished")
     FeatureVector(problem.name, vector.seq, vector_per_matchings, matcher_name_to_index, matcher_index_to_name)
   }
 
