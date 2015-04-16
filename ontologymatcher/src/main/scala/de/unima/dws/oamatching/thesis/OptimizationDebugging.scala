@@ -41,7 +41,8 @@ trait OptimizationDebugging {
 
     val alignment = new Alignment(ref.onto1, ref.onto2, ref.onto1_reference, ref.onto2_reference, ref.i_onto1, ref.i_onto2, selected)
 
-    val debugged = MatchingPruner.debugAlignment(alignment, single_matchings, class_threshold,dp_threshold, op_threshold)
+    //val debugged = MatchingPruner.debugAlignment(alignment, single_matchings, class_threshold,dp_threshold, op_threshold)
+    val debugged = MatchingPruner.debugAlignment(alignment)
 
     val eval_res_debugged = debugged.evaluate(ref)
     val eval_res_normal = alignment.evaluate(ref)

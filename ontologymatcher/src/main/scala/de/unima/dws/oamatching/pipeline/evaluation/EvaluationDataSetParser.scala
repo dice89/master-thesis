@@ -47,6 +47,11 @@ trait EvaluationDataSetParser {
 
     val reference: Alignment = AlignmentParser.parseRDFWithOntos(ref, human_onto_name, mouse_onto_name)
 
+    //quick hack TODO change
+    reference.onto1_reference = onto1
+    reference.onto2_reference = onto2
+
+
     Seq(EvaluationMatchingTask(matching_problem, reference))
   }
 

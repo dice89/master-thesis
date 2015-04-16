@@ -134,11 +134,23 @@ object RapidminerJobs extends LazyLogging {
 
 
     //Rapidminer Handling
-    val output_csv_classes: File = new File(tmp_matching_folder + File.separator + process_type + s"classes" + "_" + System.currentTimeMillis() + matchings.data_set_name);
-    val output_csv_dp: File = new File(tmp_matching_folder + File.separator + process_type + s"dp" + "_" + System.currentTimeMillis() + matchings.data_set_name);
-    val output_csv_op: File = new File(tmp_matching_folder + File.separator + process_type + s"op" + "_" + System.currentTimeMillis() + matchings.data_set_name);
+    val output_csv_classes: File = getMatchingFile(process_type, "classes", matchings.data_set_name, false);
+    val output_csv_dp: File = getMatchingFile(process_type, "dp", matchings.data_set_name, false);
+    val output_csv_op: File = getMatchingFile(process_type, "op", matchings.data_set_name, false);
+    val reuse_vectors = Config.loaded_config.getBoolean("pipeline.reuse_vectors")
+
+    if (reuse_vectors && output_csv_classes.exists() && output_csv_dp.exists() && output_csv_op.exists()) {
+      println("Read from file")
+      SeparatedResults(readFunction(output_csv_classes), readFunction(output_csv_dp), readFunction(output_csv_op))
+
+    } else {
 
 
+      separatedOutlierAnalysis(readFunction, rapidminer_file, process_type, parameters, pre_pro_key, matchings, input_csv, size_by_owl_type, output_csv_classes, output_csv_dp, output_csv_op)
+    }
+  }
+
+  def separatedOutlierAnalysis(readFunction: (File) => (Int, Predef.Map[String, (Double, Double)], Predef.Map[MatchRelation, Double]), rapidminer_file: String, process_type: String, parameters: Predef.Map[String, Predef.Map[String, Double]], pre_pro_key: String, matchings: FeatureVector, input_csv: File, size_by_owl_type: Predef.Map[String, Int], output_csv_classes: File, output_csv_dp: File, output_csv_op: File): SeparatedResults = {
     //dynamic parameter selection
     val file_name = process_type + matchings.data_set_name + pre_pro_key + System.nanoTime().toString + ".rmp"
     val process_file = XMLTest.transformXMLProcess(rapidminer_file, matchings.matcher_name_to_index, file_name)
@@ -540,11 +552,11 @@ object RapidminerJobs extends LazyLogging {
       dim_size = tuple.size - 6
       //get max score by dimensions
 
-      val outlier_string = if(tuple.get("outlier").isDefined) {
+      val outlier_string = if (tuple.get("outlier").isDefined) {
         tuple.get("outlier").get
-      }else {
-        println("failed to read dataprops at "+file.getAbsolutePath)
-        error_in_read=true
+      } else {
+        println("failed to read dataprops at " + file.getAbsolutePath)
+        error_in_read = true
         "0.0"
       }
 
@@ -597,7 +609,7 @@ object RapidminerJobs extends LazyLogging {
 
 
     try {
-      if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup") && ! error_in_read) {
+      if (Config.loaded_config.getBoolean("rapidminerconfig.cleanup") && !error_in_read && !Config.loaded_config.getBoolean("pipeline.reuse_vectors")) {
         file.delete()
       }
     } catch {
@@ -722,6 +734,14 @@ object RapidminerJobs extends LazyLogging {
 
     process.getOperator(remove_useless_name).setParameter("numerical_min_deviation", min_variance + "")
     process.getOperator(remove_correlated_name).setParameter("correlation", max_correlation.toString)
+  }
+
+  def getMatchingFile(process_type: String, ds_type: String, data_set_name: String, use_time: Boolean): File = {
+    if (use_time) {
+      new File(tmp_matching_folder + File.separator + process_type + s"$ds_type" + "_" + System.currentTimeMillis() + data_set_name+".csv");
+    } else {
+      new File(tmp_matching_folder + File.separator + process_type + s"$ds_type" + "_" + data_set_name+".csv");
+    }
   }
 
 }

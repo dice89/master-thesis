@@ -155,13 +155,13 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
    * @return
    */
   def getNormalizedScores(test: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double])): Map[String, Map[MatchRelation, Double]] = {
-    val norm_res_gaussian: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByGaussianScaling(test._1, test._2, test._3).toMap
-    val norm_res_euclidean_max: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByMaxEuclideanDistance(test._1, test._2, test._3).toMap
-    val norm_res_gamma: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByGammaScaling(test._1, test._2, test._3).toMap
+    //val norm_res_gaussian: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByGaussianScaling(test._1, test._2, test._3).toMap
+    //val norm_res_euclidean_max: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByMaxEuclideanDistance(test._1, test._2, test._3).toMap
+    //val norm_res_gamma: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByGammaScaling(test._1, test._2, test._3).toMap
     val norm_res_znorm: Map[MatchRelation, Double] = ScoreNormalizationFunctions.normalizeByZScore(test._1, test._2, test._3).toMap
 
     //val resulting_matchings: Map[String, Map[MatchRelation, Double]] = Map(("none", test._3), ("gaussian", norm_res_gaussian), ("zscore", norm_res_znorm), ("gammma", norm_res_gamma), ("euclidean_max", norm_res_euclidean_max))
-    val resulting_matchings: Map[String, Map[MatchRelation, Double]] = Map( ("euclidean_max", norm_res_euclidean_max))
+    val resulting_matchings: Map[String, Map[MatchRelation, Double]] = Map( ("zscore", norm_res_znorm))
 
     resulting_matchings
   }
