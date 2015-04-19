@@ -305,7 +305,7 @@ object OntologyLoader {
       val e_comment = extractAnnotationOfType(owlOntology, owlClass, comment)
       val syn = extractSyn(owlOntology, owlClass)
 
-      owlClass.getIRI -> ExtractedFields(local_name, e_label, e_comment, syn)
+      owlClass.getIRI -> ExtractedFields(Option.empty,Option.empty,local_name, e_label, e_comment, syn)
     }).toMap
     /*#################################################################################################################
                                              Extract Fields for Properties
@@ -317,8 +317,14 @@ object OntologyLoader {
       val e_label = extractAnnotationOfType(owlOntology, owlProp, label)
       val e_comment = extractAnnotationOfType(owlOntology, owlProp, comment)
       val syn = extractSyn(owlOntology, owlProp)
+      val domain = object_prop_domain.get(owlProp.getIRI())
+      val domain_labels: Option[Set[String]] = extractDomainRangeLabels(domain,owlClassToNames)
 
-      owlProp.getIRI -> ExtractedFields(local_name, e_label, e_comment, syn)
+      val range = object_prop_range.get(owlProp.getIRI())
+      val range_labels: Option[Set[String]] = extractDomainRangeLabels(range,owlClassToNames)
+
+
+      owlProp.getIRI -> ExtractedFields(domain_labels,range_labels,local_name, e_label, e_comment, syn)
     }).toMap
 
 
@@ -330,7 +336,12 @@ object OntologyLoader {
       val e_comment = extractAnnotationOfType(owlOntology, owlProp, comment)
       val syn = extractSyn(owlOntology, owlProp)
 
-      owlProp.getIRI -> ExtractedFields(local_name, e_label, e_comment, syn)
+      val domain = data_prop_domain.get(owlProp.getIRI())
+
+      val domain_labels: Option[Set[String]] = extractDomainRangeLabels(domain,owlClassToNames)
+
+
+      owlProp.getIRI -> ExtractedFields(domain_labels,Option.empty,local_name, e_label, e_comment, syn)
     }).toMap
 
     manager.removeOntology(owlOntology)
@@ -338,6 +349,29 @@ object OntologyLoader {
     FastOntology(base_values, parent_to_child_classes, child_to_parent_classes, parent_to_child_object_props, child_to_parent_object_props, parent_to_child_data_props, child_to_parent_data_props, object_prop_domain, object_prop_range, data_prop_domain, data_prop_range, class_object_prop_domain, class_object_prop_range, class_data_prop, owlClassToNames, owlObjectPropertiesToNames, owlDataPropertiesToNames, class_name_to_iri_map, object_property_name_to_iri_map, data_proptery_name_to_iri_map,onto_name,onto)
   }
 
+
+  def extractDomainRangeLabels(domain: Option[Set[IRI]], classes_to_names: Map[IRI, ExtractedFields]): Option[Set[String]] = {
+    if (domain.isDefined) {
+
+
+      val domain_labels = domain.get.map(iri => {
+        val opt_class_fields = classes_to_names.get(iri)
+        if (opt_class_fields.isDefined) {
+          if (opt_class_fields.get.fragment.isDefined) {
+            Option(opt_class_fields.get.fragment.get)
+          } else {
+            Option.empty
+          }
+        } else {
+          Option.empty
+        }
+      }).filter(_.isDefined).map(_.get)
+
+      Option(domain_labels)
+    } else {
+      Option.empty
+    }
+  }
 
   def extractSyn(owlOntology: OWLOntology, owlEntity: OWLEntity): Option[List[String]] = {
     val synonym_label = owlEntity.getAnnotations(owlOntology).map(annotation => {

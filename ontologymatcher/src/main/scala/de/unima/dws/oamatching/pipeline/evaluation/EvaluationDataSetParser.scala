@@ -30,22 +30,22 @@ trait EvaluationDataSetParser {
 
   def parseAnatomy(path_to_folder:String):Seq[EvaluationMatchingTask] = {
 
-    val human_onto_name = path_to_folder +File.separator+"human.owl"
     val mouse_onto_name = path_to_folder +File.separator+"mouse.owl"
+    val human_onto_name = path_to_folder +File.separator+"human.owl"
 
     val ref = path_to_folder +File.separator+"reference.rdf"
 
-    val onto1 = OntologyLoader.load_fast_ontology(human_onto_name)
-    val onto2 = OntologyLoader.load_fast_ontology(mouse_onto_name)
+    val onto1 = OntologyLoader.load_fast_ontology(mouse_onto_name)
+    val onto2 = OntologyLoader.load_fast_ontology(human_onto_name)
 
-    val ionto_1 = new IOntology(human_onto_name)
-    val ionto_2 = new IOntology(mouse_onto_name)
+    val ionto_1 = new IOntology(mouse_onto_name)
+    val ionto_2 = new IOntology(human_onto_name)
 
-    val name: String = "human-mouse"
+    val name: String = "mouse-human"
 
     val matching_problem = MatchingProblem(onto1, onto2,ionto_1,ionto_2, name,"anatomy")
 
-    val reference: Alignment = AlignmentParser.parseRDFWithOntos(ref, human_onto_name, mouse_onto_name)
+    val reference: Alignment = AlignmentParser.parseRDFWithOntos(ref,mouse_onto_name,human_onto_name)
 
     //quick hack TODO change
     reference.onto1_reference = onto1

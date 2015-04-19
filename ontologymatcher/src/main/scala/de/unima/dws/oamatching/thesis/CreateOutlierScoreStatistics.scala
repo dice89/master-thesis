@@ -215,27 +215,6 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     createFolder(separated_folder)
     val separated_best: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = runAllForAlgosForAllSlctFunctions(ds_name, separated_folder, matching_pairs, parallel, true)
 
-
-   /* val non_separated_folder = base_folder + "/non_separated"
-    createFolder(non_separated_folder)
-    val non_separated_best: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = runAllForAlgosForAllSlctFunctions(ds_name, non_separated_folder, matching_pairs, parallel, false)
-
-
-    val best_result: Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = if (separated_best.isDefined && non_separated_best.isDefined) {
-      val result = if (separated_best.get._2._2.overall_agg_best.macro_eval_res.f1Measure > non_separated_best.get._2._2.overall_agg_best.macro_eval_res.f1Measure) {
-
-        logger.info("Separated method is the best")
-        separated_best
-      } else {
-        logger.info("Non separated method is the best")
-        non_separated_best
-      }
-      result
-    } else {
-      Option.empty
-    }*/
-
-
     if (separated_best.isDefined) {
       SummaryPDFFactory.createExecutionSummaryReport(base_folder, "overall_best_result", separated_best.get)
     }

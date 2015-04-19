@@ -1,0 +1,1713 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY oboRel "http://www.obofoundry.org/ro/ro.owl#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY oboInOwl "http://www.geneontology.org/formats/oboInOwl#" >
+]>
+
+
+<rdf:RDF xmlns="http://mouse.owl#"
+     xml:base="http://mouse.owl"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:oboInOwl="http://www.geneontology.org/formats/oboInOwl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:oboRel="http://www.obofoundry.org/ro/ro.owl#">
+    <owl:Ontology rdf:about="http://mouse.owl">
+        <oboInOwl:hasDate rdf:datatype="&xsd;string">2007-01-18T12:17:00</oboInOwl:hasDate>
+        <oboInOwl:hasDefaultNamespace rdf:datatype="&xsd;string">adult_mouse_anatomy.gxd</oboInOwl:hasDefaultNamespace>
+        <oboInOwl:savedBy rdf:datatype="&xsd;string">terryh</oboInOwl:savedBy>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.geneontology.org/formats/oboInOwl#hasAlternativeId -->
+
+    <owl:AnnotationProperty rdf:about="&oboInOwl;hasAlternativeId"/>
+    
+
+
+    <!-- http://www.geneontology.org/formats/oboInOwl#hasDate -->
+
+    <owl:AnnotationProperty rdf:about="&oboInOwl;hasDate"/>
+    
+
+
+    <!-- http://www.geneontology.org/formats/oboInOwl#hasDbXref -->
+
+    <owl:AnnotationProperty rdf:about="&oboInOwl;hasDbXref"/>
+    
+
+
+    <!-- http://www.geneontology.org/formats/oboInOwl#hasDefaultNamespace -->
+
+    <owl:AnnotationProperty rdf:about="&oboInOwl;hasDefaultNamespace"/>
+    
+
+
+    <!-- http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym -->
+
+    <owl:AnnotationProperty rdf:about="&oboInOwl;hasRelatedSynonym"/>
+    
+
+
+    <!-- http://www.geneontology.org/formats/oboInOwl#savedBy -->
+
+    <owl:AnnotationProperty rdf:about="&oboInOwl;savedBy"/>
+    
+
+
+    <!-- http://www.w3.org/2000/01/rdf-schema#label -->
+
+    <owl:AnnotationProperty rdf:about="&rdfs;label"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://mouse.owl#UNDEFINED_is_a -->
+
+    <owl:ObjectProperty rdf:about="http://mouse.owl#UNDEFINED_is_a">
+        <rdfs:label rdf:datatype="&xsd;string">is a</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://mouse.owl#UNDEFINED_part_of -->
+
+    <owl:ObjectProperty rdf:about="http://mouse.owl#UNDEFINED_part_of">
+        <rdfs:label rdf:datatype="&xsd;string">Part of</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.geneontology.org/formats/oboInOwl#ObsoleteProperty -->
+
+    <owl:ObjectProperty rdf:about="&oboInOwl;ObsoleteProperty"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://mouse.owl#MA_0000039 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000039">
+        <rdfs:label rdf:datatype="&xsd;string">wrist</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000163 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000163">
+        <rdfs:label rdf:datatype="&xsd;string">vibrissa</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <oboInOwl:hasRelatedSynonym rdf:resource="http://mouse.owl#genid827"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000245 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000245">
+        <rdfs:label rdf:datatype="&xsd;string">vestibular labyrinth</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <oboInOwl:hasRelatedSynonym rdf:resource="http://mouse.owl#genid367"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000289 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000289">
+        <rdfs:label rdf:datatype="&xsd;string">vomeronasal organ</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <oboInOwl:hasRelatedSynonym rdf:resource="http://mouse.owl#genid446"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000318 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000318">
+        <rdfs:label rdf:datatype="&xsd;string">viscerocranium</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <oboInOwl:hasRelatedSynonym rdf:resource="http://mouse.owl#genid1101"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000484 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000484">
+        <rdfs:label rdf:datatype="&xsd;string">visceral serous pericardium</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <oboInOwl:hasRelatedSynonym rdf:resource="http://mouse.owl#genid423"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000782 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000782">
+        <rdfs:label rdf:datatype="&xsd;string">vibrissa hair</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://mouse.owl#UNDEFINED_part_of"/>
+                <owl:someValuesFrom rdf:resource="http://mouse.owl#MA_0000163"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000783 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000783">
+        <rdfs:label rdf:datatype="&xsd;string">vibrissa hair bulb</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://mouse.owl#UNDEFINED_part_of"/>
+                <owl:someValuesFrom rdf:resource="http://mouse.owl#MA_0000163"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000784 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000784">
+        <rdfs:label rdf:datatype="&xsd;string">vibrissa root sheath</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://mouse.owl#UNDEFINED_part_of"/>
+                <owl:someValuesFrom rdf:resource="http://mouse.owl#MA_0000783"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000785 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000785">
+        <rdfs:label rdf:datatype="&xsd;string">vibrissa inner root sheath</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://mouse.owl#UNDEFINED_part_of"/>
+                <owl:someValuesFrom rdf:resource="http://mouse.owl#MA_0000784"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000786 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000786">
+        <rdfs:label rdf:datatype="&xsd;string">vibrissa outer root sheath</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://mouse.owl#UNDEFINED_part_of"/>
+                <owl:someValuesFrom rdf:resource="http://mouse.owl#MA_0000784"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000820 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000820">
+        <rdfs:label rdf:datatype="&xsd;string">brain white matter</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0001135"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000878 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000878">
+        <rdfs:label rdf:datatype="&xsd;string">zona incerta</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000910 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000910">
+        <rdfs:label rdf:datatype="&xsd;string">spinal cord white matter</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0001135"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0000945 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0000945">
+        <rdfs:label rdf:datatype="&xsd;string">cerebral white matter</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0000820"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001056 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001056">
+        <rdfs:label rdf:datatype="&xsd;string">crura cerebri</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0002741"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001085 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001085">
+        <rdfs:label rdf:datatype="&xsd;string">vestibulocochlear VIII ganglion cochlear component</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001086 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001086">
+        <rdfs:label rdf:datatype="&xsd;string">vestibulocochlear VIII ganglion vestibular component</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001110 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001110">
+        <rdfs:label rdf:datatype="&xsd;string">vestibulocochlear VIII nerve cochlear component</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001111 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001111">
+        <rdfs:label rdf:datatype="&xsd;string">vestibulocochlear VIII nerve vestibular component</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001135 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001135">
+        <rdfs:label rdf:datatype="&xsd;string">white matter</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001186 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001186">
+        <rdfs:label rdf:datatype="&xsd;string">vestibular aqueduct</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001200 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001200">
+        <rdfs:label rdf:datatype="&xsd;string">vestibular membrane</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <oboInOwl:hasRelatedSynonym rdf:resource="http://mouse.owl#genid1815"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001328 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001328">
+        <rdfs:label rdf:datatype="&xsd;string">vomeronasal organ sensory epithelium</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://mouse.owl#UNDEFINED_part_of"/>
+                <owl:someValuesFrom rdf:resource="http://mouse.owl#MA_0000289"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001334 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001334">
+        <rdfs:label rdf:datatype="&xsd;string">xiphisternum</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001452 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001452">
+        <rdfs:label rdf:datatype="&xsd;string">vertebra cranial articular process</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <oboInOwl:hasRelatedSynonym rdf:resource="http://mouse.owl#genid1610"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001453 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001453">
+        <rdfs:label rdf:datatype="&xsd;string">vertebra dorsal arch</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <oboInOwl:hasRelatedSynonym rdf:resource="http://mouse.owl#genid1598"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001454 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001454">
+        <rdfs:label rdf:datatype="&xsd;string">vertebra neural canal</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <oboInOwl:hasRelatedSynonym rdf:resource="http://mouse.owl#genid1580"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001455 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001455">
+        <rdfs:label rdf:datatype="&xsd;string">vertebra spinous process</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <oboInOwl:hasRelatedSynonym rdf:resource="http://mouse.owl#genid1570"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001456 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001456">
+        <rdfs:label rdf:datatype="&xsd;string">vertebra transverse process</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001457 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001457">
+        <rdfs:label rdf:datatype="&xsd;string">vertebral body</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <oboInOwl:hasRelatedSynonym rdf:resource="http://mouse.owl#genid1545"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001458 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001458">
+        <rdfs:label rdf:datatype="&xsd;string">vertebral pedicle</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001482 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001482">
+        <rdfs:label rdf:datatype="&xsd;string">viscerocranium bone</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://mouse.owl#UNDEFINED_part_of"/>
+                <owl:someValuesFrom rdf:resource="http://mouse.owl#MA_0000318"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001483 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001483">
+        <rdfs:label rdf:datatype="&xsd;string">ethmoid bone</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0001482"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001484 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001484">
+        <rdfs:label rdf:datatype="&xsd;string">hyoid bone</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0001482"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001485 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001485">
+        <rdfs:label rdf:datatype="&xsd;string">incisive bone</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0001482"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001486 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001486">
+        <rdfs:label rdf:datatype="&xsd;string">lacrimal bone</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0001482"/>
+        <oboInOwl:hasRelatedSynonym rdf:resource="http://mouse.owl#genid43"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001494 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001494">
+        <rdfs:label rdf:datatype="&xsd;string">nasal bone</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0001482"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001495 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001495">
+        <rdfs:label rdf:datatype="&xsd;string">palatine bone</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0001482"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001496 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001496">
+        <rdfs:label rdf:datatype="&xsd;string">vomer bone</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0001482"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0001715 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0001715">
+        <rdfs:label rdf:datatype="&xsd;string">zona pellucida</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0002430 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0002430">
+        <rdfs:label rdf:datatype="&xsd;string">cerebellum white matter</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0000820"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0002462 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0002462">
+        <rdfs:label rdf:datatype="&xsd;string">vitreous body</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0002489 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0002489">
+        <rdfs:label rdf:datatype="&xsd;string">visceral pleura</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0002716 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0002716">
+        <rdfs:label rdf:datatype="&xsd;string">zeugopod</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0002741 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0002741">
+        <rdfs:label rdf:datatype="&xsd;string">brainstem white matter</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0000820"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0002742 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0002742">
+        <rdfs:label rdf:datatype="&xsd;string">cerebellar peduncle</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0002430"/>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0002741"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0002743 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0002743">
+        <rdfs:label rdf:datatype="&xsd;string">posterior commissure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0002741"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0002744 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0002744">
+        <rdfs:label rdf:datatype="&xsd;string">inferior cerebellar peduncle</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0002742"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0002745 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0002745">
+        <rdfs:label rdf:datatype="&xsd;string">middle cerebellar peduncle</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0002742"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0002746 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0002746">
+        <rdfs:label rdf:datatype="&xsd;string">superior cerebellar peduncle</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0002742"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0002747 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0002747">
+        <rdfs:label rdf:datatype="&xsd;string">fornix</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0000945"/>
+    </owl:Class>
+    
+
+
+    <!-- http://mouse.owl#MA_0002748 -->
+
+    <owl:Class rdf:about="http://mouse.owl#MA_0002748">
+        <rdfs:label rdf:datatype="&xsd;string">internal capsule</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://mouse.owl#MA_0000945"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotations
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description rdf:about="http://mouse.owl#genid1333">
+        <rdfs:label rdf:datatype="&xsd;string">esophagus smooth muscle circular layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid929">
+        <rdfs:label rdf:datatype="&xsd;string">folium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid928">
+        <rdfs:label rdf:datatype="&xsd;string">mesencephalon</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1698">
+        <rdfs:label rdf:datatype="&xsd;string">podocyte layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1331">
+        <rdfs:label rdf:datatype="&xsd;string">xiphoid process</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid925">
+        <rdfs:label rdf:datatype="&xsd;string">liver/biliary system</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1339">
+        <rdfs:label rdf:datatype="&xsd;string">quadriceps femoris</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1570">
+        <rdfs:label rdf:datatype="&xsd;string">neural spine</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid127">
+        <rdfs:label rdf:datatype="&xsd;string">cerebral cortex layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid489">
+        <rdfs:label rdf:datatype="&xsd;string">central lobule</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1217">
+        <rdfs:label rdf:datatype="&xsd;string">body</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid125">
+        <rdfs:label rdf:datatype="&xsd;string">gastric corpus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid367">
+        <rdfs:label rdf:datatype="&xsd;string">vestibular apparatus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1337">
+        <rdfs:label rdf:datatype="&xsd;string">uterine smooth muscle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1694">
+        <rdfs:label rdf:datatype="&xsd;string">interatrial septum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1214">
+        <rdfs:label rdf:datatype="&xsd;string">foot distal carpal bone 4 and 5</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid486">
+        <rdfs:label rdf:datatype="&xsd;string">lower palpebral vein</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid244">
+        <rdfs:label rdf:datatype="&xsd;string">VZ</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1696">
+        <rdfs:label rdf:datatype="&xsd;string">urethral gland</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid493">
+        <rdfs:label rdf:datatype="&xsd;string">excretory system</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid819">
+        <rdfs:label rdf:datatype="&xsd;string">first convoluted tubule</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1101">
+        <rdfs:label rdf:datatype="&xsd;string">facial bone</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid939">
+        <rdfs:label rdf:datatype="&xsd;string">osseus labyrinth</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1343">
+        <rdfs:label rdf:datatype="&xsd;string">urethral muscle layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1221">
+        <rdfs:label rdf:datatype="&xsd;string">AV node</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid936">
+        <rdfs:label rdf:datatype="&xsd;string">submaxillary gland</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1900">
+        <rdfs:label rdf:datatype="&xsd;string">tibialis anterior</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1902">
+        <rdfs:label rdf:datatype="&xsd;string">superior olive</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1580">
+        <rdfs:label rdf:datatype="&xsd;string">vertebral foramen</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid810">
+        <rdfs:label rdf:datatype="&xsd;string">epidermis granular layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid138">
+        <rdfs:label rdf:datatype="&xsd;string">lower body</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1349">
+        <rdfs:label rdf:datatype="&xsd;string">oesophagus smooth muscle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid378">
+        <rdfs:label rdf:datatype="&xsd;string">anterior vagus X nerve trunk</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1347">
+        <rdfs:label rdf:datatype="&xsd;string">ganglionic layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid498">
+        <rdfs:label rdf:datatype="&xsd;string">scalenus posterior</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1584">
+        <rdfs:label rdf:datatype="&xsd;string">upper body connective tissue</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid133">
+        <rdfs:label rdf:datatype="&xsd;string">liver caudate process</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid143">
+        <rdfs:label rdf:datatype="&xsd;string">coeliac artery</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid7">
+        <rdfs:label rdf:datatype="&xsd;string">renal calyx</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1909">
+        <rdfs:label rdf:datatype="&xsd;string">tibialis posterior</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid906">
+        <rdfs:label rdf:datatype="&xsd;string">glomerular capillary system</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1556">
+        <rdfs:label rdf:datatype="&xsd;string">upper body nerve</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1799">
+        <rdfs:label rdf:datatype="&xsd;string">olfactory lobe</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid901">
+        <rdfs:label rdf:datatype="&xsd;string">central grey</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid108">
+        <rdfs:label rdf:datatype="&xsd;string">cerebrum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid107">
+        <rdfs:label rdf:datatype="&xsd;string">telencephalic vesicle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1792">
+        <rdfs:label rdf:datatype="&xsd;string">periotic capsule</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1671">
+        <rdfs:label rdf:datatype="&xsd;string">trigeminal V chief sensory nucleus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1315">
+        <rdfs:label rdf:datatype="&xsd;string">oesophagus serosa</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid586">
+        <rdfs:label rdf:datatype="&xsd;string">renal medulla</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1794">
+        <rdfs:label rdf:datatype="&xsd;string">main olfactory bulb</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1673">
+        <rdfs:label rdf:datatype="&xsd;string">geniculate ganglion</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid101">
+        <rdfs:label rdf:datatype="&xsd;string">fabella</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1313">
+        <rdfs:label rdf:datatype="&xsd;string">external auditory meatus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1552">
+        <rdfs:label rdf:datatype="&xsd;string">temporal lobe</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1674">
+        <rdfs:label rdf:datatype="&xsd;string">beta cell islet</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid221">
+        <rdfs:label rdf:datatype="&xsd;string">intermediate carpal bone</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid472">
+        <rdfs:label rdf:datatype="&xsd;string">accessory olfactory formation</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid593">
+        <rdfs:label rdf:datatype="&xsd;string">ureter transitional epithelium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid99">
+        <rdfs:label rdf:datatype="&xsd;string">3rd ventricle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1565">
+        <rdfs:label rdf:datatype="&xsd;string">central tarsal bone</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1445">
+        <rdfs:label rdf:datatype="&xsd;string">renin-producing cells</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid916">
+        <rdfs:label rdf:datatype="&xsd;string">CSF</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1449">
+        <rdfs:label rdf:datatype="&xsd;string">palpebra</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid358">
+        <rdfs:label rdf:datatype="&xsd;string">SVZ</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1206">
+        <rdfs:label rdf:datatype="&xsd;string">cranial bone</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1327">
+        <rdfs:label rdf:datatype="&xsd;string">multiform layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid115">
+        <rdfs:label rdf:datatype="&xsd;string">orbicularis oculi</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1205">
+        <rdfs:label rdf:datatype="&xsd;string">craniofacial bone</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1440">
+        <rdfs:label rdf:datatype="&xsd;string">external granular layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid234">
+        <rdfs:label rdf:datatype="&xsd;string">septal area</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid92">
+        <rdfs:label rdf:datatype="&xsd;string">basal nucleus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid233">
+        <rdfs:label rdf:datatype="&xsd;string">septal nucleus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid595">
+        <rdfs:label rdf:datatype="&xsd;string">lateral canthus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1564">
+        <rdfs:label rdf:datatype="&xsd;string">centrale</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1685">
+        <rdfs:label rdf:datatype="&xsd;string">centrale</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid363">
+        <rdfs:label rdf:datatype="&xsd;string">gastric fundus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid361">
+        <rdfs:label rdf:datatype="&xsd;string">posterior vagus X nerve trunk</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid360">
+        <rdfs:label rdf:datatype="&xsd;string">medial canthus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1375">
+        <rdfs:label rdf:datatype="&xsd;string">biliary epithelium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1930">
+        <rdfs:label rdf:datatype="&xsd;string">pinna</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid607">
+        <rdfs:label rdf:datatype="&xsd;string">olfactory mucosa</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1253">
+        <rdfs:label rdf:datatype="&xsd;string">tail vertebra</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1132">
+        <rdfs:label rdf:datatype="&xsd;string">astragalus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid726">
+        <rdfs:label rdf:datatype="&xsd;string">fastigial nucleus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid605">
+        <rdfs:label rdf:datatype="&xsd;string">innominate artery</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1371">
+        <rdfs:label rdf:datatype="&xsd;string">anterior lobe</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid603">
+        <rdfs:label rdf:datatype="&xsd;string">bowman&apos;s space</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1370">
+        <rdfs:label rdf:datatype="&xsd;string">pars distalis</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid962">
+        <rdfs:label rdf:datatype="&xsd;string">culmen</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid720">
+        <rdfs:label rdf:datatype="&xsd;string">haematopoietic system</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1019">
+        <rdfs:label rdf:datatype="&xsd;string">lobule of pinna</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1495">
+        <rdfs:label rdf:datatype="&xsd;string">kidney interstitium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid296">
+        <rdfs:label rdf:datatype="&xsd;string">hypophysis cerebri</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid174">
+        <rdfs:label rdf:datatype="&xsd;string">pars recta</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid173">
+        <rdfs:label rdf:datatype="&xsd;string">proximal tubule segment 3</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid294">
+        <rdfs:label rdf:datatype="&xsd;string">PALS</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid291">
+        <rdfs:label rdf:datatype="&xsd;string">GALT</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1815">
+        <rdfs:label rdf:datatype="&xsd;string">reissner&apos;s membrane</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1939">
+        <rdfs:label rdf:datatype="&xsd;string">reticulotegmental nucleus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1818">
+        <rdfs:label rdf:datatype="&xsd;string">tear duct</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1267">
+        <rdfs:label rdf:datatype="&xsd;string">dorsal meso-oesophagus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1144">
+        <rdfs:label rdf:datatype="&xsd;string">tuberal nucleus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1143">
+        <rdfs:label rdf:datatype="&xsd;string">tuberal region</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1942">
+        <rdfs:label rdf:datatype="&xsd;string">waldeyer&apos;s ring</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1384">
+        <rdfs:label rdf:datatype="&xsd;string">esophagus smooth muscle longitudinal layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid738">
+        <rdfs:label rdf:datatype="&xsd;string">lymphatic system</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1021">
+        <rdfs:label rdf:datatype="&xsd;string">ear lobule</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1020">
+        <rdfs:label rdf:datatype="&xsd;string">lobule of auricle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1944">
+        <rdfs:label rdf:datatype="&xsd;string">external ear</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid977">
+        <rdfs:label rdf:datatype="&xsd;string">declive</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid614">
+        <rdfs:label rdf:datatype="&xsd;string">vasculature</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid974">
+        <rdfs:label rdf:datatype="&xsd;string">urinary bladder mucosa</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid853">
+        <rdfs:label rdf:datatype="&xsd;string">cardiac muscle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid610">
+        <rdfs:label rdf:datatype="&xsd;string">renal pelvis</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid852">
+        <rdfs:label rdf:datatype="&xsd;string">epidermis basal layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid851">
+        <rdfs:label rdf:datatype="&xsd;string">epidermis stratum germinativum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1149">
+        <rdfs:label rdf:datatype="&xsd;string">foot distal carpal bone 1</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1028">
+        <rdfs:label rdf:datatype="&xsd;string">right lung postcaval lobe</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid971">
+        <rdfs:label rdf:datatype="&xsd;string">auditory/vestibular system</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1389">
+        <rdfs:label rdf:datatype="&xsd;string">biliary lamina propria</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid186">
+        <rdfs:label rdf:datatype="&xsd;string">canal of hering</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid185">
+        <rdfs:label rdf:datatype="&xsd;string">canal of herring</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid183">
+        <rdfs:label rdf:datatype="&xsd;string">subthalamus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1705">
+        <rdfs:label rdf:datatype="&xsd;string">lesser multiangular</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1826">
+        <rdfs:label rdf:datatype="&xsd;string">4th ventricle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1947">
+        <rdfs:label rdf:datatype="&xsd;string">oesophagus mesentery</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1706">
+        <rdfs:label rdf:datatype="&xsd;string">hand distal carpal bone 2</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1113">
+        <rdfs:label rdf:datatype="&xsd;string">tibiale</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1598">
+        <rdfs:label rdf:datatype="&xsd;string">neural arch</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1233">
+        <rdfs:label rdf:datatype="&xsd;string">oocyte</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1478">
+        <rdfs:label rdf:datatype="&xsd;string">ductus deferens</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1354">
+        <rdfs:label rdf:datatype="&xsd;string">paw</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid707">
+        <rdfs:label rdf:datatype="&xsd;string">dentate nucleus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid827">
+        <rdfs:label rdf:datatype="&xsd;string">whisker</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid946">
+        <rdfs:label rdf:datatype="&xsd;string">alimentary system</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid824">
+        <rdfs:label rdf:datatype="&xsd;string">aortic arch</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid945">
+        <rdfs:label rdf:datatype="&xsd;string">alimentary tract</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid703">
+        <rdfs:label rdf:datatype="&xsd;string">adrenal artery</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid701">
+        <rdfs:label rdf:datatype="&xsd;string">juxtaglomerular apparatus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid149">
+        <rdfs:label rdf:datatype="&xsd;string">upper body</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1592">
+        <rdfs:label rdf:datatype="&xsd;string">urethral epithelium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1119">
+        <rdfs:label rdf:datatype="&xsd;string">calvarium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1472">
+        <rdfs:label rdf:datatype="&xsd;string">ulnar carpal bone</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1118">
+        <rdfs:label rdf:datatype="&xsd;string">neurocranium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1473">
+        <rdfs:label rdf:datatype="&xsd;string">triquetrum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1237">
+        <rdfs:label rdf:datatype="&xsd;string">conjunctival sac</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1595">
+        <rdfs:label rdf:datatype="&xsd;string">spleen lymphoid nodule</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1474">
+        <rdfs:label rdf:datatype="&xsd;string">triangular</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1475">
+        <rdfs:label rdf:datatype="&xsd;string">cuneiform of hand</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid144">
+        <rdfs:label rdf:datatype="&xsd;string">accessory carpal bone</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid273">
+        <rdfs:label rdf:datatype="&xsd;string">corpus pineale</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid393">
+        <rdfs:label rdf:datatype="&xsd;string">sural triceps</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid272">
+        <rdfs:label rdf:datatype="&xsd;string">epiphysis cerebri</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1003">
+        <rdfs:label rdf:datatype="&xsd;string">clarke&apos;s nucleus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1488">
+        <rdfs:label rdf:datatype="&xsd;string">calcaneus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1124">
+        <rdfs:label rdf:datatype="&xsd;string">connecting tubule</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1489">
+        <rdfs:label rdf:datatype="&xsd;string">gluteus superficialis</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid719">
+        <rdfs:label rdf:datatype="&xsd;string">hemopoietic system</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid959">
+        <rdfs:label rdf:datatype="&xsd;string">transitional epithelium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1361">
+        <rdfs:label rdf:datatype="&xsd;string">facial VII motor nucleus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid956">
+        <rdfs:label rdf:datatype="&xsd;string">labyrinth</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1803">
+        <rdfs:label rdf:datatype="&xsd;string">MALT</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid833">
+        <rdfs:label rdf:datatype="&xsd;string">3rd ventricle ependyma</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid712">
+        <rdfs:label rdf:datatype="&xsd;string">brain stem</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid952">
+        <rdfs:label rdf:datatype="&xsd;string">pyramus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid279">
+        <rdfs:label rdf:datatype="&xsd;string">glomerular tuft</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid399">
+        <rdfs:label rdf:datatype="&xsd;string">stellate ganglion</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1369">
+        <rdfs:label rdf:datatype="&xsd;string">pars glandularis</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1487">
+        <rdfs:label rdf:datatype="&xsd;string">fibulare</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid155">
+        <rdfs:label rdf:datatype="&xsd;string">4th ventricle choroid plexus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid397">
+        <rdfs:label rdf:datatype="&xsd;string">gastric juice</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid283">
+        <rdfs:label rdf:datatype="&xsd;string">reticular membrane</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1925">
+        <rdfs:label rdf:datatype="&xsd;string">tarsal gland</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1926">
+        <rdfs:label rdf:datatype="&xsd;string">palpebral gland</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1806">
+        <rdfs:label rdf:datatype="&xsd;string">membranous semicircular canal</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1809">
+        <rdfs:label rdf:datatype="&xsd;string">rhombencephalon</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1610">
+        <rdfs:label rdf:datatype="&xsd;string">prezygapophysis</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1177">
+        <rdfs:label rdf:datatype="&xsd;string">distal straight tubule</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1733">
+        <rdfs:label rdf:datatype="&xsd;string">posterior lobe</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1055">
+        <rdfs:label rdf:datatype="&xsd;string">nucleus accumbens</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1975">
+        <rdfs:label rdf:datatype="&xsd;string">squamous oesophageal epithelium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1734">
+        <rdfs:label rdf:datatype="&xsd;string">pars nervosa</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1175">
+        <rdfs:label rdf:datatype="&xsd;string">fallopian tube</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1735">
+        <rdfs:label rdf:datatype="&xsd;string">neural lobe</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1295">
+        <rdfs:label rdf:datatype="&xsd;string">suprarenal gland</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid407">
+        <rdfs:label rdf:datatype="&xsd;string">ileocecal junction</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid528">
+        <rdfs:label rdf:datatype="&xsd;string">intercostal muscle internal layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1174">
+        <rdfs:label rdf:datatype="&xsd;string">uterine tube</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid406">
+        <rdfs:label rdf:datatype="&xsd;string">prostate gland anterior lobe</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1615">
+        <rdfs:label rdf:datatype="&xsd;string">cerebral cortex region</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid404">
+        <rdfs:label rdf:datatype="&xsd;string">upper body blood vessel</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid765">
+        <rdfs:label rdf:datatype="&xsd;string">nodulus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid523">
+        <rdfs:label rdf:datatype="&xsd;string">coeliac ganglion</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid886">
+        <rdfs:label rdf:datatype="&xsd;string">gastric smooth muscle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid770">
+        <rdfs:label rdf:datatype="&xsd;string">amygdaloid area</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid33">
+        <rdfs:label rdf:datatype="&xsd;string">meissner&apos;s plexus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid34">
+        <rdfs:label rdf:datatype="&xsd;string">henle&apos;s plexus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1617">
+        <rdfs:label rdf:datatype="&xsd;string">hand distal carpal bone 1</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1618">
+        <rdfs:label rdf:datatype="&xsd;string">greater multiangular</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1862">
+        <rdfs:label rdf:datatype="&xsd;string">utricular macula</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1189">
+        <rdfs:label rdf:datatype="&xsd;string">sacrum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1500">
+        <rdfs:label rdf:datatype="&xsd;string">pylorus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1621">
+        <rdfs:label rdf:datatype="&xsd;string">male reproductive tract</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1745">
+        <rdfs:label rdf:datatype="&xsd;string">pharyngotympanic tube</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1746">
+        <rdfs:label rdf:datatype="&xsd;string">eustachian tube</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid659">
+        <rdfs:label rdf:datatype="&xsd;string">haemolymphoid system</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1063">
+        <rdfs:label rdf:datatype="&xsd;string">right lung inferior lobe</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid538">
+        <rdfs:label rdf:datatype="&xsd;string">intercostal muscle external layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1184">
+        <rdfs:label rdf:datatype="&xsd;string">SA node</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1626">
+        <rdfs:label rdf:datatype="&xsd;string">bicuspid valve</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1869">
+        <rdfs:label rdf:datatype="&xsd;string">thumb</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid416">
+        <rdfs:label rdf:datatype="&xsd;string">cerebrum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid536">
+        <rdfs:label rdf:datatype="&xsd;string">uriniferous tubule</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid657">
+        <rdfs:label rdf:datatype="&xsd;string">renal cortex</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid778">
+        <rdfs:label rdf:datatype="&xsd;string">epidermis prickle cell layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid413">
+        <rdfs:label rdf:datatype="&xsd;string">organ of corti</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid895">
+        <rdfs:label rdf:datatype="&xsd;string">gastric antrum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid894">
+        <rdfs:label rdf:datatype="&xsd;string">stomach antrum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid773">
+        <rdfs:label rdf:datatype="&xsd;string">jaw</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid892">
+        <rdfs:label rdf:datatype="&xsd;string">culmen</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid22">
+        <rdfs:label rdf:datatype="&xsd;string">auerbach&apos;s plexus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1628">
+        <rdfs:label rdf:datatype="&xsd;string">postzygapophysis</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1508">
+        <rdfs:label rdf:datatype="&xsd;string">nucleus of gudden</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1191">
+        <rdfs:label rdf:datatype="&xsd;string">foor distal carpal bone 3</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid29">
+        <rdfs:label rdf:datatype="&xsd;string">piriform area</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1950">
+        <rdfs:label rdf:datatype="&xsd;string">gum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1278">
+        <rdfs:label rdf:datatype="&xsd;string">tunica cornea</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1831">
+        <rdfs:label rdf:datatype="&xsd;string">saccular maculs</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid-A0">
+        <rdfs:label rdf:datatype="&xsd;string">mgi:terryh</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid869">
+        <rdfs:label rdf:datatype="&xsd;string">gastric serosa</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1031">
+        <rdfs:label rdf:datatype="&xsd;string">pre-botzinger respiratory control center</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid989">
+        <rdfs:label rdf:datatype="&xsd;string">periodontal membrane</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid505">
+        <rdfs:label rdf:datatype="&xsd;string">renal cortex venous system</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1272">
+        <rdfs:label rdf:datatype="&xsd;string">oesophagus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid988">
+        <rdfs:label rdf:datatype="&xsd;string">periodontium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1715">
+        <rdfs:label rdf:datatype="&xsd;string">lateral hypothalamic nucleus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid745">
+        <rdfs:label rdf:datatype="&xsd;string">uvula</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1392">
+        <rdfs:label rdf:datatype="&xsd;string">plexiform layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid620">
+        <rdfs:label rdf:datatype="&xsd;string">prosencephalon</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid862">
+        <rdfs:label rdf:datatype="&xsd;string">urethral smooth muscle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid740">
+        <rdfs:label rdf:datatype="&xsd;string">lung interstitial tissue</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid860">
+        <rdfs:label rdf:datatype="&xsd;string">serratus posterior inferior</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1159">
+        <rdfs:label rdf:datatype="&xsd;string">juvenile zone</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1399">
+        <rdfs:label rdf:datatype="&xsd;string">biliary serosa</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid990">
+        <rdfs:label rdf:datatype="&xsd;string">hippocampus stratum pyramidale</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid194">
+        <rdfs:label rdf:datatype="&xsd;string">navicular of hand</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid193">
+        <rdfs:label rdf:datatype="&xsd;string">radial carpal bone</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1958">
+        <rdfs:label rdf:datatype="&xsd;string">raphe pontis nucleus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1718">
+        <rdfs:label rdf:datatype="&xsd;string">interventricular septum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1719">
+        <rdfs:label rdf:datatype="&xsd;string">urethral lamina propria</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid17">
+        <rdfs:label rdf:datatype="&xsd;string">apex of cecum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1047">
+        <rdfs:label rdf:datatype="&xsd;string">right lung superior lobe</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1962">
+        <rdfs:label rdf:datatype="&xsd;string">oesophagus lamina propria</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1043">
+        <rdfs:label rdf:datatype="&xsd;string">corpus striatum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1724">
+        <rdfs:label rdf:datatype="&xsd;string">hand distal carpal bone 3</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1283">
+        <rdfs:label rdf:datatype="&xsd;string">vitreous humour</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid879">
+        <rdfs:label rdf:datatype="&xsd;string">pancreas corpus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid637">
+        <rdfs:label rdf:datatype="&xsd;string">nasal mucosa</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1968">
+        <rdfs:label rdf:datatype="&xsd;string">mouth</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid878">
+        <rdfs:label rdf:datatype="&xsd;string">urethral skeletal muscle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid755">
+        <rdfs:label rdf:datatype="&xsd;string">interhemispheric commissure</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid997">
+        <rdfs:label rdf:datatype="&xsd;string">hippocampus stratum moleculare</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid634">
+        <rdfs:label rdf:datatype="&xsd;string">collecting tubule</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid875">
+        <rdfs:label rdf:datatype="&xsd;string">central lobule</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1960">
+        <rdfs:label rdf:datatype="&xsd;string">axis</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1048">
+        <rdfs:label rdf:datatype="&xsd;string">spinal cord ventricular layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1969">
+        <rdfs:label rdf:datatype="&xsd;string">nucleus prepositus hypoglossus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1170">
+        <rdfs:label rdf:datatype="&xsd;string">foot distal carpal bone 2</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1728">
+        <rdfs:label rdf:datatype="&xsd;string">thoracic body wall</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1532">
+        <rdfs:label rdf:datatype="&xsd;string">paraganglia of zuckerkandl</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1412">
+        <rdfs:label rdf:datatype="&xsd;string">hypophyseal cleft</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1533">
+        <rdfs:label rdf:datatype="&xsd;string">para-aortic body</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1897">
+        <rdfs:label rdf:datatype="&xsd;string">atlas</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1413">
+        <rdfs:label rdf:datatype="&xsd;string">lymph node germinal center</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1898">
+        <rdfs:label rdf:datatype="&xsd;string">oesophagus epithelium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1777">
+        <rdfs:label rdf:datatype="&xsd;string">tympanic cavity</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1657">
+        <rdfs:label rdf:datatype="&xsd;string">primal cortex</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1658">
+        <rdfs:label rdf:datatype="&xsd;string">archipallium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1416">
+        <rdfs:label rdf:datatype="&xsd;string">biliary smooth muscle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid569">
+        <rdfs:label rdf:datatype="&xsd;string">spinal trigeminal nucleus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid446">
+        <rdfs:label rdf:datatype="&xsd;string">organ of jacobsen</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1890">
+        <rdfs:label rdf:datatype="&xsd;string">decidua basalis</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid566">
+        <rdfs:label rdf:datatype="&xsd;string">cortical renal corpuscle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid565">
+        <rdfs:label rdf:datatype="&xsd;string">malphighian corpuscle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid685">
+        <rdfs:label rdf:datatype="&xsd;string">bowman&apos;s capsule</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid442">
+        <rdfs:label rdf:datatype="&xsd;string">perilymphatic space</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid73">
+        <rdfs:label rdf:datatype="&xsd;string">hepatic sinusoid</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1543">
+        <rdfs:label rdf:datatype="&xsd;string">upper body muscle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1666">
+        <rdfs:label rdf:datatype="&xsd;string">uncinate</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1545">
+        <rdfs:label rdf:datatype="&xsd;string">vertebral centrum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1424">
+        <rdfs:label rdf:datatype="&xsd;string">pyramidal layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1667">
+        <rdfs:label rdf:datatype="&xsd;string">unciform</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1668">
+        <rdfs:label rdf:datatype="&xsd;string">hand distal carpal bone 4</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1426">
+        <rdfs:label rdf:datatype="&xsd;string">renal cortex arterial system</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid338">
+        <rdfs:label rdf:datatype="&xsd;string">respiratory system mucosa</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid579">
+        <rdfs:label rdf:datatype="&xsd;string">organ of masera</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid215">
+        <rdfs:label rdf:datatype="&xsd;string">4th ventricle ependyma</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid457">
+        <rdfs:label rdf:datatype="&xsd;string">gastric epithelium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1304">
+        <rdfs:label rdf:datatype="&xsd;string">circumflex nerve trunk</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid455">
+        <rdfs:label rdf:datatype="&xsd;string">papillary collecting duct</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1303">
+        <rdfs:label rdf:datatype="&xsd;string">internal granular layer</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1541">
+        <rdfs:label rdf:datatype="&xsd;string">renal blood vessel</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1302">
+        <rdfs:label rdf:datatype="&xsd;string">oesophagus skeletal muscle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid695">
+        <rdfs:label rdf:datatype="&xsd;string">renal capsule</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid452">
+        <rdfs:label rdf:datatype="&xsd;string">upper body bone</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid220">
+        <rdfs:label rdf:datatype="&xsd;string">semilunar</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1514">
+        <rdfs:label rdf:datatype="&xsd;string">upper body organ</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1515">
+        <rdfs:label rdf:datatype="&xsd;string">sphincter ani externus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1075">
+        <rdfs:label rdf:datatype="&xsd;string">bundle of his</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1636">
+        <rdfs:label rdf:datatype="&xsd;string">forearm</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1074">
+        <rdfs:label rdf:datatype="&xsd;string">his bundle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid306">
+        <rdfs:label rdf:datatype="&xsd;string">BALT</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid303">
+        <rdfs:label rdf:datatype="&xsd;string">crus commune</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid423">
+        <rdfs:label rdf:datatype="&xsd;string">epicardium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid665">
+        <rdfs:label rdf:datatype="&xsd;string">lingula</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid783">
+        <rdfs:label rdf:datatype="&xsd;string">islet of langerhans</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1750">
+        <rdfs:label rdf:datatype="&xsd;string">substantia propria</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid420">
+        <rdfs:label rdf:datatype="&xsd;string">olfactory gland of bowman</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid52">
+        <rdfs:label rdf:datatype="&xsd;string">serratus anterior</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid57">
+        <rdfs:label rdf:datatype="&xsd;string">hepatic parenchyma</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1639">
+        <rdfs:label rdf:datatype="&xsd;string">coeliac nerve plexus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1763">
+        <rdfs:label rdf:datatype="&xsd;string">auditory ossicle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1884">
+        <rdfs:label rdf:datatype="&xsd;string">coccygea</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1765">
+        <rdfs:label rdf:datatype="&xsd;string">layer of rods and cones</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1088">
+        <rdfs:label rdf:datatype="&xsd;string">extremity</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1525">
+        <rdfs:label rdf:datatype="&xsd;string">upper body skin</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1405">
+        <rdfs:label rdf:datatype="&xsd;string">paw joint</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid439">
+        <rdfs:label rdf:datatype="&xsd;string">3rd ventricle choroid plexus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1648">
+        <rdfs:label rdf:datatype="&xsd;string">habenular nucleus</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1769">
+        <rdfs:label rdf:datatype="&xsd;string">ammon&apos;s horn</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid679">
+        <rdfs:label rdf:datatype="&xsd;string">circulatory system</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid315">
+        <rdfs:label rdf:datatype="&xsd;string">mesogastrium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid557">
+        <rdfs:label rdf:datatype="&xsd;string">intercostal muscle</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid435">
+        <rdfs:label rdf:datatype="&xsd;string">caecum</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid432">
+        <rdfs:label rdf:datatype="&xsd;string">TS28</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1882">
+        <rdfs:label rdf:datatype="&xsd;string">duct of bellini</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1520">
+        <rdfs:label rdf:datatype="&xsd;string">intermedioradial carpal bone</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1762">
+        <rdfs:label rdf:datatype="&xsd;string">ear bone</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1883">
+        <rdfs:label rdf:datatype="&xsd;string">basal oesophageal epithelium</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid561">
+        <rdfs:label rdf:datatype="&xsd;string">second convoluted tubule</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid42">
+        <rdfs:label rdf:datatype="&xsd;string">serratus posterior superior</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid43">
+        <rdfs:label rdf:datatype="&xsd;string">lacrymal bone</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1093">
+        <rdfs:label rdf:datatype="&xsd;string">cerebral cortex</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://mouse.owl#genid1090">
+        <rdfs:label rdf:datatype="&xsd;string">female reproductive tract</rdfs:label>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.5.0) http://owlapi.sourceforge.net -->
+

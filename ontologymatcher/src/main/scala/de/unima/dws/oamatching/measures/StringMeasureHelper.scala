@@ -185,4 +185,8 @@ object StringMeasureHelper {
     name.matches("[0-9]*") || name.matches("[0-9]+[_:\\.\\-][0-9]+") || name.matches("[a-zA-Z]+[_:]?[a-zA-Z]?[0-9]+") || name.matches("[a-z]{1,2}-[0-9]{3,}-[0-9]{3,}");
   }
 
+  def upper_case_first_letter(a:String):String = {
+    a.substring(0,1).toUpperCase() +  a.substring(1,a.length());
+  }
+
 }

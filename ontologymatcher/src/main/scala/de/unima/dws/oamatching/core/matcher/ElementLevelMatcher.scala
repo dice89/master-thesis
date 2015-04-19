@@ -9,7 +9,7 @@ import scala.collection.JavaConversions._
 import scala.collection.mutable
 
 
-case class ExtractedFields(val fragment: Option[String], val label: Option[String], val comment: Option[String], val synonym: Option[List[String]])
+case class ExtractedFields(val domain_labels: Option[Set[String]], val range_labels: Option[Set[String]], val fragment: Option[String], val label: Option[String], val comment: Option[String], val synonym: Option[List[String]])
 
 //case class MatchingResults(val fragment_fragment:Option[MatchingCell], val label_label: Option[MatchingCell],val label_fragment: Option[MatchingCell],val fragment_label: Option[MatchingCell], val comment_comment: Option[MatchingCell])
 /**
@@ -130,9 +130,38 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
     val fragment_score = if (entity1_fields.fragment.isDefined && entity2_fields.fragment.isDefined && useFragment) {
 
 
+      //quick hack for extended similarity
+      val extended_sim = if (entity1_fields.domain_labels.isDefined && entity2_fields.domain_labels.isDefined) {
+        val fields1 = getListCombinationMethods(entity1_fields.fragment.get, entity1_fields.domain_labels.get, entity1_fields.range_labels)
+        val fields2 = getListCombinationMethods(entity2_fields.fragment.get, entity2_fields.domain_labels.get, entity2_fields.range_labels)
+
+        val test = fields1.map(field1 => {
+          fields2.map(field2 => {
+            val key = field1 + " _" + field2
+            key -> getSimilarity(score_cached(field1, field2, true))
+          }).toMap
+        }).flatten.toMap
+        val result: Double = if (test.size > 0) {
+          test.maxBy(_._2)._2
+        } else {
+          0.0
+        }
+
+
+        result
+      } else {
+        0.0
+      }
+
       if (!isAlphanumericalCode(entity1_fields.fragment.get) && !isAlphanumericalCode(entity2_fields.fragment.get)) {
         val value = getSimilarity(score_cached(entity1_fields.fragment.get, entity2_fields.fragment.get, true))
-        createMatchingCellOptional(entity1, entity2, threshold, owlType, Alignment.TYPE_FRAGMENT_FRAGMENT, value)
+
+        val sim = if (extended_sim > value) {
+          extended_sim
+        } else {
+          value
+        }
+        createMatchingCellOptional(entity1, entity2, threshold, owlType, Alignment.TYPE_FRAGMENT_FRAGMENT, sim)
       } else {
         Option.empty
       }
@@ -258,45 +287,28 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
     MatchingCell(owlEntity1.toString, owlEntity2.toString, score, "=", owlType, matching_type)
   }
 
-
-  def getLabelAndFragmentOfEntity(oWLEntity: OWLEntity, ontology: OWLOntology): ExtractedFields = {
-
-    val fragment = if (useFragment) {
-      Option(oWLEntity.getIRI.getFragment)
-    } else {
-      Option.empty
-    }
-    //get rdfs label
-    val label: Option[String] = if (useLabel) {
-      val rdfs_labels = ontology.getAnnotationAssertionAxioms(oWLEntity.getIRI).filter(_.getProperty().isLabel)
-
-      if (rdfs_labels.size > 0) {
-        Option(rdfs_labels.head.getValue().toString)
-      } else {
-        Option.empty
-      }
-
-    } else {
-      Option.empty
-    }
-
-    val comment: Option[String] = if (useComment) {
-      val rdfs_comments = ontology.getAnnotationAssertionAxioms(oWLEntity.getIRI).filter(_.getProperty().isComment)
-
-      if (rdfs_comments.size > 0) {
-        Option(rdfs_comments.head.getValue().toString)
-      } else {
-        Option.empty
-      }
-
-    } else {
-      Option.empty
-    }
-
-    ExtractedFields(fragment, label, comment, Option.empty)
-  }
-
   protected def isAlphanumericalCode(name: String): Boolean = {
     StringMeasureHelper.isAlphanumericalCode(name)
+  }
+
+  protected def getListCombinationMethods(fragment: String, domains: Set[String], ranges_opt: Option[Set[String]]): List[String] = {
+
+    if (ranges_opt.isDefined) {
+      domains.map(domain_fragment => {
+        val extended = domain_fragment + StringMeasureHelper.upper_case_first_letter(fragment)
+       /*val list_of_ranges = ranges_opt.get.map(range_fragment => {
+          extended + range_fragment
+        }).toList*/
+        extended
+      }).toList
+
+    } else {
+
+      domains.map(domain_fragment => {
+        val extended = domain_fragment + StringMeasureHelper.upper_case_first_letter(fragment)
+        extended
+      }).toList
+    }
+
   }
 }

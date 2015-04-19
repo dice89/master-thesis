@@ -67,6 +67,7 @@ object MatchingPipelineCore extends LazyLogging {
 
     val filtered_outlier_analysis_vector: FeatureVector =  if (tester_file.exists()) {
       VectorUtil.readFromMatchingFile(tester_file, problem.name)
+      //createFeatureVector(problem, remove_correlated_threshold, true)
     } else {
       createFeatureVector(problem, remove_correlated_threshold, true)
     }
@@ -103,19 +104,22 @@ object MatchingPipelineCore extends LazyLogging {
     println("Element Level Matching Done")
 
     println("Start remove correlated")
-    val uncorrelated_matcher_results: FeatureVector = removeCorrelatedMatchers(individual_matcher_results, remove_correlated_threshold)
+   /* val uncorrelated_matcher_results: FeatureVector = removeCorrelatedMatchers(individual_matcher_results, remove_correlated_threshold)
     println("Remove correlated done")
 
-    val structural_matcher_results: Option[FeatureVector] = matchAllStructuralMatchers(problem, uncorrelated_matcher_results)
+    val structural_matcher_results: Option[FeatureVector] =  matchAllStructuralMatchers(problem, uncorrelated_matcher_results)
 
     val outlier_analysis_vector: FeatureVector = if (structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results, structural_matcher_results.get), problem.name).get else individual_matcher_results
     println("Combination done")
+   */
     //name space filtering
     val name_space_filtered = if (name_space_filter) {
-      val filtered_outlier_analysis_vector: FeatureVector = MatchingPruner.featureVectorNameSpaceFilter(outlier_analysis_vector, allowed_namespaces)
+      //val filtered_outlier_analysis_vector: FeatureVector = MatchingPruner.featureVectorNameSpaceFilter(outlier_analysis_vector, allowed_namespaces)
+      val filtered_outlier_analysis_vector: FeatureVector = MatchingPruner.featureVectorNameSpaceFilter(individual_matcher_results, allowed_namespaces)
       filtered_outlier_analysis_vector
     } else {
-      outlier_analysis_vector
+      //outlier_analysis_vector
+     individual_matcher_results
     }
     println("pre feature selection" + name_space_filtered.matcher_name_to_index.size)
 
