@@ -405,7 +405,7 @@ object AlignmentParser {
   }
 
   def writeFalsePositivesToCSV(alignment: Alignment, reference: Alignment, name: String): Unit = {
-    val falsePositives = alignment.getFalsePositives(reference)
+    val falsePositives =    alignment.getFalsePositives(reference)
 
     val csv_file = new File("tmp/falsenegatives" + File.separator + name + "_fp.csv")
 

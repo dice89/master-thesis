@@ -555,7 +555,6 @@ object RapidminerJobs extends LazyLogging {
       val outlier_string = if (tuple.get("outlier").isDefined) {
         tuple.get("outlier").get
       } else {
-        println("failed to read dataprops at " + file.getAbsolutePath)
         error_in_read = true
         "0.0"
       }
