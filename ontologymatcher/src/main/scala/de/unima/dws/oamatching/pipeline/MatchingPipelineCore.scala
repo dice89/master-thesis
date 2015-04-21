@@ -142,7 +142,8 @@ object MatchingPipelineCore extends LazyLogging {
    */
   def postProcessMatchings(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], threshold: Double, outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]), problem: MatchingProblem): Alignment = {
 
-    val selected = normalizeAndSelectSingle(normFct, outlier_analysis_result, threshold)
+
+    val selected = normalizeAndSelectSingle(normFct, outlier_analysis_result, threshold,problem.ontology1, problem.ontology2)
 
     val alignment = new Alignment(problem.ontology1.name, problem.ontology2.name, null, null, problem.debug_onto1, problem.debug_onto2, selected)
 
@@ -165,9 +166,9 @@ object MatchingPipelineCore extends LazyLogging {
    */
   def postProcessSeparatedMatchings(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], class_threshold: Double, dp_threshold: Double, op_threshold: Double, outlier_analysis_result: SeparatedResults, problem: MatchingProblem): Alignment = {
 
-    val selected_classes = normalizeAndSelectSingle(normFct, outlier_analysis_result.class_matchings, class_threshold)
-    val selected_dps = normalizeAndSelectSingle(normFct, outlier_analysis_result.dp_matchings, dp_threshold)
-    val selected_ops = normalizeAndSelectSingle(normFct, outlier_analysis_result.op_matchings, op_threshold)
+    val selected_classes = normalizeAndSelectSingle(normFct, outlier_analysis_result.class_matchings, class_threshold,problem.ontology1, problem.ontology2)
+    val selected_dps = normalizeAndSelectSingle(normFct, outlier_analysis_result.dp_matchings, dp_threshold,problem.ontology1, problem.ontology2)
+    val selected_ops = normalizeAndSelectSingle(normFct, outlier_analysis_result.op_matchings, op_threshold,problem.ontology1, problem.ontology2)
 
     val final_matchings = selected_classes ++ selected_dps ++ selected_ops
 
@@ -183,10 +184,11 @@ object MatchingPipelineCore extends LazyLogging {
 
   }
 
-  def normalizeAndSelectSingle(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]), threshold: Double): Map[MatchRelation, Double] = {
+  def normalizeAndSelectSingle(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]), threshold: Double, sourceOnto:FastOntology, targetOnto:FastOntology): Map[MatchRelation, Double] = {
     val final_result: Iterable[(MatchRelation, Double)] = normFct.tupled(outlier_analysis_result)
 
-    val selected: Map[MatchRelation, Double] = MatchingSelector.greedyRankSelectorSimple(final_result.toMap, threshold)
+    val selected: Map[MatchRelation, Double] =  MatchingSelector.debuggingBasedOneToOneSelector(0.0)(final_result.toMap, threshold, sourceOnto, targetOnto)
+   // val selected: Map[MatchRelation, Double] = MatchingSelector.greedyRankSelectorSimple(final_result.toMap, threshold, sourceOnto, targetOnto)
     selected
   }
 

@@ -1,7 +1,7 @@
 package de.unima.dws.oamatching.pipeline
 
 import de.unima.dws.algorithms.MWBMatchingAlgorithm
-import de.unima.dws.oamatching.core.{Alignment, MatchRelation}
+import de.unima.dws.oamatching.core.{Alignment, FastOntology, MatchRelation}
 
 import scala.collection.mutable
 import scala.collection.mutable.{Map => MutableMap, Set => MutableSet}
@@ -14,8 +14,20 @@ case class HungarianMethodProblem(problem: MWBMatchingAlgorithm, left_map: Map[S
 
 object MatchingSelector {
 
+  def thresholdingOnly(fuzyy: Double)(raw_matchings: Map[MatchRelation, Double], threshold: Double, sourceOnto: FastOntology, targetOnto: FastOntology): Map[MatchRelation, Double] = {
+    raw_matchings.filter(tuple => tuple._2 >= threshold)
+  }
 
-  def hungarianMethodSelection(fuzzy: Double)(raw_matchings: Map[MatchRelation, Double], threshold: Double): Map[MatchRelation, Double] = {
+  def debuggingBasedOneToOneSelector(fuzyy: Double)(raw_matchings: Map[MatchRelation, Double], threshold: Double, sourceOnto: FastOntology, targetOnto: FastOntology): Map[MatchRelation, Double] = {
+    val matchings: Map[MatchRelation, Double] = raw_matchings.filter(tuple => tuple._2 >= threshold)
+
+    val result = MatchingPruner.debugMatchRelations(matchings, sourceOnto, targetOnto)
+
+    result
+  }
+
+
+  def hungarianMethodSelection(fuzzy: Double)(raw_matchings: Map[MatchRelation, Double], threshold: Double, sourceOnto: FastOntology, targetOnto: FastOntology): Map[MatchRelation, Double] = {
     val matchings: Map[MatchRelation, Double] = raw_matchings.filter(tuple => tuple._2 >= threshold)
 
     val max_matchings = getMaxPerMatchType(matchings)
@@ -28,7 +40,7 @@ object MatchingSelector {
 
   }
 
-  def greedyRankSelectorSimpleDelta(fuzzy: Double)(raw_matchings: Map[MatchRelation, Double], threshold: Double): Map[MatchRelation, Double] = {
+  def greedyRankSelectorSimpleDelta(fuzzy: Double)(raw_matchings: Map[MatchRelation, Double], threshold: Double, sourceOnto: FastOntology, targetOnto: FastOntology): Map[MatchRelation, Double] = {
     val matchings: Map[MatchRelation, Double] = raw_matchings.filter(tuple => tuple._2 >= threshold)
 
     val sorted_matchings = matchings.toList.sortWith(_._2 > _._2)
@@ -60,16 +72,16 @@ object MatchingSelector {
 
   def greedyRankSelectorSimple = greedyRankSelectorSimpleDelta(1.0) _
 
-  def hungarianMethodSimple = hungarianMethodSelection(1.0)_
+  def hungarianMethodSimple = hungarianMethodSelection(1.0) _
 
-  def greedyRankSelectorSimpleExp: (Double) => (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double] = greedyRankSelectorSimpleDelta _
+  def greedyRankSelectorSimpleExp: (Double) => (Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Map[MatchRelation, Double] = greedyRankSelectorSimpleDelta _
 
-  def fuzzyGreedyRankSelectorRatio: (Double) => (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double] = fuzzyGreedyRankSelector(selectFuzzySingleRatio) _
+  def fuzzyGreedyRankSelectorRatio: (Double) => (Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Map[MatchRelation, Double] = fuzzyGreedyRankSelector(selectFuzzySingleRatio) _
 
-  def fuzzyGreedyRankSelectorDelta: (Double) => (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double] = fuzzyGreedyRankSelector(selectFuzzySingleDelta) _
+  def fuzzyGreedyRankSelectorDelta: (Double) => (Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Map[MatchRelation, Double] = fuzzyGreedyRankSelector(selectFuzzySingleDelta) _
 
 
-  def fuzzyGreedyRankSelector(select_fct: (Double, Double, (MatchRelation, Double)) => Option[(MatchRelation, Double)])(fuzzy_value: Double)(raw_matchings: Map[MatchRelation, Double], threshold: Double): Map[MatchRelation, Double] = {
+  def fuzzyGreedyRankSelector(select_fct: (Double, Double, (MatchRelation, Double), FastOntology, FastOntology) => Option[(MatchRelation, Double)])(fuzzy_value: Double)(raw_matchings: Map[MatchRelation, Double], threshold: Double, sourceOnto: FastOntology, targetOnto: FastOntology): Map[MatchRelation, Double] = {
     val matchings: Map[MatchRelation, Double] = raw_matchings.filter(tuple => tuple._2 >= threshold)
 
     val sorted_matchings = matchings.toList.sortWith(_._2 > _._2)
@@ -96,13 +108,13 @@ object MatchingSelector {
           if (already_contained_left_threshold.contains(matching._1.left) && (!already_contained_right_threshold.contains(matching._1.right))) {
             val already_contained_sim_value: Double = already_contained_left_threshold.get(matching._1.left).getOrElse(0.0)
 
-            select_fct(fuzzy_value, already_contained_sim_value, matching)
+            select_fct(fuzzy_value, already_contained_sim_value, matching, sourceOnto, targetOnto)
 
             //case two right is already in selected -> left not
           } else if (already_contained_right_threshold.contains(matching._1.right) && (!already_contained_left_threshold.contains(matching._1.left))) {
             val already_contained_sim_value: Double = already_contained_right_threshold.get(matching._1.right).getOrElse(0.0)
 
-            select_fct(fuzzy_value, already_contained_sim_value, matching)
+            select_fct(fuzzy_value, already_contained_sim_value, matching, sourceOnto, targetOnto)
 
             //both are in -> return option empty
           } else {
@@ -125,7 +137,7 @@ object MatchingSelector {
    * @param matching
    * @return
    */
-  def selectFuzzySingleRatio(ratio_threshold: Double, already_contained_sim_value: Double, matching: (MatchRelation, Double)): Option[(MatchRelation, Double)] = {
+  def selectFuzzySingleRatio(ratio_threshold: Double, already_contained_sim_value: Double, matching: (MatchRelation, Double), sourceOnto: FastOntology, targetOnto: FastOntology): Option[(MatchRelation, Double)] = {
     val ratio = already_contained_sim_value / matching._2
     // E.g left has already a relation with 1.0 similarity and now a second comes with 0.95 => ratio = 1.0/0.95= 1.0526315789
     if (ratio < ratio_threshold) {
@@ -137,7 +149,7 @@ object MatchingSelector {
     }
   }
 
-  def selectFuzzySingleDelta(delta_threshold: Double, already_contained_sim_value: Double, matching: (MatchRelation, Double)): Option[(MatchRelation, Double)] = {
+  def selectFuzzySingleDelta(delta_threshold: Double, already_contained_sim_value: Double, matching: (MatchRelation, Double), sourceOnto: FastOntology, targetOnto: FastOntology): Option[(MatchRelation, Double)] = {
 
     val delta = Math.abs(already_contained_sim_value - matching._2)
     // E.g left has already a relation with 1.0 similarity and now a second comes with 0.95 => delta = 1.0-0.95= 0.05
@@ -182,7 +194,7 @@ object MatchingSelector {
       val left = encoded_left.get(relation.left).get
       val right = encoded_right.get(relation.right).get
 
-      algo.setWeight(left, right, value+1.0)
+      algo.setWeight(left, right, value + 1.0)
     }
     }
 
@@ -205,12 +217,12 @@ object MatchingSelector {
     //get matchings
     val matchings_result = matching_array.map { case (right_index, left_index) => {
 
-      if(right_index == -1 ){
+      if (right_index == -1) {
         Option.empty
-      }else {
+      } else {
         val right = right_index_to_String.get(right_index).get
         val left = left_index_to_String.get(left_index).get
-        Option( (left, right))
+        Option((left, right))
       }
     }
     }.toList.filter(_.isDefined).map(_.get)

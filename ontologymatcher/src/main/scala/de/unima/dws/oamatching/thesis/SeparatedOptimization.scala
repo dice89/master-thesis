@@ -25,7 +25,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
   val parallel_degree = Config.loaded_config.getInt("pipeline.max_threads")
 
-  def executeProcessSeparated(ds_name: String, run_number: Int, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], ref_matching_pairs: List[(EvaluationMatchingTask, File)], rapidminer_file: String, pre_pro_key: String, parameters: Map[String, Map[String, Double]], processes: Map[String, String]): ProcessEvalExecutionResultNonSeparated = {
+  def executeProcessSeparated(ds_name: String, run_number: Int, selection_function: (Map[MatchRelation, Double], Double,FastOntology, FastOntology) => Map[MatchRelation, Double], ref_matching_pairs: List[(EvaluationMatchingTask, File)], rapidminer_file: String, pre_pro_key: String, parameters: Map[String, Map[String, Double]], processes: Map[String, String]): ProcessEvalExecutionResultNonSeparated = {
 
     val process_name = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.lastIndexOf("."));
     val process_name_with_ending = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.size);
@@ -113,6 +113,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
     val json_result = createJSONResultString(ds_name, process_type, pre_pro_key, true, best_result._2.result, parameters, createJSONThresholdStringSeparated(best_result._2))
 
+    println(s"Best Result $best_result")
     sendResultToServer(json_result)
     logger.info(s"Done with threshold optimization for $ds_name and $process_name in run $run_number")
     ProcessEvalExecutionResultNonSeparated(true, best_result._2.result, null, null, null, null, best_result, best_results)
@@ -184,13 +185,13 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
    * @param ref_alignment
    * @return
    */
-  def selectAndEvaluate(selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], class_matchings: Map[MatchRelation, Double], dp_matchings: Map[MatchRelation, Double], op_matchings: Map[MatchRelation, Double], class_threshold: Double, dp_threshold: Double, op_threshold: Double, ref_alignment: Alignment, debug: Boolean, verbose: Boolean, norm_technique: String): EvaluationResult = {
+  def selectAndEvaluate(selection_function: (Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Map[MatchRelation, Double], class_matchings: Map[MatchRelation, Double], dp_matchings: Map[MatchRelation, Double], op_matchings: Map[MatchRelation, Double], class_threshold: Double, dp_threshold: Double, op_threshold: Double, ref_alignment: Alignment, debug: Boolean, verbose: Boolean, norm_technique: String, sourceOnto:FastOntology, targetOnto:FastOntology): EvaluationResult = {
 
     val unselected = class_matchings ++ dp_matchings ++ op_matchings
 
-    val selected_classes: Map[MatchRelation, Double] = selection_function(class_matchings, class_threshold)
-    val selected_dps: Map[MatchRelation, Double] = selection_function(dp_matchings, dp_threshold)
-    val selected_ops: Map[MatchRelation, Double] = selection_function(op_matchings, op_threshold)
+    val selected_classes: Map[MatchRelation, Double] = selection_function(class_matchings, class_threshold, sourceOnto, targetOnto)
+    val selected_dps: Map[MatchRelation, Double] = selection_function(dp_matchings, dp_threshold, sourceOnto, targetOnto)
+    val selected_ops: Map[MatchRelation, Double] = selection_function(op_matchings, op_threshold, sourceOnto, targetOnto)
 
     val selected: Map[MatchRelation, Double] = selected_classes ++ selected_dps ++ selected_ops
 
@@ -202,7 +203,9 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
     } else {
       val alignment = new Alignment(ref_alignment.onto1, ref_alignment.onto2, selected)
 
-      alignment.evaluate(ref_alignment)
+      val test_res = alignment.evaluate(ref_alignment)
+      //println(test_res.f1Measure + "for " + ref_alignment.onto1 + "-" +ref_alignment.onto2)
+      test_res
     }
 
     if (verbose) {
@@ -214,7 +217,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
   }
 
 
-  def evaluateRound(norm_technique: String, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], normalizedScores: List[(Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Alignment)], class_threshold: Double, dp_threshold: Double, op_threshold: Double, debug: Boolean, verbose: Boolean): SeparatedResult = {
+  def evaluateRound(norm_technique: String, selection_function: (Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Map[MatchRelation, Double], normalizedScores: List[(Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Alignment)], class_threshold: Double, dp_threshold: Double, op_threshold: Double, debug: Boolean, verbose: Boolean): SeparatedResult = {
     val unique_techniques = normalizedScores.head._1.keys.toVector
     val scores = if (debug) normalizedScores
     else {
@@ -223,11 +226,13 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
     //get single results
     val results = scores.map { case (class_matchings, dp_matchings, op_matchings, ref_alignment) => {
 
+      val onto1 = ref_alignment.onto1_reference
+      val onto2 = ref_alignment.onto2_reference
       val class_matchings_norm = class_matchings.get(norm_technique).get
       val dp_matchings_norm = dp_matchings.get(norm_technique).get
       val op_matchings_norm = op_matchings.get(norm_technique).get
 
-      selectAndEvaluate(selection_function, class_matchings_norm, dp_matchings_norm, op_matchings_norm, class_threshold, dp_threshold, op_threshold, ref_alignment, debug, verbose, norm_technique)
+      selectAndEvaluate(selection_function, class_matchings_norm, dp_matchings_norm, op_matchings_norm, class_threshold, dp_threshold, op_threshold, ref_alignment, debug, verbose, norm_technique, onto1, onto2)
 
     }
     }.toList
@@ -247,7 +252,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
    * @param threshold_grid
    * @return
    */
-  def findOptimalThresholds(selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], normalizedScores: List[(Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Alignment)], threshold_grid: List[Double]): Map[String, (Double, Double, Double)] = {
+  def findOptimalThresholds(selection_function: (Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Map[MatchRelation, Double], normalizedScores: List[(Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Map[String, Map[MatchRelation, Double]], Alignment)], threshold_grid: List[Double]): Map[String, (Double, Double, Double)] = {
 
     val unique_techniques = normalizedScores.head._2.keys.toVector
     //optimize thresholds

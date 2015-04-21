@@ -161,7 +161,7 @@ object Runner {
     val file: File = new File(path)
     val matchings_and_dim = RapidminerJobs.readCSV(file)
     val matchings = matchings_and_dim._3
-    val selected = MatchingSelector.greedyRankSelectorSimple(matchings, threshold)
+    val selected = MatchingSelector.greedyRankSelectorSimple(matchings, threshold, null, null)
     selected.foreach(matching => println(matching._1))
     val alignment = new Alignment(null, null, selected)
 

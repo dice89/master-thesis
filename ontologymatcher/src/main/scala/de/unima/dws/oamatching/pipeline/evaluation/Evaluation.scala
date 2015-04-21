@@ -104,7 +104,7 @@ object Evaluation {
     val final_relation_simplified: Map[MatchRelation, Double] = final_relations.map { case (match_relation, res_map) => (match_relation, 1.0)}.toMap
 
 
-    val selected =  MatchingSelector.greedyRankSelectorSimple(final_relation_simplified,0.8)
+    val selected =  MatchingSelector.greedyRankSelectorSimple(final_relation_simplified,0.8, null, null)
     //create final alignment and return
     val final_alignment: Alignment = new Alignment(reference.onto1, reference.onto2, reference.onto1_reference, reference.onto2_reference, reference.i_onto1, reference.i_onto2, selected)
 

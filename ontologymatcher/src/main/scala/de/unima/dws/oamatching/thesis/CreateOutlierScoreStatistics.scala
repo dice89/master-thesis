@@ -97,7 +97,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   val RNN_CONFIG = List(Map[String, Double]())
 
 
-  val CONFIG_BY_OUTLIER_METHOD: Map[String, List[Map[String, Double]]] = Map("knn" -> KNN_CONFIG, "cblof_regular_db" -> CBLOF_DBSCAN_CONFIG, "cblof_regular_x_means" -> CBLOF_XMEANS_CONFIG, "cblof_x_means" -> CBLOF_XMEANS_CONFIG,
+    val CONFIG_BY_OUTLIER_METHOD: Map[String, List[Map[String, Double]]] = Map("knn" -> KNN_CONFIG, "cblof_regular_db" -> CBLOF_DBSCAN_CONFIG, "cblof_regular_x_means" -> CBLOF_XMEANS_CONFIG, "cblof_x_means" -> CBLOF_XMEANS_CONFIG,
     "ldcof_regular_x_means" -> LDCOF_XMEANS_CONFIG, "ldcof_regular_db_scan" -> LDCOF_DBSCAN_CONFIG, "lcdof_x_means" -> LDCOF_XMEANS_CONFIG, "lof" -> LOF_CONFIG, "lof_regular" -> LOF_CONFIG, "loop" -> LOOP_CONFIG, "rll_m5p" -> RLL_M5P_CONFIG, "rll_iso" -> RLL_ISO_CONFIG, "rnn" -> RNN_CONFIG)
 
   /*########################################################################
@@ -121,14 +121,16 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
                          Matching Selection Config
     ########################################################################*/
 
-  val FUZZY_DELTA_SELECTION = List(Map("fuzzy" -> 0.2))
+  val FUZZY_DELTA_SELECTION = List(Map("fuzzy" -> 0.5),Map("fuzzy" -> 0.3))
   val FUZZY_RATIO_SELECTION = List(Map("fuzzy" -> 1.01), Map("fuzzy" -> 1.02), Map("fuzzy" -> 1.10))
   val GREEDY_SELECTION = List(Map("fuzzy" -> 1.0))
   val HUNGARIAN_SELECTION = List(Map("fuzzy" -> 1.0))
+  val DEBUGGING_BASED_SELECTION = List(Map("fuzzy" -> 1.0))
+  val THRESHOLD_ONLY = List(Map("fuzzy" -> 1.0))
 
-  val SELECTION_CONFIG = Map("greedy_rank_fuzzy_delta" -> FUZZY_DELTA_SELECTION, "greedy_rank_fuzzy_ratio" -> FUZZY_RATIO_SELECTION, "greedy_rank" -> GREEDY_SELECTION, "hungarian"->HUNGARIAN_SELECTION)
+  val SELECTION_CONFIG = Map("greedy_rank_fuzzy_delta" -> FUZZY_DELTA_SELECTION, "greedy_rank_fuzzy_ratio" -> FUZZY_RATIO_SELECTION, "greedy_rank" -> GREEDY_SELECTION, "hungarian"->HUNGARIAN_SELECTION, "debugging_based"->DEBUGGING_BASED_SELECTION, "threshold"->THRESHOLD_ONLY)
 
-  val SELECTION_METHODS_BY_NAME: Map[String, (Double) => (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double]] = Map("greedy_rank" -> MatchingSelector.greedyRankSelectorSimpleExp, "greedy_rank_fuzzy_delta" -> MatchingSelector.fuzzyGreedyRankSelectorDelta, "greedy_rank_fuzzy_ratio" -> MatchingSelector.fuzzyGreedyRankSelectorDelta, "hungarian" -> MatchingSelector.hungarianMethodSelection)
+  val SELECTION_METHODS_BY_NAME: Map[String, (Double) => (Map[MatchRelation, Double], Double,FastOntology, FastOntology) => Map[MatchRelation, Double]] = Map("greedy_rank" -> MatchingSelector.greedyRankSelectorSimpleExp, "threshold"->MatchingSelector.thresholdingOnly, "greedy_rank_fuzzy_delta" -> MatchingSelector.fuzzyGreedyRankSelectorDelta, "greedy_rank_fuzzy_ratio" -> MatchingSelector.fuzzyGreedyRankSelectorDelta, "hungarian" -> MatchingSelector.hungarianMethodSelection, "debugging_based"->MatchingSelector.debuggingBasedOneToOneSelector)
 
   /*########################################################################
                        Data Set Config
@@ -270,7 +272,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
    * @param separated
    * @return
    */
-  def runAllForAlgosForOneFuzzySelectFct(ds_name: String, method: String, fuzzy_values: List[Map[String, Double]], slct_fct: (Double) => (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double], base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], parallel: Boolean, separated: Boolean): Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = {
+  def runAllForAlgosForOneFuzzySelectFct(ds_name: String, method: String, fuzzy_values: List[Map[String, Double]], slct_fct: (Double) => (Predef.Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Predef.Map[MatchRelation, Double], base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], parallel: Boolean, separated: Boolean): Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = {
 
     val results = fuzzy_values.zipWithIndex.map(fuzzy_config => {
       val fuzzy_base_folder = base_folder + "/" + fuzzy_config._2
@@ -308,7 +310,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
    * @param parallel Execute in parallel (-> only for multicore machines)
    * @return
    */
-  def runAllForAllAlgos(ds_name: String, base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], config: Map[String, Double], select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double], parallel: Boolean, separated: Boolean): Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = {
+  def runAllForAllAlgos(ds_name: String, base_folder: String, matching_pairs: List[(EvaluationMatchingTask, File)], config: Map[String, Double], select_fct: (Predef.Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Predef.Map[MatchRelation, Double], parallel: Boolean, separated: Boolean): Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = {
 
     //createFolder(base_folder)
     val results = configured_algorithms_to_run.map { case (name, files) => {
@@ -342,7 +344,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
    * @param select_fct
    * @return
    */
-  def runAllPreproOneMethod(ds_name: String, outlier_method: String, base_folder: String, select_config: Map[String, Double], matching_pairs: List[(EvaluationMatchingTask, File)], select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double], separated: Boolean): Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = {
+  def runAllPreproOneMethod(ds_name: String, outlier_method: String, base_folder: String, select_config: Map[String, Double], matching_pairs: List[(EvaluationMatchingTask, File)], select_fct: (Predef.Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Predef.Map[MatchRelation, Double], separated: Boolean): Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = {
     createFolder(base_folder)
     val processes: OutlierEvaluationProcessesBySepartation = parseOutlierEvaluationProcesses("../RapidminerRepo/OutlierEvaluationV2", IMPLEMENTED_OUTLIER_METHODS_BY_NAME.get(outlier_method).get)
 
@@ -394,7 +396,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
    * @param config
    * @return
    */
-  def runAlgorithmSingleNonSeparated(ds_name: String, run_number: Int, processes: OutlierEvaluationProcessesBySepartation, matching_pairs: List[(EvaluationMatchingTask, File)], select_fct: (Predef.Map[MatchRelation, Double], Double) => Predef.Map[MatchRelation, Double], base_folder_name: String, config: Map[String, Double], separated: Boolean): Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = {
+  def runAlgorithmSingleNonSeparated(ds_name: String, run_number: Int, processes: OutlierEvaluationProcessesBySepartation, matching_pairs: List[(EvaluationMatchingTask, File)], select_fct: (Predef.Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Predef.Map[MatchRelation, Double], base_folder_name: String, config: Map[String, Double], separated: Boolean): Option[(String, (Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated))] = {
     val param = Map("mining" -> config)
 
     val results = PRE_PRO_TECHNIQUES.map(pre_pro_name => {
@@ -466,7 +468,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
    * @param separated
    * @return
    */
-  def runNonSeparated(ds_name: String, run_number: Int, folder: String, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], name: String, process_files: List[String], parameters: Map[String, Map[String, Double]], top_n: Int, ref_matching_pairs: List[(EvaluationMatchingTask, File)], separated: Boolean): Option[(Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)] = {
+  def runNonSeparated(ds_name: String, run_number: Int, folder: String, selection_function: (Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Map[MatchRelation, Double], name: String, process_files: List[String], parameters: Map[String, Map[String, Double]], top_n: Int, ref_matching_pairs: List[(EvaluationMatchingTask, File)], separated: Boolean): Option[(Predef.Map[String, Predef.Map[String, Double]], ProcessEvalExecutionResultsNonSeparated)] = {
 
     //Get Parameters
     val pre_pro_param_config: List[Map[String, Double]] = PARAM_CONFIGS_PRE_PRO.get(name).get
@@ -506,14 +508,15 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
     best_result
   }
 
-  def executeListOfNonSeparatedProcesses(ds_name: String, run_number: Int, selection_function: (Map[MatchRelation, Double], Double) => Map[MatchRelation, Double], name: String, process_files: List[String], parameters: Map[String, Map[String, Double]], top_n: Int, ref_matching_pairs: List[(EvaluationMatchingTask, File)], separated: Boolean): ProcessEvalExecutionResultsNonSeparated = {
+  def executeListOfNonSeparatedProcesses(ds_name: String, run_number: Int, selection_function: (Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Map[MatchRelation, Double], name: String, process_files: List[String], parameters: Map[String, Map[String, Double]], top_n: Int, ref_matching_pairs: List[(EvaluationMatchingTask, File)], separated: Boolean): ProcessEvalExecutionResultsNonSeparated = {
     val results: Map[String, ProcessEvalExecutionResultNonSeparated] = process_files.map(process_file => {
 
       logger.info(s"Start processes for separated = $separated")
       if (separated) {
         process_file -> executeProcessSeparated(ds_name, run_number, selection_function, ref_matching_pairs, process_file, name, parameters, IMPLEMENTED_OUTLIER_METHODS_BY_PROCESS)
       } else {
-        process_file -> executeProcessNonSeparated(ds_name, run_number, selection_function, ref_matching_pairs, process_file, parameters, top_n, name)
+        null
+        //process_file -> executeProcessNonSeparated(ds_name, run_number, selection_function, ref_matching_pairs, process_file, parameters, top_n, name)
       }
 
     }).toMap

@@ -16,7 +16,7 @@ object MatchingPruner extends LazyLogging {
 
   //Debugging settings
   Settings.BLACKBOX_REASONER = Settings.BlackBoxReasoner.PELLET
-  Settings.ONE_TO_ONE = false
+  Settings.ONE_TO_ONE = true
   Settings.REMOVE_INDIVIDUALS = true
 
   /**
@@ -84,7 +84,7 @@ object MatchingPruner extends LazyLogging {
     val ep = new ExtractionProblem(
       ExtractionProblem.ENTITIES_CONCEPTSPROPERTIES,
       ExtractionProblem.METHOD_GREEDY,
-      ExtractionProblem.REASONING_EFFICIENT
+      ExtractionProblem.REASONING_COMPLETE
     );
 
     // attach ontologies and mapping to the problem
@@ -99,6 +99,8 @@ object MatchingPruner extends LazyLogging {
 
 
       val extracted: Mapping = ep.getExtractedMapping()
+
+      println( ep.getDiscardedMapping.size() + " removed by debugging")
       logger.info("Debugging completed")
       convertMappingToAlignment(extracted, owlTypeMap, alignment)
 
@@ -108,6 +110,66 @@ object MatchingPruner extends LazyLogging {
         logger.error("Error while Debugging Ontolog", e)
         println("error")
         alignment
+      }
+    };
+
+    result
+  }
+
+  /**
+   *
+   * Debugs the match relations
+   * @param matchings
+   * @param onto1
+   * @param onto2
+   * @return
+   */
+  def debugMatchRelations(matchings: Map[MatchRelation, Double], onto1:FastOntology, onto2:FastOntology): Map[MatchRelation, Double] = {
+
+
+    val owlTypeMap: Map[String, String] = matchings.map(tuple => {
+      val key = tuple._1.left + "=" +  tuple._1.right
+      val value =tuple._1.owl_type
+      key -> value
+    }).toMap
+
+    val matchTypeMap: Map[String, String] = matchings.map(tuple => {
+      val key = tuple._1.left + "=" +  tuple._1.right
+      val value =tuple._1.match_type
+      key -> value
+    }).toMap
+
+    val mapping = convertMatchRelationMapToMapping(matchings)
+
+    val ep = new ExtractionProblem(
+      ExtractionProblem.ENTITIES_CONCEPTSPROPERTIES,
+      ExtractionProblem.METHOD_GREEDY,
+      ExtractionProblem.REASONING_EFFICIENT
+    );
+
+    // attach ontologies and mapping to the problem
+    ep.bindSourceOntology( new IOntology(onto1.path));
+    ep.bindTargetOntology( new IOntology(onto2.path));
+    ep.bindMapping(mapping);
+
+
+    // solve the problem
+    val result = try {
+      ep.solve();
+
+
+      val extracted: Mapping = ep.getExtractedMapping()
+      logger.info("Debugging completed")
+      val res = convertMappingToMatchingList(extracted, owlTypeMap, matchTypeMap,matchings)
+
+
+      res
+    }
+    catch {
+      case e: Throwable => {
+        logger.error("Error while Debugging Ontolog", e)
+        println("error")
+        matchings
       }
     };
 
@@ -337,6 +399,7 @@ object MatchingPruner extends LazyLogging {
     new Mapping(correspondances)
   }
 
+
   /**
    *
    * @param cell
@@ -344,6 +407,31 @@ object MatchingPruner extends LazyLogging {
    */
   def convertMatchingCellToCorrespondence(cell: MatchingCell): Correspondence = {
     val correspondence = new Correspondence(cell.entity1, cell.entity2, new SemanticRelation(SemanticRelation.EQUIV), cell.measure)
+    correspondence
+  }
+
+  /**
+   *
+   * @param matchings
+   * @return
+   */
+  def convertMatchRelationMapToMapping(matchings: Map[MatchRelation,Double]): Mapping = {
+
+    val correspondances = matchings.map(tuple => {
+      convertMatchingToCorrespondence(tuple._1, tuple._2)
+    }).toSet
+
+    new Mapping(correspondances)
+  }
+
+  /**
+   *
+   * @param matchRelation
+   * @param measure
+   * @return
+   */
+  def convertMatchingToCorrespondence(matchRelation: MatchRelation, measure:Double) = {
+    val correspondence = new Correspondence(matchRelation.left, matchRelation.right, new SemanticRelation(SemanticRelation.EQUIV), measure)
     correspondence
   }
 
@@ -363,6 +451,23 @@ object MatchingPruner extends LazyLogging {
     new Alignment(undebugedAlignment.onto1, undebugedAlignment.onto2, undebugedAlignment.onto1_reference, undebugedAlignment.onto2_reference, undebugedAlignment.i_onto1, undebugedAlignment.i_onto2, correspondences)
   }
 
+
+  /**
+   *
+   * @param mapping
+   * @param owlTypeMap
+   * @param matchTypeMap
+   * @param matchings
+   * @return
+   */
+  def convertMappingToMatchingList(mapping: Mapping, owlTypeMap: Map[String, String],matchTypeMap: Map[String,String], matchings: Map[MatchRelation, Double]): Map[MatchRelation,Double] = {
+
+     mapping.getCorrespondences().map(correspondence => {
+       convertCorrespondenceToMatchRelation(correspondence, owlTypeMap,matchTypeMap,matchings)
+    }).toMap
+
+  }
+
   /**
    * Converts an alcomo mapping to a oamatch matching cell
    * @param correspondence
@@ -378,6 +483,27 @@ object MatchingPruner extends LazyLogging {
     val owlType: String = owlTypeMap.getOrElse(entity1 + "=" + entity2, Cell.TYPE_UNKOWN)
 
     MatchingCell(entity1, entity2, measure, relation, owlType, Alignment.TYPE_NONE)
+  }
+
+  /**
+   * Converts an alcomo mapping to a oamatch matching cell
+   * @param correspondence
+   * @param owlTypeMap
+   * @return
+   */
+  def convertCorrespondenceToMatchRelation(correspondence: Correspondence, owlTypeMap: Map[String, String], matchTypeMap:Map[String, String], orginalRelations:Map[MatchRelation,Double]): (MatchRelation,Double) = {
+    val measure = correspondence.getConfidence
+    val entity1 = correspondence.getSourceEntityUri
+    val entity2 = correspondence.getTargetEntityUri
+
+
+    val owlType: String = owlTypeMap.getOrElse(entity1 + "=" + entity2, Cell.TYPE_UNKOWN)
+    val matchType: String = matchTypeMap.getOrElse(entity1 + "=" + entity2, Cell.TYPE_UNKOWN)
+   val relation  = MatchRelation(entity1,"=",entity2, owlType,matchType )
+
+    val sim_score = orginalRelations.get(relation).getOrElse(0.0)
+
+    relation ->sim_score
   }
 
 

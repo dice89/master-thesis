@@ -21,7 +21,7 @@ object SingleMatcherPipeline extends EvaluationDataSetParser {
 
     val relations = matcher.align(problem, threshold).asMatchRelationMap()
 
-    val selected = MatchingSelector.greedyRankSelectorSimple(relations, 0.7)
+    val selected = MatchingSelector.greedyRankSelectorSimple(relations, 0.7, null, null)
 
     val i_onto1 = new IOntology(problem.ontology1.path)
     val i_onto2 = new IOntology(problem.ontology2.path)

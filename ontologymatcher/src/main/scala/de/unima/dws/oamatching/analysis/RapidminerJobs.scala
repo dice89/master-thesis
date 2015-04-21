@@ -631,8 +631,7 @@ object RapidminerJobs extends LazyLogging {
   def configure_knn(data_set_size: Int, process: RProcess, mining_params: Map[String, Double], knn_name: String) {
     val k_value = Math.ceil(data_set_size.toDouble * mining_params.get("k").get).toInt
 
-    println(data_set_size)
-    println(k_value)
+
     if (k_value < 50) {
       process.getOperator(knn_name).setParameter("k", "50")
     } else if (k_value > 1000) {
