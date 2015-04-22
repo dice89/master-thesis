@@ -89,6 +89,8 @@ object MatchingPruner extends LazyLogging {
 
     // attach ontologies and mapping to the problem
     ep.bindSourceOntology( new IOntology(alignment.onto1_reference.path));
+    println(alignment.onto1_reference.path)
+    println(alignment.onto2_reference.path)
     ep.bindTargetOntology( new IOntology(alignment.onto2_reference.path));
     ep.bindMapping(mapping);
 
