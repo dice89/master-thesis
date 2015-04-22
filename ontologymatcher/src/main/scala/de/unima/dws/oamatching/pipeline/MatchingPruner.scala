@@ -16,7 +16,7 @@ object MatchingPruner extends LazyLogging {
 
   //Debugging settings
   Settings.BLACKBOX_REASONER = Settings.BlackBoxReasoner.PELLET
-  Settings.ONE_TO_ONE = true
+  Settings.ONE_TO_ONE = false
   Settings.REMOVE_INDIVIDUALS = true
 
   /**

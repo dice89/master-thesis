@@ -85,7 +85,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   /*########################################################################
                            Algorithmns Config
     ########################################################################*/
-  val KNN_CONFIG = List(Map("k" -> 0.05), Map("k" -> 0.01), Map("k" -> 0.075))
+  val KNN_CONFIG = List(Map("k" -> 0.05), Map("k" -> 0.01), Map("k" -> 0.075),Map("k" -> 0.1))
   val CBLOF_DBSCAN_CONFIG = List(Map("minpoints" -> 25.0, "epsilon" -> 1.5, "alpha" -> 95.0),Map("minpoints" -> 25.0, "epsilon" -> 1.5, "alpha" -> 99.5),Map("minpoints" -> 15.0, "epsilon" -> 1.5, "alpha" -> 99.0), Map("minpoints" -> 10.0, "epsilon" -> 1.0, "alpha" -> 99.0), Map("minpoints" -> 10.0, "epsilon" -> 0.5, "alpha" -> 99.0), Map("minpoints" -> 6.0, "epsilon" -> 1.5, "alpha" -> 99.0), Map("minpoints" -> 6.0, "epsilon" -> 1.0, "alpha" -> 99.0), Map("minpoints" -> 6.0, "epsilon" -> 0.5, "alpha" -> 99.0))
   val CBLOF_XMEANS_CONFIG = List(Map("kmin" -> 7.0, "alpha" -> 95.0), Map("kmin" -> 5.0, "alpha" -> 99.0), Map("kmin" -> 9.0, "alpha" -> 99.0), Map("kmin" -> 7.0, "alpha" -> 97.0), Map("kmin" -> 5.0, "alpha" -> 97.0), Map("kmin" -> 9.0, "alpha" -> 97.0), Map("kmin" -> 7.0, "alpha" -> 99.5), Map("kmin" -> 5.0, "alpha" -> 99.5), Map("kmin" -> 9.0, "alpha" -> 99.5))
   val LDCOF_XMEANS_CONFIG = List(Map("kmin" -> 7.0, "gamma" -> 0.01), Map("kmin" -> 7.0, "gamma" -> 0.05), Map("kmin" -> 7.0, "gamma" -> 0.1))
@@ -121,7 +121,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
                          Matching Selection Config
     ########################################################################*/
 
-  val FUZZY_DELTA_SELECTION = List(Map("fuzzy" -> 0.5),Map("fuzzy" -> 0.3))
+  val FUZZY_DELTA_SELECTION = List(Map("fuzzy" -> 0.2),Map("fuzzy" -> 0.1))
   val FUZZY_RATIO_SELECTION = List(Map("fuzzy" -> 1.01), Map("fuzzy" -> 1.02), Map("fuzzy" -> 1.10))
   val GREEDY_SELECTION = List(Map("fuzzy" -> 1.0))
   val HUNGARIAN_SELECTION = List(Map("fuzzy" -> 1.0))

@@ -76,7 +76,7 @@ object MatcherRegistry {
   }
 
   def initLargeScale() = {
-    SemanticMeasures.semantic_sim = SimService.createSimService(SimService.MODEL_WEBBASE)
+    //SemanticMeasures.semantic_sim = SimService.createSimService(SimService.MODEL_WEBBASE)
     initFromConfigFile(Config.PATH_TO_LARGE_SCALE_CONFIG)
   }
 

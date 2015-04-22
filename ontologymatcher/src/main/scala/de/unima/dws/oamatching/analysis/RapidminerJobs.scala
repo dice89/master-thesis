@@ -118,19 +118,6 @@ object RapidminerJobs extends LazyLogging {
 
 
   def rapidminerOutlierSeparated(writeFunction: FeatureVector => File)(readFunction: File => (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]))(rapidminer_file: String, oa_base_dir: String, process_type: String, parameters: Map[String, Map[String, Double]], pre_pro_key: String)(matchings: FeatureVector): SeparatedResults = {
-    val input_csv: File = writeFunction(matchings)
-
-
-    val matching_lines = Source.fromFile(input_csv, "utf-8").getLines()
-    val header_line = matching_lines.next()
-    val data_set_size = matching_lines.size - 1;
-
-    //minus 1 for header lines
-    //split by comma
-    //get sizes by owl type
-    val line_by_headers = CSVReader.open(input_csv).allWithHeaders()
-    val lines_by_owl_type: Map[String, List[Predef.Map[String, String]]] = line_by_headers.groupBy(_.get("owl_type").get)
-    val size_by_owl_type = lines_by_owl_type.map { case (key, list) => key -> list.size}
 
 
     //Rapidminer Handling
@@ -141,10 +128,24 @@ object RapidminerJobs extends LazyLogging {
 
     if (reuse_vectors && output_csv_classes.exists() && output_csv_dp.exists() && output_csv_op.exists()) {
       println("Read from file")
-      SeparatedResults(readFunction(output_csv_classes), readFunction(output_csv_dp), readFunction(output_csv_op))
+      val result = SeparatedResults(readFunction(output_csv_classes), readFunction(output_csv_dp), readFunction(output_csv_op))
+      println("Read from done")
 
+      result
     } else {
+      val input_csv: File = writeFunction(matchings)
 
+
+      val matching_lines = Source.fromFile(input_csv, "utf-8").getLines()
+      val header_line = matching_lines.next()
+      val data_set_size = matching_lines.size - 1;
+
+      //minus 1 for header lines
+      //split by comma
+      //get sizes by owl type
+      val line_by_headers = CSVReader.open(input_csv).allWithHeaders()
+      val lines_by_owl_type: Map[String, List[Predef.Map[String, String]]] = line_by_headers.groupBy(_.get("owl_type").get)
+      val size_by_owl_type = lines_by_owl_type.map { case (key, list) => key -> list.size}
 
       separatedOutlierAnalysis(readFunction, rapidminer_file, process_type, parameters, pre_pro_key, matchings, input_csv, size_by_owl_type, output_csv_classes, output_csv_dp, output_csv_op)
     }
@@ -736,9 +737,11 @@ object RapidminerJobs extends LazyLogging {
 
   def getMatchingFile(process_type: String, ds_type: String, data_set_name: String, use_time: Boolean): File = {
     if (use_time) {
-      new File(tmp_matching_folder + File.separator + process_type + s"$ds_type" + "_" + System.currentTimeMillis() + data_set_name+".csv");
+      new File(tmp_matching_folder + File.separator + process_type + s"$ds_type" + "_" + System.currentTimeMillis() + data_set_name + ".csv");
     } else {
-      new File(tmp_matching_folder + File.separator + process_type + s"$ds_type" + "_" + data_set_name+".csv");
+      val test = tmp_matching_folder + File.separator + process_type + s"$ds_type" + "_" + data_set_name + ".csv"
+      println(test)
+      new File(test);
     }
   }
 

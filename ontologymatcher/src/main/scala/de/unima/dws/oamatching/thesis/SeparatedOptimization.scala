@@ -93,6 +93,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
     val grid_size = Config.loaded_config.getInt("optimization.threshold_opt.grid_size")
     val start = Config.loaded_config.getDouble("optimization.threshold_opt.start")
     val end = Config.loaded_config.getDouble("optimization.threshold_opt.end")
+    val debug = Config.loaded_config.getBoolean("optimization.threshold_opt.debug")
 
     val optimization_grid = ParameterOptimizer.getDoubleGrid(start, end, grid_size)
 
@@ -102,7 +103,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
     //construct final matchings and evaluate
     val best_results = optimal_thresholds.map { case (norm_technique, (class_threshold, dp_threshold, op_threshold)) => {
-      val eval_res = evaluateRound(norm_technique, selection_function, normalized_per_category, class_threshold, dp_threshold, op_threshold, true, true)
+      val eval_res = evaluateRound(norm_technique, selection_function, normalized_per_category, class_threshold, dp_threshold, op_threshold, debug, true)
 
       norm_technique -> eval_res
     }

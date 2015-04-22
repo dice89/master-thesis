@@ -9,6 +9,7 @@ import de.unima.dws.oamatching.config.Config
 import de.unima.dws.oamatching.core.matcher.{Matcher, StructuralLevelMatcher}
 import de.unima.dws.oamatching.core.{Alignment, FastOntology, MatchRelation}
 import de.unima.dws.oamatching.matcher.MatcherRegistry
+import de.unima.dws.oamatching.pipeline.registry.SelectionRegistry
 
 import scala.collection.immutable.Map
 import scala.collection.parallel.ForkJoinTaskSupport
@@ -61,17 +62,23 @@ object MatchingPipelineCore extends LazyLogging {
     val onto1_namespace = problem.ontology1.name
     val onto2_namespace = problem.ontology2.name
 
+
+    val reuse_vectors = Config.loaded_config.getBoolean("pipeline.reuse_vectors")
     //check if matching already exists then use this one
-    val tester_file = new File("matchings/" + problem.data_set_name + "/matchings/" + problem.name +"_raw_matchings"+ ".csv")
 
 
-    val filtered_outlier_analysis_vector: FeatureVector =  if (tester_file.exists()) {
-      VectorUtil.readFromMatchingFile(tester_file, problem.name)
+    val tester_file = new File("matchings/" + problem.data_set_name + "/matchings/" + problem.name + "_raw_matchings" + ".csv")
+    //create feature vector only if some config parameter is set
+    val filtered_outlier_analysis_vector: FeatureVector = if (tester_file.exists()) {
+      if(reuse_vectors){
+        FeatureVector(problem.name, null, null, null, null)
+      }else {
+        VectorUtil.readFromMatchingFile(tester_file, problem.name)
+      }
       //createFeatureVector(problem, remove_correlated_threshold, true)
     } else {
       createFeatureVector(problem, remove_correlated_threshold, true)
     }
-
     //check if feature vector already exists
     println("Start Outlier analysis")
     val outlier_analysis_result_separated = outlierFct(problem.name, filtered_outlier_analysis_vector)
@@ -104,14 +111,14 @@ object MatchingPipelineCore extends LazyLogging {
     println("Element Level Matching Done")
 
     println("Start remove correlated")
-   /* val uncorrelated_matcher_results: FeatureVector = removeCorrelatedMatchers(individual_matcher_results, remove_correlated_threshold)
-    println("Remove correlated done")
+    /* val uncorrelated_matcher_results: FeatureVector = removeCorrelatedMatchers(individual_matcher_results, remove_correlated_threshold)
+     println("Remove correlated done")
 
-    val structural_matcher_results: Option[FeatureVector] =  matchAllStructuralMatchers(problem, uncorrelated_matcher_results)
+     val structural_matcher_results: Option[FeatureVector] =  matchAllStructuralMatchers(problem, uncorrelated_matcher_results)
 
-    val outlier_analysis_vector: FeatureVector = if (structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results, structural_matcher_results.get), problem.name).get else individual_matcher_results
-    println("Combination done")
-   */
+     val outlier_analysis_vector: FeatureVector = if (structural_matcher_results.isDefined) VectorUtil.combineFeatureVectors(List(individual_matcher_results, structural_matcher_results.get), problem.name).get else individual_matcher_results
+     println("Combination done")
+    */
     //name space filtering
     val name_space_filtered = if (name_space_filter) {
       //val filtered_outlier_analysis_vector: FeatureVector = MatchingPruner.featureVectorNameSpaceFilter(outlier_analysis_vector, allowed_namespaces)
@@ -119,7 +126,7 @@ object MatchingPipelineCore extends LazyLogging {
       filtered_outlier_analysis_vector
     } else {
       //outlier_analysis_vector
-     individual_matcher_results
+      individual_matcher_results
     }
     println("pre feature selection" + name_space_filtered.matcher_name_to_index.size)
 
@@ -143,7 +150,7 @@ object MatchingPipelineCore extends LazyLogging {
   def postProcessMatchings(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], threshold: Double, outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]), problem: MatchingProblem): Alignment = {
 
 
-    val selected = normalizeAndSelectSingle(normFct, outlier_analysis_result, threshold,problem.ontology1, problem.ontology2)
+    val selected = normalizeAndSelectSingle(normFct, outlier_analysis_result, threshold, problem.ontology1, problem.ontology2)
 
     val alignment = new Alignment(problem.ontology1.name, problem.ontology2.name, null, null, problem.debug_onto1, problem.debug_onto2, selected)
 
@@ -166,9 +173,9 @@ object MatchingPipelineCore extends LazyLogging {
    */
   def postProcessSeparatedMatchings(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], class_threshold: Double, dp_threshold: Double, op_threshold: Double, outlier_analysis_result: SeparatedResults, problem: MatchingProblem): Alignment = {
 
-    val selected_classes = normalizeAndSelectSingle(normFct, outlier_analysis_result.class_matchings, class_threshold,problem.ontology1, problem.ontology2)
-    val selected_dps = normalizeAndSelectSingle(normFct, outlier_analysis_result.dp_matchings, dp_threshold,problem.ontology1, problem.ontology2)
-    val selected_ops = normalizeAndSelectSingle(normFct, outlier_analysis_result.op_matchings, op_threshold,problem.ontology1, problem.ontology2)
+    val selected_classes = normalizeAndSelectSingle(normFct, outlier_analysis_result.class_matchings, class_threshold, problem.ontology1, problem.ontology2)
+    val selected_dps = normalizeAndSelectSingle(normFct, outlier_analysis_result.dp_matchings, dp_threshold, problem.ontology1, problem.ontology2)
+    val selected_ops = normalizeAndSelectSingle(normFct, outlier_analysis_result.op_matchings, op_threshold, problem.ontology1, problem.ontology2)
 
     val final_matchings = selected_classes ++ selected_dps ++ selected_ops
 
@@ -176,7 +183,7 @@ object MatchingPipelineCore extends LazyLogging {
 
     if (Config.loaded_config.getBoolean("pipeline.debug_alignment")) {
       val raw_matchings = normFct.tupled(outlier_analysis_result.class_matchings).toMap ++ normFct.tupled(outlier_analysis_result.dp_matchings).toMap ++ normFct.tupled(outlier_analysis_result.op_matchings).toMap
-     //MatchingPruner.debugAlignment(alignment, raw_matchings, class_threshold, dp_threshold, op_threshold)
+      //MatchingPruner.debugAlignment(alignment, raw_matchings, class_threshold, dp_threshold, op_threshold)
       MatchingPruner.debugAlignment(alignment)
     } else {
       alignment
@@ -184,11 +191,16 @@ object MatchingPipelineCore extends LazyLogging {
 
   }
 
-  def normalizeAndSelectSingle(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]), threshold: Double, sourceOnto:FastOntology, targetOnto:FastOntology): Map[MatchRelation, Double] = {
+  def normalizeAndSelectSingle(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]), threshold: Double, sourceOnto: FastOntology, targetOnto: FastOntology): Map[MatchRelation, Double] = {
     val final_result: Iterable[(MatchRelation, Double)] = normFct.tupled(outlier_analysis_result)
 
-    val selected: Map[MatchRelation, Double] =  MatchingSelector.debuggingBasedOneToOneSelector(0.0)(final_result.toMap, threshold, sourceOnto, targetOnto)
-   // val selected: Map[MatchRelation, Double] = MatchingSelector.greedyRankSelectorSimple(final_result.toMap, threshold, sourceOnto, targetOnto)
+    //TODO merge into pipeline description
+    val method_name = Config.loaded_config.getString("pipeline.selection.method")
+    val fuzzy_value = Config.loaded_config.getDouble("pipeline.selection.fuzzy")
+
+    val selection_fct  = SelectionRegistry.configureSelectionMethod(fuzzy_value, method_name)
+    val selected: Map[MatchRelation, Double] = selection_fct(final_result.toMap, threshold, sourceOnto, targetOnto)
+    // val selected: Map[MatchRelation, Double] = MatchingSelector.greedyRankSelectorSimple(final_result.toMap, threshold, sourceOnto, targetOnto)
     selected
   }
 
@@ -211,13 +223,13 @@ object MatchingPipelineCore extends LazyLogging {
    */
   def matchAllIndividualMatchers(problem: MatchingProblem): FeatureVector = {
 
-    val par_collection =  MatcherRegistry.matcher_by_name.par
+    val par_collection = MatcherRegistry.matcher_by_name.par
 
 
     par_collection.tasksupport = new ForkJoinTaskSupport(new scala.concurrent.forkjoin.ForkJoinPool(1))
 
 
-    val vector: ParMap[String, Map[MatchRelation, Double]] =par_collection.map({ case (name, matcher) => {
+    val vector: ParMap[String, Map[MatchRelation, Double]] = par_collection.map({ case (name, matcher) => {
 
       val starttime = System.currentTimeMillis()
       println(s"start $name")

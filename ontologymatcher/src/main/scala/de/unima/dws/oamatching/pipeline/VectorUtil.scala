@@ -93,7 +93,8 @@ object VectorUtil {
     val metaDataFields = List("left", "relation", "right", "owl_type", "match_type")
 
     val reader_head = CSVReader.open(matching_file)
-    val matcher_names = reader_head.all().head.filterNot(name => metaDataFields.contains(name))
+
+    val matcher_names = reader_head.iterator.next().filterNot(name => metaDataFields.contains(name))
 
     println(matcher_names)
     reader_head.close()
