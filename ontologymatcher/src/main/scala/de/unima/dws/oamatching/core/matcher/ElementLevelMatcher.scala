@@ -131,7 +131,7 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
 
 
       //quick hack for extended similarity
-      val extended_sim = if (entity1_fields.domain_labels.isDefined && entity2_fields.domain_labels.isDefined) {
+     /* val extended_sim = if (entity1_fields.domain_labels.isDefined && entity2_fields.domain_labels.isDefined) {
         val fields1 = getListCombinationMethods(entity1_fields.fragment.get, entity1_fields.domain_labels.get, entity1_fields.range_labels)
         val fields2 = getListCombinationMethods(entity2_fields.fragment.get, entity2_fields.domain_labels.get, entity2_fields.range_labels)
 
@@ -151,17 +151,17 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
         result
       } else {
         0.0
-      }
+      }*/
 
       if (!isAlphanumericalCode(entity1_fields.fragment.get) && !isAlphanumericalCode(entity2_fields.fragment.get)) {
         val value = getSimilarity(score_cached(entity1_fields.fragment.get, entity2_fields.fragment.get, true))
 
-        val sim = if (extended_sim > value) {
+        /*val sim = if (extended_sim > value) {
           extended_sim
         } else {
           value
-        }
-        createMatchingCellOptional(entity1, entity2, threshold, owlType, Alignment.TYPE_FRAGMENT_FRAGMENT, sim)
+        }*/
+        createMatchingCellOptional(entity1, entity2, threshold, owlType, Alignment.TYPE_FRAGMENT_FRAGMENT, value)
       } else {
         Option.empty
       }
