@@ -108,7 +108,7 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   val REMOVE_CORR_FOLDER = "remove_corr"
   val PREPROCESS_KEY = "prepro"
 
-  val PRE_PRO_TECHNIQUES = List("remove_corr")
+  val PRE_PRO_TECHNIQUES = List("pca_variant")
   //val PRE_PRO_TECHNIQUES = List("remove_corr","pca_variant","pca_fixed")
 
 

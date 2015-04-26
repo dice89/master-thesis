@@ -20,7 +20,8 @@ object ScoreNormalizationFunctions {
       case "none" => noNormalization _
       case "euclidean_max"  =>  normalizeByMaxEuclideanDistance _
       case "gaussianscale" => normalizeByGaussianScaling _
-      case "zscore" => normalizeByGaussianScaling _
+      case "zscore" => normalizeByZScore _
+      case "gamma" => normalizeByGammaScaling _
       case other =>  noNormalization _
     }
   }

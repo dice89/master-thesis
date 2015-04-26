@@ -165,7 +165,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
 
     val norm_config_list = Config.loaded_config.getStringList("optimization.normalization")
-    val resulting_matchings_pre_conf: Map[String, Map[MatchRelation, Double]] = Map(("none", test._3), ("gaussian", norm_res_gaussian), ("zscore", norm_res_znorm), ("gammma", norm_res_gamma), ("euclidean_max", norm_res_euclidean_max))
+    val resulting_matchings_pre_conf: Map[String, Map[MatchRelation, Double]] = Map(("none", test._3), ("gaussian", norm_res_gaussian), ("zscore", norm_res_znorm), ("gamma", norm_res_gamma), ("euclidean_max", norm_res_euclidean_max))
 
 
     //return results according to config
