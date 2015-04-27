@@ -30,8 +30,8 @@ trait EvaluationDataSetParser {
 
   def parseAnatomy(path_to_folder:String):Seq[EvaluationMatchingTask] = {
 
-    val mouse_onto_name = path_to_folder +File.separator+"mouse_small.owl"
-    val human_onto_name = path_to_folder +File.separator+"human_small.owl"
+    val mouse_onto_name = path_to_folder +File.separator+"mouse.owl"
+    val human_onto_name = path_to_folder +File.separator+"human.owl"
 
     val ref = path_to_folder +File.separator+"reference.rdf"
 
