@@ -8,7 +8,7 @@ import de.unima.dws.oamatching.pipeline.MatchingProblem
  * Created by mueller on 25/03/15.
  */
 class PropertyMatcherSpec extends UnitSpec{
-  val base_matcher = new SimpleStringFunctionMatcher(true, true, true, true, StringMeasureHelper.distance_lower_cased(StringMeasures.computeLevenShteinSim))
+  val base_matcher = new SimpleStringFunctionMatcher(true, true, true, true, StringMeasureHelper.measure_lower_cased(StringMeasures.computeLevenShteinSim))
   val prop_matcher = new PropertiesMatcher()
   "The Property matcher" should "discover non string equal matchings of object and data properties with matching domains" in {
     val onto1 = OntologyLoader.load_fast_ontology("ontos/testontos/prop/onto1.owl")

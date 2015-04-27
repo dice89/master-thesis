@@ -39,6 +39,12 @@ object SemanticMeasures extends LazyLogging {
     }
   }
 
+
+  def isUMLSSynonym(phrase1:String, phrase2:String):Double = {
+    UMLSSynonymFinder.isSynonym(phrase1,phrase2)
+
+  }
+
   def umbcPhraseSim(phrase1: String, phrase2: String): Double = {
 
     try {

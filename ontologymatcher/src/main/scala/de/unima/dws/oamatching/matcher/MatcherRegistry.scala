@@ -202,33 +202,34 @@ object MatcherRegistry {
   def get_string_matching_function(measure: String): (String, String) => Double = {
 
     measure match {
-      case "hammingDistance" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringDistances.hammingDistance)
-      case "jaroWinklerMeasure" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeJaroWinkler)
-      case "jaroMeasure" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeJaro)
-      case "levenshteinDistance" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringDistances.levenshteinDistance)
-      case "needlemanWunsch2Distance" => StringMeasureHelper.distance_lower_cased(StringDistances.needlemanWunsch2Distance)
-      case "ngramDistance" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringDistances.ngramDistance)
-      case "smoaDistance" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringDistances.smoaDistance)
-      case "subStringDistance" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringDistances.subStringDistance)
-      case "equalDistance" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringDistances.equalDistance)
-      case "equalSimilarity" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringMeasures.computeEquality)
-      case "word2Vec" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.word2VecSimilarityMeasure)
-      case "word2VecStemmed" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.word2VecSimilarityMeasureStemmed)
-      case "umbcSim" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.umbcSim)
+      case "hammingDistance" => StringMeasureHelper.measure_ignored_punctuation_lower_cased(StringDistances.hammingDistance)
+      case "jaroWinklerMeasure" => StringMeasureHelper.measure_lower_cased(StringMeasures.computeJaroWinkler)
+      case "jaroMeasure" => StringMeasureHelper.measure_lower_cased(StringMeasures.computeJaro)
+      case "levenshteinDistance" => StringMeasureHelper.measure_ignored_punctuation_lower_cased(StringDistances.levenshteinDistance)
+      case "needlemanWunsch2Distance" => StringMeasureHelper.measure_lower_cased(StringDistances.needlemanWunsch2Distance)
+      case "ngramDistance" => StringMeasureHelper.measure_ignored_punctuation_lower_cased(StringDistances.ngramDistance)
+      case "smoaDistance" => StringMeasureHelper.measure_ignored_punctuation_lower_cased(StringDistances.smoaDistance)
+      case "subStringDistance" => StringMeasureHelper.measure_ignored_punctuation_lower_cased(StringDistances.subStringDistance)
+      case "equalDistance" => StringMeasureHelper.measure_ignored_punctuation_lower_cased(StringDistances.equalDistance)
+      case "equalSimilarity" => StringMeasureHelper.measure_ignored_punctuation_lower_cased(StringMeasures.computeEquality)
+      case "word2Vec" => StringMeasureHelper.measure_lower_cased(SemanticMeasures.word2VecSimilarityMeasure)
+      case "word2VecStemmed" => StringMeasureHelper.measure_lower_cased(SemanticMeasures.word2VecSimilarityMeasureStemmed)
+      case "umbcSim" => StringMeasureHelper.measure_lower_cased(SemanticMeasures.umbcSim)
       case "umbcphrasesim" => SemanticMeasures.umbcPhraseSim
-      case "umbcstssim" => StringMeasureHelper.distance_lower_cased(SemanticMeasures.callSTSServiceUMBC)
+      case "umbcstssim" => StringMeasureHelper.measure_lower_cased(SemanticMeasures.callSTSServiceUMBC)
       case "fuzzyjaccard" => StringMeasures.computeFuzzyJaccard
       case "fuzzycosine" => StringMeasures.computeFuzzyCosine
       case "fuzzydice" => StringMeasures.computeFuzzyDice
-      case "jaccard" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeJaccard)
-      case "mongeElkan" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeMongeElkan)
-      case "prefix" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringMeasures.computePrefixBiDirectional)
-      case "suffix" => StringMeasureHelper.distance_ignored_punctuation_lower_cased(StringMeasures.computeSuffixBiDirectional)
-      case "lin" => StringMeasureHelper.distance_lower_cased(StringMeasures.computeLin)
-      case "path" => StringMeasureHelper.distance_lower_cased(StringMeasures.computePath)
-      case "jiangConrath" =>  StringMeasureHelper.distance_lower_cased(StringMeasures.computeJiangConrath)
-      case "wuPalmer" =>  StringMeasureHelper.distance_lower_cased(StringMeasures.computeWuPalmer)
-      case _ => StringMeasureHelper.distance_lower_cased(StringDistances.equalDistance) //default is equal distance
+      case "jaccard" => StringMeasureHelper.measure_lower_cased(StringMeasures.computeJaccard)
+      case "mongeElkan" => StringMeasureHelper.measure_lower_cased(StringMeasures.computeMongeElkan)
+      case "prefix" => StringMeasureHelper.measure_ignored_punctuation_lower_cased(StringMeasures.computePrefixBiDirectional)
+      case "suffix" => StringMeasureHelper.measure_ignored_punctuation_lower_cased(StringMeasures.computeSuffixBiDirectional)
+      case "lin" => StringMeasureHelper.measure_lower_cased(StringMeasures.computeLin)
+      case "path" => StringMeasureHelper.measure_lower_cased(StringMeasures.computePath)
+      case "jiangConrath" =>  StringMeasureHelper.measure_lower_cased(StringMeasures.computeJiangConrath)
+      case "wuPalmer" =>  StringMeasureHelper.measure_lower_cased(StringMeasures.computeWuPalmer)
+      case "umls" => StringMeasureHelper.measure_ignored_punctuation_lower_cased(SemanticMeasures.isUMLSSynonym)
+      case _ => StringMeasureHelper.measure_lower_cased(StringDistances.equalDistance) //default is equal distance
     }
   }
 

@@ -27,7 +27,7 @@ object StringMeasureHelper {
    * @param b
    * @return A double valued string distance
    */
-  def distance_normalized(normalization: (String, String) => (String, String))(matching: (String, String) => Double)(a: String, b: String): Double = {
+  def measure_normalized(normalization: (String, String) => (String, String))(matching: (String, String) => Double)(a: String, b: String): Double = {
     matching.tupled(normalization(a, b))
   }
 
@@ -43,12 +43,12 @@ object StringMeasureHelper {
   }
 
   def remove_punctuation(a:String,b:String):(String,String) = {
-    (a.replaceAll("[^a-zA-Z ]", "").toLowerCase(),b.replaceAll("[^a-zA-Z ]", "").toLowerCase())
+    (a.replaceAll("[^a-zA-Z ]", " ").toLowerCase(),b.replaceAll("[^a-zA-Z ]", " ").toLowerCase())
   }
 
-  def distance_lower_cased = distance_normalized(to_lower_case) _
+  def measure_lower_cased = measure_normalized(to_lower_case) _
 
-  def distance_ignored_punctuation_lower_cased = distance_normalized(remove_punctuation) _
+  def measure_ignored_punctuation_lower_cased = measure_normalized(remove_punctuation) _
 
   def preprocess_porter_stemmed = stem_term(porter_stem)_
 
@@ -80,7 +80,7 @@ object StringMeasureHelper {
 
   def tokenize_combined: (String) => List[String] = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_camel_case, StringMeasureHelper.tokenize_low_dash)
 
-  def tokenize_combined_all: (String) => List[String] = StringMeasureHelper.tokenize_combined
+  def tokenize_combined_all: (String) => List[String] =StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_combined,tokenize_low_whiteSpace)
  // def tokenize_combined_all: (String) => List[String] = StringMeasureHelper.combine_two_tokenizer(StringMeasureHelper.tokenize_combined, StringMeasureHelper.tokenize_dash)
 
   /**

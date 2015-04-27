@@ -9,7 +9,7 @@ import de.unima.dws.oamatching.pipeline.MatchingProblem
  */
 class StructuralMatcherSpec extends UnitSpec {
 
-  val base_matcher = new SimpleStringFunctionMatcher(true, true, true, true, StringMeasureHelper.distance_lower_cased(StringMeasures.computeJaccard))
+  val base_matcher = new SimpleStringFunctionMatcher(true, true, true, true, StringMeasureHelper.measure_lower_cased(StringMeasures.computeJaccard))
   val used_property_matcher = new GraphBasedUsedPropertyMatcher()
   val used_class_matcher = new GraphBasedUsedClassMatcher()
 

@@ -8,7 +8,7 @@ import de.unima.dws.oamatching.pipeline.MatchingProblem
  * Created by mueller on 25/03/15.
  */
 class NeighbourhoodSimilaritySpec extends UnitSpec {
-  val base_matcher = new SimpleStringFunctionMatcher(true, true, true, true, StringMeasureHelper.distance_lower_cased(StringMeasures.computeLevenShteinSim))
+  val base_matcher = new SimpleStringFunctionMatcher(true, true, true, true, StringMeasureHelper.measure_lower_cased(StringMeasures.computeLevenShteinSim))
   val n_matcher = new NeighborHoodSimilarityMatcher(NeighborHoodSimilarityMatcher.STRATEGY_MAX)
 
   "The neighbourhood similarity matcher " should "work" in {
