@@ -226,7 +226,7 @@ object MatchingPipelineCore extends LazyLogging {
     val par_collection = MatcherRegistry.matcher_by_name.par
 
 
-    par_collection.tasksupport = new ForkJoinTaskSupport(new scala.concurrent.forkjoin.ForkJoinPool(1))
+    par_collection.tasksupport = new ForkJoinTaskSupport(new scala.concurrent.forkjoin.ForkJoinPool(4))
 
 
     val vector: ParMap[String, Map[MatchRelation, Double]] = par_collection.map({ case (name, matcher) => {
