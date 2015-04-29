@@ -315,9 +315,6 @@ object RapidminerJobs extends LazyLogging {
    */
   def rapidminerOutlierFromExistentFileSeparated(readFunction: File => (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]))(rapidminer_file: String)(run_number: Int, matching_file: File, parameters: Map[String, Map[String, Double]], pre_pro_key: String, process_type: String): SeparatedResults = {
     //get list of matchers in file
-    val matching_lines = Source.fromFile(matching_file, "utf-8").getLines()
-    val header_line = matching_lines.next()
-    val data_set_size = matching_lines.size - 1;
     //minus 1 for header lines
     //split by comma
     //get sizes by owl type
@@ -325,12 +322,14 @@ object RapidminerJobs extends LazyLogging {
     val it = CSVReader.open(matching_file).iterator
 
 
-    val header = it.next()
-    val owl_type_index = header.indexOf("owl_type")
+    val header_line = it.next()
+    val owl_type_index = header_line.indexOf("owl_type")
     var line = Seq("")
     var class_size = 0;
     var dp_size = 0;
     var op_size = 0;
+
+    val startime = System.currentTimeMillis()
     while (it.hasNext) {
       line = it.next()
       if(line(owl_type_index).equals("c")){
@@ -342,11 +341,12 @@ object RapidminerJobs extends LazyLogging {
       }
     }
 
+    println(s"Parsed $class_size in " + ((System.currentTimeMillis()-startime)/1000) +"s")
 
     //println(size_by_owl_type)
     //left,relation,right,owl_type, <--- filter out those fields
     val meta_data_fields: List[String] = List("left", "relation", "right", "owl_type", "match_type")
-    val matcher_name_to_index: Predef.Map[String, Int] = header_line.split(",").filterNot(field => meta_data_fields.contains(field)).zipWithIndex.toMap
+    val matcher_name_to_index: Predef.Map[String, Int] = header_line.filterNot(field => meta_data_fields.contains(field)).zipWithIndex.toMap
 
 
     val output_csv_classes: File = new File(tmp_matching_folder + File.separator + pre_pro_key + "_" + process_type + s"classes_$run_number" + "_" + System.nanoTime() + matching_file.getName);
