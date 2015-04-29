@@ -26,6 +26,8 @@ case class MatchingEvaluationProblem(ontology1: FastOntology, ontology2: FastOnt
  */
 object MatchingPipelineCore extends LazyLogging {
 
+  val paralellity = Config.loaded_config.getInt("pipeline.max_threads")
+
 
   def createMatchingPipeline(outlierFct: (String, FeatureVector) => (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]))(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)]): (MatchingProblem, Double, Double) => (Alignment, FeatureVector) = {
     matchProblem(outlierFct)(normFct)
@@ -226,7 +228,7 @@ object MatchingPipelineCore extends LazyLogging {
     val par_collection = MatcherRegistry.matcher_by_name.par
 
 
-    par_collection.tasksupport = new ForkJoinTaskSupport(new scala.concurrent.forkjoin.ForkJoinPool(4))
+    par_collection.tasksupport = new ForkJoinTaskSupport(new scala.concurrent.forkjoin.ForkJoinPool(paralellity))
 
 
     val vector: ParMap[String, Map[MatchRelation, Double]] = par_collection.map({ case (name, matcher) => {
