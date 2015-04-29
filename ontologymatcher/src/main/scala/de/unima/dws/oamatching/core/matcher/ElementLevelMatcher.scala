@@ -230,12 +230,12 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
         //val final_sim = sim_scores.sum.toDouble /sim_scores.size.toDouble
         val final_sim = sim_scores.max
 
-//        if(final_sim > 0.3){
-//          println("#########################")
-//          println( entity1_fields.synonym.get)
-//          println( entity2_fields.synonym.get)
-//          println(final_sim)
-//        }
+        if(final_sim > 0.3){
+          println("#########################")
+          println( entity1_fields.synonym.get)
+          println( entity2_fields.synonym.get)
+          println(final_sim)
+        }
 
         createMatchingCellOptional(entity1, entity2, threshold, owlType, Alignment.TYPE_COMMENT_COMMENT, final_sim)
 
