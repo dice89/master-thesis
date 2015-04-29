@@ -151,7 +151,6 @@ object MatchingPipelineCore extends LazyLogging {
    */
   def postProcessMatchings(normFct: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]) => Iterable[(MatchRelation, Double)], threshold: Double, outlier_analysis_result: (Int, Map[String, (Double, Double)], Map[MatchRelation, Double]), problem: MatchingProblem): Alignment = {
 
-
     val selected = normalizeAndSelectSingle(normFct, outlier_analysis_result, threshold, problem.ontology1, problem.ontology2)
 
     val alignment = new Alignment(problem.ontology1.name, problem.ontology2.name, null, null, problem.debug_onto1, problem.debug_onto2, selected)

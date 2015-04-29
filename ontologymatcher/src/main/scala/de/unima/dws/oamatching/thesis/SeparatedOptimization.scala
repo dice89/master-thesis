@@ -25,7 +25,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
 
   val parallel_degree = Config.loaded_config.getInt("pipeline.max_threads")
 
-  def executeProcessSeparated(ds_name: String, run_number: Int, selection_function: (Map[MatchRelation, Double], Double,FastOntology, FastOntology) => Map[MatchRelation, Double], ref_matching_pairs: List[(EvaluationMatchingTask, File)], rapidminer_file: String, pre_pro_key: String, parameters: Map[String, Map[String, Double]], processes: Map[String, String]): ProcessEvalExecutionResultNonSeparated = {
+  def executeProcessSeparated(ds_name: String, run_number: Int, selection_function: (Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Map[MatchRelation, Double], ref_matching_pairs: List[(EvaluationMatchingTask, File)], rapidminer_file: String, pre_pro_key: String, parameters: Map[String, Map[String, Double]], processes: Map[String, String]): ProcessEvalExecutionResultNonSeparated = {
 
     val process_name = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.lastIndexOf("."));
     val process_name_with_ending = rapidminer_file.slice(rapidminer_file.lastIndexOf("/") + 1, rapidminer_file.size);
@@ -122,32 +122,93 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
   }
 
   def getParameterUsageProbabilites(matching_results: Seq[(SeparatedResults, Alignment)]): Predef.Map[String, Double] = {
+    val structural_matcher = List("GraphBasedUsedClassMatcher","GraphBasedUsedPropertyMatcher","NeighborHoodSimilarityMatcher","PropertiesMatcher")
+
+    def getStructuralLevel(matcher: String): Option[String] = {
+      val elems = structural_matcher.filter(struct_matcher => matcher.contains(struct_matcher))
+      if (elems.size > 0) {
+        Option(elems.head)
+      } else {
+        Option.empty
+      }
+    }
+
+    def containsStructuralMatcher(struct_matcher: String, attributes: List[String]): Boolean = {
+
+      attributes.map(attribute => attribute.contains(struct_matcher)).contains(true)
+    }
+
+
     //get unique parameters
     val attributes_per_matching = matching_results.map { case (result, ref_alignment) => {
       val attributes_used = result.class_matchings._2.map(_._1)
 
-      attributes_used.toList
+      val element_level_attributes = attributes_used.map(matcher => {
+        if (getStructuralLevel(matcher).isDefined) {
+          Option.empty
+        } else {
+          Option(matcher)
+        }
+      }).filter(_.isDefined).map(_.get)
+
+      val structural_level = attributes_used.map(matcher => {
+        val tester = getStructuralLevel(matcher)
+        if (tester.isDefined) {
+          tester
+        } else {
+          Option.empty
+
+        }
+      }).filter(_.isDefined).map(_.get)
+
+      val used_attributes = element_level_attributes ++ structural_level
+
+      used_attributes.toList
 
     }
     }.toList
+
+
 
     val unique_attributes = attributes_per_matching.flatten.distinct
 
     //count the occurence for each attributes
 
     val probablility_of_usage = unique_attributes.map(attribute => {
-      val total_usage = attributes_per_matching.map(attributes_for_problem => {
-        if (attributes_for_problem.contains(attribute)) {
-          1
+
+      if (structural_matcher.contains(attribute)) {
+        val total_usage = attributes_per_matching.map(attributes_for_problem => {
+          if (containsStructuralMatcher(attribute, attributes_for_problem)) {
+            1
+          } else {
+            0
+          }
+        })
+        if (total_usage.size > 0 && attributes_per_matching.size > 0) {
+          attribute -> total_usage.sum.toDouble / attributes_per_matching.size.toDouble
         } else {
-          0
+          attribute -> 0.0
         }
-      })
-      if (total_usage.size > 0 && attributes_per_matching.size > 0) {
-        attribute -> total_usage.sum.toDouble / attributes_per_matching.size.toDouble
+
       } else {
-        attribute -> 0.0
+        val total_usage = attributes_per_matching.map(attributes_for_problem => {
+
+          if (attributes_for_problem.contains(attribute)) {
+            1
+          } else {
+            0
+          }
+
+        })
+
+        if (total_usage.size > 0 && attributes_per_matching.size > 0) {
+          attribute -> total_usage.sum.toDouble / attributes_per_matching.size.toDouble
+        } else {
+          attribute -> 0.0
+        }
       }
+
+
     }).toMap
     probablility_of_usage
   }
@@ -186,7 +247,7 @@ trait SeparatedOptimization extends ResultHandling with LazyLogging with Optimiz
    * @param ref_alignment
    * @return
    */
-  def selectAndEvaluate(selection_function: (Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Map[MatchRelation, Double], class_matchings: Map[MatchRelation, Double], dp_matchings: Map[MatchRelation, Double], op_matchings: Map[MatchRelation, Double], class_threshold: Double, dp_threshold: Double, op_threshold: Double, ref_alignment: Alignment, debug: Boolean, verbose: Boolean, norm_technique: String, sourceOnto:FastOntology, targetOnto:FastOntology): EvaluationResult = {
+  def selectAndEvaluate(selection_function: (Map[MatchRelation, Double], Double, FastOntology, FastOntology) => Map[MatchRelation, Double], class_matchings: Map[MatchRelation, Double], dp_matchings: Map[MatchRelation, Double], op_matchings: Map[MatchRelation, Double], class_threshold: Double, dp_threshold: Double, op_threshold: Double, ref_alignment: Alignment, debug: Boolean, verbose: Boolean, norm_technique: String, sourceOnto: FastOntology, targetOnto: FastOntology): EvaluationResult = {
 
     val unselected = class_matchings ++ dp_matchings ++ op_matchings
 

@@ -321,9 +321,27 @@ object RapidminerJobs extends LazyLogging {
     //minus 1 for header lines
     //split by comma
     //get sizes by owl type
-    val line_by_headers = CSVReader.open(matching_file).allWithHeaders()
-    val lines_by_owl_type: Predef.Map[String, List[Predef.Map[String, String]]] = line_by_headers.groupBy(_.get("owl_type").get)
-    val size_by_owl_type = lines_by_owl_type.map { case (key, list) => key -> list.size}
+
+    val it = CSVReader.open(matching_file).iterator
+
+
+    val header = it.next()
+    val owl_type_index = header.indexOf("owl_type")
+    var line = Seq("")
+    var class_size = 0;
+    var dp_size = 0;
+    var op_size = 0;
+    while (it.hasNext) {
+      line = it.next()
+      if(line(owl_type_index).equals("c")){
+        class_size = class_size +1
+      }else if(line(owl_type_index).equals("dp")){
+        dp_size = dp_size +1
+      }else if(line(owl_type_index).equals("op")){
+        op_size =  op_size +1
+      }
+    }
+
 
     //println(size_by_owl_type)
     //left,relation,right,owl_type, <--- filter out those fields
@@ -354,11 +372,6 @@ object RapidminerJobs extends LazyLogging {
 
 
     val mining_params = parameters.get("mining").get
-
-    val class_size = size_by_owl_type.get("c").getOrElse(0)
-    val dp_size = size_by_owl_type.get("dp").getOrElse(0)
-    val op_size = size_by_owl_type.get("op").getOrElse(0)
-
 
     configureMiningSeparated(process_type, matcher_name_to_index, process, mining_params, class_size, dp_size, op_size)
 
