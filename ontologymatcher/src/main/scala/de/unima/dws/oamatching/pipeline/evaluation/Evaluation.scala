@@ -181,6 +181,7 @@ object Evaluation {
    * @return
    */
   def getBaseMatcherThreshold(matcher_name: String, dataset_name: String): Double = {
-    MetaDataMgmt.getThreshold(dataset_name, matcher_name).getOrElse(0.7)
+    0.7
+   // MetaDataMgmt.getThreshold(dataset_name, matcher_name).getOrElse(0.7)
   }
 }
