@@ -115,12 +115,12 @@ object CreateOutlierScoreStatistics extends App with OutlierEvaluationProcessPar
   //val PRE_PRO_TECHNIQUES = List("remove_corr","pca_variant","pca_fixed")
 
 
-  /*val PARAM_CONFIGS_PRE_PRO: Map[String, List[Map[String, Double]]] = Map("pca_variant" -> List(Map("variance" -> 0.75),Map("variance" -> 0.85), Map("variance" -> 0.9), Map("variance" -> 0.95)),
+  val PARAM_CONFIGS_PRE_PRO: Map[String, List[Map[String, Double]]] = Map("pca_variant" -> List(Map("variance" -> 0.75)),
     "pca_fixed" -> List( Map("number" -> 4.0),Map("number" -> 6.0),Map("number" -> 8.0), Map("number" -> 12.0)),
     "remove_corr" -> List(Map("corr_variance" -> 0.9, "min_variance" -> 0.1),Map("corr_variance" -> 0.75, "min_variance" -> 0.1))
-  ) */
-  val PARAM_CONFIGS_PRE_PRO: Map[String, List[Map[String, Double]]] = Map( "remove_corr" -> List(Map("corr_variance" -> 0.9, "min_variance" -> 0.1))
   )
+ /* val PARAM_CONFIGS_PRE_PRO: Map[String, List[Map[String, Double]]] = Map( "remove_corr" -> List(Map("corr_variance" -> 0.9, "min_variance" -> 0.1))
+  )*/
 
   /*########################################################################
                          Matching Selection Config
