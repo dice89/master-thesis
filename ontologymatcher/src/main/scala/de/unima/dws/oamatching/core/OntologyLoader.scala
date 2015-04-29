@@ -302,8 +302,10 @@ object OntologyLoader {
 
 
       val e_label = extractAnnotationOfType(owlOntology, owlClass, label)
-      val e_comment = extractAnnotationOfType(owlOntology, owlClass, comment)
-      val syn = extractSyn(owlOntology, owlClass)
+      val e_comment: Option[String] = extractAnnotationOfType(owlOntology, owlClass, comment)
+      val syn: Option[List[String]] = extractSyn(owlOntology, owlClass)
+
+      //if comment is not defined use synonyms
 
       owlClass.getIRI -> ExtractedFields(Option.empty,Option.empty,local_name, e_label, e_comment, syn)
     }).toMap
@@ -374,6 +376,7 @@ object OntologyLoader {
   }
 
   def extractSyn(owlOntology: OWLOntology, owlEntity: OWLEntity): Option[List[String]] = {
+
     val synonym_label = owlEntity.getAnnotations(owlOntology).map(annotation => {
       val prop_iri = annotation.getProperty().getIRI()
       val remainder = prop_iri.getRemainder.get()
@@ -393,7 +396,11 @@ object OntologyLoader {
         }).filter(_.isDefined).map(_.get)
 
         if (synonym_label.size > 0) {
-          Option(synonym_label.head)
+          if(synonym_label.size>1){
+            println("test")
+          }
+          val content = synonym_label.head
+          Option(content)
         } else {
           Option.empty
         }

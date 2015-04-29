@@ -217,7 +217,35 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
       }
 
     } else {
-      Option.empty
+      //check if synonym is defined
+
+      if(entity1_fields.synonym.isDefined && entity2_fields.synonym.isDefined) {
+
+       val sim_scores =  entity1_fields.synonym.get.map(entity_1_synonym => {
+          entity2_fields.synonym.get.map(entity_2_synonym => {
+            val value = getSimilarity(score_cached(entity_1_synonym, entity_2_synonym, true))
+            value
+          })
+        }).flatten
+        //val final_sim = sim_scores.sum.toDouble /sim_scores.size.toDouble
+        val final_sim = sim_scores.max
+
+//        if(final_sim > 0.3){
+//          println("#########################")
+//          println( entity1_fields.synonym.get)
+//          println( entity2_fields.synonym.get)
+//          println(final_sim)
+//        }
+
+        createMatchingCellOptional(entity1, entity2, threshold, owlType, Alignment.TYPE_COMMENT_COMMENT, final_sim)
+
+
+      }else {
+
+        Option.empty
+      }
+
+
     }
 
     val fragment_comment_score = if (entity1_fields.fragment.isDefined && entity2_fields.comment.isDefined && useFragment && useComment) {

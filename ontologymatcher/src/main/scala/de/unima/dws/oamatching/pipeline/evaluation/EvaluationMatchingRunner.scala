@@ -36,6 +36,7 @@ object EvaluationMatchingRunner extends EvaluationDataSetParser {
       matchAndEvaluateCorePlatformOnly(task)
     }).toList
 
+
     val average_core_result = computeAggregatedResults(matching_task_results)
     ResultLogger.log_result(run_name, "average_core_pipleine", average_core_result);
     println(average_core_result)

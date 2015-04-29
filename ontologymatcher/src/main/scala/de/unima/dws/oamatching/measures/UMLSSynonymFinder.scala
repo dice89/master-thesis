@@ -49,7 +49,6 @@ object UMLSSynonymFinder{
     if (id1.isDefined && id2.isDefined) {
 
       if(id1.get==id2.get){
-        println("found synonym")
         1.0
       }else {
         0.0
