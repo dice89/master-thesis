@@ -15,7 +15,7 @@
     <parameter key="parallelize_main_process" value="true"/>
     <process expanded="true">
       <operator activated="true" class="read_csv" compatibility="5.3.013" expanded="true" height="60" name="ReadVector" width="90" x="45" y="210">
-        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/ontologymatcher/matchings/benchmarks/matchings/101-202_raw_matchings.csv"/>
+        <parameter key="csv_file" value="/Users/mueller/Documents/master-thesis/ontologymatcher/matchings/anatomy/matchings/mouse-human_raw_matchings.csv"/>
         <parameter key="column_separators" value=","/>
         <parameter key="trim_lines" value="true"/>
         <parameter key="use_quotes" value="true"/>
@@ -39,59 +39,17 @@
           <parameter key="0" value="left.true.polynominal.attribute"/>
           <parameter key="1" value="relation.true.binominal.attribute"/>
           <parameter key="2" value="right.true.polynominal.attribute"/>
-          <parameter key="3" value="owl_type.true.polynominal.attribute"/>
-          <parameter key="4" value="match_type.true.binominal.attribute"/>
-          <parameter key="5" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelPropertiesMatcher.true.real.attribute"/>
-          <parameter key="6" value="ngramDistance.true.real.attribute"/>
-          <parameter key="7" value="prefixdeunimadwsoamatchingmatcherstructurallevelPropertiesMatcher.true.real.attribute"/>
-          <parameter key="8" value="wuPalmer.true.real.attribute"/>
-          <parameter key="9" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
-          <parameter key="10" value="prefixdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
-          <parameter key="11" value="path.true.real.attribute"/>
-          <parameter key="12" value="lin.true.real.attribute"/>
-          <parameter key="13" value="equalSimilarityStemmed.true.real.attribute"/>
-          <parameter key="14" value="mongeElkandeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="15" value="prefixdeunimadwsoamatchingmatcherstructurallevelNeighborHoodSimilarityMatcher.true.real.attribute"/>
-          <parameter key="16" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="17" value="levenshteinDistancedeunimadwsoamatchingmatcherstructurallevelNeighborHoodSimilarityMatcher.true.real.attribute"/>
-          <parameter key="18" value="jaroWinklerMeasure.true.real.attribute"/>
-          <parameter key="19" value="mongeElkandeunimadwsoamatchingmatcherstructurallevelNeighborHoodSimilarityMatcher.true.real.attribute"/>
-          <parameter key="20" value="word2Vec.true.real.attribute"/>
-          <parameter key="21" value="level2_jara_winkler.true.real.attribute"/>
-          <parameter key="22" value="prefix.true.real.attribute"/>
-          <parameter key="23" value="levenshteinDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="24" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="25" value="word2VecStemmed.true.real.attribute"/>
-          <parameter key="26" value="jaccard.true.real.attribute"/>
-          <parameter key="27" value="suffix.true.real.attribute"/>
-          <parameter key="28" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelNeighborHoodSimilarityMatcher.true.real.attribute"/>
-          <parameter key="29" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="30" value="smoaDistance.true.real.attribute"/>
-          <parameter key="31" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
-          <parameter key="32" value="jiangConrath.true.real.attribute"/>
-          <parameter key="33" value="umbcSim.true.real.attribute"/>
-          <parameter key="34" value="soft_tfidf_jaro.true.real.attribute"/>
-          <parameter key="35" value="mongeElkandeunimadwsoamatchingmatcherstructurallevelPropertiesMatcher.true.real.attribute"/>
-          <parameter key="36" value="fuzzydice.true.real.attribute"/>
-          <parameter key="37" value="prefixdeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedPropertyMatcher.true.real.attribute"/>
-          <parameter key="38" value="fuzzycosine.true.real.attribute"/>
-          <parameter key="39" value="wuPalmerdeunimadwsoamatchingmatcherstructurallevelNeighborHoodSimilarityMatcher.true.real.attribute"/>
-          <parameter key="40" value="levenshteinDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
-          <parameter key="41" value="mongeElkan.true.real.attribute"/>
-          <parameter key="42" value="simple_tfidf.true.real.attribute"/>
-          <parameter key="43" value="levenshteinDistancedeunimadwsoamatchingmatcherstructurallevelPropertiesMatcher.true.real.attribute"/>
-          <parameter key="44" value="fuzzyjaccard.true.real.attribute"/>
-          <parameter key="45" value="levenshteinDistance.true.real.attribute"/>
-          <parameter key="46" value="hammingDistance.true.real.attribute"/>
-          <parameter key="47" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelPropertiesMatcher.true.real.attribute"/>
-          <parameter key="48" value="mongeElkandeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
-          <parameter key="49" value="equalDistance.true.real.attribute"/>
-          <parameter key="50" value="subStringDistance.true.real.attribute"/>
-          <parameter key="51" value="umbcphrasesim.true.real.attribute"/>
-          <parameter key="52" value="jaroWinklerMeasuredeunimadwsoamatchingmatcherstructurallevelNeighborHoodSimilarityMatcher.true.real.attribute"/>
-          <parameter key="53" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelGraphBasedUsedClassMatcher.true.real.attribute"/>
-          <parameter key="54" value="jaroMeasure.true.real.attribute"/>
-          <parameter key="55" value="ngramDistancedeunimadwsoamatchingmatcherstructurallevelPropertiesMatcher.true.real.attribute"/>
+          <parameter key="3" value="owl_type.true.binominal.attribute"/>
+          <parameter key="4" value="match_type.true.polynominal.attribute"/>
+          <parameter key="5" value="equalSimilarityStemmed.true.real.attribute"/>
+          <parameter key="6" value="jaccard.true.real.attribute"/>
+          <parameter key="7" value="smoaDistance.true.real.attribute"/>
+          <parameter key="8" value="jiangConrath.true.real.attribute"/>
+          <parameter key="9" value="soft_tfidf_jaro.true.real.attribute"/>
+          <parameter key="10" value="fuzzycosine.true.real.attribute"/>
+          <parameter key="11" value="simple_tfidf.true.real.attribute"/>
+          <parameter key="12" value="fuzzyjaccard.true.real.attribute"/>
+          <parameter key="13" value="levenshteinDistance.true.real.attribute"/>
         </list>
         <parameter key="read_not_matching_values_as_missings" value="true"/>
         <parameter key="datamanagement" value="double_array"/>
@@ -932,12 +890,12 @@
                   <portSpacing port="sink_out 2" spacing="0"/>
                 </process>
               </operator>
-              <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Only Positive (2)" width="90" x="246" y="345">
+              <operator activated="false" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Only Positive (2)" width="90" x="246" y="345">
                 <parameter key="condition_class" value="attribute_value_filter"/>
                 <parameter key="parameter_string" value="sum &gt;0"/>
                 <parameter key="invert_filter" value="false"/>
               </operator>
-              <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Only Positive (5)" width="90" x="447" y="345">
+              <operator activated="false" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Only Positive (5)" width="90" x="447" y="345">
                 <parameter key="condition_class" value="attribute_value_filter"/>
                 <parameter key="parameter_string" value="outlier &gt;0"/>
                 <parameter key="invert_filter" value="false"/>
@@ -976,12 +934,10 @@
               <connect from_op="Generate ID (2)" from_port="example set output" to_op="Select Attributes (6)" to_port="example set input"/>
               <connect from_op="Select Attributes (6)" from_port="example set output" to_op="Preprocess PCA C" to_port="in 1"/>
               <connect from_op="Select Attributes (6)" from_port="original" to_op="Select Attributes (7)" to_port="example set input"/>
-              <connect from_op="Select Attributes (7)" from_port="example set output" to_op="Only Positive (2)" to_port="example set input"/>
+              <connect from_op="Select Attributes (7)" from_port="example set output" to_op="Join (4)" to_port="left"/>
               <connect from_op="Preprocess PCA C" from_port="out 1" to_op="DBSCAN CBLOF (2)" to_port="in 1"/>
               <connect from_op="Preprocess PCA C" from_port="out 2" to_op="Join (3)" to_port="right"/>
-              <connect from_op="DBSCAN CBLOF (2)" from_port="out 1" to_op="Only Positive (5)" to_port="example set input"/>
-              <connect from_op="Only Positive (2)" from_port="example set output" to_op="Join (4)" to_port="left"/>
-              <connect from_op="Only Positive (5)" from_port="example set output" to_op="Join (3)" to_port="left"/>
+              <connect from_op="DBSCAN CBLOF (2)" from_port="out 1" to_op="Join (3)" to_port="left"/>
               <connect from_op="Join (3)" from_port="join" to_op="Join (4)" to_port="right"/>
               <connect from_op="Join (4)" from_port="join" to_op="Select Attributes (11)" to_port="example set input"/>
               <connect from_op="Select Attributes (11)" from_port="example set output" to_port="out 1"/>
