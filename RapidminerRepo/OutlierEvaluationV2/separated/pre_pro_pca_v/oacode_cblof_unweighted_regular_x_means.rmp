@@ -525,7 +525,7 @@
                     <parameter key="invert_selection" value="false"/>
                     <parameter key="include_special_attributes" value="false"/>
                   </operator>
-                  <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (5)" width="90" x="585" y="30">
+                  <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (5)" width="90" x="112" y="210">
                     <parameter key="attribute_filter_type" value="subset"/>
                     <parameter key="attribute" value=""/>
                     <parameter key="attributes" value="sum|"/>
@@ -539,7 +539,7 @@
                     <parameter key="invert_selection" value="true"/>
                     <parameter key="include_special_attributes" value="false"/>
                   </operator>
-                  <operator activated="true" class="principal_component_analysis" compatibility="5.3.013" expanded="true" height="94" name="PCA_DP" width="90" x="45" y="120">
+                  <operator activated="true" class="principal_component_analysis" compatibility="5.3.013" expanded="true" height="94" name="PCA_DP" width="90" x="514" y="300">
                     <parameter key="dimensionality_reduction" value="keep variance"/>
                     <parameter key="variance_threshold" value="0.95"/>
                     <parameter key="number_of_components" value="10"/>
@@ -644,7 +644,7 @@
                 <list key="key_attributes"/>
                 <parameter key="keep_both_join_attributes" value="false"/>
               </operator>
-              <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Only Positive (3)" width="90" x="180" y="120">
+              <operator activated="false" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Only Positive (3)" width="90" x="180" y="120">
                 <parameter key="condition_class" value="attribute_value_filter"/>
                 <parameter key="parameter_string" value="sum &gt;0"/>
                 <parameter key="invert_filter" value="false"/>
@@ -680,8 +680,7 @@
               <connect from_op="Preprocess PCA 6 (3)" from_port="out 1" to_op="DBSCAN CBLOF (3)" to_port="in 1"/>
               <connect from_op="Preprocess PCA 6 (3)" from_port="out 2" to_op="Join (2)" to_port="right"/>
               <connect from_op="DBSCAN CBLOF (3)" from_port="out 1" to_op="Join (2)" to_port="left"/>
-              <connect from_op="Join (2)" from_port="join" to_op="Only Positive (3)" to_port="example set input"/>
-              <connect from_op="Only Positive (3)" from_port="example set output" to_op="Join (5)" to_port="right"/>
+              <connect from_op="Join (2)" from_port="join" to_op="Join (5)" to_port="right"/>
               <connect from_op="Join (5)" from_port="join" to_op="Select Attributes (8)" to_port="example set input"/>
               <connect from_op="Select Attributes (8)" from_port="example set output" to_port="out 1"/>
               <portSpacing port="source_in 1" spacing="0"/>
@@ -743,7 +742,7 @@
               <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (6)" width="90" x="180" y="30">
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
-                <parameter key="attributes" value="left|owl_type|relation|right|match_type"/>
+                <parameter key="attributes" value="left|match_type|owl_type|relation|right"/>
                 <parameter key="use_except_expression" value="false"/>
                 <parameter key="value_type" value="attribute_value"/>
                 <parameter key="use_value_type_exception" value="false"/>
@@ -933,19 +932,24 @@
                   <portSpacing port="sink_out 2" spacing="0"/>
                 </process>
               </operator>
-              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (3)" width="90" x="45" y="120">
+              <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Only Positive (2)" width="90" x="246" y="345">
+                <parameter key="condition_class" value="attribute_value_filter"/>
+                <parameter key="parameter_string" value="sum &gt;0"/>
+                <parameter key="invert_filter" value="false"/>
+              </operator>
+              <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Only Positive (5)" width="90" x="447" y="345">
+                <parameter key="condition_class" value="attribute_value_filter"/>
+                <parameter key="parameter_string" value="outlier &gt;0"/>
+                <parameter key="invert_filter" value="false"/>
+              </operator>
+              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (3)" width="90" x="648" y="390">
                 <parameter key="remove_double_attributes" value="true"/>
                 <parameter key="join_type" value="inner"/>
                 <parameter key="use_id_attribute_as_key" value="true"/>
                 <list key="key_attributes"/>
                 <parameter key="keep_both_join_attributes" value="false"/>
               </operator>
-              <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Only Positive (2)" width="90" x="180" y="120">
-                <parameter key="condition_class" value="attribute_value_filter"/>
-                <parameter key="parameter_string" value="sum &gt;0"/>
-                <parameter key="invert_filter" value="false"/>
-              </operator>
-              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (4)" width="90" x="315" y="120">
+              <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (4)" width="90" x="313" y="525">
                 <parameter key="remove_double_attributes" value="true"/>
                 <parameter key="join_type" value="inner"/>
                 <parameter key="use_id_attribute_as_key" value="false"/>
@@ -954,7 +958,7 @@
                 </list>
                 <parameter key="keep_both_join_attributes" value="false"/>
               </operator>
-              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (11)" width="90" x="581" y="210">
+              <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes (11)" width="90" x="447" y="570">
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
                 <parameter key="attributes" value="id|sum|cluster"/>
@@ -972,12 +976,13 @@
               <connect from_op="Generate ID (2)" from_port="example set output" to_op="Select Attributes (6)" to_port="example set input"/>
               <connect from_op="Select Attributes (6)" from_port="example set output" to_op="Preprocess PCA C" to_port="in 1"/>
               <connect from_op="Select Attributes (6)" from_port="original" to_op="Select Attributes (7)" to_port="example set input"/>
-              <connect from_op="Select Attributes (7)" from_port="example set output" to_op="Join (4)" to_port="left"/>
+              <connect from_op="Select Attributes (7)" from_port="example set output" to_op="Only Positive (2)" to_port="example set input"/>
               <connect from_op="Preprocess PCA C" from_port="out 1" to_op="DBSCAN CBLOF (2)" to_port="in 1"/>
               <connect from_op="Preprocess PCA C" from_port="out 2" to_op="Join (3)" to_port="right"/>
-              <connect from_op="DBSCAN CBLOF (2)" from_port="out 1" to_op="Join (3)" to_port="left"/>
-              <connect from_op="Join (3)" from_port="join" to_op="Only Positive (2)" to_port="example set input"/>
-              <connect from_op="Only Positive (2)" from_port="example set output" to_op="Join (4)" to_port="right"/>
+              <connect from_op="DBSCAN CBLOF (2)" from_port="out 1" to_op="Only Positive (5)" to_port="example set input"/>
+              <connect from_op="Only Positive (2)" from_port="example set output" to_op="Join (4)" to_port="left"/>
+              <connect from_op="Only Positive (5)" from_port="example set output" to_op="Join (3)" to_port="left"/>
+              <connect from_op="Join (3)" from_port="join" to_op="Join (4)" to_port="right"/>
               <connect from_op="Join (4)" from_port="join" to_op="Select Attributes (11)" to_port="example set input"/>
               <connect from_op="Select Attributes (11)" from_port="example set output" to_port="out 1"/>
               <portSpacing port="source_in 1" spacing="0"/>

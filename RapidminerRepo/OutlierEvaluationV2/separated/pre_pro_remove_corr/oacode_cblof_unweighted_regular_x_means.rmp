@@ -916,14 +916,12 @@
                   <portSpacing port="sink_out 2" spacing="0"/>
                 </process>
               </operator>
-              <operator activated="false" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join (3)" width="90" x="514" y="210">
-                <parameter key="remove_double_attributes" value="true"/>
-                <parameter key="join_type" value="inner"/>
-                <parameter key="use_id_attribute_as_key" value="true"/>
-                <list key="key_attributes"/>
-                <parameter key="keep_both_join_attributes" value="false"/>
+              <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Only Positive (5)" width="90" x="581" y="165">
+                <parameter key="condition_class" value="attribute_value_filter"/>
+                <parameter key="parameter_string" value="outlier &gt;0"/>
+                <parameter key="invert_filter" value="false"/>
               </operator>
-              <operator activated="false" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Only Positive (2)" width="90" x="246" y="210">
+              <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Only Positive (2)" width="90" x="313" y="210">
                 <parameter key="condition_class" value="attribute_value_filter"/>
                 <parameter key="parameter_string" value="sum &gt;0"/>
                 <parameter key="invert_filter" value="false"/>
@@ -954,9 +952,11 @@
               <connect from_port="in 1" to_op="Generate ID (2)" to_port="example set input"/>
               <connect from_op="Generate ID (2)" from_port="example set output" to_op="Select Attributes (6)" to_port="example set input"/>
               <connect from_op="Select Attributes (6)" from_port="example set output" to_op="Preprocess Remove Corr" to_port="in 1"/>
-              <connect from_op="Select Attributes (6)" from_port="original" to_op="Join (4)" to_port="left"/>
+              <connect from_op="Select Attributes (6)" from_port="original" to_op="Only Positive (2)" to_port="example set input"/>
               <connect from_op="Preprocess Remove Corr" from_port="out 1" to_op="DBSCAN CBLOF (2)" to_port="in 1"/>
-              <connect from_op="DBSCAN CBLOF (2)" from_port="out 1" to_op="Join (4)" to_port="right"/>
+              <connect from_op="DBSCAN CBLOF (2)" from_port="out 1" to_op="Only Positive (5)" to_port="example set input"/>
+              <connect from_op="Only Positive (5)" from_port="example set output" to_op="Join (4)" to_port="right"/>
+              <connect from_op="Only Positive (2)" from_port="example set output" to_op="Join (4)" to_port="left"/>
               <connect from_op="Join (4)" from_port="join" to_op="Select Attributes (11)" to_port="example set input"/>
               <connect from_op="Select Attributes (11)" from_port="example set output" to_port="out 1"/>
               <portSpacing port="source_in 1" spacing="0"/>
