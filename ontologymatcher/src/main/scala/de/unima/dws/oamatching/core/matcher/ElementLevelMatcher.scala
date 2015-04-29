@@ -72,6 +72,9 @@ abstract class ElementLevelMatcher(val similarity: Boolean, val useLabel: Boolea
 
     System.gc()
     //return alignment
+
+    println("Alignment created with size: " +alignment.correspondences.size)
+
     alignment
   }
 
